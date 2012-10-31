@@ -1,4 +1,4 @@
-﻿namespace Client.Views
+﻿namespace Client.MenuItem
 {
     public sealed partial class MenuItemView
     {

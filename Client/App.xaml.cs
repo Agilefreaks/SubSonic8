@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Caliburn.Micro;
-using Client.Views;
+using Client.Menu;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml.Controls;
 
@@ -9,7 +9,7 @@ namespace Client
 {
     public sealed partial class App
     {
-        private WinRTContainer container;
+        private WinRTContainer _container;
 
         public App()
         {
@@ -18,28 +18,28 @@ namespace Client
 
         protected override void Configure()
         {
-            container = new WinRTContainer();
-            container.RegisterWinRTServices();
+            _container = new WinRTContainer();
+            _container.RegisterWinRTServices();
         }
 
         protected override object GetInstance(Type service, string key)
         {
-            return container.GetInstance(service, key);
+            return _container.GetInstance(service, key);
         }
 
         protected override IEnumerable<object> GetAllInstances(Type service)
         {
-            return container.GetAllInstances(service);
+            return _container.GetAllInstances(service);
         }
 
         protected override void BuildUp(object instance)
         {
-            container.BuildUp(instance);
+            _container.BuildUp(instance);
         }
 
         protected override void PrepareViewFirst(Frame rootFrame)
         {
-            container.RegisterNavigationService(rootFrame);
+            _container.RegisterNavigationService(rootFrame);
         }
 
         protected override void OnLaunched(LaunchActivatedEventArgs args)
@@ -54,10 +54,10 @@ namespace Client
 //
 //        protected override void OnShareTargetActivated(ShareTargetActivatedEventArgs args)
 //        {
-//            // Normally wouldn't need to do this but need the container to be initialised
+//            // Normally wouldn't need to do this but need the _container to be initialised
 //            Initialise();
 //
-//            container.Instance(args.ShareOperation);
+//            _container.Instance(args.ShareOperation);
 //
 //            DisplayRootViewFor<ShareTargetViewModel>();
 //        }

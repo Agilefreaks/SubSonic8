@@ -1,10 +1,18 @@
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 
-namespace Client.ViewModels
+namespace Client.Common
 {
     public abstract class ViewModelBase : Screen
     {
-        public INavigationService NavigationService { get; private set; }
+        protected INavigationService NavigationService { get; set; }
+
+        public bool CanGoBack
+        {
+            get
+            {
+                return NavigationService.CanGoBack;
+            }
+        }
 
         protected ViewModelBase(INavigationService navigationService)
         {
@@ -14,14 +22,6 @@ namespace Client.ViewModels
         public void GoBack()
         {
             NavigationService.GoBack();
-        }
-
-        public bool CanGoBack
-        {
-            get
-            {
-                return NavigationService.CanGoBack;
-            }
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using Windows.UI.Xaml.Navigation;
 
-namespace Client.Views
+namespace Client.Menu
 {
     public sealed partial class MenuView
     {

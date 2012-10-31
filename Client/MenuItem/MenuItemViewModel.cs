@@ -1,6 +1,6 @@
 using Caliburn.Micro;
 
-namespace Client.ViewModels
+namespace Client.MenuItem
 {
     public class MenuItemViewModel : PropertyChangedBase
     {

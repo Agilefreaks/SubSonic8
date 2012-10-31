@@ -1,6 +1,10 @@
-﻿using Caliburn.Micro;
+﻿using System.Diagnostics;
+using Caliburn.Micro;
+using Client.Common;
+using Client.MenuItem;
+using Windows.UI.Xaml.Controls;
 
-namespace Client.ViewModels
+namespace Client.Menu
 {
     public class MenuViewModel : ViewModelBase
     {
@@ -16,6 +20,11 @@ namespace Client.ViewModels
             base.OnInitialize();
 
             MenuItems.Add(new MenuItemViewModel { Title = "Title", Subtitle = "subtitle" });
+        }
+
+        public void Click(ItemClickEventArgs eventArgs)
+        {
+            Debugger.Break();
         }
     }
 }
