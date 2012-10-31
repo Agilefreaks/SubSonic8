@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
 
-  <Identity Name="af00aecb-a150-4be3-b460-1331b8855340"
+  <Identity Name="04358122-8f7d-41c1-80fc-9909a4204004"
             Publisher="CN=Calin"
             Version="1.0.0.0" />
 
   <Properties>
-    <DisplayName>SubSonic8</DisplayName>
+    <DisplayName>Client</DisplayName>
     <PublisherDisplayName>Calin</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
@@ -23,12 +23,12 @@
   <Applications>
     <Application Id="App"
         Executable="$targetnametoken$.exe"
-        EntryPoint="SubSonic8.App">
+        EntryPoint="Client.App">
         <VisualElements
-            DisplayName="SubSonic8"
+            DisplayName="Client"
             Logo="Assets\Logo.png"
             SmallLogo="Assets\SmallLogo.png"
-            Description="SubSonic8"
+            Description="Client"
             ForegroundText="light"
             BackgroundColor="#464646">
             <DefaultTile ShowName="allLogos" />
