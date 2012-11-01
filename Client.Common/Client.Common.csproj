@@ -99,7 +99,12 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Models\Subsonic\Artist.cs" />
+    <Compile Include="Models\Subsonic\Index.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Results\ResultBase.cs" />
+    <Compile Include="Results\VisualStateResult.cs" />
+    <Compile Include="SubsonicService.cs" />
     <Compile Include="ViewModelBase.cs" />
   </ItemGroup>
   <ItemGroup>
