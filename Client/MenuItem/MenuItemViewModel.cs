@@ -1,6 +1,6 @@
 using Caliburn.Micro;
 
-namespace Client.MenuItem
+namespace Subsonic8.MenuItem
 {
     public class MenuItemViewModel : PropertyChangedBase
     {

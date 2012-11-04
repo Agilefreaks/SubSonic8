@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Xml.Linq;
@@ -9,26 +8,37 @@ using Client.Common.Results;
 
 namespace Client.Common
 {
-    public class SubsonicService : ResultBase
+    public class SubsonicService : ResultBase, ISubsonicService
     {
-        private const string ServiceUrl =
-            "http://cristibadila.dynalias.com:33770/music/rest/{0}?u={1}&p={2}&v=1.8.0&c=SubSonic8";
+        private SubsonicServiceConfiguration _configuration;
 
-        private const string UserName = "media";
-        private const string Password = "media";
+        public SubsonicServiceConfiguration Configuration
+        {
+            get
+            {
+                return _configuration;
+            }
+
+            set 
+            { 
+                _configuration = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
         private readonly HttpClient _client = new HttpClient();
 
         public IEnumerable<Models.Subsonic.Index> Result { get; set; }
 
         public override async void Execute(ActionExecutionContext context)
         {
-            XmlSerializer xmlSerializer = new XmlSerializer(typeof(Models.Subsonic.Index), new Type[] { typeof(Models.Subsonic.Artist) });
-            string requestUrl = string.Format(ServiceUrl, "getIndexes.view", UserName, Password);
+            var xmlSerializer = new XmlSerializer(typeof(Models.Subsonic.Index), new[] { typeof(Models.Subsonic.Artist) });
+            var requestUrl = string.Format(Configuration.ServiceUrl, "getIndexes.view", Configuration.Username, Configuration.Password);
 
-            HttpResponseMessage response = await _client.GetAsync(requestUrl);
+            var response = await _client.GetAsync(requestUrl);
             var stream = await response.Content.ReadAsStreamAsync();
 
-            XDocument xDocument = XDocument.Load(stream);
+            var xDocument = XDocument.Load(stream);
 
             XNamespace ns = "http://subsonic.org/restapi";
             Result = (from index in xDocument.Element(ns + "subsonic-response").Element(ns + "indexes").Descendants(ns + "index") 

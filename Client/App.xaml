@@ -1,5 +1,5 @@
 ﻿<caliburn:CaliburnApplication
-    x:Class="Client.App"
+    x:Class="Subsonic8.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:caliburn="using:Caliburn.Micro">
@@ -12,6 +12,7 @@
                     Required by Visual Studio project and item templates
                  -->
                 <ResourceDictionary Source="Common/StandardStyles.xaml"/>
+                <ResourceDictionary Source="Common/CustomStyles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
             <Color x:Key="MetroBlue">#FF3C557D</Color>

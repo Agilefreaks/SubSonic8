@@ -1,4 +1,4 @@
-﻿namespace Client.MenuItem
+﻿namespace Subsonic8.MenuItem
 {
     public sealed partial class MenuItemView
     {

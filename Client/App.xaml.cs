@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using Caliburn.Micro;
-using Client.Menu;
+using Client.Common;
+using Subsonic8.Menu;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml.Controls;
 
-namespace Client
+namespace Subsonic8
 {
     public sealed partial class App
     {
@@ -20,6 +21,7 @@ namespace Client
         {
             _container = new WinRTContainer();
             _container.RegisterWinRTServices();
+            _container.RegisterSingleton(typeof(ISubsonicService), "subsonic", typeof(SubsonicService));            
         }
 
         protected override object GetInstance(Type service, string key)

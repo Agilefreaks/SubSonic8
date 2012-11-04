@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>CaliburnMicroWinRTCallistoHelpers</id>
+    <version>1.0.0</version>
+    <title />
+    <authors>Mikael Koskinen</authors>
+    <owners>Mikael Koskinen</owners>
+    <projectUrl>https://github.com/mikoskinen/Caliburn-Micro-WinRT-Callisto-Helpers</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>These helpers make it easies to combine Caliburn.Micro with the Callisto's dialogs in Windows 8 Store apps.</description>
+    <tags>caliburn callisto windows8 store dialog</tags>
+  </metadata>
+</package>
