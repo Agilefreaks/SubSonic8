@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using Caliburn.Micro;
 using Client.Common;
 using Subsonic8.Menu;
-using Windows.ApplicationModel.Activation;
-using Windows.UI.Xaml.Controls;
 
 namespace Subsonic8
 {
@@ -19,9 +17,14 @@ namespace Subsonic8
 
         protected override void Configure()
         {
-            _container = new WinRTContainer();
+            base.Configure();
+
+            _container = new WinRTContainer(RootFrame);
             _container.RegisterWinRTServices();
-            _container.RegisterSingleton(typeof(ISubsonicService), "subsonic", typeof(SubsonicService));            
+
+            _container.RegisterSingleton(typeof(ISubsonicService), "subsonic", typeof(SubsonicService));
+
+            _container.SettingsCommand<SettingsViewModel>(1, "Credentials");
         }
 
         protected override object GetInstance(Type service, string key)
@@ -39,14 +42,9 @@ namespace Subsonic8
             _container.BuildUp(instance);
         }
 
-        protected override void PrepareViewFirst(Frame rootFrame)
+        protected override Type GetDefaultViewModel()
         {
-            _container.RegisterNavigationService(rootFrame);
-        }
-
-        protected override void OnLaunched(LaunchActivatedEventArgs args)
-        {
-            DisplayRootView<MenuView>();
+            return typeof (MenuViewModel);
         }
 
 //        protected override void OnSearchActivated(SearchActivatedEventArgs args)

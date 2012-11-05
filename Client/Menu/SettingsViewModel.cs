@@ -7,7 +7,7 @@ namespace Subsonic8.Menu
 {
     public class SettingsViewModel : Screen
     {
-        private readonly SubsonicService _subsonicService;
+        private readonly ISubsonicService _subsonicService;
         private readonly ObjectStorageHelper<SubsonicServiceConfiguration> _storageHelper;
         private SubsonicServiceConfiguration _configuration;
 
@@ -25,7 +25,7 @@ namespace Subsonic8.Menu
             }
         }
 
-        public SettingsViewModel(SubsonicService subsonicService)
+        public SettingsViewModel(ISubsonicService subsonicService)
         {
             _subsonicService = subsonicService;
             DisplayName = "Credentials";
