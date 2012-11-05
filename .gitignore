@@ -39,3 +39,4 @@ packages/
 _ReSharper*
 
 !.nuget/*.*
+TestResults/*.*

@@ -1,5 +1,4 @@
-using System.Collections.Generic;
-using Caliburn.Micro;
+using Client.Common.Results;
 
 namespace Client.Common
 {
@@ -7,8 +6,6 @@ namespace Client.Common
     {
         SubsonicServiceConfiguration Configuration { get; set; }
 
-        IEnumerable<Models.Subsonic.Index> Result { get; set; }
-
-        void Execute(ActionExecutionContext context);
+        IGetIndexResult GetRootIndex();
     }
 }

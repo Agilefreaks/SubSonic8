@@ -3,7 +3,7 @@ using Caliburn.Micro;
 using Client.Common;
 using WinRtUtility;
 
-namespace Subsonic8.Menu
+namespace Subsonic8.Settings
 {
     public class SettingsViewModel : Screen
     {
@@ -18,7 +18,7 @@ namespace Subsonic8.Menu
                 return _configuration;
             }
 
-            set
+            private set
             {
                 _configuration = value;
                 NotifyOfPropertyChange();
@@ -27,8 +27,8 @@ namespace Subsonic8.Menu
 
         public SettingsViewModel(ISubsonicService subsonicService)
         {
-            _subsonicService = subsonicService;
             DisplayName = "Credentials";
+            _subsonicService = subsonicService;
             _storageHelper = new ObjectStorageHelper<SubsonicServiceConfiguration>(StorageType.Roaming);
         }
 
@@ -38,7 +38,7 @@ namespace Subsonic8.Menu
 
             Configuration = await _storageHelper.LoadAsync();
             Configuration = Configuration ?? new SubsonicServiceConfiguration();
-            Configuration.PropertyChanged += ConfigurationOnPropertyChanged;
+            _configuration.PropertyChanged += ConfigurationOnPropertyChanged;
         }
 
         private void ConfigurationOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)

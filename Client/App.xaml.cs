@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using Caliburn.Micro;
 using Client.Common;
-using Subsonic8.Menu;
+using Subsonic8.Main;
+using Subsonic8.Settings;
 
 namespace Subsonic8
 {
@@ -44,7 +45,7 @@ namespace Subsonic8
 
         protected override Type GetDefaultViewModel()
         {
-            return typeof (MenuViewModel);
+            return typeof (MainViewModel);
         }
 
 //        protected override void OnSearchActivated(SearchActivatedEventArgs args)

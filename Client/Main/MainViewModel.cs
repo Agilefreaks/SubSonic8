@@ -4,18 +4,20 @@ using Client.Common;
 using Client.Common.Results;
 using Subsonic8.MenuItem;
 using WinRtUtility;
-using Windows.UI.Xaml.Controls;
 
-namespace Subsonic8.Menu
+namespace Subsonic8.Main
 {
-    public class MenuViewModel : ViewModelBase
+    public class MainViewModel : ViewModelBase
     {
+        private readonly ISubsonicService _subsonicService;
         private SubsonicServiceConfiguration _serviceConfiguration;
-        public BindableCollection<MenuItemViewModel> MenuItems { get; private set; }        
 
-        public MenuViewModel(INavigationService navigationService) 
+        public BindableCollection<MenuItemViewModel> MenuItems { get; private set; }
+
+        public MainViewModel(INavigationService navigationService, ISubsonicService subsonicService) 
             : base(navigationService)
         {
+            _subsonicService = subsonicService;
             MenuItems = new BindableCollection<MenuItemViewModel>();
         }
 
@@ -23,22 +25,21 @@ namespace Subsonic8.Menu
         {
             base.OnInitialize();
 
-            MenuItems.Add(new MenuItemViewModel { Title = "Load", Subtitle = "Click to load index" });
-
-            InitializeSubsonicService();
+            Populate().Execute();
         }
 
-        public IEnumerable<IResult> Click(ItemClickEventArgs eventArgs)
+        private IEnumerable<IResult> Populate()
         {
-            var subSonicService = new SubsonicService { Configuration = _serviceConfiguration };
-            yield return new VisualStateResult("Loading");
-            yield return subSonicService;
-            yield return new VisualStateResult("LoadingComplete");
+            InitializeSubsonicService();
 
-            foreach (var index in subSonicService.Result)
+            var getIndexResult = _subsonicService.GetRootIndex();
+            yield return getIndexResult;
+
+            foreach (var index in getIndexResult.Result)
             {
                 MenuItems.Add(new MenuItemViewModel { Title = index.Name, Subtitle = string.Format("{0} artists", index.Artists.Count) });
             }
+
         }
 
         private async void InitializeSubsonicService()
@@ -53,6 +54,7 @@ namespace Subsonic8.Menu
                                 Password = "media"
                             };
 #endif
+            _subsonicService.Configuration = _serviceConfiguration;
         }
     }
 }
