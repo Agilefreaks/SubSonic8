@@ -6,6 +6,8 @@ namespace Client.Common
     {
         SubsonicServiceConfiguration Configuration { get; set; }
 
-        IGetIndexResult GetRootIndex();
+        IGetRootResult GetRootIndex();
+
+        IGetMusicDirectoryResult GetMusicDirectory(int id);
     }
 }

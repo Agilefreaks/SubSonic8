@@ -1,9 +1,12 @@
 ﻿using System.Collections.Generic;
 using Caliburn.Micro;
 using Client.Common;
+using Client.Common.Models.Subsonic;
 using Client.Common.Results;
+using Subsonic8.Index;
 using Subsonic8.MenuItem;
 using WinRtUtility;
+using Windows.UI.Xaml.Controls;
 
 namespace Subsonic8.Main
 {
@@ -19,6 +22,11 @@ namespace Subsonic8.Main
         {
             _subsonicService = subsonicService;
             MenuItems = new BindableCollection<MenuItemViewModel>();
+        }
+
+        public void IndexClick(ItemClickEventArgs eventArgs)
+        {
+            NavigationService.NavigateToViewModel<IndexViewModel>(((MenuItemViewModel)eventArgs.ClickedItem).Item as IndexItem);
         }
 
         protected override void OnInitialize()
@@ -37,9 +45,8 @@ namespace Subsonic8.Main
 
             foreach (var index in getIndexResult.Result)
             {
-                MenuItems.Add(new MenuItemViewModel { Title = index.Name, Subtitle = string.Format("{0} artists", index.Artists.Count) });
+                MenuItems.Add(new MenuItemViewModel { Title = index.Name, Subtitle = string.Format("{0} artists", index.Artists.Count), Item = index });
             }
-
         }
 
         private async void InitializeSubsonicService()

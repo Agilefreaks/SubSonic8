@@ -6,6 +6,7 @@ namespace Subsonic8.MenuItem
     {
         private string _title;
         private string _subtitle;
+        private object _item;
 
         public string Title
         {
@@ -30,6 +31,21 @@ namespace Subsonic8.MenuItem
             set
             {
                 _subtitle = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
+        public object Item
+        {
+            get
+            {
+                return _item;
+            }
+
+            set
+            {
+                if (Equals(value, _item)) return;
+                _item = value;
                 NotifyOfPropertyChange();
             }
         }

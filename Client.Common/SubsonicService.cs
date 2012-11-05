@@ -21,9 +21,14 @@ namespace Client.Common
             }
         }
 
-        public IGetIndexResult GetRootIndex()
+        public IGetRootResult GetRootIndex()
         {
-            return new GetIndexResult(_configuration);
+            return new GetRootResult(_configuration);
+        }
+
+        public IGetMusicDirectoryResult GetMusicDirectory(int id)
+        {
+            return new GetMusicDirectoryResult(_configuration, id);
         }
     }
 }

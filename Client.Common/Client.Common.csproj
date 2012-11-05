@@ -99,12 +99,16 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Results\GetMusicDirectoryResult.cs" />
+    <Compile Include="Models\Subsonic\MusicDirectoryChild.cs" />
+    <Compile Include="Results\IGetMusicDirectoryResult.cs" />
     <Compile Include="ISubsonicService.cs" />
     <Compile Include="Models\Subsonic\Artist.cs" />
-    <Compile Include="Models\Subsonic\Index.cs" />
+    <Compile Include="Models\Subsonic\IndexItem.cs" />
+    <Compile Include="Models\Subsonic\MusicDirectory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Results\GetIndexResult.cs" />
-    <Compile Include="Results\IGetIndexResult.cs" />
+    <Compile Include="Results\GetRootResult.cs" />
+    <Compile Include="Results\IGetRootResult.cs" />
     <Compile Include="Results\ResultBase.cs" />
     <Compile Include="Results\ResultExtensionsMethods.cs" />
     <Compile Include="Results\VisualStateResult.cs" />

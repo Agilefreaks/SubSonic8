@@ -19,7 +19,7 @@ namespace Client.Common.Tests
         {
             var result = _subject.GetRootIndex();
 
-            Assert.IsInstanceOfType(result, typeof(GetIndexResult));
+            Assert.IsInstanceOfType(result, typeof(GetRootResult));
         }
     }
 }
