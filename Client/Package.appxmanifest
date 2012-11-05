@@ -15,9 +15,9 @@
   </Resources>
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="Client.App">
-      <VisualElements DisplayName="Subsonic8" Logo="Assets\Logo.png" SmallLogo="Assets\SmallLogo.png" Description="Subsonic8" ForegroundText="light" BackgroundColor="#464646">
+      <VisualElements DisplayName="Subsonic8" Logo="Assets\subsonic.png" SmallLogo="Assets\SmallLogo.png" Description="Subsonic8" ForegroundText="light" BackgroundColor="#464646">
         <DefaultTile ShowName="allLogos" />
-        <SplashScreen Image="Assets\SplashScreen.png" />
+        <SplashScreen Image="Assets\subsonicSplash.png" />
       </VisualElements>
       <Extensions>
         <Extension Category="windows.backgroundTasks" StartPage="Client.MenuMenuView">
