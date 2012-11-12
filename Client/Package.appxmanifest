@@ -20,7 +20,7 @@
         <SplashScreen Image="Assets\subsonicSplash.png" />
       </VisualElements>
       <Extensions>
-        <Extension Category="windows.backgroundTasks" StartPage="Client.MenuMenuView">
+        <Extension Category="windows.backgroundTasks" EntryPoint="Subsonic8.Shell">
           <BackgroundTasks>
             <Task Type="audio" />
           </BackgroundTasks>
@@ -29,6 +29,8 @@
     </Application>
   </Applications>
   <Capabilities>
+    <Capability Name="privateNetworkClientServer" />
+    <Capability Name="internetClientServer" />
     <Capability Name="internetClient" />
   </Capabilities>
 </Package>

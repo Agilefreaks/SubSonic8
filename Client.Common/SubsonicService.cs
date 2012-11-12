@@ -1,4 +1,5 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using Caliburn.Micro;
 using Client.Common.Results;
 
 namespace Client.Common
@@ -14,8 +15,8 @@ namespace Client.Common
                 return _configuration;
             }
 
-            set 
-            { 
+            set
+            {
                 _configuration = value;
                 NotifyOfPropertyChange();
             }
@@ -29,6 +30,11 @@ namespace Client.Common
         public IGetMusicDirectoryResult GetMusicDirectory(int id)
         {
             return new GetMusicDirectoryResult(_configuration, id);
+        }
+
+        public Uri GetUriForFileWithId(int id)
+        {
+            return new Uri(string.Format(_configuration.ServiceUrl, "stream.view", _configuration.Username, _configuration.Password) + string.Format("&id={0}", id));
         }
     }
 }

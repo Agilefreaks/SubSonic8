@@ -3,6 +3,7 @@ using Caliburn.Micro;
 using Client.Common;
 using Client.Common.Models.Subsonic;
 using Subsonic8.MenuItem;
+using Subsonic8.Playback;
 using Windows.UI.Xaml.Controls;
 
 namespace Subsonic8.MusicDirectory
@@ -51,11 +52,17 @@ namespace Subsonic8.MusicDirectory
 
         public IEnumerable<IResult> MusicDirectoryClick(ItemClickEventArgs eventArgs)
         {
-            var musicDirectoryChild = (MusicDirectoryChild)((MenuItemViewModel) eventArgs.ClickedItem).Item;
-            var getMusicDirectoryResult = _subsonicService.GetMusicDirectory(musicDirectoryChild.Id);
-            yield return getMusicDirectoryResult;
-
-            NavigationService.NavigateToViewModel<MusicDirectoryViewModel>(getMusicDirectoryResult.Result);
+            var musicDirectoryChild = (MusicDirectoryChild) ((MenuItemViewModel) eventArgs.ClickedItem).Item;
+            if (musicDirectoryChild.IsDirectory)
+            {
+                var getMusicDirectoryResult = _subsonicService.GetMusicDirectory(musicDirectoryChild.Id);
+                yield return getMusicDirectoryResult;
+                NavigationService.NavigateToViewModel<MusicDirectoryViewModel>(getMusicDirectoryResult.Result);
+            }
+            else
+            {
+                NavigationService.NavigateToViewModel<PlaybackViewModel>(musicDirectoryChild);
+            }
         }        
 
         private void PopulateMenuItems()

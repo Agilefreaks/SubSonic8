@@ -99,6 +99,7 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="NavigationService.cs" />
     <Compile Include="Results\GetMusicDirectoryResult.cs" />
     <Compile Include="Models\Subsonic\MusicDirectoryChild.cs" />
     <Compile Include="Results\IGetMusicDirectoryResult.cs" />

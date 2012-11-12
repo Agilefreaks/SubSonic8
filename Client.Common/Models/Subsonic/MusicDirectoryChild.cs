@@ -22,5 +22,8 @@ namespace Client.Common.Models.Subsonic
 
         [XmlAttribute("isDir")]
         public bool IsDirectory { get; set; }
+
+        [XmlAttribute("coverArt")]
+        public string CovertArt { get; set; }
     }
 }

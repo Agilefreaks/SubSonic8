@@ -117,6 +117,10 @@
       <DependentUpon>MusicDirectoryView.xaml</DependentUpon>
     </Compile>
     <Compile Include="MusicDirectory\MusicDirectoryViewModel.cs" />
+    <Compile Include="Playback\PlaybackView.xaml.cs">
+      <DependentUpon>PlaybackView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Playback\PlaybackViewModel.cs" />
     <Compile Include="Settings\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
@@ -125,6 +129,11 @@
     <Compile Include="MenuItem\MenuItemView.xaml.cs">
       <DependentUpon>MenuItemView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Messages\PlayFile.cs" />
+    <Compile Include="Shell\ShellView.xaml.cs">
+      <DependentUpon>ShellView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Shell\ShellViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -171,7 +180,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Playback\PlaybackView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Settings\SettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Shell\ShellView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -191,8 +208,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\Caliburn.Micro.Extensions.dll</HintPath>
     </Reference>
-    <Reference Include="Callisto, Version=1.2.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Callisto">
       <HintPath>..\packages\Callisto.1.2.5\lib\winrt45\Callisto.dll</HintPath>
     </Reference>
     <Reference Include="Windows.UI.Interactivity">

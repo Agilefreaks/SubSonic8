@@ -4,12 +4,15 @@ using Caliburn.Micro;
 using Client.Common;
 using Subsonic8.Main;
 using Subsonic8.Settings;
+using Subsonic8.Shell;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 
 namespace Subsonic8
 {
     public sealed partial class App
     {
-        private WinRTContainer _container;
+        private SimpleContainer _container;
 
         public App()
         {
@@ -20,12 +23,22 @@ namespace Subsonic8
         {
             base.Configure();
 
-            _container = new WinRTContainer(RootFrame);
-            _container.RegisterWinRTServices();
+            _container = new SimpleContainer();
+
+            RegisterWinRTServices(RootFrame);
 
             _container.RegisterSingleton(typeof(ISubsonicService), "subsonic", typeof(SubsonicService));
 
             _container.SettingsCommand<SettingsViewModel>(1, "Credentials");
+        }
+
+        protected override void OnLaunched(Windows.ApplicationModel.Activation.LaunchActivatedEventArgs args)
+        {
+            base.OnLaunched(args);
+            var shellView = (ShellView)RootFrame.Content;
+            BindShellViewModel(shellView);
+            var navigationService = RegisterNavigationServiceForShellFrame(shellView);
+            navigationService.NavigateToViewModel<MainViewModel>();
         }
 
         protected override object GetInstance(Type service, string key)
@@ -45,22 +58,40 @@ namespace Subsonic8
 
         protected override Type GetDefaultViewModel()
         {
-            return typeof (MainViewModel);
+            return typeof(ShellViewModel);
         }
 
-//        protected override void OnSearchActivated(SearchActivatedEventArgs args)
-//        {
-//            DisplayRootView<SearchView>(args.QueryText);
-//        }
-//
-//        protected override void OnShareTargetActivated(ShareTargetActivatedEventArgs args)
-//        {
-//            // Normally wouldn't need to do this but need the _container to be initialised
-//            Initialise();
-//
-//            _container.Instance(args.ShareOperation);
-//
-//            DisplayRootViewFor<ShareTargetViewModel>();
-//        }
+        private void BindShellViewModel(DependencyObject shellView)
+        {
+            var shellViewModel = _container.GetInstance(typeof (ShellViewModel), null);
+            ViewModelBinder.Bind(shellViewModel, shellView, null);
+        }
+
+        private INavigationService RegisterNavigationServiceForShellFrame(ShellView shellView)
+        {
+            var navigationService = new NavigationService(shellView.ShellFrame);
+            _container.RegisterInstance(typeof(INavigationService), null, navigationService);
+            
+            return navigationService;
+        }
+
+        private void RegisterWinRTServices(Frame rootFrame)
+        {
+            _container.RegisterInstance(typeof(SimpleContainer), null, _container);
+
+            if (!_container.HasHandler(typeof(IEventAggregator), null))
+            {
+                _container.RegisterSingleton(typeof(IEventAggregator), null, typeof(EventAggregator));
+            }
+            if (!_container.HasHandler(typeof(ShareSourceService), null))
+            {
+                _container.RegisterInstance(typeof(ShareSourceService), null, new ShareSourceService(rootFrame));
+            }
+
+            if (!_container.HasHandler(typeof(CallistoSettingsService), null))
+            {
+                _container.RegisterInstance(typeof(CallistoSettingsService), null, new CallistoSettingsService());
+            }
+        }
     }
 }
