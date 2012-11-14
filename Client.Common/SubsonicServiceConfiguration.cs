@@ -2,11 +2,9 @@
 
 namespace Client.Common
 {
-    public class SubsonicServiceConfiguration : PropertyChangedBase
+    public class SubsonicServiceConfiguration : PropertyChangedBase, ISubsonicServiceConfiguration
     {
-        private string _username;
-        private string _password;
-        private string _serviceUrl;
+        private string _username, _password, _serviceUrl;
 
         public string Username
         {

@@ -15,7 +15,7 @@ namespace Client.Common.Tests
         }
 
         [TestMethod]
-        public void GetRootIndex_Always_ReturnsAGetIndexResult()
+        public void GetRootIndexAlwaysReturnsAGetIndexResult()
         {
             var result = _subject.GetRootIndex();
 

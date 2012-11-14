@@ -1,10 +1,9 @@
 using System.Collections.Generic;
-using Caliburn.Micro;
 using Client.Common.Models.Subsonic;
 
 namespace Client.Common.Results
 {
-    public interface IGetRootResult : IResult
+    public interface IGetRootResult : IServiceResultBase
     {
         IList<IndexItem> Result { get; set; }
     }

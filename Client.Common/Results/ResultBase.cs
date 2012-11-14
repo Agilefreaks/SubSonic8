@@ -3,7 +3,7 @@ using Caliburn.Micro;
 
 namespace Client.Common.Results
 {
-    public abstract class ResultBase : PropertyChangedBase, IResult
+    public abstract class ResultBase : PropertyChangedBase, IResultBase
     {
         public event EventHandler<ResultCompletionEventArgs> Completed = delegate { };
 

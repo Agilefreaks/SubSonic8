@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 using Caliburn.Micro;
@@ -8,24 +7,20 @@ using Client.Common.Models.Subsonic;
 
 namespace Client.Common.Results
 {
-    public class GetRootResult : ResultBase, IGetRootResult
+    public class GetRootResult : ServiceResultBase, IGetRootResult
     {
-        private readonly SubsonicServiceConfiguration _configuration;
-        private readonly HttpClient _client = new HttpClient();
-
         public IList<IndexItem> Result { get; set; }
 
-        public GetRootResult(SubsonicServiceConfiguration configuration)
+        public GetRootResult(ISubsonicServiceConfiguration configuration) : base(configuration)
         {
-            _configuration = configuration;
         }
 
         public override async void Execute(ActionExecutionContext context)
         {
             var xmlSerializer = new XmlSerializer(typeof(IndexItem), new[] { typeof(Artist) });
-            var requestUrl = string.Format(_configuration.ServiceUrl, "getIndexes.view", _configuration.Username, _configuration.Password);
+            var requestUrl = string.Format(Configuration.ServiceUrl, "getIndexes.view", Configuration.Username, Configuration.Password);
 
-            var response = await _client.GetAsync(requestUrl);
+            var response = await Client.GetAsync(requestUrl);
             var stream = await response.Content.ReadAsStreamAsync();
 
             var xDocument = XDocument.Load(stream);
@@ -35,7 +30,6 @@ namespace Client.Common.Results
                       select (IndexItem)xmlSerializer.Deserialize(musicFolder.CreateReader())).ToList();
 
             OnCompleted();
-
         }
     }
 }
