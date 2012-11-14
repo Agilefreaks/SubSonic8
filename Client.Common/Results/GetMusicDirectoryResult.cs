@@ -11,9 +11,19 @@ namespace Client.Common.Results
 
         public MusicDirectory Result { get; set; }
 
+        public override string ViewName
+        {
+            get { throw new System.NotImplementedException(); }
+        }
+
         public GetMusicDirectoryResult(SubsonicServiceConfiguration configuration, int id) : base(configuration)
         {
             _id = id;
+        }
+
+        protected override void HandleResponse(XDocument xDocument)
+        {
+            throw new System.NotImplementedException();
         }
 
         public override async void Execute(ActionExecutionContext context)
