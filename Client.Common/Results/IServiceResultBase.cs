@@ -11,5 +11,7 @@ namespace Client.Common.Results
         string ViewName { get; }
 
         Func<Task<XDocument>> Response { get; set; }
+
+        string RequestUrl { get; }
     }
 }

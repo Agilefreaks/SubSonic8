@@ -16,6 +16,14 @@ namespace Client.Common.Results
 
         public Func<Task<XDocument>> Response { get; set; }
 
+        public virtual string RequestUrl
+        {
+            get
+            {
+                return string.Format(Configuration.ServiceUrl, ViewName, Configuration.Username, Configuration.Password);
+            }
+        }
+
         protected readonly HttpClient Client = new HttpClient();
 
         protected ServiceResultBase(ISubsonicServiceConfiguration configuration)
@@ -36,16 +44,13 @@ namespace Client.Common.Results
             {
                 OnError(e);
             }
-
         }
 
         protected abstract void HandleResponse(XDocument xDocument);
 
         private async Task<XDocument> ResponseFunc()
         {
-            var requestUrl = string.Format(Configuration.ServiceUrl, ViewName, Configuration.Username, Configuration.Password);
-
-            var response = await Client.GetAsync(requestUrl);
+            var response = await Client.GetAsync(RequestUrl);
             var stream = await response.Content.ReadAsStreamAsync();
 
             return XDocument.Load(stream);
