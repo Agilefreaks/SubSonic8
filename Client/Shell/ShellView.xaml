@@ -6,7 +6,28 @@
     mc:Ignorable="d">
 
     <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
         <MediaElement x:Name="mediaElement" AudioCategory="BackgroundCapableMedia" AutoPlay="True" Source="{Binding Path=Source}" />
-        <Frame Content="Frame" x:Name="shellFrame" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="0" />
+
+        <ProgressBar x:Name="LoadingIndicator" Visibility="Collapsed" IsIndeterminate="True" HorizontalAlignment="Stretch" Grid.Row="0"/>
+
+        <Frame Grid.Row="1" Content="Frame" x:Name="shellFrame" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="0" />
+        
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState x:Name="Loading">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="LoadingIndicator" Storyboard.TargetProperty="Visibility">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="Visible"/>
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+                <VisualState x:Name="LoadingComplete" />
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
     </Grid>
 </Page>

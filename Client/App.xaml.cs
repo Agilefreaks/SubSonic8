@@ -28,6 +28,7 @@ namespace Subsonic8
             RegisterWinRTServices(RootFrame);
 
             _container.RegisterSingleton(typeof(ISubsonicService), "subsonic", typeof(SubsonicService));
+            _container.RegisterSingleton(typeof(IShellViewModel), "ShellViewModel", typeof(ShellViewModel));
 
             _container.SettingsCommand<SettingsViewModel>(1, "Credentials");
         }
@@ -63,7 +64,7 @@ namespace Subsonic8
 
         private void BindShellViewModel(DependencyObject shellView)
         {
-            var shellViewModel = _container.GetInstance(typeof (ShellViewModel), null);
+            var shellViewModel = _container.GetInstance(typeof (IShellViewModel), null);
             ViewModelBinder.Bind(shellViewModel, shellView, null);
         }
 

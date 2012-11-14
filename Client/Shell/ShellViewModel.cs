@@ -5,7 +5,7 @@ using Subsonic8.Messages;
 
 namespace Subsonic8.Shell
 {
-    public class ShellViewModel : Screen, IHandle<PlayFile>
+    public class ShellViewModel : Screen, IShellViewModel
     {
         private readonly ISubsonicService _subsonicService;
         private Uri _source;

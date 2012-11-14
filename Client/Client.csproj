@@ -130,6 +130,7 @@
       <DependentUpon>MenuItemView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Messages\PlayFile.cs" />
+    <Compile Include="Shell\IShellViewModel.cs" />
     <Compile Include="Shell\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
