@@ -1,6 +1,8 @@
-﻿using Windows.Media;
+﻿using System;
+using Windows.Media;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 namespace Subsonic8.Shell
@@ -20,26 +22,41 @@ namespace Subsonic8.Shell
 
         private void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
         {
-            MediaControl.PlayPressed += MediaControl_PlayPressed;
-            MediaControl.PausePressed += MediaControl_PausePressed;
-            MediaControl.PlayPauseTogglePressed += MediaControl_PlayPauseTogglePressed;
-            MediaControl.StopPressed += MediaControl_StopPressed;
+            MediaControl.PlayPressed += MediaControlPlayPressed;
+            MediaControl.PausePressed += MediaControlPausePressed;
+            MediaControl.PlayPauseTogglePressed += MediaControlPlayPauseTogglePressed;
+            MediaControl.StopPressed += MediaControlStopPressed;
         }
 
-        private void MediaControl_PlayPressed(object sender, object e)
+        private async void MediaControlPlayPressed(object sender, object e)
         {
+            await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => mediaElement.Play());
         }
 
-        private void MediaControl_PlayPauseTogglePressed(object sender, object e)
+        private async void MediaControlPlayPauseTogglePressed(object sender, object e)
         {
+            await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal,
+                                () =>
+                                    {
+                                        if (mediaElement.CurrentState == MediaElementState.Paused)
+                                        {
+                                            mediaElement.Play();
+                                        }
+                                        else
+                                        {
+                                            mediaElement.Pause();
+                                        }
+                                    });
         }
 
-        private void MediaControl_PausePressed(object sender, object e)
+        private async void MediaControlPausePressed(object sender, object e)
         {
+            await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => mediaElement.Pause());
         }
 
-        private void MediaControl_StopPressed(object sender, object e)
+        private async void MediaControlStopPressed(object sender, object e)
         {
+            await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => mediaElement.Stop());
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
