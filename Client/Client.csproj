@@ -116,6 +116,7 @@
     </Compile>
     <Compile Include="MenuItem\MenuItemViewModel.cs" />
     <Compile Include="Main\MainViewModel.cs" />
+    <Compile Include="MusicDirectory\IMusicDirectoryViewModel.cs" />
     <Compile Include="MusicDirectory\MusicDirectoryView.xaml.cs">
       <DependentUpon>MusicDirectoryView.xaml</DependentUpon>
     </Compile>

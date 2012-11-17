@@ -26,6 +26,12 @@ namespace Subsonic8.Shell
 
         public ISubsonicService SubsonicService { get; set; }
 
+        public ShellViewModel(IEventAggregator eventAggregator, ISubsonicService subsonicService)
+        {
+            SubsonicService = subsonicService;
+            eventAggregator.Subscribe(this);
+        }
+
         public void Handle(PlayFile message)
         {
             Source = SubsonicService.GetUriForFileWithId(message.Id);

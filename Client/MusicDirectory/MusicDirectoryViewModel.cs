@@ -8,7 +8,7 @@ using Windows.UI.Xaml.Controls;
 
 namespace Subsonic8.MusicDirectory
 {
-    public class MusicDirectoryViewModel : ViewModelBase
+    public class MusicDirectoryViewModel : ViewModelBase, IMusicDirectoryViewModel
     {
         private Client.Common.Models.Subsonic.MusicDirectory _parameter;
         private BindableCollection<MenuItemViewModel> _menuItems;
@@ -43,6 +43,11 @@ namespace Subsonic8.MusicDirectory
             }
         }
 
+        public MusicDirectoryViewModel()
+        {
+            MenuItems = new BindableCollection<MenuItemViewModel>();
+        }
+
         public IEnumerable<IResult> MusicDirectoryClick(ItemClickEventArgs eventArgs)
         {
             var musicDirectoryChild = (MusicDirectoryChild) ((MenuItemViewModel) eventArgs.ClickedItem).Item;
@@ -61,16 +66,10 @@ namespace Subsonic8.MusicDirectory
 
         private void PopulateMenuItems()
         {
-            var menuItemViewModels = new BindableCollection<MenuItemViewModel>();
-            if (Parameter != null)
+            foreach (var child in Parameter.Children)
             {
-                foreach (var child in Parameter.Children)
-                {
-                    menuItemViewModels.Add(new MenuItemViewModel { Title = child.Artist, Subtitle = child.Title, Item = child });
-                }
+                MenuItems.Add(new MenuItemViewModel { Title = child.Artist, Subtitle = child.Title, Item = child });
             }
-
-            MenuItems = menuItemViewModels;
         }
     }
 }
