@@ -8,7 +8,7 @@ using Windows.UI.Xaml.Controls;
 
 namespace Subsonic8.Index
 {
-    public class IndexViewModel : ViewModelBase
+    public class IndexViewModel : ViewModelBase, IIndexViewModel
     {
         private BindableCollection<MenuItemViewModel> _menuItems;
         private IndexItem _parameter;
@@ -42,6 +42,11 @@ namespace Subsonic8.Index
             }
         }
 
+        public IndexViewModel()
+        {
+            MenuItems = new BindableCollection<MenuItemViewModel>();
+        }
+
         public IEnumerable<IResult> ArtistClick(ItemClickEventArgs eventArgs)
         {
             var artist = (Artist)((MenuItemViewModel) eventArgs.ClickedItem).Item;
@@ -53,16 +58,10 @@ namespace Subsonic8.Index
 
         private void PopulateMenuItems()
         {
-            var menuItemViewModels = new BindableCollection<MenuItemViewModel>();
-            if (Parameter != null)
+            foreach (var artist in Parameter.Artists)
             {
-                foreach (var artist in Parameter.Artists)
-                {
-                    menuItemViewModels.Add(new MenuItemViewModel { Title = artist.Name, Item = artist });
-                }
+                MenuItems.Add(new MenuItemViewModel { Title = artist.Name, Item = artist });
             }
-
-            MenuItems = menuItemViewModels;
         }
     }
 }

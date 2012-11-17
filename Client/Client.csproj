@@ -105,6 +105,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\DialogService.cs" />
+    <Compile Include="Index\IIndexViewModel.cs" />
     <Compile Include="Index\IndexViewModel.cs" />
     <Compile Include="Index\IndexView.xaml.cs">
       <DependentUpon>IndexView.xaml</DependentUpon>
