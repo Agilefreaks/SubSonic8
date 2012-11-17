@@ -9,7 +9,6 @@ namespace Subsonic8.Shell
     {
         private readonly ISubsonicService _subsonicService;
         private Uri _source;
-        private string _test;
 
         public Uri Source
         {

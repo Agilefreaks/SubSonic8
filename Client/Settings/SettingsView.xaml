@@ -9,8 +9,8 @@
 
     <UserControl.Resources>
     </UserControl.Resources>
-    
-    <StackPanel Width="260">
+
+    <StackPanel>
         <TextBlock Text="Subsonic Url" Style="{StaticResource SettingsTextStyle}"/>
         <TextBox x:Name="Configuration_ServiceUrl" Style="{StaticResource SettingsTextBoxStyle}"/>
 

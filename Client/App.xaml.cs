@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using Caliburn.Micro;
 using Client.Common;
 using Subsonic8.Main;
+using Subsonic8.Settings;
 using Subsonic8.Shell;
 using WinRtUtility;
 using Windows.ApplicationModel.Activation;
-using Windows.UI.Xaml;
+using Windows.UI.ApplicationSettings;
 using Windows.UI.Xaml.Controls;
 
 namespace Subsonic8
@@ -27,6 +28,8 @@ namespace Subsonic8
 
             _container.RegisterSingleton(typeof(ISubsonicService), "SubsonicService", typeof(SubsonicService));
             _container.RegisterSingleton(typeof(IShellViewModel), "ShellViewModel", typeof(ShellViewModel));
+
+            SettingsPane.GetForCurrentView().CommandsRequested += (sender, args) => args.AddSetting<SettingsViewModel>();
         }
 
         protected override object GetInstance(Type service, string key)

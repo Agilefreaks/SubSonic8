@@ -25,9 +25,16 @@ namespace Subsonic8.Settings
             }
         }
 
+        public override string DisplayName
+        {
+            get
+            {
+                return "Credentials";
+            }
+        }
+
         public SettingsViewModel(ISubsonicService subsonicService)
         {
-            DisplayName = "Credentials";
             _subsonicService = subsonicService;
             _storageHelper = new ObjectStorageHelper<SubsonicServiceConfiguration>(StorageType.Roaming);
         }
