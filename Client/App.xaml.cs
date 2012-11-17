@@ -6,6 +6,8 @@ using Subsonic8.Main;
 using Subsonic8.Shell;
 using WinRtUtility;
 using Windows.ApplicationModel.Activation;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 
 namespace Subsonic8
 {
@@ -53,13 +55,18 @@ namespace Subsonic8
             DisplayRootView<ShellView>();
 
             var shellView = (ShellView)RootFrame.Content ?? new ShellView();
-            _container.RegisterNavigationService(shellView.ShellFrame);
+            RegisterNavigationService(shellView.ShellFrame);
 
             var navigationService = _container.GetInstance(typeof(INavigationService), null) as INavigationService;
-            navigationService.NavigateToViewModel<MainViewModel>();
+            navigationService.UriFor<MainViewModel>().Navigate();
 
             var shellViewModel = _container.GetInstance(typeof(IShellViewModel), null);
             ViewModelBinder.Bind(shellViewModel, shellView, null);
+        }
+
+        private void RegisterNavigationService(Frame shellFrame, bool treatViewAsLoaded = false)
+        {
+            _container.RegisterInstance(typeof(INavigationService), null, new CustomFrameAdapter(shellFrame, treatViewAsLoaded));
         }
 
         private async void InitializeSubsonicService()

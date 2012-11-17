@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Caliburn.Micro;
 using Client.Common;
 using Client.Common.Models.Subsonic;
@@ -24,7 +25,8 @@ namespace Subsonic8.Main
 
         public void IndexClick(ItemClickEventArgs eventArgs)
         {
-            NavigationService.NavigateToViewModel<IndexViewModel>(((MenuItemViewModel)eventArgs.ClickedItem).Item as IndexItem);
+            var item = ((MenuItemViewModel) eventArgs.ClickedItem).Item;
+            NavigationService.NavigateToViewModel<IndexViewModel>(item);
         }
 
         protected override void OnInitialize()

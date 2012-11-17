@@ -53,6 +53,7 @@ namespace Subsonic8.MusicDirectory
         public IEnumerable<IResult> MusicDirectoryClick(ItemClickEventArgs eventArgs)
         {
             var musicDirectoryChild = (MusicDirectoryChild) ((MenuItemViewModel) eventArgs.ClickedItem).Item;
+            
             if (musicDirectoryChild.IsDirectory)
             {
                 var getMusicDirectoryResult = _subsonicService.GetMusicDirectory(musicDirectoryChild.Id);

@@ -99,6 +99,7 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CustomFrameAdapter.cs" />
     <Compile Include="ISubsonicServiceConfiguration.cs" />
     <Compile Include="Results\GetMusicDirectoryResult.cs" />
     <Compile Include="Models\Subsonic\MusicDirectoryChild.cs" />
