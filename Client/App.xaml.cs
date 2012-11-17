@@ -4,6 +4,7 @@ using Caliburn.Micro;
 using Client.Common;
 using Subsonic8.Main;
 using Subsonic8.Shell;
+using WinRtUtility;
 using Windows.ApplicationModel.Activation;
 
 namespace Subsonic8
@@ -41,6 +42,12 @@ namespace Subsonic8
             _container.BuildUp(instance);
         }
 
+        protected override void PrepareViewFirst(Windows.UI.Xaml.Controls.Frame rootFrame)
+        {
+            base.PrepareViewFirst(rootFrame);
+            InitializeSubsonicService();
+        }
+
         protected override void OnLaunched(LaunchActivatedEventArgs args)
         {
             DisplayRootView<ShellView>();
@@ -53,6 +60,24 @@ namespace Subsonic8
 
             var shellViewModel = _container.GetInstance(typeof(IShellViewModel), null);
             ViewModelBinder.Bind(shellViewModel, shellView, null);
+        }
+
+        private async void InitializeSubsonicService()
+        {
+            var storageHelper = new ObjectStorageHelper<SubsonicServiceConfiguration>(StorageType.Roaming);
+            SubsonicServiceConfiguration subsonicServiceConfiguration = await storageHelper.LoadAsync();
+
+#if DEBUG
+            subsonicServiceConfiguration = new SubsonicServiceConfiguration
+            {
+                ServiceUrl = "http://cristibadila.dynalias.com:33770/music/rest/{0}?u={1}&p={2}&v=1.8.0&c=SubSonic8",
+                Username = "media",
+                Password = "media"
+            };
+#endif
+
+            ISubsonicService subsonicService = GetInstance(typeof(ISubsonicService), null) as ISubsonicService ?? new SubsonicService();
+            subsonicService.Configuration = subsonicServiceConfiguration;
         }
     }
 }
