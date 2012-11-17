@@ -7,7 +7,6 @@ namespace Subsonic8.Shell
 {
     public sealed partial class ShellView
     {
-       
         public Frame ShellFrame
         {
             get { return shellFrame; }

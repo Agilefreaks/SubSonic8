@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Http;
+using System.ServiceModel;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Caliburn.Micro;

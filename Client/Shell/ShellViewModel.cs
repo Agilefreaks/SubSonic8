@@ -9,6 +9,7 @@ namespace Subsonic8.Shell
     {
         private readonly ISubsonicService _subsonicService;
         private Uri _source;
+        private string _test;
 
         public Uri Source
         {
@@ -23,10 +24,6 @@ namespace Subsonic8.Shell
                 _source = value;
                 NotifyOfPropertyChange();
             }
-        }
-
-        public ShellViewModel()
-        {
         }
 
         public ShellViewModel(IEventAggregator eventAggregator, ISubsonicService subsonicService)

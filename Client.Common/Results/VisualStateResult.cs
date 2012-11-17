@@ -1,5 +1,4 @@
-﻿using System;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -28,10 +27,7 @@ namespace Client.Common.Results
 
         public override void Execute(ActionExecutionContext context)
         {
-            if (!(context.View is Control))
-                throw new InvalidOperationException("View must be a Control to use VisualStateResult");
-
-            var view = (Control)context.View;
+            var view = (context.View ?? ((CaliburnApplication)CaliburnApplication.Current).RootFrame.Content) as Control;
 
             VisualStateManager.GoToState(view, StateName, UseTransitions);
 

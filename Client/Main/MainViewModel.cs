@@ -7,7 +7,6 @@ using Subsonic8.Index;
 using Subsonic8.MenuItem;
 using Subsonic8.Shell;
 using WinRtUtility;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 namespace Subsonic8.Main
@@ -15,16 +14,14 @@ namespace Subsonic8.Main
     public class MainViewModel : ViewModelBase
     {
         private readonly ISubsonicService _subsonicService;
-        private readonly IShellViewModel _shellViewModel;
         private SubsonicServiceConfiguration _serviceConfiguration;
 
         public BindableCollection<MenuItemViewModel> MenuItems { get; private set; }
 
-        public MainViewModel(INavigationService navigationService, ISubsonicService subsonicService, IShellViewModel shellViewModel) 
+        public MainViewModel(INavigationService navigationService, ISubsonicService subsonicService) 
             : base(navigationService)
         {
             _subsonicService = subsonicService;
-            _shellViewModel = shellViewModel;
             MenuItems = new BindableCollection<MenuItemViewModel>();
         }
 
@@ -36,8 +33,7 @@ namespace Subsonic8.Main
         protected override void OnInitialize()
         {
             base.OnInitialize();
-
-            Populate().Execute(new ActionExecutionContext { View = (DependencyObject)_shellViewModel.GetView() });
+            Populate().Execute(new ActionExecutionContext());
         }
 
         private IEnumerable<IResult> Populate()
