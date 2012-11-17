@@ -112,6 +112,7 @@
     <Compile Include="Results\IGetRootResult.cs" />
     <Compile Include="Results\IResultBase.cs" />
     <Compile Include="Results\IServiceResultBase.cs" />
+    <Compile Include="Results\MessageDialogResult.cs" />
     <Compile Include="Results\ResultBase.cs" />
     <Compile Include="Results\ResultExtensionsMethods.cs" />
     <Compile Include="Results\ServiceResultBase.cs" />

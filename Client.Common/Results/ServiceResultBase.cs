@@ -35,6 +35,7 @@ namespace Client.Common.Results
 
         public override async void Execute(ActionExecutionContext context)
         {
+            new VisualStateResult("Loading").Execute(new ActionExecutionContext());
             try
             {
                 var xDocument = await Response();
@@ -44,6 +45,10 @@ namespace Client.Common.Results
             catch (HttpRequestException e)
             {
                 OnError(e);
+            }
+            finally
+            {
+                new VisualStateResult("LoadingComplete").Execute(new ActionExecutionContext());                
             }
         }
 

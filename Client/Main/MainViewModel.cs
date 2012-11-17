@@ -5,7 +5,6 @@ using Client.Common.Models.Subsonic;
 using Client.Common.Results;
 using Subsonic8.Index;
 using Subsonic8.MenuItem;
-using Subsonic8.Shell;
 using WinRtUtility;
 using Windows.UI.Xaml.Controls;
 
@@ -33,21 +32,26 @@ namespace Subsonic8.Main
         protected override void OnInitialize()
         {
             base.OnInitialize();
-            Populate().Execute(new ActionExecutionContext());
+            Populate().Execute();
         }
 
         private IEnumerable<IResult> Populate()
         {
             InitializeSubsonicService();
 
-            yield return new VisualStateResult("Loading");
             var getIndexResult = _subsonicService.GetRootIndex();
             yield return getIndexResult;
-            yield return new VisualStateResult("LoadingComplete");
 
-            foreach (var index in getIndexResult.Result)
+            if (getIndexResult.Error != null)
             {
-                MenuItems.Add(new MenuItemViewModel { Title = index.Name, Subtitle = string.Format("{0} artists", index.Artists.Count), Item = index });
+                yield return new MessageDialogResult(getIndexResult.Error.ToString(), "This is a sad day");
+            }
+            else
+            {
+                foreach (var index in getIndexResult.Result)
+                {
+                    MenuItems.Add(new MenuItemViewModel { Title = index.Name, Subtitle = string.Format("{0} artists", index.Artists.Count), Item = index });
+                }                
             }
         }
 

@@ -7,6 +7,8 @@ namespace Client.Common.Results
     {
         public event EventHandler<ResultCompletionEventArgs> Completed = delegate { };
 
+        public Exception Error { get; set; }
+
         protected virtual void OnCompleted()
         {
             OnCompleted(new ResultCompletionEventArgs());
@@ -14,10 +16,8 @@ namespace Client.Common.Results
 
         protected virtual void OnError(Exception error)
         {
-            OnCompleted(new ResultCompletionEventArgs
-            {
-                Error = error
-            });
+            Error = error;
+            OnCompleted();
         }
 
         protected virtual void OnCancelled()
