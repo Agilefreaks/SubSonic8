@@ -109,7 +109,8 @@
     <SDKReference Include="TestPlatform, Version=11.0" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="Main\MainViewModelTests.cs" />
+    <Compile Include="Shell\ShellViewModelTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -117,6 +118,7 @@
       <SubType>Designer</SubType>
     </AppxManifest>
     <None Include="Client.Tests_TemporaryKey.pfx" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Images\UnitTestLogo.png">
@@ -131,6 +133,30 @@
     <Content Include="Images\UnitTestStoreLogo.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Caliburn.Micro">
+      <HintPath>..\packages\Caliburn.Micro.1.4\lib\win8\Caliburn.Micro.dll</HintPath>
+    </Reference>
+    <Reference Include="Caliburn.Micro.Extensions">
+      <HintPath>..\packages\Caliburn.Micro.1.4\lib\win8\Caliburn.Micro.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentAssertions">
+      <HintPath>..\packages\FluentAssertions.2.0.0.1\lib\winrt45\FluentAssertions.dll</HintPath>
+    </Reference>
+    <Reference Include="Windows.UI.Interactivity">
+      <HintPath>..\packages\Windows.UI.Interactivity.1.0.2.0\lib\winrt45\Windows.UI.Interactivity.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Client.Common\Client.Common.csproj">
+      <Project>{a8f49761-4d7a-458f-b1b1-4a66c421b3aa}</Project>
+      <Name>Client.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Client\Client.csproj">
+      <Project>{cdb542af-063b-4dec-937d-cecb11c561ee}</Project>
+      <Name>Client</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '11.0' ">
     <VisualStudioVersion>11.0</VisualStudioVersion>

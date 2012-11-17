@@ -7,9 +7,9 @@ namespace Client.Common
     {
         SubsonicServiceConfiguration Configuration { get; set; }
 
-        IGetRootResult GetRootIndex();
+        Func<IGetRootResult> GetRootIndex { get; set; }
 
-        IGetMusicDirectoryResult GetMusicDirectory(int id);
+        Func<int, IGetMusicDirectoryResult> GetMusicDirectory { get; set; }
 
         Uri GetUriForFileWithId(int id);
     }

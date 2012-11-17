@@ -1,4 +1,5 @@
 ﻿using Client.Common.Results;
+using FluentAssertions;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 
 namespace Client.Common.Tests
@@ -20,6 +21,13 @@ namespace Client.Common.Tests
             var result = _subject.GetRootIndex();
 
             Assert.IsInstanceOfType(result, typeof(GetRootResult));
+        }
+
+        [TestMethod]
+        public void CtorShouldFunctions()
+        {
+            _subject.GetMusicDirectory.Should().NotBeNull();
+            _subject.GetRootIndex.Should().NotBeNull();
         }
     }
 }

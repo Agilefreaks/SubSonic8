@@ -8,6 +8,8 @@ namespace Client.Common
     {
         private SubsonicServiceConfiguration _configuration;
 
+        public Func<IGetRootResult> GetRootIndex { get; set; }
+
         public SubsonicServiceConfiguration Configuration
         {
             get
@@ -22,19 +24,27 @@ namespace Client.Common
             }
         }
 
-        public IGetRootResult GetRootIndex()
+        public Func<int, IGetMusicDirectoryResult> GetMusicDirectory { get; set; }
+
+        public SubsonicService()
+        {
+            GetRootIndex = GetRootIndexImpl;
+            GetMusicDirectory = GetMusicDirectoryImpl;
+        }
+
+        public virtual Uri GetUriForFileWithId(int id)
+        {
+            return new Uri(string.Format(_configuration.ServiceUrl, "stream.view", _configuration.Username, _configuration.Password) + string.Format("&id={0}", id));
+        }
+
+        private IGetRootResult GetRootIndexImpl()
         {
             return new GetRootResult(_configuration);
         }
 
-        public IGetMusicDirectoryResult GetMusicDirectory(int id)
+        private IGetMusicDirectoryResult GetMusicDirectoryImpl(int id)
         {
             return new GetMusicDirectoryResult(_configuration, id);
-        }
-
-        public Uri GetUriForFileWithId(int id)
-        {
-            return new Uri(string.Format(_configuration.ServiceUrl, "stream.view", _configuration.Username, _configuration.Password) + string.Format("&id={0}", id));
         }
     }
 }

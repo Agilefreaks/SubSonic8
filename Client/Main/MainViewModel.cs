@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Caliburn.Micro;
 using Client.Common;
-using Client.Common.Models.Subsonic;
 using Client.Common.Results;
 using Subsonic8.Index;
 using Subsonic8.MenuItem;
@@ -10,16 +8,12 @@ using Windows.UI.Xaml.Controls;
 
 namespace Subsonic8.Main
 {
-    public class MainViewModel : ViewModelBase
+    public class MainViewModel : ViewModelBase, IMainViewModel
     {
-        private readonly ISubsonicService _subsonicService;
-
         public BindableCollection<MenuItemViewModel> MenuItems { get; private set; }
 
-        public MainViewModel(INavigationService navigationService, ISubsonicService subsonicService) 
-            : base(navigationService)
+        public MainViewModel() 
         {
-            _subsonicService = subsonicService;
             MenuItems = new BindableCollection<MenuItemViewModel>();
         }
 
@@ -35,9 +29,9 @@ namespace Subsonic8.Main
             Populate().Execute();
         }
 
-        private IEnumerable<IResult> Populate()
+        public IEnumerable<IResult> Populate()
         {
-            var getIndexResult = _subsonicService.GetRootIndex();
+            var getIndexResult = SubsonicService.GetRootIndex();
             yield return getIndexResult;
 
             if (getIndexResult.Error != null)

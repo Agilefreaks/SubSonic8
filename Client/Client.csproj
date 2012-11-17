@@ -109,6 +109,7 @@
     <Compile Include="Index\IndexView.xaml.cs">
       <DependentUpon>IndexView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Main\IMainViewModel.cs" />
     <Compile Include="Main\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>

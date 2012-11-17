@@ -10,7 +10,6 @@ namespace Subsonic8.Index
 {
     public class IndexViewModel : ViewModelBase
     {
-        private readonly ISubsonicService _subsonicService;
         private BindableCollection<MenuItemViewModel> _menuItems;
         private IndexItem _parameter;
 
@@ -43,16 +42,10 @@ namespace Subsonic8.Index
             }
         }
 
-        public IndexViewModel(INavigationService navigationService, ISubsonicService subsonicService) 
-            : base(navigationService)
-        {
-            _subsonicService = subsonicService;
-        }
-
         public IEnumerable<IResult> ArtistClick(ItemClickEventArgs eventArgs)
         {
             var artist = (Artist)((MenuItemViewModel) eventArgs.ClickedItem).Item;
-            var getMusicDirectoryResult = _subsonicService.GetMusicDirectory(artist.Id);
+            var getMusicDirectoryResult = SubsonicService.GetMusicDirectory(artist.Id);
             yield return getMusicDirectoryResult;
 
             NavigationService.NavigateToViewModel<MusicDirectoryViewModel>(getMusicDirectoryResult.Result);

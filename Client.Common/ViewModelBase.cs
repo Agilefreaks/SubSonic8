@@ -4,19 +4,44 @@ namespace Client.Common
 {
     public abstract class ViewModelBase : Screen
     {
-        protected INavigationService NavigationService { get; set; }
+        private INavigationService _navigationService;
+        private ISubsonicService _subsonicService;
+
+        public INavigationService NavigationService
+        {
+            get
+            {
+                return _navigationService;
+            }
+
+            set
+            {
+                _navigationService = value;
+                NotifyOfPropertyChange();
+                NotifyOfPropertyChange(() => CanGoBack);
+            }
+        }
+
+        public ISubsonicService SubsonicService
+        {
+            get
+            {
+                return _subsonicService;
+            }
+
+            set
+            {
+                _subsonicService = value;
+                NotifyOfPropertyChange();
+            }
+        }
 
         public bool CanGoBack
         {
             get
             {
-                return NavigationService.CanGoBack;
+                return NavigationService != null && NavigationService.CanGoBack;
             }
-        }
-
-        protected ViewModelBase(INavigationService navigationService)
-        {
-            NavigationService = navigationService;
         }
 
         public void GoBack()

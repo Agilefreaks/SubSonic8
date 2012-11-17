@@ -10,7 +10,6 @@ namespace Subsonic8.MusicDirectory
 {
     public class MusicDirectoryViewModel : ViewModelBase
     {
-        private readonly ISubsonicService _subsonicService;
         private Client.Common.Models.Subsonic.MusicDirectory _parameter;
         private BindableCollection<MenuItemViewModel> _menuItems;
 
@@ -44,19 +43,13 @@ namespace Subsonic8.MusicDirectory
             }
         }
 
-        public MusicDirectoryViewModel(INavigationService navigationService, ISubsonicService subsonicService) 
-            : base(navigationService)
-        {
-            _subsonicService = subsonicService;
-        }
-
         public IEnumerable<IResult> MusicDirectoryClick(ItemClickEventArgs eventArgs)
         {
             var musicDirectoryChild = (MusicDirectoryChild) ((MenuItemViewModel) eventArgs.ClickedItem).Item;
             
             if (musicDirectoryChild.IsDirectory)
             {
-                var getMusicDirectoryResult = _subsonicService.GetMusicDirectory(musicDirectoryChild.Id);
+                var getMusicDirectoryResult = SubsonicService.GetMusicDirectory(musicDirectoryChild.Id);
                 yield return getMusicDirectoryResult;
                 NavigationService.NavigateToViewModel<MusicDirectoryViewModel>(getMusicDirectoryResult.Result);
             }

@@ -26,8 +26,7 @@ namespace Subsonic8.Playback
             }
         }
 
-        public PlaybackViewModel(INavigationService navigationService, IEventAggregator eventAggregator) 
-            : base(navigationService)
+        public PlaybackViewModel(IEventAggregator eventAggregator)
         {
             _eventAggregator = eventAggregator;
         }

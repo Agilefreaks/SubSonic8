@@ -34,7 +34,19 @@ namespace Subsonic8
 
         protected override object GetInstance(Type service, string key)
         {
-            return _container.GetInstance(service, key);
+            var result = _container.GetInstance(service, key);
+
+            // silly hack injecting NavigationService and SubsonicService
+            if (result is ViewModelBase)
+            {
+                var subsonicService = (ISubsonicService)GetInstance(typeof(ISubsonicService), null);
+                var navigationSerice = (INavigationService)GetInstance(typeof(INavigationService), null);
+                var viewModelBase = result as ViewModelBase;
+                viewModelBase.NavigationService = navigationSerice;
+                viewModelBase.SubsonicService = subsonicService;
+            }
+
+            return result;
         }
 
         protected override IEnumerable<object> GetAllInstances(Type service)
@@ -47,7 +59,7 @@ namespace Subsonic8
             _container.BuildUp(instance);
         }
 
-        protected override void PrepareViewFirst(Windows.UI.Xaml.Controls.Frame rootFrame)
+        protected override void PrepareViewFirst(Frame rootFrame)
         {
             base.PrepareViewFirst(rootFrame);
             InitializeSubsonicService();
