@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using Caliburn.Micro;
 using Client.Common;
-using Subsonic8.Dialogs;
 using Subsonic8.Main;
 using Subsonic8.Settings;
 using Subsonic8.Shell;
 using WinRtUtility;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.ApplicationSettings;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 namespace Subsonic8
@@ -16,6 +16,7 @@ namespace Subsonic8
     public sealed partial class App
     {
         private WinRTContainer _container;
+        private IShellViewModel _shellViewModel;
 
         public App()
         {
@@ -68,16 +69,32 @@ namespace Subsonic8
 
         protected override void OnLaunched(LaunchActivatedEventArgs args)
         {
+            StartApplication();
+        }
+
+        private void StartApplication()
+        {
             DisplayRootView<ShellView>();
 
-            var shellView = (ShellView)RootFrame.Content;
+            var shellView = (ShellView) RootFrame.Content;
             RegisterNavigationService(shellView.ShellFrame);
 
-            var navigationService = _container.GetInstance(typeof(INavigationService), null) as INavigationService;
+            var navigationService = _container.GetInstance(typeof (INavigationService), null) as INavigationService;
             navigationService.UriFor<MainViewModel>().Navigate();
 
-            var shellViewModel = _container.GetInstance(typeof(IShellViewModel), null);
-            ViewModelBinder.Bind(shellViewModel, shellView, null);
+            _shellViewModel = (IShellViewModel) _container.GetInstance(typeof (IShellViewModel), null);
+            ViewModelBinder.Bind(_shellViewModel, shellView, null);
+        }
+
+        protected override void OnSearchActivated(SearchActivatedEventArgs args)
+        {
+            var frame = Window.Current.Content as Frame;
+            if (frame == null)
+            {
+                StartApplication();
+            }
+
+            _shellViewModel.PerformSubsonicSearch(args.QueryText);
         }
 
         private void RegisterNavigationService(Frame shellFrame, bool treatViewAsLoaded = false)

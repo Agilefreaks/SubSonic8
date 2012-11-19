@@ -11,6 +11,8 @@ namespace Client.Common
 
         Func<int, IGetMusicDirectoryResult> GetMusicDirectory { get; set; }
 
+        Func<string, ISearchResult> Search { get; set; }
+
         Uri GetUriForFileWithId(int id);
     }
 }

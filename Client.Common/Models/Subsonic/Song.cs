@@ -2,14 +2,14 @@
 
 namespace Client.Common.Models.Subsonic
 {
-    [XmlRoot(ElementName = "child", Namespace = "http://subsonic.org/restapi")]
-    public class MusicDirectoryChild
+    [XmlRoot(ElementName = "song", Namespace = "http://subsonic.org/restapi")]
+    public class Song
     {
         [XmlAttribute("id")]
         public int Id { get; set; }
 
         [XmlAttribute("parent")]
-        public int Parent { get; set; }
+        public string Parent { get; set; }
 
         [XmlAttribute("title")]
         public string Title { get; set; }
@@ -20,11 +20,14 @@ namespace Client.Common.Models.Subsonic
         [XmlAttribute("album")]
         public string Album { get; set; }
 
-        [XmlAttribute("coverArt")]
-        public string CovertArt { get; set; }
+        [XmlAttribute("artistId")]
+        public int ArtistId { get; set; }
 
-        [XmlAttribute("isDir")]
-        public bool IsDirectory { get; set; }
+        [XmlAttribute("coverArt")]
+        public string CoverArt { get; set; }
+
+        [XmlAttribute("songCount")]
+        public int SongCount { get; set; }
 
         [XmlAttribute("isVideo")]
         public bool IsVideo { get; set; }

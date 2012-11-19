@@ -103,6 +103,9 @@
   <ItemGroup>
     <Compile Include="CustomFrameAdapter.cs" />
     <Compile Include="ISubsonicServiceConfiguration.cs" />
+    <Compile Include="Models\Subsonic\Album.cs" />
+    <Compile Include="Models\Subsonic\ExpandedArtist.cs" />
+    <Compile Include="Models\Subsonic\Song.cs" />
     <Compile Include="Results\GetMusicDirectoryResult.cs" />
     <Compile Include="Models\Subsonic\MusicDirectoryChild.cs" />
     <Compile Include="Results\IGetMusicDirectoryResult.cs" />
@@ -114,11 +117,14 @@
     <Compile Include="Results\GetRootResult.cs" />
     <Compile Include="Results\IGetRootResult.cs" />
     <Compile Include="Results\IResultBase.cs" />
+    <Compile Include="Results\ISearchResult.cs" />
     <Compile Include="Results\IServiceResultBase.cs" />
     <Compile Include="Results\ITaskResult.cs" />
     <Compile Include="Results\MessageDialogResult.cs" />
     <Compile Include="Results\ResultBase.cs" />
     <Compile Include="Results\ResultExtensionsMethods.cs" />
+    <Compile Include="Results\SearchResult.cs" />
+    <Compile Include="Models\Subsonic\SearchResultCollection.cs" />
     <Compile Include="Results\ServiceResultBase.cs" />
     <Compile Include="Results\VisualStateResult.cs" />
     <Compile Include="SubsonicService.cs" />

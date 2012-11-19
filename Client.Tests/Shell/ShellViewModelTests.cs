@@ -1,6 +1,7 @@
 ﻿using System;
 using Caliburn.Micro;
 using Client.Common;
+using Client.Common.Results;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using Subsonic8.Messages;
@@ -14,11 +15,13 @@ namespace Client.Tests.Shell
     {
         private IShellViewModel _subject;
         private readonly MockEventAggregator _eventAggregator = new MockEventAggregator();
+        private MockSubsonicService _mockSubsonicService;
 
         [TestInitialize]
         public void TestInitialize()
         {
-            _subject = new ShellViewModel(_eventAggregator, new MockSubsonicService());
+            _mockSubsonicService = new MockSubsonicService();
+            _subject = new ShellViewModel(_eventAggregator, _mockSubsonicService);
         }
 
         [TestMethod]
@@ -34,6 +37,23 @@ namespace Client.Tests.Shell
             _subject.Source.OriginalString.Should().Be("http://subsonic.org?id=42");
         }
 
+        [TestMethod]
+        public void PerformSubsonicSearch_Always_CallsSubsonicServiceSearchAndReturnsTheResult()
+        {
+            var callCount = 0;
+            var searchResult = new SearchResult(new SubsonicServiceConfiguration(), "test");
+            _mockSubsonicService.Search = s =>
+                                              {
+                                                  Assert.AreEqual("test", s);
+                                                  callCount++;
+                                                  return searchResult;
+                                              };
+
+            _subject.PerformSubsonicSearch("test");
+
+            Assert.AreEqual(1, callCount);
+        }
+
         #region Mocks
 
         internal class MockSubsonicService : SubsonicService
@@ -44,7 +64,7 @@ namespace Client.Tests.Shell
             }
         }
 
-        internal class MockEventAggregator : IEventAggregator 
+        internal class MockEventAggregator : IEventAggregator
         {
             public object Subscriber { get; private set; }
 

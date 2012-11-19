@@ -25,6 +25,7 @@
             <Task Type="audio" />
           </BackgroundTasks>
         </Extension>
+        <Extension Category="windows.search" EntryPoint="Subsonic8.Shell" />
       </Extensions>
     </Application>
   </Applications>

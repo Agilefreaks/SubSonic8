@@ -26,15 +26,23 @@ namespace Client.Common
 
         public Func<int, IGetMusicDirectoryResult> GetMusicDirectory { get; set; }
 
+        public Func<string, ISearchResult> Search { get; set; }
+
         public SubsonicService()
         {
             GetRootIndex = GetRootIndexImpl;
             GetMusicDirectory = GetMusicDirectoryImpl;
+            Search = SearchImpl;
         }
 
         public virtual Uri GetUriForFileWithId(int id)
         {
             return new Uri(string.Format(_configuration.ServiceUrl, "stream.view", _configuration.Username, _configuration.Password) + string.Format("&id={0}", id));
+        }
+
+        private ISearchResult SearchImpl(string query)
+        {
+            return new SearchResult(_configuration, query);
         }
 
         private IGetRootResult GetRootIndexImpl()

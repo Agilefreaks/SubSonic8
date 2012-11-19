@@ -10,5 +10,7 @@ namespace Subsonic8.Shell
         Uri Source { get; set; }
 
         ISubsonicService SubsonicService { get; set; }
+
+        void PerformSubsonicSearch(string query);
     }
 }
