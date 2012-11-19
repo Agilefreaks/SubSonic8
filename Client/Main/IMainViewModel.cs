@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
+using Client.Common.Results;
 using Subsonic8.MenuItem;
 using Windows.UI.Xaml.Controls;
 
@@ -11,6 +11,7 @@ namespace Subsonic8.Main
 
         void IndexClick(ItemClickEventArgs eventArgs);
 
-        IEnumerable<IResult> Populate();
+        void Populate();
+        void SetMenuItems(IGetRootResult getIndexResult);
     }
 }

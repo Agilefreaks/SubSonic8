@@ -1,4 +1,5 @@
-﻿using Caliburn.Micro;
+﻿using System.Threading.Tasks;
+using Caliburn.Micro;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -25,13 +26,14 @@ namespace Client.Common.Results
             get { return _useTransitions; }
         }
 
-        public override void Execute(ActionExecutionContext context)
+        protected override Task ExecuteCore(ActionExecutionContext context = null)
         {
-            var view = (context.View ?? ((CaliburnApplication)CaliburnApplication.Current).RootFrame.Content) as Control;
+            context = context ?? new ActionExecutionContext();
+            var view = (context.View ?? ((CaliburnApplication)Application.Current).RootFrame.Content) as Control;
 
             VisualStateManager.GoToState(view, StateName, UseTransitions);
 
-            OnCompleted();
+            return null;
         }
     }
 }

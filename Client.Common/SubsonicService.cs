@@ -8,8 +8,6 @@ namespace Client.Common
     {
         private SubsonicServiceConfiguration _configuration;
 
-        public Func<IGetRootResult> GetRootIndex { get; set; }
-
         public SubsonicServiceConfiguration Configuration
         {
             get
@@ -23,6 +21,8 @@ namespace Client.Common
                 NotifyOfPropertyChange();
             }
         }
+
+        public Func<IGetRootResult> GetRootIndex { get; set; }
 
         public Func<int, IGetMusicDirectoryResult> GetMusicDirectory { get; set; }
 

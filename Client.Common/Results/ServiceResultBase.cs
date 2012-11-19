@@ -1,6 +1,6 @@
 ﻿using System;
+using System.IO;
 using System.Net.Http;
-using System.ServiceModel;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Caliburn.Micro;
@@ -15,7 +15,7 @@ namespace Client.Common.Results
 
         public abstract string ViewName { get; }
 
-        public Func<Task<XDocument>> Response { get; set; }
+        public Func<Task<Stream>> Response { get; set; }
 
         public virtual string RequestUrl
         {
@@ -33,33 +33,54 @@ namespace Client.Common.Results
             Response = ResponseFunc;
         }
 
-        public override async void Execute(ActionExecutionContext context)
+        public override async Task Execute(ActionExecutionContext context = null)
         {
-            new VisualStateResult("Loading").Execute(new ActionExecutionContext());
             try
             {
-                var xDocument = await Response();
-                HandleResponse(xDocument);
-                OnCompleted();
+                await new VisualStateResult("Loading").Execute();
+
+                var stream = await Response();
+                HandleStreamResponse(stream);
+
+                await new VisualStateResult("LoadingComplete").Execute();
             }
             catch (HttpRequestException e)
             {
                 OnError(e);
             }
-            finally
+        }
+
+        public virtual void HandleStreamResponse(Stream stream)
+        {
+            XDocument xDocument = null;
+            try
             {
-                new VisualStateResult("LoadingComplete").Execute(new ActionExecutionContext());                
+                xDocument = XDocument.Load(stream);
+            }
+            catch (Exception exception)
+            {
+                OnError(exception);
+            }
+
+            if (xDocument != null)
+            {
+                HandleResponse(xDocument);
             }
         }
 
         protected abstract void HandleResponse(XDocument xDocument);
 
-        private async Task<XDocument> ResponseFunc()
+        protected override Task ExecuteCore(ActionExecutionContext context = null)
+        {
+            return null;
+        }
+
+        private async Task<Stream> ResponseFunc()
         {
             var response = await Client.GetAsync(RequestUrl);
             var stream = await response.Content.ReadAsStreamAsync();
 
-            return XDocument.Load(stream);
+            return stream;
         }
     }
 }

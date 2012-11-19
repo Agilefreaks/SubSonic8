@@ -1,9 +1,8 @@
 ﻿using System;
-using Caliburn.Micro;
 
 namespace Client.Common.Results
 {
-    public interface IResultBase : IResult
+    public interface IResultBase : ITaskResult
     {
         Exception Error { get; set; }
     }

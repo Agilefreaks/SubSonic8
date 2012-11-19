@@ -113,6 +113,8 @@
   <ItemGroup>
     <Compile Include="Index\IndexViewModelTests.cs" />
     <Compile Include="Main\MainViewModelTests.cs" />
+    <Compile Include="Mocks\MockGetRootResult.cs" />
+    <Compile Include="Mocks\MockNavigationService.cs" />
     <Compile Include="MusicDirectory\MusicDirectoryViewModelTests.cs" />
     <Compile Include="Shell\ShellViewModelTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

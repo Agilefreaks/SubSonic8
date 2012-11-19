@@ -1,6 +1,6 @@
-﻿using System.Net.Http;
+﻿using System.IO;
+using System.Net.Http;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 using Caliburn.Micro;
 using Client.Common.Results;
 using FluentAssertions;
@@ -36,16 +36,16 @@ namespace Client.Common.Tests.Results
         [TestMethod]
         public async Task ExecuteShouldHandleHttpRequestException()
         {
-            _subject.Completed += (sender, e) => e.Error.Should().BeOfType<HttpRequestException>();
-
             _subject.Response = () =>
                                     {
-                                        var tcr = new TaskCompletionSource<XDocument>();
+                                        var tcr = new TaskCompletionSource<Stream>();
                                         tcr.SetException(new HttpRequestException());
                                         return tcr.Task;
                                     };
             
             await Task.Run(() => _subject.Execute(new ActionExecutionContext()));
+
+            _subject.Error.Should().BeOfType<HttpRequestException>();
         }
 
         [TestMethod]

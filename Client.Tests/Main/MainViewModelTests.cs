@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Caliburn.Micro;
 using Client.Common;
 using Client.Common.Models.Subsonic;
 using Client.Common.Results;
+using Client.Tests.Mocks;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using Subsonic8.Main;
-using Windows.UI.Xaml.Navigation;
 
 namespace Client.Tests.Main
 {
@@ -42,61 +40,27 @@ namespace Client.Tests.Main
         }
 
         [TestMethod]
-        public void PopulateShouldAddMenuItems()
+        public void SetMenuItemsShouldAddMenuItems()
         {
-            _subsonicService.GetRootIndex = () => new GetRootResult(null) { Result = new List<IndexItem> { new IndexItem(), new IndexItem() } };
+            var getRootResult = new GetRootResult(null)
+                                    {
+                                        Result = new List<IndexItem> { new IndexItem(), new IndexItem() },
+                                    };
 
-            _subject.Populate().ToList();
+            _subject.SetMenuItems(getRootResult);
 
             _subject.MenuItems.Should().HaveCount(2);
         }
 
-        #region Mocks
-
-        internal class MockNavigationService : INavigationService
+        [TestMethod]
+        public async Task PopulateShouldExecuteAGetRootResult()
         {
-            public void NavigateToViewModel<TViewModel>(object item)
-            {
-                Debugger.Break();
-            }
+            var mockResult = new MockGetRootResult();
+            _subsonicService.GetRootIndex = () => mockResult;
 
-            public bool Navigate(Type sourcePageType)
-            {
-                throw new NotImplementedException();
-            }
+            await Task.Run(() => _subject.Populate());
 
-            public bool Navigate(Type sourcePageType, object parameter)
-            {
-                throw new NotImplementedException();
-            }
-
-            public void GoForward()
-            {
-                throw new NotImplementedException();
-            }
-
-            public void GoBack()
-            {
-                throw new NotImplementedException();
-            }
-
-            public Type SourcePageType { get; set; }
-            
-            public Type CurrentSourcePageType { get; private set; }
-            
-            public bool CanGoForward { get; private set; }
-            
-            public bool CanGoBack { get; private set; }
-
-            public event NavigatedEventHandler Navigated;
-            
-            public event NavigatingCancelEventHandler Navigating;
-            
-            public event NavigationFailedEventHandler NavigationFailed;
-            
-            public event NavigationStoppedEventHandler NavigationStopped;
+            mockResult.ExecuteCallCount.Should().Be(1);
         }
-
-        #endregion
     }
 }

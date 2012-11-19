@@ -1,38 +1,30 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Caliburn.Micro;
 
 namespace Client.Common.Results
 {
-    public abstract class ResultBase : PropertyChangedBase, IResultBase
+    public abstract class ResultBase : PropertyChangedBase, ITaskResult
     {
-        public event EventHandler<ResultCompletionEventArgs> Completed = delegate { };
-
         public Exception Error { get; set; }
 
-        protected virtual void OnCompleted()
+        public virtual async Task Execute(ActionExecutionContext context = null)
         {
-            OnCompleted(new ResultCompletionEventArgs());
+            try
+            {
+                await ExecuteCore(context);
+            }
+            catch (Exception exception)
+            {
+                OnError(exception);
+            }
         }
+
+        protected abstract Task ExecuteCore(ActionExecutionContext context = null);
 
         protected virtual void OnError(Exception error)
         {
             Error = error;
-            OnCompleted();
         }
-
-        protected virtual void OnCancelled()
-        {
-            OnCompleted(new ResultCompletionEventArgs
-            {
-                WasCancelled = true
-            });
-        }
-
-        protected virtual void OnCompleted(ResultCompletionEventArgs e)
-        {
-            Caliburn.Micro.Execute.OnUIThread(() => Completed(this, e));
-        }
-
-        public abstract void Execute(ActionExecutionContext context);
     }
 }

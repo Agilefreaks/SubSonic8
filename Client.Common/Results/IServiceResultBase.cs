@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -10,7 +11,7 @@ namespace Client.Common.Results
         
         string ViewName { get; }
 
-        Func<Task<XDocument>> Response { get; set; }
+        Func<Task<Stream>> Response { get; set; }
 
         string RequestUrl { get; }
     }

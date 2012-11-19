@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Client.Common;
 using Client.Common.Models.Subsonic;
 using Subsonic8.MenuItem;
@@ -48,14 +47,14 @@ namespace Subsonic8.MusicDirectory
             MenuItems = new BindableCollection<MenuItemViewModel>();
         }
 
-        public IEnumerable<IResult> MusicDirectoryClick(ItemClickEventArgs eventArgs)
+        public async void MusicDirectoryClick(ItemClickEventArgs eventArgs)
         {
             var musicDirectoryChild = (MusicDirectoryChild) ((MenuItemViewModel) eventArgs.ClickedItem).Item;
             
             if (musicDirectoryChild.IsDirectory)
             {
                 var getMusicDirectoryResult = SubsonicService.GetMusicDirectory(musicDirectoryChild.Id);
-                yield return getMusicDirectoryResult;
+                await getMusicDirectoryResult.Execute();
                 NavigationService.NavigateToViewModel<MusicDirectoryViewModel>(getMusicDirectoryResult.Result);
             }
             else
