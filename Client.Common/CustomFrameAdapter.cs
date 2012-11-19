@@ -68,6 +68,5 @@ namespace Client.Common
 
             GC.Collect(); // Why?
         }
-
     }
 }

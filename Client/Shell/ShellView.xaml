@@ -7,16 +7,15 @@
 
     <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <MediaElement x:Name="mediaElement" AudioCategory="BackgroundCapableMedia" AutoPlay="True" Source="{Binding Path=Source}" />
 
-        <ProgressBar x:Name="LoadingIndicator" Visibility="Collapsed" IsIndeterminate="True" HorizontalAlignment="Stretch" Grid.Row="0"/>
+        <Frame Grid.Row="0" Content="Frame" x:Name="shellFrame" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="0" />
 
-        <Frame Grid.Row="1" Content="Frame" x:Name="shellFrame" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="0" />
-        
+        <ProgressBar VerticalAlignment="Top" VerticalContentAlignment="Top" Grid.Row="0" x:Name="LoadingIndicator" Visibility="Collapsed" IsIndeterminate="True" HorizontalAlignment="Stretch"/>
+
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
                 <VisualState x:Name="Loading">

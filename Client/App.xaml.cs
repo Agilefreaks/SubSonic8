@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Caliburn.Micro;
 using Client.Common;
+using Subsonic8.Dialogs;
 using Subsonic8.Main;
 using Subsonic8.Settings;
 using Subsonic8.Shell;
@@ -69,7 +70,7 @@ namespace Subsonic8
         {
             DisplayRootView<ShellView>();
 
-            var shellView = (ShellView)RootFrame.Content ?? new ShellView();
+            var shellView = (ShellView)RootFrame.Content;
             RegisterNavigationService(shellView.ShellFrame);
 
             var navigationService = _container.GetInstance(typeof(INavigationService), null) as INavigationService;
@@ -87,7 +88,7 @@ namespace Subsonic8
         private async void InitializeSubsonicService()
         {
             var storageHelper = new ObjectStorageHelper<SubsonicServiceConfiguration>(StorageType.Roaming);
-            SubsonicServiceConfiguration subsonicServiceConfiguration = await storageHelper.LoadAsync();
+            var subsonicServiceConfiguration = await storageHelper.LoadAsync();
 
 #if DEBUG
             subsonicServiceConfiguration = new SubsonicServiceConfiguration
@@ -98,7 +99,7 @@ namespace Subsonic8
             };
 #endif
 
-            ISubsonicService subsonicService = GetInstance(typeof(ISubsonicService), null) as ISubsonicService ?? new SubsonicService();
+            var subsonicService = GetInstance(typeof(ISubsonicService), null) as ISubsonicService ?? new SubsonicService();
             subsonicService.Configuration = subsonicServiceConfiguration;
         }
     }

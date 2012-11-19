@@ -36,17 +36,17 @@ namespace Subsonic8.Shell
         private async void MediaControlPlayPauseTogglePressed(object sender, object e)
         {
             await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal,
-                                () =>
-                                    {
-                                        if (mediaElement.CurrentState == MediaElementState.Paused)
-                                        {
-                                            mediaElement.Play();
-                                        }
-                                        else
-                                        {
-                                            mediaElement.Pause();
-                                        }
-                                    });
+                                      () =>
+                                          {
+                                              if (mediaElement.CurrentState == MediaElementState.Paused)
+                                              {
+                                                  mediaElement.Play();
+                                              }
+                                              else
+                                              {
+                                                  mediaElement.Pause();
+                                              }
+                                          });
         }
 
         private async void MediaControlPausePressed(object sender, object e)
