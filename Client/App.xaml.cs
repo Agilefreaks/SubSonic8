@@ -86,7 +86,7 @@ namespace Subsonic8
             ViewModelBinder.Bind(_shellViewModel, shellView, null);
         }
 
-        protected override void OnSearchActivated(SearchActivatedEventArgs args)
+        protected async override void OnSearchActivated(SearchActivatedEventArgs args)
         {
             var frame = Window.Current.Content as Frame;
             if (frame == null)
@@ -94,7 +94,7 @@ namespace Subsonic8
                 StartApplication();
             }
 
-            _shellViewModel.PerformSubsonicSearch(args.QueryText);
+            await _shellViewModel.PerformSubsonicSearch(args.QueryText);
         }
 
         private void RegisterNavigationService(Frame shellFrame, bool treatViewAsLoaded = false)

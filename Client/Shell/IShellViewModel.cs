@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Caliburn.Micro;
 using Client.Common;
+using Client.Common.Models.Subsonic;
 using Subsonic8.Messages;
 
 namespace Subsonic8.Shell
@@ -10,7 +12,9 @@ namespace Subsonic8.Shell
         Uri Source { get; set; }
 
         ISubsonicService SubsonicService { get; set; }
+        
+        Action<SearchResultCollection> NavigateToSearhResult { get; set; }
 
-        void PerformSubsonicSearch(string query);
+        Task PerformSubsonicSearch(string query);
     }
 }

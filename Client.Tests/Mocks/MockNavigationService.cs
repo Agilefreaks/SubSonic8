@@ -9,7 +9,7 @@ namespace Client.Tests.Mocks
     {
         public void NavigateToViewModel<TViewModel>(object item)
         {
-            Debugger.Break();
+            // Debugger.Break();
         }
 
         public bool Navigate(Type sourcePageType)

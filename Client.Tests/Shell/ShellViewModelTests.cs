@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Caliburn.Micro;
 using Client.Common;
 using Client.Common.Results;
+using Client.Tests.Mocks;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using Subsonic8.Messages;
+using Subsonic8.Search;
 using Subsonic8.Shell;
 using Action = System.Action;
 
@@ -16,12 +19,14 @@ namespace Client.Tests.Shell
         private IShellViewModel _subject;
         private readonly MockEventAggregator _eventAggregator = new MockEventAggregator();
         private MockSubsonicService _mockSubsonicService;
+        private MockNavigationService _mockNavigationService;
 
         [TestInitialize]
         public void TestInitialize()
         {
             _mockSubsonicService = new MockSubsonicService();
-            _subject = new ShellViewModel(_eventAggregator, _mockSubsonicService);
+            _mockNavigationService = new MockNavigationService();
+            _subject = new ShellViewModel(_eventAggregator, _mockSubsonicService, _mockNavigationService);
         }
 
         [TestMethod]
@@ -38,10 +43,11 @@ namespace Client.Tests.Shell
         }
 
         [TestMethod]
-        public void PerformSubsonicSearch_Always_CallsSubsonicServiceSearchAndReturnsTheResult()
+        public async void PerformSubsonicSearchAlwaysCallsSubsonicServiceSearchAndReturnsTheResult()
         {
             var callCount = 0;
-            var searchResult = new SearchResult(new SubsonicServiceConfiguration(), "test");
+            var searchResult = new MockSearchResult(new SubsonicServiceConfiguration(), "test");
+            _subject.NavigateToSearhResult = (collection) => { };
             _mockSubsonicService.Search = s =>
                                               {
                                                   Assert.AreEqual("test", s);
@@ -49,9 +55,22 @@ namespace Client.Tests.Shell
                                                   return searchResult;
                                               };
 
-            _subject.PerformSubsonicSearch("test");
+            await _subject.PerformSubsonicSearch("test");
 
             Assert.AreEqual(1, callCount);
+        }
+
+        [TestMethod]
+        public async Task PerformSubsonicSearchAlwaysCallsNavigatesToSearchResultCall()
+        {
+            var called = false;
+            var searchResult = new MockSearchResult(new SubsonicServiceConfiguration(), "test");
+            _mockSubsonicService.Search = s => searchResult;
+            _subject.NavigateToSearhResult = collection => { called = true; };
+
+            await _subject.PerformSubsonicSearch("test");
+
+            Assert.IsTrue(called);
         }
 
         #region Mocks
@@ -89,6 +108,22 @@ namespace Client.Tests.Shell
             }
 
             public Action<Action> PublicationThreadMarshaller { get; set; }
+        }
+
+        internal class MockSearchResult : SearchResult
+        {
+            public bool ExecuteCalled { get; set; }
+
+            public MockSearchResult(ISubsonicServiceConfiguration configuration, string query) 
+                : base(configuration, query)
+            {
+                ExecuteCalled = false;
+            }
+
+            public override async Task Execute(ActionExecutionContext context = null)
+            {
+                await Task.Run(() => ExecuteCalled = true);
+            }
         }
 
         #endregion

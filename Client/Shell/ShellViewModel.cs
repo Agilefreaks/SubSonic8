@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Caliburn.Micro;
 using Client.Common;
+using Client.Common.Models.Subsonic;
 using Subsonic8.Messages;
 using Subsonic8.Search;
 using Windows.ApplicationModel.Search;
@@ -30,10 +32,13 @@ namespace Subsonic8.Shell
 
         public INavigationService NavigationService { get; set; }
 
+        public Action<SearchResultCollection> NavigateToSearhResult { get; set; }
+
         public ShellViewModel(IEventAggregator eventAggregator, ISubsonicService subsonicService, INavigationService navigationService)
         {
             SubsonicService = subsonicService;
             NavigationService = navigationService;
+            NavigateToSearhResult = NavigateToSearchResultCall;
             eventAggregator.Subscribe(this);
         }
 
@@ -42,12 +47,12 @@ namespace Subsonic8.Shell
             Source = SubsonicService.GetUriForFileWithId(message.Id);
         }
 
-        public async void PerformSubsonicSearch(string query)
+        public async Task PerformSubsonicSearch(string query)
         {
             var searchResult = SubsonicService.Search(query);
             await searchResult.Execute();
 
-            NavigationService.NavigateToViewModel<SearchResultsViewModel>(searchResult.Result);
+            NavigateToSearhResult(searchResult.Result);
         }
 
         protected override void OnViewAttached(object view, object context)
@@ -56,9 +61,14 @@ namespace Subsonic8.Shell
             SearchPane.GetForCurrentView().QuerySubmitted += OnQuerySubmitted;
         }
 
-        private void OnQuerySubmitted(SearchPane sender, SearchPaneQuerySubmittedEventArgs args)
+        private void NavigateToSearchResultCall(SearchResultCollection searchResultCollection)
         {
-            PerformSubsonicSearch(args.QueryText);
+            NavigationService.NavigateToViewModel<SearchResultsViewModel>(searchResultCollection);            
+        }
+
+        private async void OnQuerySubmitted(SearchPane sender, SearchPaneQuerySubmittedEventArgs args)
+        {
+            await PerformSubsonicSearch(args.QueryText);
         }
     }
 }
