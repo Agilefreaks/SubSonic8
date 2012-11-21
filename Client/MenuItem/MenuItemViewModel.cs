@@ -7,6 +7,7 @@ namespace Subsonic8.MenuItem
         private string _title;
         private string _subtitle;
         private object _item;
+        private string _type;
 
         public string Title
         {
@@ -47,6 +48,20 @@ namespace Subsonic8.MenuItem
                 if (Equals(value, _item)) return;
                 _item = value;
                 NotifyOfPropertyChange();
+            }
+        }
+
+        public string Type
+        {
+            get
+            {
+                return _type;
+            }
+            set
+            {
+                if (value == _type) return;
+                _type = value;
+                NotifyOfPropertyChange(() => Type);
             }
         }
     }

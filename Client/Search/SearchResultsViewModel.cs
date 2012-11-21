@@ -1,4 +1,6 @@
-using Caliburn.Micro;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Client.Common;
 using Client.Common.Models.Subsonic;
 using Subsonic8.MenuItem;
@@ -8,6 +10,7 @@ namespace Subsonic8.Search
     public class SearchResultsViewModel : ViewModelBase
     {
         private SearchResultCollection _parameter;
+        private List<IGrouping<string, MenuItemViewModel>> _menuItems;
 
         public SearchResultCollection Parameter
         {
@@ -24,11 +27,23 @@ namespace Subsonic8.Search
             }
         }
 
-        public BindableCollection<MenuItemViewModel> MenuItems { get; private set; }
+        public List<IGrouping<string, MenuItemViewModel>> MenuItems
+        {
+            get
+            {
+                return _menuItems;
+            }
+
+            private set
+            {
+                _menuItems = value;
+                NotifyOfPropertyChange(() => MenuItems);
+            }
+        }
 
         public SearchResultsViewModel()
         {
-            MenuItems = new BindableCollection<MenuItemViewModel>();
+            MenuItems = new List<IGrouping<string, MenuItemViewModel>>();
         }
 
         protected override void OnActivate()
@@ -47,26 +62,39 @@ namespace Subsonic8.Search
         {
         }
 
-        private void PopulateMenuItems()
+        public void PopulateMenuItems()
         {
-            MenuItems.Clear();
-
             if (Parameter == null) return;
 
-            foreach (var artist in Parameter.Artists)
-            {
-                MenuItems.Add(new MenuItemViewModel { Title = artist.Name, Item = artist, Subtitle = string.Format("{0} albums", artist.AlbumCount) });
-            }
+            PopulateFrom(Parameter.Artists,
+                         "Artists",
+                         x => x.Name,
+                         x => string.Format("{0} albums", x.AlbumCount));
 
-            foreach (var album in Parameter.Albums)
-            {
-                MenuItems.Add(new MenuItemViewModel { Title = album.Name, Item = album, Subtitle = string.Format("{0} tracks", album.SongCount) });
-            }
+            PopulateFrom(Parameter.Albums,
+                        "Albums",
+                        x => x.Name,
+                        x => string.Format("{0} tracks", x.SongCount));
 
-            foreach (var song in Parameter.Songs)
-            {
-                MenuItems.Add(new MenuItemViewModel { Title = song.Title, Item = song, Subtitle = string.Format("Artist: {0}, Album: {1}", song.Artist, song.Album) });
-            }
+            PopulateFrom(Parameter.Songs,
+                        "Songs",
+                        x => x.Title,
+                        x => string.Format("Artist: {0}, Album: {1}", x.Artist, x.Album));
+        }
+
+        private void PopulateFrom<T>(IEnumerable<T> collection, string type, Func<T, string> title, Func<T, string> subtitle)
+        {
+            var result = collection.Select(x => new MenuItemViewModel
+                                       {
+                                           Type = type,
+                                           Title = title(x),
+                                           Item = x,
+                                           Subtitle = subtitle(x)
+                                       });
+
+            var items = from i in result group i by type into g orderby g.Key select g;
+
+            MenuItems.AddRange(items);
         }
     }
 }

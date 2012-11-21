@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using Client.Common;
+using Client.Common.Models.Subsonic;
 using Client.Common.Results;
 using Client.Tests.Mocks;
 using FluentAssertions;
@@ -61,7 +64,7 @@ namespace Client.Tests.Shell
         }
 
         [TestMethod]
-        public async Task PerformSubsonicSearchAlwaysCallsNavigatesToSearchResultCall()
+        public async Task PerformSubsonicSearchAlwaysCallsNavigatesToSearchResult()
         {
             var called = false;
             var searchResult = new MockSearchResult(new SubsonicServiceConfiguration(), "test");
@@ -71,6 +74,85 @@ namespace Client.Tests.Shell
             await _subject.PerformSubsonicSearch("test");
 
             Assert.IsTrue(called);
+        }
+
+        [TestMethod]
+        public void PopulateMenuItemsWhenParameterContainsOneAlbumWillAddToMenuItemsOneEntry()
+        {
+            var searchResultsViewModel = new SearchResultsViewModel
+                                             {
+                                                 Parameter = new SearchResultCollection
+                                                                 {
+                                                                     Albums = new List<Album>(),
+                                                                     Artists = new List<ExpandedArtist>
+                                                                                   {
+                                                                                       new ExpandedArtist()
+                                                                                   },
+                                                                     Songs = new List<Song>(),
+                                                                     Query = ""
+                                                                 }
+                                             };
+
+            searchResultsViewModel.PopulateMenuItems();
+
+            Assert.AreEqual(1, searchResultsViewModel.MenuItems.Count());
+        }
+
+        [TestMethod]
+        public void PopulateMenuItemsWhenParameterContainsOneArtistWillAddToMenuItemsOneEntry()
+        {
+            var searchResultsViewModel = new SearchResultsViewModel
+                                             {
+                                                 Parameter = new SearchResultCollection
+                                                                 {
+                                                                     Albums = new List<Album>
+                                                                                  {
+                                                                                      new Album()
+                                                                                  },
+                                                                     Artists = new List<ExpandedArtist>(),
+                                                                     Songs = new List<Song>(),
+                                                                     Query = ""
+                                                                 }
+                                             };
+
+            searchResultsViewModel.PopulateMenuItems();
+
+            Assert.AreEqual(1, searchResultsViewModel.MenuItems.Count());
+        }
+
+        [TestMethod]
+        public void PopulateMenuItemsWhenParameterContainsOneSongWillAddToMenuItemsOneEntry()
+        {
+            var searchResultsViewModel = new SearchResultsViewModel
+            {
+                Parameter = new SearchResultCollection
+                {
+                    Albums = new List<Album>(),
+                    Artists = new List<ExpandedArtist>(),
+                    Songs = new List<Song>
+                                {
+                                    new Song()
+                                },
+                    Query = ""
+                }
+            };
+
+            searchResultsViewModel.PopulateMenuItems();
+
+            Assert.AreEqual(1, searchResultsViewModel.MenuItems.Count());
+        }
+
+        [TestMethod]
+        public void PopulateMenuItemsWhenParameterIsNullMenuItemsWillContainNoEntry()
+        {
+            var searchResultsViewModel = new SearchResultsViewModel
+                                             {
+                                                 Parameter = null
+                                             };
+
+            searchResultsViewModel.PopulateMenuItems();
+
+            Assert.AreEqual(0, searchResultsViewModel.MenuItems.Count());
         }
 
         #region Mocks
