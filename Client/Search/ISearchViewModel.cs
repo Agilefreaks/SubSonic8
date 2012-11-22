@@ -11,6 +11,14 @@ namespace Subsonic8.Search
 
         List<IGrouping<string, MenuItemViewModel>> MenuItems { get; }
 
+        List<MenuItemViewModel> MenuItemViewModels { get; }
+
         void PopulateMenuItems();
+
+        void PopulateArtists(List<ExpandedArtist> artists);
+
+        void PopulateAlbums(List<Album> albums);
+        
+        void PopulateSongs(List<Song> songs);
     }
 }

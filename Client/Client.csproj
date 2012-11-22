@@ -128,6 +128,7 @@
     </Compile>
     <Compile Include="Playback\PlaybackViewModel.cs" />
     <Compile Include="Search\ISearchViewModel.cs" />
+    <Compile Include="Search\SearchConverters.cs" />
     <Compile Include="Search\SearchView.xaml.cs">
       <DependentUpon>SearchView.xaml</DependentUpon>
     </Compile>

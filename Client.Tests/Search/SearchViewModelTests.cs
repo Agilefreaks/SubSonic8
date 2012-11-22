@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Client.Common.Models.Subsonic;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+using Subsonic8.MenuItem;
 using Subsonic8.Search;
 
 namespace Client.Tests.Search
@@ -15,6 +17,12 @@ namespace Client.Tests.Search
         public void TestInitialize()
         {
             _subject = new SearchViewModel();
+        }
+
+        [TestMethod]
+        public void CtorSetsMenuItesmViewModel()
+        {
+            _subject.MenuItemViewModels.Should().NotBeNull();
         }
 
         [TestMethod]
@@ -65,6 +73,42 @@ namespace Client.Tests.Search
             _subject.Parameter = null;
 
             _subject.MenuItems.Should().HaveCount(0);
+        }
+
+        [TestMethod]
+        public void PopulateArtistsShouldAddMenuItems()
+        {
+            _subject.PopulateArtists(new List<ExpandedArtist> { new ExpandedArtist() });
+
+            _subject.MenuItemViewModels.Should().HaveCount(1);
+        }
+
+        [TestMethod]
+        public void PopulateAlbumsShouldAddMenuItems()
+        {
+            _subject.PopulateAlbums(new List<Album> { new Album() });
+
+            _subject.MenuItemViewModels.Should().HaveCount(1);
+        }
+
+        [TestMethod]
+        public void PopulateSongsShouldAddMenuItems()
+        {
+            _subject.PopulateSongs(new List<Song> { new Song() });
+
+            _subject.MenuItemViewModels.Should().HaveCount(1);
+        }
+
+        [TestMethod]
+        public void MenuItemsShouldReturnMenuItemsViewModelsGroupedByType()
+        {
+            const string type = "testType";
+            _subject.MenuItemViewModels.Add(new MenuItemViewModel
+                                                {
+                                                    Type = type
+                                                });
+
+            _subject.MenuItems.Should().Contain(i => i.Any(x => x.Type == type));
         }
     }
 }

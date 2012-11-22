@@ -10,7 +10,7 @@ namespace Subsonic8.Search
     public class SearchViewModel : ViewModelBase, ISearchViewModel
     {
         private SearchResultCollection _parameter;
-        private List<IGrouping<string, MenuItemViewModel>> _menuItems;
+        private List<MenuItemViewModel> _menuItemViewModels;
 
         public SearchResultCollection Parameter
         {
@@ -34,39 +34,51 @@ namespace Subsonic8.Search
         {
             get
             {
-                return _menuItems;
+                return (from item in MenuItemViewModels 
+                        group item by item.Type 
+                        into gr 
+                        orderby gr.Key 
+                        select gr).ToList();
             }
+        }
 
+        public List<MenuItemViewModel> MenuItemViewModels
+        {
+            get { return _menuItemViewModels; }
             private set
             {
-                _menuItems = value;
+                _menuItemViewModels = value;
                 NotifyOfPropertyChange(() => MenuItems);
             }
         }
 
         public SearchViewModel()
         {
-            MenuItems = new List<IGrouping<string, MenuItemViewModel>>();
+            MenuItemViewModels = new List<MenuItemViewModel>();
         }
 
         public void PopulateMenuItems()
         {
             if (Parameter == null) return;
 
-            PopulateFrom(Parameter.Artists,
-                         "Artists",
-                         x => x.Name,
-                         x => string.Format("{0} albums", x.AlbumCount));
+            PopulateArtists(Parameter.Artists);
+            PopulateAlbums(Parameter.Albums);
+            PopulateSongs(Parameter.Songs);
+        }
 
-            PopulateFrom(Parameter.Albums,
-                        "Albums",
-                        x => x.Name,
-                        x => string.Format("{0} tracks", x.SongCount));
+        public void PopulateArtists(List<ExpandedArtist> collection)
+        {
+            MenuItemViewModels.AddRange(collection.Select(a => a.AsMenuItemViewModel()));
+        }
 
-            PopulateFrom(Parameter.Songs,
-                        "Songs",
-                        x => x.Title,
-                        x => string.Format("Artist: {0}, Album: {1}", x.Artist, x.Album));
+        public void PopulateAlbums(List<Album> albums)
+        {
+            MenuItemViewModels.AddRange(albums.Select(a => a.AsMenuItemViewModel()));
+        }
+
+        public void PopulateSongs(List<Song> songs)
+        {
+            MenuItemViewModels.AddRange(songs.Select(a => a.AsMenuItemViewModel()));
         }
 
         protected override void OnActivate()
@@ -82,23 +94,6 @@ namespace Subsonic8.Search
 
         private void SetCorrectState()
         {
-        }
-        
-        //SearchResultItemClick
-
-        private void PopulateFrom<T>(IEnumerable<T> collection, string type, Func<T, string> title, Func<T, string> subtitle)
-        {
-            var result = collection.Select(x => new MenuItemViewModel
-                                       {
-                                           Type = type,
-                                           Title = title(x),
-                                           Item = x,
-                                           Subtitle = subtitle(x)
-                                       });
-
-            var items = from i in result group i by type into g orderby g.Key select g;
-
-            MenuItems.AddRange(items);
         }
     }
 }
