@@ -2,9 +2,9 @@
 
 namespace Subsonic8.Search
 {
-    public sealed partial class SearchResultsView
+    public sealed partial class SearchView
     {
-        public SearchResultsView()
+        public SearchView()
         {
             InitializeComponent();
         }

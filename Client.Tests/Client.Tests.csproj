@@ -116,6 +116,7 @@
     <Compile Include="Mocks\MockGetRootResult.cs" />
     <Compile Include="Mocks\MockNavigationService.cs" />
     <Compile Include="MusicDirectory\MusicDirectoryViewModelTests.cs" />
+    <Compile Include="Search\SearchViewModelTests.cs" />
     <Compile Include="Shell\ShellViewModelTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -164,6 +165,7 @@
       <Name>Client</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '11.0' ">
     <VisualStudioVersion>11.0</VisualStudioVersion>
   </PropertyGroup>

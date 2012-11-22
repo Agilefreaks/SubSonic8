@@ -1,5 +1,5 @@
 ﻿<Page
-    x:Class="Subsonic8.Search.SearchResultsView"
+    x:Class="Subsonic8.Search.SearchView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:cal="using:Caliburn.Micro"
@@ -30,7 +30,9 @@
         
         <GridView Grid.Row="1" Margin="0,-3,0,0" Padding="116,0,116,46" SelectionMode="None" 
                   ItemsSource="{Binding Source={StaticResource GroupedSource}}"
-                  ItemTemplate="{StaticResource MenuItemTemplate}">
+                  ItemTemplate="{StaticResource MenuItemTemplate}"
+                  IsItemClickEnabled="True"
+                  cal:Message.Attach="[Event ItemClick] = [SearchResultItemClick($eventArgs)]">
             
             <GridView.ItemsPanel>
                 <ItemsPanelTemplate>

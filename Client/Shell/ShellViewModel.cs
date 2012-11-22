@@ -63,7 +63,7 @@ namespace Subsonic8.Shell
 
         private void NavigateToSearchResultCall(SearchResultCollection searchResultCollection)
         {
-            NavigationService.NavigateToViewModel<SearchResultsViewModel>(searchResultCollection);            
+            NavigationService.NavigateToViewModel<SearchViewModel>(searchResultCollection);            
         }
 
         private async void OnQuerySubmitted(SearchPane sender, SearchPaneQuerySubmittedEventArgs args)

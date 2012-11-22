@@ -102,6 +102,5 @@ namespace Caliburn.Micro
 
             return new Tuple<T, UIElement>(vm, view);
         }
-
     }
 }

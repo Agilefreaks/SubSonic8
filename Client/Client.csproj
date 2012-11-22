@@ -127,6 +127,7 @@
       <DependentUpon>PlaybackView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Playback\PlaybackViewModel.cs" />
+    <Compile Include="Search\ISearchViewModel.cs" />
     <Compile Include="Search\SearchView.xaml.cs">
       <DependentUpon>SearchView.xaml</DependentUpon>
     </Compile>
@@ -140,7 +141,7 @@
     </Compile>
     <Compile Include="Messages\PlayFile.cs" />
     <Compile Include="Shell\IShellViewModel.cs" />
-    <Compile Include="Search\SearchResultsViewModel.cs" />
+    <Compile Include="Search\SearchViewModel.cs" />
     <Compile Include="Shell\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>

@@ -7,7 +7,7 @@ using Subsonic8.MenuItem;
 
 namespace Subsonic8.Search
 {
-    public class SearchResultsViewModel : ViewModelBase
+    public class SearchViewModel : ViewModelBase, ISearchViewModel
     {
         private SearchResultCollection _parameter;
         private List<IGrouping<string, MenuItemViewModel>> _menuItems;
@@ -18,12 +18,15 @@ namespace Subsonic8.Search
             {
                 return _parameter;
             }
+
             set
             {
                 if (Equals(value, _parameter)) return;
                 _parameter = value;
+
                 NotifyOfPropertyChange();
                 UpdateDisplayName();
+                PopulateMenuItems();
             }
         }
 
@@ -41,25 +44,9 @@ namespace Subsonic8.Search
             }
         }
 
-        public SearchResultsViewModel()
+        public SearchViewModel()
         {
             MenuItems = new List<IGrouping<string, MenuItemViewModel>>();
-        }
-
-        protected override void OnActivate()
-        {
-            base.OnActivate();
-            PopulateMenuItems();
-            SetCorrectState();
-        }
-
-        private void UpdateDisplayName()
-        {
-            DisplayName = string.Format("Searched for: \"{0}\"", Parameter.Query);
-        }
-
-        private void SetCorrectState()
-        {
         }
 
         public void PopulateMenuItems()
@@ -81,6 +68,23 @@ namespace Subsonic8.Search
                         x => x.Title,
                         x => string.Format("Artist: {0}, Album: {1}", x.Artist, x.Album));
         }
+
+        protected override void OnActivate()
+        {
+            base.OnActivate();
+            SetCorrectState();
+        }
+
+        private void UpdateDisplayName()
+        {
+            DisplayName = string.Format("Searched for: \"{0}\"", Parameter.Query);
+        }
+
+        private void SetCorrectState()
+        {
+        }
+        
+        //SearchResultItemClick
 
         private void PopulateFrom<T>(IEnumerable<T> collection, string type, Func<T, string> title, Func<T, string> subtitle)
         {
