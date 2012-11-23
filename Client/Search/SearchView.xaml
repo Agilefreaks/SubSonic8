@@ -8,7 +8,7 @@
     <Page.Resources>
         <CollectionViewSource x:Key="GroupedSource" IsSourceGrouped="True" Source="{Binding MenuItems}" />
         <DataTemplate x:Key="MenuItemTemplate">
-            <ContentControl cal:View.Model="{Binding}" />
+            <ContentControl cal:View.Model="{Binding}"/>
         </DataTemplate>
     </Page.Resources>
         
@@ -32,7 +32,7 @@
                   ItemsSource="{Binding Source={StaticResource GroupedSource}}"
                   ItemTemplate="{StaticResource MenuItemTemplate}"
                   IsItemClickEnabled="True"
-                  cal:Message.Attach="[Event ItemClick] = [SearchResultItemClick($eventArgs)]">
+                  cal:Message.Attach="[Event ItemClick] = [Action SearchResultClick($eventArgs)]">
             
             <GridView.ItemsPanel>
                 <ItemsPanelTemplate>
