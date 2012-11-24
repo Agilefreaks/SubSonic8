@@ -1,14 +1,13 @@
 using System.Xml.Linq;
 using System.Xml.Serialization;
 using Client.Common.Models.Subsonic;
+using Client.Common.Services;
 
 namespace Client.Common.Results
 {
-    public class GetMusicDirectoryResult : ServiceResultBase, IGetMusicDirectoryResult
+    public class GetMusicDirectoryResult : ServiceResultBase<MusicDirectory>, IGetMusicDirectoryResult
     {
         private readonly int _id;
-
-        public MusicDirectory Result { get; set; }
 
         public int Id
         {

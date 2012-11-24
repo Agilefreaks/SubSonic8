@@ -4,14 +4,17 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Caliburn.Micro;
+using Client.Common.Services;
 
 namespace Client.Common.Results
 {
-    public abstract class ServiceResultBase : ResultBase, IServiceResultBase
+    public abstract class ServiceResultBase<T> : ResultBase, IServiceResultBase<T>
     {
         protected readonly XNamespace Namespace = "http://subsonic.org/restapi";
 
         public ISubsonicServiceConfiguration Configuration { get; private set; }
+
+        public T Result { get; protected set; }
 
         public abstract string ViewName { get; }
 

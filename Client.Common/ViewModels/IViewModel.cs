@@ -1,6 +1,7 @@
 using Caliburn.Micro;
+using Client.Common.Services;
 
-namespace Client.Common
+namespace Client.Common.ViewModels
 {
     public interface IViewModel : IScreen
     {

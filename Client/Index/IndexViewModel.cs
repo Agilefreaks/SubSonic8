@@ -1,6 +1,7 @@
 ﻿using Caliburn.Micro;
 using Client.Common;
 using Client.Common.Models.Subsonic;
+using Client.Common.ViewModels;
 using Subsonic8.MenuItem;
 using Subsonic8.MusicDirectory;
 using Windows.UI.Xaml.Controls;

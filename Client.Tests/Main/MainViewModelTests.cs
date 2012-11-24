@@ -4,6 +4,7 @@ using Caliburn.Micro;
 using Client.Common;
 using Client.Common.Models.Subsonic;
 using Client.Common.Results;
+using Client.Common.Services;
 using Client.Tests.Mocks;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;

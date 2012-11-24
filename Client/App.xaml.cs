@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using Caliburn.Micro;
 using Client.Common;
+using Client.Common.Services;
+using Client.Common.ViewModels;
 using Subsonic8.Main;
 using Subsonic8.Settings;
 using Subsonic8.Shell;

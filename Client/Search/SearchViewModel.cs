@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Client.Common;
 using Client.Common.Models.Subsonic;
+using Client.Common.ViewModels;
 using Subsonic8.Framework.Extensions;
 using Subsonic8.MenuItem;
 using Windows.UI.Xaml.Controls;

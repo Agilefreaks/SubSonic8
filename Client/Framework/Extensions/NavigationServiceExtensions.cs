@@ -8,12 +8,13 @@ namespace Subsonic8.Framework.Extensions
 {
     public static class NavigationServiceExtensions
     {
-        public static void
-            NavigateByEntityType(this INavigationService navigationService, ISubsonicModel subsonicModel)
+        public static void NavigateByEntityType<T>(this T navigationService, ISubsonicModel subsonicModel)
+            where T : INavigationService
         {
             switch (subsonicModel.Type)
             {
                 case SubsonicModelTypeEnum.Song:
+                case SubsonicModelTypeEnum.Video:
                     navigationService.NavigateToViewModel<PlaybackViewModel>(subsonicModel);
                     break;
                 case SubsonicModelTypeEnum.Album:

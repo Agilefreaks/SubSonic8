@@ -101,9 +101,9 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="CustomFrameAdapter.cs" />
-    <Compile Include="ISubsonicServiceConfiguration.cs" />
-    <Compile Include="IViewModel.cs" />
+    <Compile Include="Services\CustomFrameAdapter.cs" />
+    <Compile Include="Services\ISubsonicServiceConfiguration.cs" />
+    <Compile Include="ViewModels\IViewModel.cs" />
     <Compile Include="Models\IId.cs" />
     <Compile Include="Models\ISubsonicModel.cs" />
     <Compile Include="Models\Subsonic\SubsonicModelBase.cs" />
@@ -116,7 +116,7 @@
     <Compile Include="Models\Subsonic\MusicDirectoryChild.cs" />
     <Compile Include="Results\IGetAlbumResult.cs" />
     <Compile Include="Results\IGetMusicDirectoryResult.cs" />
-    <Compile Include="ISubsonicService.cs" />
+    <Compile Include="Services\ISubsonicService.cs" />
     <Compile Include="Models\Subsonic\Artist.cs" />
     <Compile Include="Models\Subsonic\IndexItem.cs" />
     <Compile Include="Models\Subsonic\MusicDirectory.cs" />
@@ -134,9 +134,9 @@
     <Compile Include="Models\Subsonic\SearchResultCollection.cs" />
     <Compile Include="Results\ServiceResultBase.cs" />
     <Compile Include="Results\VisualStateResult.cs" />
-    <Compile Include="SubsonicService.cs" />
-    <Compile Include="SubsonicServiceConfiguration.cs" />
-    <Compile Include="ViewModelBase.cs" />
+    <Compile Include="Services\SubsonicService.cs" />
+    <Compile Include="Services\SubsonicServiceConfiguration.cs" />
+    <Compile Include="ViewModels\ViewModelBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Caliburn.Micro, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">

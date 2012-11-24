@@ -2,8 +2,7 @@
 
 namespace Client.Common.Results
 {
-    public interface IGetAlbumResult : IServiceResultBase
+    public interface IGetAlbumResult : IServiceResultBase<Album>
     {
-        Album Result { get; set; }
     }
 }

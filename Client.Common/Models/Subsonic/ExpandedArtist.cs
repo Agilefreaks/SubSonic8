@@ -1,4 +1,5 @@
-﻿using System.Xml.Serialization;
+﻿using System.Collections.Generic;
+using System.Xml.Serialization;
 
 namespace Client.Common.Models.Subsonic
 {
@@ -14,9 +15,17 @@ namespace Client.Common.Models.Subsonic
         [XmlAttribute("albumCount")]
         public int AlbumCount { get; set; }
 
+        [XmlElement(ElementName = "album", Namespace = "http://subsonic.org/restapi")]
+        public List<Album> Albums { get; set; }
+
         public override SubsonicModelTypeEnum Type
         {
             get { return SubsonicModelTypeEnum.Artist; }
+        }
+
+        public ExpandedArtist()
+        {
+            Albums = new List<Album>();
         }
     }
 }

@@ -1,17 +1,19 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
-using System.Xml.Linq;
+using Client.Common.Services;
 
 namespace Client.Common.Results
 {
-    public interface IServiceResultBase : IResultBase
+    public interface IServiceResultBase<out T> : IResultBase
     {
         ISubsonicServiceConfiguration Configuration { get; }
-        
-        string ViewName { get; }
 
         Func<Task<Stream>> Response { get; set; }
+
+        T Result { get; }
+
+        string ViewName { get; }
 
         string RequestUrl { get; }
     }

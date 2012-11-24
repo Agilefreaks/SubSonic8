@@ -1,6 +1,6 @@
 ﻿using Caliburn.Micro;
 
-namespace Client.Common
+namespace Client.Common.Services
 {
     public class SubsonicServiceConfiguration : PropertyChangedBase, ISubsonicServiceConfiguration
     {

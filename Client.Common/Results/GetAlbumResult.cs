@@ -1,14 +1,13 @@
 ﻿using System.Xml.Linq;
 using System.Xml.Serialization;
 using Client.Common.Models.Subsonic;
+using Client.Common.Services;
 
 namespace Client.Common.Results
 {
-    public class GetAlbumResult : ServiceResultBase, IGetAlbumResult
+    public class GetAlbumResult : ServiceResultBase<Album>, IGetAlbumResult
     {
         private readonly int _id;
-
-        public Album Result { get; set; }
 
         public int Id
         {
@@ -26,7 +25,7 @@ namespace Client.Common.Results
         }
 
         public GetAlbumResult(ISubsonicServiceConfiguration configuration, int id)
-            :base (configuration)
+            : base(configuration)
         {
             _id = id;
         }

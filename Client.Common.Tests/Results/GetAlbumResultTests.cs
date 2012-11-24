@@ -1,4 +1,5 @@
 ﻿using Client.Common.Results;
+using Client.Common.Services;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 

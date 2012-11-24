@@ -1,6 +1,7 @@
 ﻿using Caliburn.Micro;
 using Client.Common;
 using Client.Common.Results;
+using Client.Common.ViewModels;
 using Subsonic8.Index;
 using Subsonic8.MenuItem;
 using Windows.UI.Xaml.Controls;

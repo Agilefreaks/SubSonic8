@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Diagnostics;
+using System.Collections.Generic;
 using Caliburn.Micro;
 using Windows.UI.Xaml.Navigation;
 
@@ -7,30 +7,7 @@ namespace Client.Tests.Mocks
 {
     public class MockNavigationService : INavigationService
     {
-        public void NavigateToViewModel<TViewModel>(object item)
-        {
-            // Debugger.Break();
-        }
-
-        public bool Navigate(Type sourcePageType)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Navigate(Type sourcePageType, object parameter)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void GoForward()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void GoBack()
-        {
-            throw new NotImplementedException();
-        }
+        public Dictionary<Type, object> NavigateToViewModelCalls { get; private set; }
 
         public Type SourcePageType { get; set; }
 
@@ -47,5 +24,38 @@ namespace Client.Tests.Mocks
         public event NavigationFailedEventHandler NavigationFailed;
 
         public event NavigationStoppedEventHandler NavigationStopped;
+
+        public MockNavigationService()
+        {
+            NavigateToViewModelCalls = new Dictionary<Type, object>();
+        }
+
+        public void NavigateToViewModel<TViewModel>(object parameter)
+        {
+            NavigateToViewModelCalls.Add(typeof(TViewModel), parameter);
+        }
+
+        public bool Navigate(Type sourcePageType)
+        {
+            NavigateToViewModelCalls.Add(sourcePageType, null);
+            return true;
+        }
+
+        public bool Navigate(Type sourcePageType, object parameter)
+        {
+            NavigateToViewModelCalls.Add(sourcePageType, parameter);
+            return true;
+        }
+
+        public void GoForward()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void GoBack()
+        {
+            throw new NotImplementedException();
+        }
+        
     }
 }

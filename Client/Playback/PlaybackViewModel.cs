@@ -1,6 +1,7 @@
 ﻿using Caliburn.Micro;
 using Client.Common;
 using Client.Common.Models;
+using Client.Common.ViewModels;
 using Subsonic8.Messages;
 
 namespace Subsonic8.Playback

@@ -2,7 +2,7 @@
 using Caliburn.Micro;
 using Client.Common.Results;
 
-namespace Client.Common
+namespace Client.Common.Services
 {
     public class SubsonicService : PropertyChangedBase, ISubsonicService
     {
@@ -30,11 +30,14 @@ namespace Client.Common
 
         public Func<string, ISearchResult> Search { get; set; }
 
+        public Func<int, IGetArtistResult> GetArtist { get; set; }
+
         public SubsonicService()
         {
             GetRootIndex = GetRootIndexImpl;
             GetMusicDirectory = GetMusicDirectoryImpl;
             GetAlbum = GetAlbumImpl;
+            GetArtist = GetArtistImpl;
             Search = SearchImpl;
         }
 
@@ -61,6 +64,11 @@ namespace Client.Common
         private IGetAlbumResult GetAlbumImpl(int id)
         {
             return new GetAlbumResult(_configuration, id);
+        }
+
+        private IGetArtistResult GetArtistImpl(int id)
+        {
+            return new GetArtistsResult(_configuration, id);
         }
     }
 }

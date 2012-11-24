@@ -3,14 +3,13 @@ using System.Linq;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 using Client.Common.Models.Subsonic;
+using Client.Common.Services;
 
 namespace Client.Common.Results
 {
-    public class SearchResult : ServiceResultBase, ISearchResult
+    public class SearchResult : ServiceResultBase<SearchResultCollection>, ISearchResult
     {
         private readonly string _query;
-
-        public SearchResultCollection Result { get; set; }
 
         public override string RequestUrl
         {

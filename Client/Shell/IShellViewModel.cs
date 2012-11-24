@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Caliburn.Micro;
 using Client.Common;
 using Client.Common.Models.Subsonic;
+using Client.Common.Services;
 using Subsonic8.Messages;
 
 namespace Subsonic8.Shell

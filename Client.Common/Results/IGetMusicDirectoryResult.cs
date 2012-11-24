@@ -2,8 +2,7 @@ using Client.Common.Models.Subsonic;
 
 namespace Client.Common.Results
 {
-    public interface IGetMusicDirectoryResult : IServiceResultBase
+    public interface IGetMusicDirectoryResult : IServiceResultBase<MusicDirectory>
     {
-        MusicDirectory Result { get; set; }
     }
 }

@@ -3,8 +3,7 @@ using Client.Common.Models.Subsonic;
 
 namespace Client.Common.Results
 {
-    public interface IGetRootResult : IServiceResultBase
+    public interface IGetRootResult : IServiceResultBase<IList<IndexItem>>
     {
-        IList<IndexItem> Result { get; set; }
     }
 }

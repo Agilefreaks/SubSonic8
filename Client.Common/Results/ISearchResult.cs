@@ -2,8 +2,7 @@ using Client.Common.Models.Subsonic;
 
 namespace Client.Common.Results
 {
-    public interface ISearchResult : IResultBase
+    public interface ISearchResult : IServiceResultBase<SearchResultCollection>
     {
-        SearchResultCollection Result { get; set; }
     }
 }
