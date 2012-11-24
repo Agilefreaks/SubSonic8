@@ -1,9 +1,10 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Client.Common;
 using Client.Common.Models.Subsonic;
+using Subsonic8.Framework.Extensions;
 using Subsonic8.MenuItem;
+using Windows.UI.Xaml.Controls;
 
 namespace Subsonic8.Search
 {
@@ -71,7 +72,7 @@ namespace Subsonic8.Search
             MenuItemViewModels.AddRange(collection.Select(a => a.AsMenuItemViewModel()));
         }
 
-        public void PopulateAlbums(List<Album> albums)
+        public void PopulateAlbums(List<Client.Common.Models.Subsonic.Album> albums)
         {
             MenuItemViewModels.AddRange(albums.Select(a => a.AsMenuItemViewModel()));
         }
@@ -79,6 +80,13 @@ namespace Subsonic8.Search
         public void PopulateSongs(List<Song> songs)
         {
             MenuItemViewModels.AddRange(songs.Select(a => a.AsMenuItemViewModel()));
+        }
+
+        public void SearchResultClick(ItemClickEventArgs eventArgs)
+        {
+            var navigableEntity = ((MenuItemViewModel) eventArgs.ClickedItem).Item;
+
+            NavigationService.NavigateByEntityType(navigableEntity);
         }
 
         protected override void OnActivate()

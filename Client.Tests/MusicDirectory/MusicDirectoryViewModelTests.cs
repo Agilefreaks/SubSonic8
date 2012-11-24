@@ -26,7 +26,7 @@ namespace Client.Tests.MusicDirectory
         [TestMethod]
         public void ParameterSetShouldPopulateMenuItems()
         {
-            _subject.Parameter = new Common.Models.Subsonic.MusicDirectory { Children = new List<MusicDirectoryChild> { new MusicDirectoryChild(), new MusicDirectoryChild() } };
+            _subject.MusicDirectory = new Common.Models.Subsonic.MusicDirectory { Children = new List<MusicDirectoryChild> { new MusicDirectoryChild(), new MusicDirectoryChild() } };
 
             _subject.MenuItems.Should().HaveCount(2);
         }

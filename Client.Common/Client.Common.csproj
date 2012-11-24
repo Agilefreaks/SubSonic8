@@ -103,11 +103,16 @@
   <ItemGroup>
     <Compile Include="CustomFrameAdapter.cs" />
     <Compile Include="ISubsonicServiceConfiguration.cs" />
+    <Compile Include="Models\IIdentifiableEntity.cs" />
+    <Compile Include="Models\INavigableEntity.cs" />
+    <Compile Include="Models\NavigableTypeEnum.cs" />
     <Compile Include="Models\Subsonic\Album.cs" />
     <Compile Include="Models\Subsonic\ExpandedArtist.cs" />
     <Compile Include="Models\Subsonic\Song.cs" />
+    <Compile Include="Results\GetAlbumResult.cs" />
     <Compile Include="Results\GetMusicDirectoryResult.cs" />
     <Compile Include="Models\Subsonic\MusicDirectoryChild.cs" />
+    <Compile Include="Results\IGetAlbumResult.cs" />
     <Compile Include="Results\IGetMusicDirectoryResult.cs" />
     <Compile Include="ISubsonicService.cs" />
     <Compile Include="Models\Subsonic\Artist.cs" />

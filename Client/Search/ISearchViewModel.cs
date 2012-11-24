@@ -17,7 +17,7 @@ namespace Subsonic8.Search
 
         void PopulateArtists(List<ExpandedArtist> artists);
 
-        void PopulateAlbums(List<Album> albums);
+        void PopulateAlbums(List<Client.Common.Models.Subsonic.Album> albums);
         
         void PopulateSongs(List<Song> songs);
     }

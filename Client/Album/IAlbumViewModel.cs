@@ -1,14 +1,14 @@
-﻿using Caliburn.Micro;
+using Caliburn.Micro;
 using Client.Common.Models;
 using Subsonic8.MenuItem;
 
-namespace Subsonic8.MusicDirectory
+namespace Subsonic8.Album
 {
-    public interface IMusicDirectoryViewModel
+    public interface IAlbumViewModel
     {
         INavigableEntity Parameter { get; set; }
 
-        Client.Common.Models.Subsonic.MusicDirectory MusicDirectory { get; set; }
+        Client.Common.Models.Subsonic.Album Album { get; set; }
 
         BindableCollection<MenuItemViewModel> MenuItems { get; set; }
     }

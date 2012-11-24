@@ -3,7 +3,7 @@
 namespace Client.Common.Models.Subsonic
 {
     [XmlRoot(ElementName = "song", Namespace = "http://subsonic.org/restapi")]
-    public class Song
+    public class Song : INavigableEntity
     {
         [XmlAttribute("id")]
         public int Id { get; set; }
@@ -31,5 +31,10 @@ namespace Client.Common.Models.Subsonic
 
         [XmlAttribute("isVideo")]
         public bool IsVideo { get; set; }
+
+        public NavigableTypeEnum Type 
+        {
+            get { return IsVideo ? NavigableTypeEnum.Video : NavigableTypeEnum.Song; }
+        }
     }
 }

@@ -29,7 +29,7 @@ namespace Client.Tests.Main
         [TestMethod]
         public void CtorShouldInstantiateMenuItems()
         {
-            _subject.MenuItems.Should().BeEmpty();
+            _subject.MenuItems.Should().NotBeNull();
         }
 
         [TestMethod]

@@ -1,9 +1,10 @@
-﻿using System.Xml.Serialization;
+﻿using System.Collections.Generic;
+using System.Xml.Serialization;
 
 namespace Client.Common.Models.Subsonic
 {
     [XmlRoot(ElementName = "album", Namespace = "http://subsonic.org/restapi")]
-    public class Album
+    public class Album : INavigableEntity
     {
         [XmlAttribute("id")]
         public int Id { get; set; }
@@ -22,5 +23,13 @@ namespace Client.Common.Models.Subsonic
 
         [XmlAttribute("songCount")]
         public int SongCount { get; set; }
+
+        [XmlElement(ElementName = "song", Namespace = "http://subsonic.org/restapi")]
+        public List<Song> Songs { get; set; }
+
+        public NavigableTypeEnum Type
+        {
+            get { return NavigableTypeEnum.Album; }
+        }
     }
 }

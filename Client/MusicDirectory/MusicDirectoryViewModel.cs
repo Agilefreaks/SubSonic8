@@ -1,6 +1,9 @@
 ﻿using Caliburn.Micro;
 using Client.Common;
+using Client.Common.Models;
 using Client.Common.Models.Subsonic;
+using Subsonic8.Album;
+using Subsonic8.Framework.Extensions;
 using Subsonic8.MenuItem;
 using Subsonic8.Playback;
 using Windows.UI.Xaml.Controls;
@@ -9,10 +12,12 @@ namespace Subsonic8.MusicDirectory
 {
     public class MusicDirectoryViewModel : ViewModelBase, IMusicDirectoryViewModel
     {
-        private Client.Common.Models.Subsonic.MusicDirectory _parameter;
-        private BindableCollection<MenuItemViewModel> _menuItems;
+        private INavigableEntity _parameter;
 
-        public Client.Common.Models.Subsonic.MusicDirectory Parameter
+        private BindableCollection<MenuItemViewModel> _menuItems;
+        private Client.Common.Models.Subsonic.MusicDirectory _musicDirectory;
+
+        public INavigableEntity Parameter
         {
             get
             {
@@ -22,6 +27,22 @@ namespace Subsonic8.MusicDirectory
             {
                 if (Equals(value, _parameter)) return;
                 _parameter = value;
+                NotifyOfPropertyChange();
+                LoadModel();
+            }
+        }
+
+        public Client.Common.Models.Subsonic.MusicDirectory MusicDirectory
+        {
+            get
+            {
+                return _musicDirectory;
+            }
+
+            set
+            {
+                if (Equals(value, _musicDirectory)) return;
+                _musicDirectory = value;
                 NotifyOfPropertyChange();
                 PopulateMenuItems();
             }
@@ -47,25 +68,23 @@ namespace Subsonic8.MusicDirectory
             MenuItems = new BindableCollection<MenuItemViewModel>();
         }
 
-        public async void MusicDirectoryClick(ItemClickEventArgs eventArgs)
+        public void MusicDirectoryClick(ItemClickEventArgs eventArgs)
         {
-            var musicDirectoryChild = (MusicDirectoryChild) ((MenuItemViewModel) eventArgs.ClickedItem).Item;
-            
-            if (musicDirectoryChild.IsDirectory)
-            {
-                var getMusicDirectoryResult = SubsonicService.GetMusicDirectory(musicDirectoryChild.Id);
-                await getMusicDirectoryResult.Execute();
-                NavigationService.NavigateToViewModel<MusicDirectoryViewModel>(getMusicDirectoryResult.Result);
-            }
-            else
-            {
-                NavigationService.NavigateToViewModel<PlaybackViewModel>(musicDirectoryChild);
-            }
-        }        
+            var navigableEntity = ((MenuItemViewModel)eventArgs.ClickedItem).Item;
+
+            NavigationService.NavigateByEntityType(navigableEntity);
+        }
+
+        private async void LoadModel()
+        {
+            var getMusicDirectory = SubsonicService.GetMusicDirectory(Parameter.Id);
+            await getMusicDirectory.Execute();
+            MusicDirectory = getMusicDirectory.Result;
+        }
 
         private void PopulateMenuItems()
         {
-            foreach (var child in Parameter.Children)
+            foreach (var child in MusicDirectory.Children)
             {
                 MenuItems.Add(new MenuItemViewModel { Title = child.Artist, Subtitle = child.Title, Item = child });
             }

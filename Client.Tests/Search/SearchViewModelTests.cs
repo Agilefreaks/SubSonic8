@@ -44,9 +44,9 @@ namespace Client.Tests.Search
         {
             _subject.Parameter = new SearchResultCollection
                                      {
-                                         Albums = new List<Album>
+                                         Albums = new List<Client.Common.Models.Subsonic.Album>
                                                       {
-                                                          new Album()
+                                                          new Client.Common.Models.Subsonic.Album()
                                                       },
                                      };
 
@@ -86,7 +86,7 @@ namespace Client.Tests.Search
         [TestMethod]
         public void PopulateAlbumsShouldAddMenuItems()
         {
-            _subject.PopulateAlbums(new List<Album> { new Album() });
+            _subject.PopulateAlbums(new List<Client.Common.Models.Subsonic.Album> { new Client.Common.Models.Subsonic.Album() });
 
             _subject.MenuItemViewModels.Should().HaveCount(1);
         }

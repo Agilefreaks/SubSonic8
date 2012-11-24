@@ -1,6 +1,6 @@
 ﻿using Caliburn.Micro;
 using Client.Common;
-using Client.Common.Models.Subsonic;
+using Client.Common.Models;
 using Subsonic8.Messages;
 
 namespace Subsonic8.Playback
@@ -8,9 +8,9 @@ namespace Subsonic8.Playback
     public class PlaybackViewModel : ViewModelBase
     {
         private readonly IEventAggregator _eventAggregator;
-        private MusicDirectoryChild _parameter;
+        private INavigableEntity _parameter;
 
-        public MusicDirectoryChild Parameter
+        public INavigableEntity Parameter
         {
             get
             {

@@ -26,12 +26,15 @@ namespace Client.Common
 
         public Func<int, IGetMusicDirectoryResult> GetMusicDirectory { get; set; }
 
+        public Func<int, IGetAlbumResult> GetAlbum { get; set; }
+
         public Func<string, ISearchResult> Search { get; set; }
 
         public SubsonicService()
         {
             GetRootIndex = GetRootIndexImpl;
             GetMusicDirectory = GetMusicDirectoryImpl;
+            GetAlbum = GetAlbumImpl;
             Search = SearchImpl;
         }
 
@@ -53,6 +56,11 @@ namespace Client.Common
         private IGetMusicDirectoryResult GetMusicDirectoryImpl(int id)
         {
             return new GetMusicDirectoryResult(_configuration, id);
+        }
+
+        private IGetAlbumResult GetAlbumImpl(int id)
+        {
+            return new GetAlbumResult(_configuration, id);
         }
     }
 }

@@ -28,6 +28,7 @@ namespace Client.Common.Tests
         {
             _subject.GetMusicDirectory.Should().NotBeNull();
             _subject.GetRootIndex.Should().NotBeNull();
+            _subject.GetAlbum.Should().NotBeNull();
             _subject.Search.Should().NotBeNull();
         }
     }

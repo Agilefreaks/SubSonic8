@@ -103,10 +103,16 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Album\AlbumViewModel.cs" />
+    <Compile Include="Album\IAlbumViewModel.cs" />
+    <Compile Include="Album\AlbumView.xaml.cs">
+      <DependentUpon>AlbumView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\DialogService.cs" />
+    <Compile Include="Framework\Extensions\NavigationServiceExtensions.cs" />
     <Compile Include="Index\IIndexViewModel.cs" />
     <Compile Include="Index\IndexViewModel.cs" />
     <Compile Include="Index\IndexView.xaml.cs">
@@ -128,7 +134,7 @@
     </Compile>
     <Compile Include="Playback\PlaybackViewModel.cs" />
     <Compile Include="Search\ISearchViewModel.cs" />
-    <Compile Include="Search\SearchConverters.cs" />
+    <Compile Include="Framework\Extensions\SubsonicModelToMenuItemViewModelExtensions.cs" />
     <Compile Include="Search\SearchView.xaml.cs">
       <DependentUpon>SearchView.xaml</DependentUpon>
     </Compile>
@@ -168,6 +174,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Album\AlbumView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Common\CustomStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

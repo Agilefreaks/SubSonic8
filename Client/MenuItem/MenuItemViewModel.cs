@@ -1,4 +1,5 @@
 using Caliburn.Micro;
+using Client.Common.Models;
 
 namespace Subsonic8.MenuItem
 {
@@ -6,7 +7,7 @@ namespace Subsonic8.MenuItem
     {
         private string _title;
         private string _subtitle;
-        private object _item;
+        private INavigableEntity _item;
         private string _type;
 
         public string Title
@@ -36,7 +37,7 @@ namespace Subsonic8.MenuItem
             }
         }
 
-        public object Item
+        public INavigableEntity Item
         {
             get
             {
