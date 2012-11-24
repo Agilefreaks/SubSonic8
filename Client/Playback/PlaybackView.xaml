@@ -2,8 +2,8 @@
     x:Class="Subsonic8.Playback.PlaybackView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:cal="using:Caliburn.Micro" mc:Ignorable="d">
 
     <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
@@ -21,6 +21,9 @@
             <TextBlock Text="SubSonic8" Style="{StaticResource PageHeaderTextStyle}" Grid.Column="1" />
         </Grid>
 
-        <TextBlock Grid.Row="1" Text="We are playing"/>
+        <StackPanel Grid.Row="1">
+            <TextBlock Text="We are playing"/>
+            <ContentControl cal:View.Context="{Binding Path=State}" cal:View.Model="{Binding}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>
+        </StackPanel>
     </Grid>
 </Page>

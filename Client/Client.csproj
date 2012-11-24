@@ -140,6 +140,13 @@
       <DependentUpon>PlaybackView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Playback\PlaybackViewModel.cs" />
+    <Compile Include="Playback\PlaybackViewModelStateEnum.cs" />
+    <Compile Include="Playback\Playback\Audio.xaml.cs">
+      <DependentUpon>Audio.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Playback\Playback\Video.xaml.cs">
+      <DependentUpon>Video.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Search\ISearchViewModel.cs" />
     <Compile Include="Framework\Extensions\SubsonicModelToMenuItemViewModelExtensions.cs" />
     <Compile Include="Search\SearchView.xaml.cs">
@@ -218,6 +225,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Playback\Playback\Audio.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Playback\Playback\Video.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Search\SearchView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -258,6 +273,12 @@
       <HintPath>..\Lib\WinRtUtility.dll</HintPath>
     </Reference>
   </ItemGroup>
+  <ItemGroup>
+    <SDKReference Include="Microsoft.PlayerFramework.Xaml, Version=1.7.0.0">
+      <Name>Microsoft Player Framework</Name>
+    </SDKReference>
+  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '11.0' ">
     <VisualStudioVersion>11.0</VisualStudioVersion>
   </PropertyGroup>
