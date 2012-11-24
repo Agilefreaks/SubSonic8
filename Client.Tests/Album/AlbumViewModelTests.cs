@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using Caliburn.Micro;
-using Client.Common;
 using Client.Common.Models.Subsonic;
-using Client.Common.Results;
 using Client.Common.Services;
 using Client.Tests.Mocks;
 using FluentAssertions;
@@ -37,7 +35,7 @@ namespace Client.Tests.Album
         {
             var album = new Common.Models.Subsonic.Album { Songs = new List<Song> { new Song(), new Song() } };
 
-            _subject.Album = album;
+            _subject.Item = album;
 
             _subject.MenuItems.Should().HaveCount(2);
         }

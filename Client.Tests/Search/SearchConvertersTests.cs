@@ -3,7 +3,6 @@ using Client.Common.Models.Subsonic;
 using FluentAssertions;
 using Subsonic8.Framework.Extensions;
 using Subsonic8.MenuItem;
-using Subsonic8.Search;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 
 namespace Client.Tests.Search
@@ -15,7 +14,7 @@ namespace Client.Tests.Search
         private ISubsonicModel _artistMusicDirectoryChild;
         private MenuItemViewModel _artistMenuItemViewModel;
 
-        private Client.Common.Models.Subsonic.Album _album;
+        private Common.Models.Subsonic.Album _album;
         private ISubsonicModel _albumMusicDirectoryChild;
         private MenuItemViewModel _albumMenuItemViewModel;
 
@@ -36,7 +35,7 @@ namespace Client.Tests.Search
             _artistMenuItemViewModel = _expandedArtist.AsMenuItemViewModel();
             _artistMusicDirectoryChild = _artistMenuItemViewModel.Item.As<ISubsonicModel>();
 
-            _album = new Client.Common.Models.Subsonic.Album
+            _album = new Common.Models.Subsonic.Album
                          {
                              Id = 24,
                              SongCount = 12,
@@ -89,7 +88,7 @@ namespace Client.Tests.Search
         [TestMethod]
         public void ExpandedArtistAsMenuItemViewModelShouldSetTypePropertyOnMenuItemViewModel()
         {
-            _artistMenuItemViewModel.Type.Should().Be("Artists");
+            _artistMenuItemViewModel.Type.Should().Be("Artist(s)");
         }
 
         [TestMethod]
@@ -125,7 +124,7 @@ namespace Client.Tests.Search
         [TestMethod]
         public void AlbumAsMenuItemViewModelShouldSetTypePropertyOnMenuItemViewModel()
         {
-            _albumMenuItemViewModel.Type.Should().Be("Albums");
+            _albumMenuItemViewModel.Type.Should().Be("Album(s)");
         }
 
         [TestMethod]
@@ -161,7 +160,7 @@ namespace Client.Tests.Search
         [TestMethod]
         public void SongAsMenuItemViewModelShouldSetTypePropertyOnMenuItemViewModel()
         {
-            _songMenuItemViewModel.Type.Should().Be("Songs");
+            _songMenuItemViewModel.Type.Should().Be("Song(s)");
         }
     }
 }

@@ -111,10 +111,15 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Artist\ArtistView.xaml.cs">
+      <DependentUpon>ArtistView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Artist\ArtistViewModel.cs" />
     <Compile Include="Artist\IArtistViewModel.cs" />
     <Compile Include="Dialogs\DialogService.cs" />
+    <Compile Include="Framework\DetailViewModelBase.cs" />
     <Compile Include="Framework\Extensions\NavigationServiceExtensions.cs" />
+    <Compile Include="Framework\IDetailViewModel.cs" />
     <Compile Include="Index\IIndexViewModel.cs" />
     <Compile Include="Index\IndexViewModel.cs" />
     <Compile Include="Index\IndexView.xaml.cs">
@@ -179,6 +184,10 @@
     <Page Include="Album\AlbumView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Artist\ArtistView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Common\CustomStyles.xaml">
       <SubType>Designer</SubType>

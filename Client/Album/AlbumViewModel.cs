@@ -1,74 +1,27 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Caliburn.Micro;
 using Client.Common;
 using Client.Common.Models;
+using Client.Common.Results;
 using Client.Common.ViewModels;
+using Subsonic8.Framework;
 using Subsonic8.Framework.Extensions;
 using Subsonic8.MenuItem;
 using Windows.UI.Xaml.Controls;
 
 namespace Subsonic8.Album
 {
-    public class AlbumViewModel : ViewModelBase, IAlbumViewModel
+    public class AlbumViewModel : DetailViewModelBase<Client.Common.Models.Subsonic.Album>, IAlbumViewModel
     {
-        private ISubsonicModel _parameter;
-        private Client.Common.Models.Subsonic.Album _album;
-
-        public ISubsonicModel Parameter
+        protected override IServiceResultBase<Client.Common.Models.Subsonic.Album> GetResult(int id)
         {
-            get
-            {
-                return _parameter;
-            }
-            set
-            {
-                if (Equals(value, _parameter)) return;
-                _parameter = value;
-                NotifyOfPropertyChange();
-                LoadModel();
-            }
+            return SubsonicService.GetAlbum(Parameter.Id);
         }
 
-        public Client.Common.Models.Subsonic.Album Album
+        protected override IEnumerable<ISubsonicModel> GetItemsToDisplay()
         {
-            get
-            {
-                return _album;
-            }
-
-            set
-            {
-                if (Equals(value, _album)) return;
-                _album = value;
-                NotifyOfPropertyChange();
-                PopulateMenuItems();
-            }
-        }
-
-        public BindableCollection<MenuItemViewModel> MenuItems { get; set; }
-
-        private async void LoadModel()
-        {
-            var getAlbumResult = SubsonicService.GetAlbum(Parameter.Id);
-            await getAlbumResult.Execute();
-            Album = getAlbumResult.Result;
-        }
-
-        public AlbumViewModel()
-        {
-            MenuItems = new BindableCollection<MenuItemViewModel>();
-        }
-
-        private void PopulateMenuItems()
-        {
-            MenuItems.AddRange(Album.Songs.Select(s => s.AsMenuItemViewModel()));
-        }
-
-        public void SongClick(ItemClickEventArgs eventArgs)
-        {
-            var navigableEntity = ((MenuItemViewModel)eventArgs.ClickedItem).Item;
-
-            NavigationService.NavigateByEntityType(navigableEntity);
+            return Item.Songs;
         }
     }
 }

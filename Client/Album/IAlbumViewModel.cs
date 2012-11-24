@@ -1,15 +1,8 @@
-using Caliburn.Micro;
-using Client.Common.Models;
-using Subsonic8.MenuItem;
+using Subsonic8.Framework;
 
 namespace Subsonic8.Album
 {
-    public interface IAlbumViewModel
+    public interface IAlbumViewModel : IDetailViewModel<Client.Common.Models.Subsonic.Album>
     {
-        ISubsonicModel Parameter { get; set; }
-
-        Client.Common.Models.Subsonic.Album Album { get; set; }
-
-        BindableCollection<MenuItemViewModel> MenuItems { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Xml.Serialization;
 
 namespace Client.Common.Models.Subsonic
@@ -26,6 +27,11 @@ namespace Client.Common.Models.Subsonic
         public ExpandedArtist()
         {
             Albums = new List<Album>();
+        }
+
+        public override Tuple<string, string> GetDescription()
+        {
+            return new Tuple<string, string>(Name, string.Format("{0} albums", AlbumCount));
         }
     }
 }

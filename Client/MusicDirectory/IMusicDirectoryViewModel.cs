@@ -1,15 +1,8 @@
-﻿using Caliburn.Micro;
-using Client.Common.Models;
-using Subsonic8.MenuItem;
+﻿using Subsonic8.Framework;
 
 namespace Subsonic8.MusicDirectory
 {
-    public interface IMusicDirectoryViewModel
+    public interface IMusicDirectoryViewModel : IDetailViewModel<Client.Common.Models.Subsonic.MusicDirectory>
     {
-        ISubsonicModel Parameter { get; set; }
-
-        Client.Common.Models.Subsonic.MusicDirectory MusicDirectory { get; set; }
-
-        BindableCollection<MenuItemViewModel> MenuItems { get; set; }
     }
 }

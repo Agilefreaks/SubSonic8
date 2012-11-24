@@ -14,7 +14,7 @@ namespace Client.Common.Results
 
         public ISubsonicServiceConfiguration Configuration { get; private set; }
 
-        public T Result { get; protected set; }
+        public T Result { get; set; }
 
         public abstract string ViewName { get; }
 

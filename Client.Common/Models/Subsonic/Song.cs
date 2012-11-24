@@ -1,4 +1,5 @@
-﻿using System.Xml.Serialization;
+﻿using System;
+using System.Xml.Serialization;
 
 namespace Client.Common.Models.Subsonic
 {
@@ -32,6 +33,11 @@ namespace Client.Common.Models.Subsonic
         public override SubsonicModelTypeEnum Type 
         {
             get { return IsVideo ? SubsonicModelTypeEnum.Video : SubsonicModelTypeEnum.Song; }
+        }
+
+        public override Tuple<string, string> GetDescription()
+        {
+            return new Tuple<string, string>(Title, string.Format("Artist: {0}, Album: {1}", Artist, Album));
         }
     }
 }

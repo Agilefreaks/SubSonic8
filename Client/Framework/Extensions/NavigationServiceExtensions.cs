@@ -1,6 +1,7 @@
 ﻿using Caliburn.Micro;
 using Client.Common.Models;
 using Subsonic8.Album;
+using Subsonic8.Artist;
 using Subsonic8.MusicDirectory;
 using Subsonic8.Playback;
 
@@ -22,6 +23,9 @@ namespace Subsonic8.Framework.Extensions
                     break;
                 case SubsonicModelTypeEnum.MusicDirectory:
                     navigationService.NavigateToViewModel<MusicDirectoryViewModel>(subsonicModel);
+                    break;
+                case SubsonicModelTypeEnum.Artist:
+                    navigationService.NavigateToViewModel<ArtistViewModel>(subsonicModel);
                     break;
             }
         }

@@ -102,6 +102,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Services\CustomFrameAdapter.cs" />
+    <Compile Include="Results\GetArtistsResult.cs" />
+    <Compile Include="Results\IGetArtistResult.cs" />
     <Compile Include="Services\ISubsonicServiceConfiguration.cs" />
     <Compile Include="ViewModels\IViewModel.cs" />
     <Compile Include="Models\IId.cs" />
