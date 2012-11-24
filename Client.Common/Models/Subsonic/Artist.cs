@@ -3,17 +3,14 @@
 namespace Client.Common.Models.Subsonic
 {
     [XmlRoot(ElementName = "artist", Namespace = "http://subsonic.org/restapi")]
-    public class Artist : INavigableEntity
+    public class Artist : SubsonicModelBase
     {
-        [XmlAttribute("id")]
-        public int Id { get; set; }
-
         [XmlAttribute("name")]
         public string Name { get; set; }
 
-        public NavigableTypeEnum Type
+        public override SubsonicModelTypeEnum Type
         {
-            get { return NavigableTypeEnum.Artist; }
+            get { return SubsonicModelTypeEnum.Artist; }
         }
     }
 }

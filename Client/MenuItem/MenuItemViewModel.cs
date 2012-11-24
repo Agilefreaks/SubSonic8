@@ -7,7 +7,7 @@ namespace Subsonic8.MenuItem
     {
         private string _title;
         private string _subtitle;
-        private INavigableEntity _item;
+        private ISubsonicModel _item;
         private string _type;
 
         public string Title
@@ -37,7 +37,7 @@ namespace Subsonic8.MenuItem
             }
         }
 
-        public INavigableEntity Item
+        public ISubsonicModel Item
         {
             get
             {

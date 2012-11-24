@@ -12,15 +12,15 @@ namespace Client.Tests.Search
     public class SearchConvertersTests
     {
         private ExpandedArtist _expandedArtist;
-        private INavigableEntity _artistMusicDirectoryChild;
+        private ISubsonicModel _artistMusicDirectoryChild;
         private MenuItemViewModel _artistMenuItemViewModel;
 
         private Client.Common.Models.Subsonic.Album _album;
-        private INavigableEntity _albumMusicDirectoryChild;
+        private ISubsonicModel _albumMusicDirectoryChild;
         private MenuItemViewModel _albumMenuItemViewModel;
 
         private Song _song;
-        private INavigableEntity _songMusicDirectoryChild;
+        private ISubsonicModel _songMusicDirectoryChild;
         private MenuItemViewModel _songMenuItemViewModel;
 
         [TestInitialize]
@@ -34,7 +34,7 @@ namespace Client.Tests.Search
                                       Name = "artist"
                                   };
             _artistMenuItemViewModel = _expandedArtist.AsMenuItemViewModel();
-            _artistMusicDirectoryChild = _artistMenuItemViewModel.Item.As<INavigableEntity>();
+            _artistMusicDirectoryChild = _artistMenuItemViewModel.Item.As<ISubsonicModel>();
 
             _album = new Client.Common.Models.Subsonic.Album
                          {
@@ -43,7 +43,7 @@ namespace Client.Tests.Search
                              Name = "album"
                          };
             _albumMenuItemViewModel = _album.AsMenuItemViewModel();
-            _albumMusicDirectoryChild = _albumMenuItemViewModel.Item.As<INavigableEntity>();
+            _albumMusicDirectoryChild = _albumMenuItemViewModel.Item.As<ISubsonicModel>();
 
             _song = new Song
                         {
@@ -53,7 +53,7 @@ namespace Client.Tests.Search
                             Album = "album"
                         };
             _songMenuItemViewModel = _song.AsMenuItemViewModel();
-            _songMusicDirectoryChild = _songMenuItemViewModel.Item.As<INavigableEntity>();
+            _songMusicDirectoryChild = _songMenuItemViewModel.Item.As<ISubsonicModel>();
         }
 
         [TestMethod]
@@ -65,7 +65,7 @@ namespace Client.Tests.Search
         [TestMethod]
         public void ExpandedArtistAsMenuItemViewModelPropertyItemShouldHaveIsDirectorySetToTrue()
         {
-            _artistMusicDirectoryChild.Type.Should().Be(NavigableTypeEnum.Artist);
+            _artistMusicDirectoryChild.Type.Should().Be(SubsonicModelTypeEnum.Artist);
         }
 
         [TestMethod]
@@ -101,7 +101,7 @@ namespace Client.Tests.Search
         [TestMethod]
         public void AlbumAsMenuItemViewModelPropertyItemShouldHaveIsDirectorySetToTrue()
         {
-            _albumMusicDirectoryChild.Type.Should().Be(NavigableTypeEnum.Album);
+            _albumMusicDirectoryChild.Type.Should().Be(SubsonicModelTypeEnum.Album);
         }
 
         [TestMethod]
@@ -137,7 +137,7 @@ namespace Client.Tests.Search
         [TestMethod]
         public void SongAsMenuItemViewModelPropertyItemShouldHaveIsDirectorySetToFalse()
         {
-            _songMusicDirectoryChild.Type.Should().Be(NavigableTypeEnum.Song);
+            _songMusicDirectoryChild.Type.Should().Be(SubsonicModelTypeEnum.Song);
         }
 
         [TestMethod]

@@ -2,7 +2,7 @@
 
 namespace Client.Common
 {
-    public abstract class ViewModelBase : Screen
+    public abstract class ViewModelBase : Screen, IViewModel
     {
         private INavigationService _navigationService;
         private ISubsonicService _subsonicService;

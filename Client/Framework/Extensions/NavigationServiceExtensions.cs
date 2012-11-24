@@ -8,19 +8,19 @@ namespace Subsonic8.Framework.Extensions
 {
     public static class NavigationServiceExtensions
     {
-        public static void 
-            NavigateByEntityType(this INavigationService navigationService, INavigableEntity navigableEntity)
+        public static void
+            NavigateByEntityType(this INavigationService navigationService, ISubsonicModel subsonicModel)
         {
-            switch (navigableEntity.Type)
+            switch (subsonicModel.Type)
             {
-                case NavigableTypeEnum.Song:
-                    navigationService.NavigateToViewModel<PlaybackViewModel>(navigableEntity);
+                case SubsonicModelTypeEnum.Song:
+                    navigationService.NavigateToViewModel<PlaybackViewModel>(subsonicModel);
                     break;
-                case NavigableTypeEnum.Album:
-                    navigationService.NavigateToViewModel<AlbumViewModel>(navigableEntity);
+                case SubsonicModelTypeEnum.Album:
+                    navigationService.NavigateToViewModel<AlbumViewModel>(subsonicModel);
                     break;
-                case NavigableTypeEnum.MusicDirectory:
-                    navigationService.NavigateToViewModel<MusicDirectoryViewModel>(navigableEntity);
+                case SubsonicModelTypeEnum.MusicDirectory:
+                    navigationService.NavigateToViewModel<MusicDirectoryViewModel>(subsonicModel);
                     break;
             }
         }

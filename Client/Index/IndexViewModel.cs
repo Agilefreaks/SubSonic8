@@ -4,6 +4,7 @@ using Client.Common.Models.Subsonic;
 using Subsonic8.MenuItem;
 using Subsonic8.MusicDirectory;
 using Windows.UI.Xaml.Controls;
+using Models = Client.Common.Models.Subsonic;
 
 namespace Subsonic8.Index
 {
@@ -48,7 +49,7 @@ namespace Subsonic8.Index
 
         public async void ArtistClick(ItemClickEventArgs eventArgs)
         {
-            var artist = (Artist)((MenuItemViewModel) eventArgs.ClickedItem).Item;
+            var artist = (Models.Artist)((MenuItemViewModel) eventArgs.ClickedItem).Item;
             var getMusicDirectoryResult = SubsonicService.GetMusicDirectory(artist.Id);
             
             await getMusicDirectoryResult.Execute();

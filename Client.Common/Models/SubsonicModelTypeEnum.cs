@@ -1,6 +1,6 @@
 namespace Client.Common.Models
 {
-    public enum NavigableTypeEnum
+    public enum SubsonicModelTypeEnum
     {
         MusicDirectory,
         Album,

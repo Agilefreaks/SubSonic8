@@ -6,7 +6,7 @@ namespace Subsonic8.MusicDirectory
 {
     public interface IMusicDirectoryViewModel
     {
-        INavigableEntity Parameter { get; set; }
+        ISubsonicModel Parameter { get; set; }
 
         Client.Common.Models.Subsonic.MusicDirectory MusicDirectory { get; set; }
 

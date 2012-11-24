@@ -12,12 +12,12 @@ namespace Subsonic8.MusicDirectory
 {
     public class MusicDirectoryViewModel : ViewModelBase, IMusicDirectoryViewModel
     {
-        private INavigableEntity _parameter;
+        private ISubsonicModel _parameter;
 
         private BindableCollection<MenuItemViewModel> _menuItems;
         private Client.Common.Models.Subsonic.MusicDirectory _musicDirectory;
 
-        public INavigableEntity Parameter
+        public ISubsonicModel Parameter
         {
             get
             {

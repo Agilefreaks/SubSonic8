@@ -4,10 +4,8 @@ using System.Xml.Serialization;
 namespace Client.Common.Models.Subsonic
 {
     [XmlRoot(ElementName = "index", Namespace = "http://subsonic.org/restapi")]
-    public class IndexItem :INavigableEntity
+    public class IndexItem : SubsonicModelBase
     {
-        public int Id { get; set; }
-
         [XmlAttribute("name")]
         public string Name { get; set; }
 
@@ -19,9 +17,9 @@ namespace Client.Common.Models.Subsonic
             Artists = new List<Artist>();
         }
 
-        public NavigableTypeEnum Type
+        public override SubsonicModelTypeEnum Type
         {
-            get { return NavigableTypeEnum.MusicDirectory; }
+            get { return SubsonicModelTypeEnum.MusicDirectory; }
         }
     }
 }

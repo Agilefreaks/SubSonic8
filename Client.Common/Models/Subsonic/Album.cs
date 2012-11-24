@@ -4,11 +4,8 @@ using System.Xml.Serialization;
 namespace Client.Common.Models.Subsonic
 {
     [XmlRoot(ElementName = "album", Namespace = "http://subsonic.org/restapi")]
-    public class Album : INavigableEntity
+    public class Album : SubsonicModelBase
     {
-        [XmlAttribute("id")]
-        public int Id { get; set; }
-
         [XmlAttribute("name")]
         public string Name { get; set; }
 
@@ -27,9 +24,9 @@ namespace Client.Common.Models.Subsonic
         [XmlElement(ElementName = "song", Namespace = "http://subsonic.org/restapi")]
         public List<Song> Songs { get; set; }
 
-        public NavigableTypeEnum Type
+        public override SubsonicModelTypeEnum Type
         {
-            get { return NavigableTypeEnum.Album; }
+            get { return SubsonicModelTypeEnum.Album; }
         }
     }
 }

@@ -103,9 +103,11 @@
   <ItemGroup>
     <Compile Include="CustomFrameAdapter.cs" />
     <Compile Include="ISubsonicServiceConfiguration.cs" />
-    <Compile Include="Models\IIdentifiableEntity.cs" />
-    <Compile Include="Models\INavigableEntity.cs" />
-    <Compile Include="Models\NavigableTypeEnum.cs" />
+    <Compile Include="IViewModel.cs" />
+    <Compile Include="Models\IId.cs" />
+    <Compile Include="Models\ISubsonicModel.cs" />
+    <Compile Include="Models\Subsonic\SubsonicModelBase.cs" />
+    <Compile Include="Models\SubsonicModelTypeEnum.cs" />
     <Compile Include="Models\Subsonic\Album.cs" />
     <Compile Include="Models\Subsonic\ExpandedArtist.cs" />
     <Compile Include="Models\Subsonic\Song.cs" />

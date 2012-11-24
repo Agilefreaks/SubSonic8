@@ -10,10 +10,10 @@ namespace Subsonic8.Album
 {
     public class AlbumViewModel : ViewModelBase, IAlbumViewModel
     {
-        private INavigableEntity _parameter;
+        private ISubsonicModel _parameter;
         private Client.Common.Models.Subsonic.Album _album;
 
-        public INavigableEntity Parameter
+        public ISubsonicModel Parameter
         {
             get
             {

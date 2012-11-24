@@ -111,6 +111,8 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Artist\ArtistViewModel.cs" />
+    <Compile Include="Artist\IArtistViewModel.cs" />
     <Compile Include="Dialogs\DialogService.cs" />
     <Compile Include="Framework\Extensions\NavigationServiceExtensions.cs" />
     <Compile Include="Index\IIndexViewModel.cs" />

@@ -19,19 +19,19 @@ namespace Client.Common.Tests.Models.Subsonic
         [TestMethod]
         public void InstanceShouldImplementIIdentifiableEntity()
         {
-            _subject.Should().BeAssignableTo<IIdentifiableEntity>();
+            _subject.Should().BeAssignableTo<IId>();
         }
 
         [TestMethod]
         public void InstanceShouldImplementINavigableEntity()
         {
-            _subject.Should().BeAssignableTo<INavigableEntity>();
+            _subject.Should().BeAssignableTo<ISubsonicModel>();
         }
 
         [TestMethod]
         public void TypePropertyAlwaysReturnsNavigableTypeEnumAlbum()
         {
-            _subject.Type.Should().Be(NavigableTypeEnum.Album);
+            _subject.Type.Should().Be(SubsonicModelTypeEnum.Album);
         }
     }
 }

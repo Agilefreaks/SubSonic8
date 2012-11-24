@@ -8,9 +8,9 @@ namespace Subsonic8.Playback
     public class PlaybackViewModel : ViewModelBase
     {
         private readonly IEventAggregator _eventAggregator;
-        private INavigableEntity _parameter;
+        private ISubsonicModel _parameter;
 
-        public INavigableEntity Parameter
+        public ISubsonicModel Parameter
         {
             get
             {

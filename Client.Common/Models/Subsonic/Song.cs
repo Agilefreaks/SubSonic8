@@ -3,11 +3,8 @@
 namespace Client.Common.Models.Subsonic
 {
     [XmlRoot(ElementName = "song", Namespace = "http://subsonic.org/restapi")]
-    public class Song : INavigableEntity
+    public class Song : SubsonicModelBase
     {
-        [XmlAttribute("id")]
-        public int Id { get; set; }
-
         [XmlAttribute("parent")]
         public string Parent { get; set; }
 
@@ -32,9 +29,9 @@ namespace Client.Common.Models.Subsonic
         [XmlAttribute("isVideo")]
         public bool IsVideo { get; set; }
 
-        public NavigableTypeEnum Type 
+        public override SubsonicModelTypeEnum Type 
         {
-            get { return IsVideo ? NavigableTypeEnum.Video : NavigableTypeEnum.Song; }
+            get { return IsVideo ? SubsonicModelTypeEnum.Video : SubsonicModelTypeEnum.Song; }
         }
     }
 }

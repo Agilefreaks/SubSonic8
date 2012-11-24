@@ -6,7 +6,7 @@ namespace Subsonic8.Album
 {
     public interface IAlbumViewModel
     {
-        INavigableEntity Parameter { get; set; }
+        ISubsonicModel Parameter { get; set; }
 
         Client.Common.Models.Subsonic.Album Album { get; set; }
 

@@ -3,11 +3,8 @@
 namespace Client.Common.Models.Subsonic
 {
     [XmlRoot(ElementName = "artist", Namespace = "http://subsonic.org/restapi")]
-    public class ExpandedArtist : INavigableEntity
+    public class ExpandedArtist : SubsonicModelBase
     {
-        [XmlAttribute("id")]
-        public int Id { get; set; }
-
         [XmlAttribute("name")]
         public string Name { get; set; }
 
@@ -17,9 +14,9 @@ namespace Client.Common.Models.Subsonic
         [XmlAttribute("albumCount")]
         public int AlbumCount { get; set; }
 
-        public NavigableTypeEnum Type
+        public override SubsonicModelTypeEnum Type
         {
-            get { return NavigableTypeEnum.Artist; }
+            get { return SubsonicModelTypeEnum.Artist; }
         }
     }
 }
