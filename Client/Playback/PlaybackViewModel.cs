@@ -1,7 +1,6 @@
 ﻿using System;
 using Caliburn.Micro;
 using Client.Common.Models;
-using Client.Common.Models.Subsonic;
 using Client.Common.ViewModels;
 using Subsonic8.Messages;
 
@@ -62,17 +61,16 @@ namespace Subsonic8.Playback
 
         private void StartPlayback()
         {
-            var song = Parameter as ISubsonicModel;
-            if (song == null) return;
-            if (song.Type == SubsonicModelTypeEnum.Song)
+            if (Parameter == null) return;
+            if (Parameter.Type == SubsonicModelTypeEnum.Video)
             {
-                _eventAggregator.Publish(new PlayFile { Id = song.Id });
-                State = PlaybackViewModelStateEnum.Audio;
+                Source = SubsonicService.GetUriForVideoWithId(Parameter.Id);
+                State = PlaybackViewModelStateEnum.Video;
             }
             else
             {
-                Source = SubsonicService.GetUriForVideoWithId(song.Id);
-                State = PlaybackViewModelStateEnum.Video;
+                _eventAggregator.Publish(new PlayFile { Id = Parameter.Id });
+                State = PlaybackViewModelStateEnum.Audio;
             }
         }
 
