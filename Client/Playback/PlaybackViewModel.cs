@@ -63,9 +63,9 @@ namespace Subsonic8.Playback
 
         private void StartPlayback()
         {
-            var song = Parameter as Song;
+            var song = Parameter as ISubsonicModel;
             if (song == null) return;
-            if (song.IsVideo == false)
+            if (song.Type == SubsonicModelTypeEnum.Song)
             {
                 _eventAggregator.Publish(new PlayFile { Id = song.Id });
                 State = PlaybackViewModelStateEnum.Audio;
