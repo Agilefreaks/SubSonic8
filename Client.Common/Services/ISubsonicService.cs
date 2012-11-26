@@ -18,5 +18,7 @@ namespace Client.Common.Services
         Func<string, ISearchResult> Search { get; set; }
 
         Uri GetUriForFileWithId(int id);
+
+        Uri GetUriForVideoWithId(int id);
     }
 }

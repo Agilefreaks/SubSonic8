@@ -5,6 +5,7 @@ namespace Client.Common.Services
     public class SubsonicServiceConfiguration : PropertyChangedBase, ISubsonicServiceConfiguration
     {
         private string _username, _password, _serviceUrl;
+        private string _baseUrl;
 
         public string Username
         {
@@ -44,6 +45,21 @@ namespace Client.Common.Services
             set
             {
                 _serviceUrl = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
+        public string BaseUrl
+        {
+            get
+            {
+                return _baseUrl;
+            }
+
+            set
+            {
+                if (value == _baseUrl) return;
+                _baseUrl = value;
                 NotifyOfPropertyChange();
             }
         }

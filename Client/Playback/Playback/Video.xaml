@@ -3,12 +3,11 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:mmppf="using:Microsoft.PlayerFramework" xmlns:HLSPlugin="using:HLSPlugin" mc:Ignorable="d">
+    xmlns:mmppf="using:Microsoft.PlayerFramework" mc:Ignorable="d">
 
     <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}" x:Name="LayoutRoot">
         <mmppf:MediaPlayer x:Name="player" Source="{Binding Path=Source}" Width="720" Height="576" IsFullScreenVisible="False">
             <mmppf:MediaPlayer.Plugins>
-                <HLSPlugin:HLSPlugin />
                 <mmppf:PlaylistPlugin AutoAdvance="True" />
             </mmppf:MediaPlayer.Plugins>
         </mmppf:MediaPlayer>

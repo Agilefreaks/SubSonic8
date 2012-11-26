@@ -71,9 +71,7 @@ namespace Subsonic8.Playback
             }
             else
             {
-                //Source = SubsonicService.GetUriForFileWithId(song.Id);
-                //Source = new Uri("http://cristibadila.dynalias.com:33770/music/stream/stream.ts?id=30609&hls=true&timeOffset=0&player=113&duration=10");
-                Source = new Uri("http://cristibadila.dynalias.com:33770/music/rest/hls.m3u8?u=media&p=media&v=1.8.0&c=subsonic8&id=30609");
+                Source = SubsonicService.GetUriForVideoWithId(song.Id);
                 State = PlaybackViewModelStateEnum.Video;
             }
         }
