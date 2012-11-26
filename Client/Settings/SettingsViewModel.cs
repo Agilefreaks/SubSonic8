@@ -1,6 +1,5 @@
 using System.ComponentModel;
 using Caliburn.Micro;
-using Client.Common;
 using Client.Common.Services;
 using WinRtUtility;
 
