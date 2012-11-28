@@ -117,6 +117,7 @@
     <Compile Include="Mocks\MockGetRootResult.cs" />
     <Compile Include="Mocks\MockNavigationService.cs" />
     <Compile Include="MusicDirectory\MusicDirectoryViewModelTests.cs" />
+    <Compile Include="Playback\PlaybackViewModelTests.cs" />
     <Compile Include="Search\SearchConvertersTests.cs" />
     <Compile Include="Search\SearchViewModelTests.cs" />
     <Compile Include="Shell\ShellViewModelTests.cs" />

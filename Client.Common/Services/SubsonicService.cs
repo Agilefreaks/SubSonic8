@@ -48,7 +48,7 @@ namespace Client.Common.Services
 
         public Uri GetUriForVideoWithId(int id)
         {
-            return new Uri(string.Format(string.Format("{0}stream/stream.ts?id={1}&hls=true&timeOffset=0", _configuration.BaseUrl, id)));
+            return new Uri(string.Format("{0}stream/stream.ts?id={1}&hls=true&timeOffset=0", _configuration.BaseUrl, id));
         }
 
         private ISearchResult SearchImpl(string query)

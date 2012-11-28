@@ -25,7 +25,6 @@ namespace Subsonic8.Playback
 
             set
             {
-                if (Equals(value, _parameter)) return;
                 _parameter = value;
                 NotifyOfPropertyChange();
                 StartPlayback();
