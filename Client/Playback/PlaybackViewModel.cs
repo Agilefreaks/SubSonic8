@@ -8,17 +8,20 @@ namespace Subsonic8.Playback
 {
     public class PlaybackViewModel : ViewModelBase
     {
+        #region Private Fields
+
         private readonly IEventAggregator _eventAggregator;
         private ISubsonicModel _parameter;
         private PlaybackViewModelStateEnum _state;
         private Uri _source;
 
+        #endregion
+
+        #region Public Properties
+
         public ISubsonicModel Parameter
         {
-            get
-            {
-                return _parameter;
-            }
+            get { return _parameter; }
 
             set
             {
@@ -31,10 +34,7 @@ namespace Subsonic8.Playback
 
         public Uri Source
         {
-            get
-            {
-                return _source;
-            }
+            get { return _source; }
 
             set
             {
@@ -46,10 +46,7 @@ namespace Subsonic8.Playback
 
         public PlaybackViewModelStateEnum State
         {
-            get
-            {
-                return _state;
-            }
+            get { return _state; }
 
             set
             {
@@ -59,9 +56,15 @@ namespace Subsonic8.Playback
             }
         }
 
+        #endregion
+
+        public PlaybackViewModel(IEventAggregator eventAggregator)
+        {
+            _eventAggregator = eventAggregator;
+        }
+
         private void StartPlayback()
         {
-            if (Parameter == null) return;
             if (Parameter.Type == SubsonicModelTypeEnum.Video)
             {
                 Source = SubsonicService.GetUriForVideoWithId(Parameter.Id);
@@ -72,11 +75,6 @@ namespace Subsonic8.Playback
                 _eventAggregator.Publish(new PlayFile { Id = Parameter.Id });
                 State = PlaybackViewModelStateEnum.Audio;
             }
-        }
-
-        public PlaybackViewModel(IEventAggregator eventAggregator)
-        {
-            _eventAggregator = eventAggregator;
         }
     }
 }

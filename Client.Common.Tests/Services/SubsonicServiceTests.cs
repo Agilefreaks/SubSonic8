@@ -3,7 +3,7 @@ using Client.Common.Services;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 
-namespace Client.Common.Tests
+namespace Client.Common.Tests.Services
 {
     [TestClass]
     public class SubsonicServiceTests
