@@ -112,6 +112,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Album\AlbumViewModelTests.cs" />
+    <Compile Include="BottomBarViewModelTests.cs" />
     <Compile Include="Index\IndexViewModelTests.cs" />
     <Compile Include="Main\MainViewModelTests.cs" />
     <Compile Include="Mocks\MockEventAggregator.cs" />
@@ -119,6 +120,7 @@
     <Compile Include="Mocks\MockNavigationService.cs" />
     <Compile Include="Mocks\MockSubsonicService.cs" />
     <Compile Include="MusicDirectory\MusicDirectoryViewModelTests.cs" />
+    <Compile Include="Playback\PlaybackViewModelTests.cs" />
     <Compile Include="Search\SearchConvertersTests.cs" />
     <Compile Include="Search\SearchViewModelTests.cs" />
     <Compile Include="Shell\ShellViewModelTests.cs" />

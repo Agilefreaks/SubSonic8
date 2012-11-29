@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Client.Common.Models.Subsonic;
+using Client.Tests.Mocks;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using Subsonic8.MenuItem;
 using Subsonic8.Search;
+using Subsonic8.Shell;
 
 namespace Client.Tests.Search
 {
@@ -12,11 +14,19 @@ namespace Client.Tests.Search
     public class SearchViewModelTests
     {
         private ISearchViewModel _subject;
+        private MockEventAggregator _eventAggregator;
+        private MockSubsonicService _subsonicService;
+        private ShellViewModel _shellViewModel;
+        private MockNavigationService _navigationService;
 
         [TestInitialize]
         public void TestInitialize()
         {
-            _subject = new SearchViewModel();
+            _eventAggregator = new MockEventAggregator();
+            _subsonicService = new MockSubsonicService();
+            _navigationService = new MockNavigationService();
+            _shellViewModel = new ShellViewModel(_eventAggregator, _subsonicService, _navigationService);
+            _subject = new SearchViewModel(_shellViewModel, _eventAggregator);
         }
 
         [TestMethod]
