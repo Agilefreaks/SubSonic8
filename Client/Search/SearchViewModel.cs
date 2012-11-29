@@ -1,18 +1,27 @@
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
-using Client.Common;
+using Caliburn.Micro;
 using Client.Common.Models.Subsonic;
 using Client.Common.ViewModels;
+using Subsonic8.BottomBar;
 using Subsonic8.Framework.Extensions;
 using Subsonic8.MenuItem;
+using Subsonic8.Shell;
 using Windows.UI.Xaml.Controls;
 
 namespace Subsonic8.Search
 {
     public class SearchViewModel : ViewModelBase, ISearchViewModel
     {
+        private readonly IShellViewModel _shellViewModel;
         private SearchResultCollection _parameter;
         private List<MenuItemViewModel> _menuItemViewModels;
+
+        public ObservableCollection<MenuItemViewModel> SelectedItems
+        {
+            get { return _shellViewModel.BottomBar.SelectedItems; }
+        }
 
         public SearchResultCollection Parameter
         {
@@ -54,8 +63,10 @@ namespace Subsonic8.Search
             }
         }
 
-        public SearchViewModel()
+        public SearchViewModel(IShellViewModel shellViewModel, IEventAggregator eventAggregator)
         {
+            _shellViewModel = shellViewModel;
+            _shellViewModel.BottomBar = new BottomBarViewModel(eventAggregator);
             MenuItemViewModels = new List<MenuItemViewModel>();
         }
 

@@ -1,9 +1,11 @@
 ﻿<Page
     x:Class="Subsonic8.Search.SearchView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:cal="using:Caliburn.Micro"
-    mc:Ignorable="d">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:cal="using:Caliburn.Micro"
+    xmlns:i="using:WinRtBehaviors" xmlns:custom="using:Subsonic8.Search" mc:Ignorable="d">
     
     <Page.Resources>
         <CollectionViewSource x:Key="GroupedSource" IsSourceGrouped="True" Source="{Binding MenuItems}" />
@@ -11,7 +13,7 @@
             <ContentControl cal:View.Model="{Binding}"/>
         </DataTemplate>
     </Page.Resources>
-        
+
     <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="140"/>
@@ -28,12 +30,15 @@
             <TextBlock x:Name="DisplayName" Style="{StaticResource PageHeaderTextStyle}" Grid.Column="1"/>
         </Grid>
         
-        <GridView Grid.Row="1" Margin="0,-3,0,0" Padding="116,0,116,46" SelectionMode="None" 
+        <GridView Grid.Row="1" Margin="0,-3,0,0" Padding="116,0,116,46" SelectionMode="Multiple" 
                   ItemsSource="{Binding Source={StaticResource GroupedSource}}"
+                  custom:MultipleSelectBehavior.SelectedItems="{Binding SelectedItems, Mode=TwoWay}"
                   ItemTemplate="{StaticResource MenuItemTemplate}"
                   IsItemClickEnabled="True"
                   cal:Message.Attach="[Event ItemClick] = [Action SearchResultClick($eventArgs)]">
-            
+
+            <i:Interaction.Behaviors />
+
             <GridView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <StackPanel Orientation="Horizontal"/>
