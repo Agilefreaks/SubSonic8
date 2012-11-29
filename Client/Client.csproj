@@ -141,6 +141,7 @@
       <DependentUpon>MusicDirectoryView.xaml</DependentUpon>
     </Compile>
     <Compile Include="MusicDirectory\MusicDirectoryViewModel.cs" />
+    <Compile Include="Playback\IPlaybackViewModel.cs" />
     <Compile Include="Playback\PlaybackView.xaml.cs">
       <DependentUpon>PlaybackView.xaml</DependentUpon>
     </Compile>

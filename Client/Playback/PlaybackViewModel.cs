@@ -1,19 +1,21 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using Caliburn.Micro;
-using Client.Common;
 using Client.Common.Models;
-using Client.Common.Models.Subsonic;
 using Client.Common.ViewModels;
 using Subsonic8.Messages;
+using Subsonic8.Shell;
 
 namespace Subsonic8.Playback
 {
-    public class PlaybackViewModel : ViewModelBase
+    public class PlaybackViewModel : ViewModelBase, IPlaybackViewModel
     {
         private readonly IEventAggregator _eventAggregator;
+        private readonly IShellViewModel _shellViewModel;
         private ISubsonicModel _parameter;
         private PlaybackViewModelStateEnum _state;
         private Uri _source;
+        private ObservableCollection<ISubsonicModel> _playlist;
 
         public ISubsonicModel Parameter
         {
@@ -61,13 +63,32 @@ namespace Subsonic8.Playback
             }
         }
 
-        private void StartPlayback()
+        public ObservableCollection<ISubsonicModel> Playlist
         {
-            var song = Parameter as ISubsonicModel;
+            get { return _playlist; }
+            set
+            {
+                if (Equals(value, _playlist)) return;
+                _playlist = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
+        public PlaybackViewModel(IEventAggregator eventAggregator, IShellViewModel shellViewModel)
+        {
+            _eventAggregator = eventAggregator;
+            _shellViewModel = shellViewModel;
+            _eventAggregator.Subscribe(this);
+            Playlist = new ObservableCollection<ISubsonicModel>();
+        }
+
+        public void StartPlayback()
+        {
+            var song = Parameter;
             if (song == null) return;
             if (song.Type == SubsonicModelTypeEnum.Song)
             {
-                _eventAggregator.Publish(new PlayFile { Id = song.Id });
+                Handle(new PlayFile { Id = song.Id });
                 State = PlaybackViewModelStateEnum.Audio;
             }
             else
@@ -77,9 +98,17 @@ namespace Subsonic8.Playback
             }
         }
 
-        public PlaybackViewModel(IEventAggregator eventAggregator)
+        public void Handle(PlaylistMessage message)
         {
-            _eventAggregator = eventAggregator;
+            foreach (var item in message.Queue)
+            {
+                Playlist.Add(item);
+            }
+        }
+
+        public void Handle(PlayFile message)
+        {
+            _shellViewModel.Source = SubsonicService.GetUriForFileWithId(message.Id);
         }
     }
 }

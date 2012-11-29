@@ -5,6 +5,7 @@ using Client.Common;
 using Client.Common.Services;
 using Client.Common.ViewModels;
 using Subsonic8.Main;
+using Subsonic8.Playback;
 using Subsonic8.Settings;
 using Subsonic8.Shell;
 using WinRtUtility;
@@ -32,6 +33,7 @@ namespace Subsonic8
 
             _container.RegisterSingleton(typeof(ISubsonicService), "SubsonicService", typeof(SubsonicService));
             _container.RegisterSingleton(typeof(IShellViewModel), "ShellViewModel", typeof(ShellViewModel));
+            _container.RegisterSingleton(typeof(IPlaybackViewModel), "PlaybackViewModel", typeof(PlaybackViewModel));
 
             SettingsPane.GetForCurrentView().CommandsRequested += (sender, args) => args.AddSetting<SettingsViewModel>();
         }
@@ -86,6 +88,14 @@ namespace Subsonic8
 
             _shellViewModel = (IShellViewModel) _container.GetInstance(typeof (IShellViewModel), null);
             ViewModelBinder.Bind(_shellViewModel, shellView, null);
+
+            StartPlaybackViewModel();
+        }
+
+        private void StartPlaybackViewModel()
+        {
+            //Assure Playback view model is subscribed to the event aggregator
+            _container.GetInstance(typeof(IPlaybackViewModel), null);
         }
 
         protected async override void OnSearchActivated(SearchActivatedEventArgs args)
