@@ -116,6 +116,10 @@
     </Compile>
     <Compile Include="Artist\ArtistViewModel.cs" />
     <Compile Include="Artist\IArtistViewModel.cs" />
+    <Compile Include="BottomBar\BottomBarView.xaml.cs">
+      <DependentUpon>BottomBarView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="BottomBar\BottomBarViewModel.cs" />
     <Compile Include="Dialogs\DialogService.cs" />
     <Compile Include="Framework\DetailViewModelBase.cs" />
     <Compile Include="Framework\Extensions\NavigationServiceExtensions.cs" />
@@ -165,6 +169,7 @@
     <Compile Include="BottomBar\IPlaylistBarViewModel.cs" />
     <Compile Include="Shell\IShellViewModel.cs" />
     <Compile Include="Search\SearchViewModel.cs" />
+    <Compile Include="Shell\IMenuBarProvider.cs" />
     <Compile Include="Shell\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
@@ -195,6 +200,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Artist\ArtistView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="BottomBar\BottomBarView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
