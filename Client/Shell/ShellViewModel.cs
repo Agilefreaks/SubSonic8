@@ -1,18 +1,19 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Caliburn.Micro;
-using Client.Common;
 using Client.Common.Models.Subsonic;
 using Client.Common.Services;
+using Subsonic8.BottomBar;
 using Subsonic8.Messages;
 using Subsonic8.Search;
 using Windows.ApplicationModel.Search;
 
 namespace Subsonic8.Shell
 {
-    public class ShellViewModel : Screen, IShellViewModel
+    public class ShellViewModel : Screen, IShellViewModel, IMenuBarViewModelProvider
     {
         private Uri _source;
+        private IPlaylistBarViewModel _bottomBar;
 
         public Uri Source
         {
@@ -25,6 +26,17 @@ namespace Subsonic8.Shell
             {
                 if (Equals(value, _source)) return;
                 _source = value;
+                NotifyOfPropertyChange();
+            }
+        }
+        
+        public IPlaylistBarViewModel BottomBar
+        {
+            get { return _bottomBar; }
+            set
+            {
+                if (_bottomBar == value) return;
+                _bottomBar = value;
                 NotifyOfPropertyChange();
             }
         }
@@ -41,11 +53,6 @@ namespace Subsonic8.Shell
             NavigationService = navigationService;
             NavigateToSearhResult = NavigateToSearchResultCall;
             eventAggregator.Subscribe(this);
-        }
-
-        public void Handle(PlayFile message)
-        {
-            Source = SubsonicService.GetUriForFileWithId(message.Id);
         }
 
         public async Task PerformSubsonicSearch(string query)
