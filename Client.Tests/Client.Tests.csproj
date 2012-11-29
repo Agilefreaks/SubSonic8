@@ -114,8 +114,10 @@
     <Compile Include="Album\AlbumViewModelTests.cs" />
     <Compile Include="Index\IndexViewModelTests.cs" />
     <Compile Include="Main\MainViewModelTests.cs" />
+    <Compile Include="Mocks\MockEventAggregator.cs" />
     <Compile Include="Mocks\MockGetRootResult.cs" />
     <Compile Include="Mocks\MockNavigationService.cs" />
+    <Compile Include="Mocks\MockSubsonicService.cs" />
     <Compile Include="MusicDirectory\MusicDirectoryViewModelTests.cs" />
     <Compile Include="Search\SearchConvertersTests.cs" />
     <Compile Include="Search\SearchViewModelTests.cs" />
