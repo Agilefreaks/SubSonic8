@@ -264,6 +264,10 @@
       <Project>{a8f49761-4d7a-458f-b1b1-4a66c421b3aa}</Project>
       <Name>Client.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\HLSPlugin\HLSPlugin.csproj">
+      <Project>{966047c6-5a8a-4e8e-8633-f0580964fdd7}</Project>
+      <Name>HLSPlugin</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Caliburn.Micro, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">

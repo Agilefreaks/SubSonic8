@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Client.Common.Models;
 using Client.Common.Models.Subsonic;
 using Client.Tests.Mocks;

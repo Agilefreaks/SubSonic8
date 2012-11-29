@@ -80,9 +80,9 @@ namespace Subsonic8.Framework
 
         private async void LoadModel()
         {
-            var getAlbumResult = GetResult(Parameter.Id);
-            await getAlbumResult.Execute();
-            Item = getAlbumResult.Result;
+            var getModel = GetResult(Parameter.Id);
+            await getModel.Execute();
+            Item = getModel.Result;
         }
 
         private void PopulateMenuItems()

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Caliburn.Micro;
-using Client.Common;
 using Client.Common.Services;
 using Client.Common.ViewModels;
 using Subsonic8.Main;
@@ -84,7 +83,7 @@ namespace Subsonic8
             RegisterNavigationService(shellView.ShellFrame);
 
             var navigationService = _container.GetInstance(typeof (INavigationService), null) as INavigationService;
-            navigationService.UriFor<MainViewModel>().Navigate();
+            navigationService.NavigateToViewModel<MainViewModel>();
 
             _shellViewModel = (IShellViewModel) _container.GetInstance(typeof (IShellViewModel), null);
             ViewModelBinder.Bind(_shellViewModel, shellView, null);
@@ -120,9 +119,11 @@ namespace Subsonic8
             var subsonicServiceConfiguration = await storageHelper.LoadAsync();
 
 #if DEBUG
+            const string baseUrl = "http://cristibadila.dynalias.com:33770/music/";
             subsonicServiceConfiguration = new SubsonicServiceConfiguration
             {
-                ServiceUrl = "http://cristibadila.dynalias.com:33770/music/rest/{0}?u={1}&p={2}&v=1.8.0&c=SubSonic8",
+                BaseUrl = baseUrl,
+                ServiceUrl = baseUrl + "rest/{0}?u={1}&p={2}&v=1.8.0&c=SubSonic8",
                 Username = "media",
                 Password = "media"
             };

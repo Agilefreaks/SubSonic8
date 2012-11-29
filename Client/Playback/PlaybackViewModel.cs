@@ -10,6 +10,8 @@ namespace Subsonic8.Playback
 {
     public class PlaybackViewModel : ViewModelBase, IPlaybackViewModel
     {
+        #region Private Fields
+
         private readonly IEventAggregator _eventAggregator;
         private readonly IShellViewModel _shellViewModel;
         private ISubsonicModel _parameter;
@@ -17,16 +19,16 @@ namespace Subsonic8.Playback
         private Uri _source;
         private ObservableCollection<ISubsonicModel> _playlist;
 
+        #endregion
+
+        #region Public Properties
+
         public ISubsonicModel Parameter
         {
-            get
-            {
-                return _parameter;
-            }
+            get { return _parameter; }
 
             set
             {
-                if (Equals(value, _parameter)) return;
                 _parameter = value;
                 NotifyOfPropertyChange();
                 StartPlayback();
@@ -35,31 +37,23 @@ namespace Subsonic8.Playback
 
         public Uri Source
         {
-            get
-            {
-                return _source;
-            }
+            get { return _source; }
 
             set
             {
-                if(_source == value) return;
                 _source = value;
-                NotifyOfPropertyChange(() => Source);
+                NotifyOfPropertyChange();
             }
         }
 
         public PlaybackViewModelStateEnum State
         {
-            get
-            {
-                return _state;
-            }
+            get { return _state; }
 
             set
             {
-                if(_state == value) return;
                 _state = value;
-                NotifyOfPropertyChange(() => State);
+                NotifyOfPropertyChange();
             }
         }
 
@@ -68,11 +62,12 @@ namespace Subsonic8.Playback
             get { return _playlist; }
             set
             {
-                if (Equals(value, _playlist)) return;
                 _playlist = value;
                 NotifyOfPropertyChange();
             }
         }
+
+        #endregion
 
         public PlaybackViewModel(IEventAggregator eventAggregator, IShellViewModel shellViewModel)
         {
@@ -85,7 +80,6 @@ namespace Subsonic8.Playback
         public void StartPlayback()
         {
             var song = Parameter;
-            if (song == null) return;
             if (song.Type == SubsonicModelTypeEnum.Song)
             {
                 Handle(new PlayFile { Id = song.Id });
@@ -105,7 +99,7 @@ namespace Subsonic8.Playback
                 Playlist.Add(item);
             }
         }
-
+        
         public void Handle(PlayFile message)
         {
             _shellViewModel.Source = SubsonicService.GetUriForFileWithId(message.Id);

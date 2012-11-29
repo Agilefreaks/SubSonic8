@@ -119,7 +119,7 @@
     <Compile Include="Results\GetAlbumResultTests.cs" />
     <Compile Include="Results\GetMusicDirectoryResultTests.cs" />
     <Compile Include="Results\GetRootResultTests.cs" />
-    <Compile Include="SubsonicServiceTests.cs" />
+    <Compile Include="Services\SubsonicServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
