@@ -4,6 +4,7 @@ using Caliburn.Micro;
 using Client.Common.Models.Subsonic;
 using Client.Common.Services;
 using Subsonic8.BottomBar;
+using Subsonic8.Messages;
 using Subsonic8.Search;
 using Windows.ApplicationModel.Search;
 
@@ -11,6 +12,7 @@ namespace Subsonic8.Shell
 {
     public class ShellViewModel : Screen, IShellViewModel, IBottomBarViewModelProvider
     {
+        private readonly IEventAggregator _eventAggregator;
         private Uri _source;
         private IBottomBarViewModel _bottomBar;
 
@@ -52,6 +54,7 @@ namespace Subsonic8.Shell
 
         public ShellViewModel(IEventAggregator eventAggregator, ISubsonicService subsonicService, INavigationService navigationService)
         {
+            _eventAggregator = eventAggregator;
             SubsonicService = subsonicService;
             NavigationService = navigationService;
             NavigateToSearhResult = NavigateToSearchResultCall;
@@ -80,6 +83,11 @@ namespace Subsonic8.Shell
         private async void OnQuerySubmitted(SearchPane sender, SearchPaneQuerySubmittedEventArgs args)
         {
             await PerformSubsonicSearch(args.QueryText);
+        }
+
+        public void PlayNext()
+        {
+            _eventAggregator.Publish(new MediaEndedMessage());
         }
     }
 }

@@ -18,7 +18,7 @@ namespace Subsonic8.Playback
         private PlaybackViewModelStateEnum _state;
         private Uri _source;
         private ObservableCollection<ISubsonicModel> _playlist;
-
+        private int _currentTrackNo;
         #endregion
 
         #region Public Properties
@@ -88,6 +88,7 @@ namespace Subsonic8.Playback
             else
             {
                 Source = SubsonicService.GetUriForFileWithId(song.Id);
+                _shellViewModel.Source = null;
                 State = PlaybackViewModelStateEnum.Video;
             }
         }
@@ -102,7 +103,17 @@ namespace Subsonic8.Playback
         
         public void Handle(PlayFile message)
         {
+            Source = null;
             _shellViewModel.Source = SubsonicService.GetUriForFileWithId(message.Id);
+        }
+
+        public void Handle(MediaEndedMessage message)
+        {
+            _currentTrackNo++;
+            if (_currentTrackNo < Playlist.Count)
+                Handle(new PlayFile { Id = Playlist[_currentTrackNo].Id });
+            else
+                _shellViewModel.Source = null;
         }
     }
 }

@@ -6,7 +6,7 @@ using Subsonic8.Messages;
 
 namespace Subsonic8.Playback
 {
-    public interface IPlaybackViewModel : IHandle<PlaylistMessage>, IHandle<PlayFile>
+    public interface IPlaybackViewModel : IHandle<PlaylistMessage>, IHandle<PlayFile>, IHandle<MediaEndedMessage>
     {
         ISubsonicModel Parameter { get; set; }
         Uri Source { get; set; }

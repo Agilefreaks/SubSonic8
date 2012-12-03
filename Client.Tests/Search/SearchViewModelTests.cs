@@ -4,6 +4,7 @@ using Client.Common.Models.Subsonic;
 using Client.Tests.Mocks;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+using Subsonic8.BottomBar;
 using Subsonic8.MenuItem;
 using Subsonic8.Search;
 using Subsonic8.Shell;
@@ -26,7 +27,7 @@ namespace Client.Tests.Search
             _subsonicService = new MockSubsonicService();
             _navigationService = new MockNavigationService();
             _shellViewModel = new ShellViewModel(_eventAggregator, _subsonicService, _navigationService);
-            //_subject = new SearchViewModel(_shellViewModel, _eventAggregator);
+            _subject = new SearchViewModel(_shellViewModel, new MediaSelectionBottomBarViewModel(_eventAggregator));
         }
 
         [TestMethod]

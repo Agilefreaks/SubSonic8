@@ -136,6 +136,7 @@
     </Compile>
     <Compile Include="MenuItem\MenuItemViewModel.cs" />
     <Compile Include="Main\MainViewModel.cs" />
+    <Compile Include="Messages\MediaEndedMessage.cs" />
     <Compile Include="Messages\PlaylistMessage.cs" />
     <Compile Include="MusicDirectory\IMusicDirectoryViewModel.cs" />
     <Compile Include="MusicDirectory\MusicDirectoryView.xaml.cs">
