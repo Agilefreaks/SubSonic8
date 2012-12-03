@@ -1,4 +1,6 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using Subsonic8.MenuItem;
 using Windows.UI.Xaml;
@@ -6,10 +8,6 @@ using Windows.UI.Xaml.Controls;
 
 namespace Subsonic8.Search
 {
-    /// <summary>
-    /// Adds Multiple Selection behavior to ListViewBase
-    /// This adds capabilities to set/get Multiple selection from Binding (ViewModel)
-    /// </summary>
     public class MultipleSelectBehavior
     {
         #region SelectedItems Attached Property
@@ -18,7 +16,7 @@ namespace Subsonic8.Search
             "SelectedItems",
             typeof(object),
             typeof(MultipleSelectBehavior),
-            new PropertyMetadata(new ObservableCollection<MenuItemViewModel>(), SelectedItemsChange));
+            new PropertyMetadata(new ObservableCollection<MenuItemViewModel>(), AttchedPropertyChanged));
 
         public static void SetSelectedItems(DependencyObject obj, ObservableCollection<MenuItemViewModel> selectedItems)
         {
@@ -30,35 +28,71 @@ namespace Subsonic8.Search
             return (ObservableCollection<MenuItemViewModel>)obj.GetValue(SelectedItemsProperty);
         }
 
-        private static void SelectedItemsChange(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void AttchedPropertyChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs eventArgs)
         {
-            ((GridView)d).SelectionChanged += OnSelectionChanged;
-            ((GridView)d).Unloaded += OnUnloaded;
-        }
+            var observableCollection = eventArgs.NewValue as INotifyCollectionChanged;
+            var gridView = (GridView)dependencyObject;
 
-        private static void OnUnloaded(object sender, RoutedEventArgs routedEventArgs)
-        {
-            ((GridView)sender).SelectionChanged -= OnSelectionChanged;
-            ((GridView)sender).Unloaded -= OnUnloaded;
+            var sourceChangedHandler = SetupSourceCollectionChangedEventHandler(dependencyObject, observableCollection);
+            gridView.SelectionChanged += OnSelectionChanged;
+            SetupOnUnloadedHandler(dependencyObject, observableCollection, sourceChangedHandler);
         }
 
         #endregion
 
+        private static void SetupOnUnloadedHandler(DependencyObject dependencyObject, INotifyCollectionChanged observableCollection,
+                                                   NotifyCollectionChangedEventHandler sourceChangedHandler)
+        {
+            RoutedEventHandler unloadedEventHandler = null;
+            unloadedEventHandler = (sender, args) =>
+                                       {
+                                           observableCollection.CollectionChanged -= sourceChangedHandler;
+                                           ((GridView)sender).SelectionChanged -= OnSelectionChanged;
+                                           ((GridView)sender).Unloaded -= unloadedEventHandler;
+                                       };
+            ((GridView)dependencyObject).Unloaded += unloadedEventHandler;
+        }
+
+        private static NotifyCollectionChangedEventHandler SetupSourceCollectionChangedEventHandler(DependencyObject dependencyObject,
+                                                                                          INotifyCollectionChanged observableCollection)
+        {
+            NotifyCollectionChangedEventHandler sourceChangedHandler = (s, ev) => 
+                SelectedItemsChangedFromSource(dependencyObject, s as ObservableCollection<MenuItemViewModel>);
+            observableCollection.CollectionChanged += sourceChangedHandler;
+
+            return sourceChangedHandler;
+        }
+
+        private static void SelectedItemsChangedFromSource(DependencyObject dependencyObject, IEnumerable<MenuItemViewModel> source)
+        {
+            var selectedItems = ((GridView)dependencyObject).SelectedItems;
+            if (source != null)
+            {
+                var toRemove = selectedItems.Where(i => !source.Contains(i)).ToList();
+                foreach (var item in toRemove)
+                {
+                    selectedItems.Remove(item);
+                }
+
+                foreach (var item in source.Where(i => !selectedItems.Contains(i)))
+                {
+                    selectedItems.Add(item);
+                }
+            }
+        }
+
         private static void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var selectedItems = GetSelectedItems((DependencyObject)sender);
-
             foreach (var item in e.RemovedItems.Where(selectedItems.Contains))
             {
-                selectedItems.Remove((MenuItemViewModel) item);
+                selectedItems.Remove((MenuItemViewModel)item);
             }
 
             foreach (var item in e.AddedItems.Where(item => !selectedItems.Contains(item)))
             {
-                selectedItems.Add((MenuItemViewModel) item);
+                selectedItems.Add((MenuItemViewModel)item);
             }
-
-            SetSelectedItems((DependencyObject)sender, selectedItems);
         }
     }
 }
