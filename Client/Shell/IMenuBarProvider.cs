@@ -2,8 +2,8 @@
 
 namespace Subsonic8.Shell
 {
-    public interface IMenuBarViewModelProvider
+    public interface IBottomBarViewModelProvider
     {
-        IPlaylistBarViewModel BottomBar { get; set; }
+        IBottomBarViewModel BottomBar { get; set; }
     }
 }

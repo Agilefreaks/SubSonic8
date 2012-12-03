@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Caliburn.Micro;
+﻿using System.Collections.ObjectModel;
 using Client.Tests.Mocks;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
@@ -13,16 +8,16 @@ using Subsonic8.MenuItem;
 namespace Client.Tests
 {
     [TestClass]
-    public class BottomBarViewModelTests
+    public class MediaSelectionBottomBarViewModelTests
     {
-        private BottomBarViewModel _subject;
+        private MediaSelectionBottomBarViewModel _subject;
         private MockEventAggregator _eventAggregator;
 
         [TestInitialize]
         public void TestInitialize()
         {
             _eventAggregator = new MockEventAggregator();
-            _subject = new BottomBarViewModel(_eventAggregator);
+            _subject = new MediaSelectionBottomBarViewModel(_eventAggregator);
         }
 
         [TestMethod]
@@ -48,6 +43,26 @@ namespace Client.Tests
             _subject.AddToPlaylist();
 
             _subject.SelectedItems.Should().HaveCount(0);
+        }
+
+        [TestMethod]
+        public void IsOpened_SelectedItemsIsEmpty_ReturnsFalse()
+        {
+            _subject.SelectedItems = new ObservableCollection<MenuItemViewModel>();
+
+            var isOpened = _subject.IsOpened;
+
+            isOpened.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void IsOpened_SelectedItemsIsNotEmpty_ReturnsTrue()
+        {
+            _subject.SelectedItems = new ObservableCollection<MenuItemViewModel> { new MenuItemViewModel() };
+
+            var isOpened = _subject.IsOpened;
+
+            isOpened.Should().BeTrue();
         }
     }
 }

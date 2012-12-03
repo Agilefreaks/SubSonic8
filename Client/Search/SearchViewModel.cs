@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Caliburn.Micro;
 using Client.Common.Models.Subsonic;
 using Client.Common.ViewModels;
 using Subsonic8.BottomBar;
@@ -15,12 +14,13 @@ namespace Subsonic8.Search
     public class SearchViewModel : ViewModelBase, ISearchViewModel
     {
         private readonly IShellViewModel _shellViewModel;
+        private readonly IMediaSelectionBottomBarViewModel _mediaSelectionBottomBarViewModel;
         private SearchResultCollection _parameter;
         private List<MenuItemViewModel> _menuItemViewModels;
 
         public ObservableCollection<MenuItemViewModel> SelectedItems
         {
-            get { return _shellViewModel.BottomBar.SelectedItems; }
+            get { return _mediaSelectionBottomBarViewModel.SelectedItems; }
         }
 
         public SearchResultCollection Parameter
@@ -63,10 +63,11 @@ namespace Subsonic8.Search
             }
         }
 
-        public SearchViewModel(IShellViewModel shellViewModel, IEventAggregator eventAggregator)
+        public SearchViewModel(IShellViewModel shellViewModel, IMediaSelectionBottomBarViewModel mediaSelectionBottomBarViewModel)
         {
             _shellViewModel = shellViewModel;
-            _shellViewModel.BottomBar = new BottomBarViewModel(eventAggregator);
+            _mediaSelectionBottomBarViewModel = mediaSelectionBottomBarViewModel;
+
             MenuItemViewModels = new List<MenuItemViewModel>();
         }
 
@@ -104,16 +105,12 @@ namespace Subsonic8.Search
         protected override void OnActivate()
         {
             base.OnActivate();
-            SetCorrectState();
+            _shellViewModel.BottomBar = _mediaSelectionBottomBarViewModel;
         }
 
         private void UpdateDisplayName()
         {
             DisplayName = string.Format("Searched for: \"{0}\"", Parameter.Query);
-        }
-
-        private void SetCorrectState()
-        {
         }
     }
 }

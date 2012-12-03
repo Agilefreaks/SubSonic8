@@ -11,7 +11,7 @@ namespace Subsonic8.Shell
     {
         Uri Source { get; set; }
 
-        IPlaylistBarViewModel BottomBar { get; set; }
+        IBottomBarViewModel BottomBar { get; set; }
 
         ISubsonicService SubsonicService { get; set; }
         

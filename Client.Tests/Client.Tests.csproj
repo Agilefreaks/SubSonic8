@@ -112,7 +112,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Album\AlbumViewModelTests.cs" />
-    <Compile Include="BottomBarViewModelTests.cs" />
+    <Compile Include="MediaSelectionBottomBarViewModelTests.cs" />
     <Compile Include="Index\IndexViewModelTests.cs" />
     <Compile Include="Main\MainViewModelTests.cs" />
     <Compile Include="Mocks\MockEventAggregator.cs" />

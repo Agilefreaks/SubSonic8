@@ -4,16 +4,15 @@ using Caliburn.Micro;
 using Client.Common.Models.Subsonic;
 using Client.Common.Services;
 using Subsonic8.BottomBar;
-using Subsonic8.Messages;
 using Subsonic8.Search;
 using Windows.ApplicationModel.Search;
 
 namespace Subsonic8.Shell
 {
-    public class ShellViewModel : Screen, IShellViewModel, IMenuBarViewModelProvider
+    public class ShellViewModel : Screen, IShellViewModel, IBottomBarViewModelProvider
     {
         private Uri _source;
-        private IPlaylistBarViewModel _bottomBar;
+        private IBottomBarViewModel _bottomBar;
 
         public Uri Source
         {
@@ -30,9 +29,13 @@ namespace Subsonic8.Shell
             }
         }
         
-        public IPlaylistBarViewModel BottomBar
+        public IBottomBarViewModel BottomBar
         {
-            get { return _bottomBar; }
+            get
+            {
+                return _bottomBar;
+            }
+
             set
             {
                 if (_bottomBar == value) return;

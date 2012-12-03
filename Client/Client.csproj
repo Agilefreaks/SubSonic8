@@ -116,10 +116,11 @@
     </Compile>
     <Compile Include="Artist\ArtistViewModel.cs" />
     <Compile Include="Artist\IArtistViewModel.cs" />
-    <Compile Include="BottomBar\BottomBarView.xaml.cs">
-      <DependentUpon>BottomBarView.xaml</DependentUpon>
+    <Compile Include="BottomBar\IMediaSelectionBottomBarViewModel.cs" />
+    <Compile Include="BottomBar\MediaSelectionBottomBarView.xaml.cs">
+      <DependentUpon>MediaSelectionBottomBarView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BottomBar\BottomBarViewModel.cs" />
+    <Compile Include="BottomBar\MediaSelectionBottomBarViewModel.cs" />
     <Compile Include="Dialogs\DialogService.cs" />
     <Compile Include="Framework\DetailViewModelBase.cs" />
     <Compile Include="Framework\Extensions\NavigationServiceExtensions.cs" />
@@ -168,7 +169,7 @@
       <DependentUpon>MenuItemView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Messages\PlayFile.cs" />
-    <Compile Include="BottomBar\IPlaylistBarViewModel.cs" />
+    <Compile Include="BottomBar\IBottomBarViewModel.cs" />
     <Compile Include="Shell\IShellViewModel.cs" />
     <Compile Include="Search\SearchViewModel.cs" />
     <Compile Include="Shell\IMenuBarProvider.cs" />
@@ -205,7 +206,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="BottomBar\BottomBarView.xaml">
+    <Page Include="BottomBar\MediaSelectionBottomBarView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -263,10 +264,6 @@
     <ProjectReference Include="..\Client.Common\Client.Common.csproj">
       <Project>{a8f49761-4d7a-458f-b1b1-4a66c421b3aa}</Project>
       <Name>Client.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\HLSPlugin\HLSPlugin.csproj">
-      <Project>{966047c6-5a8a-4e8e-8633-f0580964fdd7}</Project>
-      <Name>HLSPlugin</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
