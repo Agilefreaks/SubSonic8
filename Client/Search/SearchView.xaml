@@ -37,8 +37,6 @@
                   IsItemClickEnabled="True"
                   cal:Message.Attach="[Event ItemClick] = [Action SearchResultClick($eventArgs)]">
 
-            <i:Interaction.Behaviors />
-
             <GridView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <StackPanel Orientation="Horizontal"/>
