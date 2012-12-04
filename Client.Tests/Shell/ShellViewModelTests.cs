@@ -62,6 +62,21 @@ namespace Client.Tests.Shell
             Assert.IsTrue(called);
         }
 
+        [TestMethod]
+        public void PlayNextShouldCallPublishOnEventAggregator()
+        {
+            _subject.PlayNext(null, null);
+            _eventAggregator.PublishCallCount.Should().Be(1);
+        }
+
+        [TestMethod]
+        public void PlayPreviousShouldCallPublishOnEventAggregator()
+        {
+            _subject.PlayPrevious(null, null);
+
+            _eventAggregator.PublishCallCount.Should().Be(1);
+        }
+
         # region Mocks
         internal class MockSearchResult : SearchResult
         {

@@ -1,5 +1,8 @@
 ﻿using System;
+using Caliburn.Micro;
+using Subsonic8.Messages;
 using Windows.Media;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
@@ -7,8 +10,12 @@ using Windows.UI.Xaml.Navigation;
 
 namespace Subsonic8.Shell
 {
-    public sealed partial class ShellView
+    public sealed partial class ShellView : IPlayerControls
     {
+        public event RoutedEventHandler PlayNextClicked;
+
+        public event RoutedEventHandler PlayPreviousClicked;
+
         public Frame ShellFrame
         {
             get { return shellFrame; }
@@ -26,6 +33,8 @@ namespace Subsonic8.Shell
             MediaControl.PausePressed += MediaControlPausePressed;
             MediaControl.PlayPauseTogglePressed += MediaControlPlayPauseTogglePressed;
             MediaControl.StopPressed += MediaControlStopPressed;
+            MediaControl.NextTrackPressed += PlayNextTrackPressed;
+            MediaControl.PreviousTrackPressed += PlayPreviousTrackPressed;
         }
 
         private async void MediaControlPlayPressed(object sender, object e)
@@ -57,6 +66,16 @@ namespace Subsonic8.Shell
         private async void MediaControlStopPressed(object sender, object e)
         {
             await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => mediaElement.Stop());
+        }
+
+        public void PlayNextTrackPressed(object sender, object e)
+        {
+            PlayNextClicked(mediaElement, (RoutedEventArgs) e);
+        }
+
+        public void PlayPreviousTrackPressed(object sender, object e)
+        {
+            PlayPreviousClicked(mediaElement, (RoutedEventArgs)e);
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)

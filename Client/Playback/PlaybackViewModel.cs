@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using Caliburn.Micro;
 using Client.Common.Models;
+using Client.Common.Services;
 using Client.Common.ViewModels;
 using Subsonic8.Messages;
 using Subsonic8.Shell;
@@ -69,11 +70,12 @@ namespace Subsonic8.Playback
 
         #endregion
 
-        public PlaybackViewModel(IEventAggregator eventAggregator, IShellViewModel shellViewModel)
+        public PlaybackViewModel(IEventAggregator eventAggregator, IShellViewModel shellViewModel, ISubsonicService subsonicService)
         {
             _eventAggregator = eventAggregator;
             _shellViewModel = shellViewModel;
             _eventAggregator.Subscribe(this);
+            SubsonicService = subsonicService;
             Playlist = new ObservableCollection<ISubsonicModel>();
         }
 
@@ -107,10 +109,19 @@ namespace Subsonic8.Playback
             _shellViewModel.Source = SubsonicService.GetUriForFileWithId(message.Id);
         }
 
-        public void Handle(MediaEndedMessage message)
+        public void Handle(PlayNextMessage message)
         {
             _currentTrackNo++;
             if (_currentTrackNo < Playlist.Count)
+                Handle(new PlayFile { Id = Playlist[_currentTrackNo].Id });
+            else
+                _shellViewModel.Source = null;
+        }
+
+        public void Handle(PlayPreviousMessage message)
+        {
+            _currentTrackNo--;
+            if (_currentTrackNo > -1)
                 Handle(new PlayFile { Id = Playlist[_currentTrackNo].Id });
             else
                 _shellViewModel.Source = null;

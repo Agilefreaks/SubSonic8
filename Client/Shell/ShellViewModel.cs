@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using Client.Common.Models.Subsonic;
@@ -7,10 +8,11 @@ using Subsonic8.BottomBar;
 using Subsonic8.Messages;
 using Subsonic8.Search;
 using Windows.ApplicationModel.Search;
+using Windows.UI.Xaml;
 
 namespace Subsonic8.Shell
 {
-    public class ShellViewModel : Screen, IShellViewModel, IBottomBarViewModelProvider
+    public class ShellViewModel : Screen, IShellViewModel
     {
         private readonly IEventAggregator _eventAggregator;
         private Uri _source;
@@ -69,10 +71,28 @@ namespace Subsonic8.Shell
             NavigateToSearhResult(searchResult.Result);
         }
 
+        public void PlayNext(object sender, RoutedEventArgs routedEventArgs)
+        {
+            _eventAggregator.Publish(new PlayNextMessage());
+        }
+
+        public void PlayPrevious(object sender, RoutedEventArgs routedEventArgs)
+        {
+            _eventAggregator.Publish(new PlayPreviousMessage());
+        }
+
         protected override void OnViewAttached(object view, object context)
         {
             base.OnViewAttached(view, context);
+        
             SearchPane.GetForCurrentView().QuerySubmitted += OnQuerySubmitted;
+
+            IPlayerControls playerControls;
+            if ((playerControls = view as IPlayerControls) != null)
+            {
+                playerControls.PlayNextClicked += PlayNext;
+                playerControls.PlayPreviousClicked += PlayPrevious;
+            }
         }
 
         private void NavigateToSearchResultCall(SearchResultCollection searchResultCollection)
@@ -83,11 +103,6 @@ namespace Subsonic8.Shell
         private async void OnQuerySubmitted(SearchPane sender, SearchPaneQuerySubmittedEventArgs args)
         {
             await PerformSubsonicSearch(args.QueryText);
-        }
-
-        public void PlayNext()
-        {
-            _eventAggregator.Publish(new MediaEndedMessage());
         }
     }
 }

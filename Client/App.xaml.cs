@@ -76,7 +76,7 @@ namespace Subsonic8
         {
             StartApplication();
         }
-
+    
         protected async override void OnSearchActivated(SearchActivatedEventArgs args)
         {
             var frame = Window.Current.Content as Frame;
