@@ -112,10 +112,19 @@ namespace Subsonic8.Playback
             _shellViewModel.Source = SubsonicService.GetUriForFileWithId(message.Id);
         }
 
-        public void Handle(MediaEndedMessage message)
+        public void Handle(PlayNextMessage message)
         {
             _currentTrackNo++;
             if (_currentTrackNo < Playlist.Count)
+                Handle(new PlayFile { Id = Playlist[_currentTrackNo].Id });
+            else
+                _shellViewModel.Source = null;
+        }
+
+        public void Handle(PlayPreviousMessage message)
+        {
+            _currentTrackNo--;
+            if (_currentTrackNo > -1)
                 Handle(new PlayFile { Id = Playlist[_currentTrackNo].Id });
             else
                 _shellViewModel.Source = null;

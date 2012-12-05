@@ -80,24 +80,47 @@ namespace Client.Tests.Playback
         }
 
         [TestMethod]
-        public void HandleWithMediaEndedMessageShouldSetSourceOnShellViewModelToSecondElementInPlaylist()
+        public void HandleWithPlayNextMessageShouldSetSourceOnShellViewModelToSecondElementInPlaylist()
         {
             _subject.Playlist = new ObservableCollection<ISubsonicModel> { new Song { Id = 1 }, new Song { Id = 2 } };
 
-            _subject.Handle(new MediaEndedMessage());
+            _subject.Handle(new PlayNextMessage());
 
             var newUri = _subsonicService.GetUriForFileWithId(2);
             _shellViewModel.Source.AbsoluteUri.Should().Be(newUri.AbsoluteUri);
         }
 
         [TestMethod]
-        public void HandleWithMediaEndedMessageIfCurrentTrackIsLastShouldSetShellViewModelSourceToNull()
+        public void HandleWithPlayNextMessageIfCurrentTrackIsLastShouldSetShellViewModelSourceToNull()
         {
             _subject.Playlist = new ObservableCollection<ISubsonicModel> { new Song { Id = 1 } };
 
-            _subject.Handle(new MediaEndedMessage());
+            _subject.Handle(new PlayNextMessage());
 
             _shellViewModel.Source.Should().BeNull();
         }
+
+        [TestMethod]
+        public void HandleWithPlayPreviousMessageShouldSetSourceOnShellViewModelToPreviousElementInPlaylist()
+        {
+            _subject.Playlist = new ObservableCollection<ISubsonicModel> { new Song { Id = 1 }, new Song { Id = 2 } };
+            _subject.Handle(new PlayNextMessage());
+            
+            _subject.Handle(new PlayPreviousMessage());
+
+            var newUri = _subsonicService.GetUriForFileWithId(1);
+            _shellViewModel.Source.AbsoluteUri.Should().Be(newUri.AbsoluteUri);
+        }
+
+        [TestMethod]
+        public void HandleWithPlayPreviousMessageIfCurrentTrackIsFirstShouldSetShellViewModelSourceToNull()
+        {
+            _subject.Playlist = new ObservableCollection<ISubsonicModel> { new Song { Id = 1 } };
+
+            _subject.Handle(new PlayPreviousMessage());
+
+            _shellViewModel.Source.Should().BeNull();
+        }
+
     }
 }
