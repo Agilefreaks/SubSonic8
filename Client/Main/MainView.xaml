@@ -22,7 +22,7 @@
             <TextBlock Text="SubSonic8" Style="{StaticResource PageHeaderTextStyle}" Grid.Column="1" />
         </Grid>
 
-        <GridView x:Name="MenuItems" Grid.Row="1" Margin="0,-3,0,0" Padding="116,0,116,46" SelectionMode="None" 
+        <GridView x:Name="MenuItems" Grid.Row="1" Margin="0,-3,0,0" Padding="116,0,116,46" SelectionMode="Multiple" 
                   IsItemClickEnabled="True" caliburn:Message.Attach="[Event ItemClick] = [IndexClick($eventArgs)]" />
     </Grid>
 </Page>
