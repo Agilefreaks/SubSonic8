@@ -2,20 +2,20 @@
 using System.Collections.Specialized;
 using System.Linq;
 using Caliburn.Micro;
-using Subsonic8.MenuItem;
+using Client.Common.ViewModels;
 using Subsonic8.Messages;
 using Subsonic8.Playback;
 
 namespace Subsonic8.BottomBar
 {
-    public class MediaSelectionBottomBarViewModel : Screen, IMediaSelectionBottomBarViewModel
+    public class DefaultBottomBarViewModel : Screen, IDefaultBottomBarViewModel
     {
         private readonly INavigationService _navigationService;
         private readonly IEventAggregator _eventAggregator;
         private bool _isOpened;
-        private ObservableCollection<MenuItemViewModel> _selectedItems;
+        private ObservableCollection<IMenuItemViewModel> _selectedItems;
 
-        public ObservableCollection<MenuItemViewModel> SelectedItems
+        public ObservableCollection<IMenuItemViewModel> SelectedItems
         {
             get
             {
@@ -46,11 +46,11 @@ namespace Subsonic8.BottomBar
             }
         }
 
-        public MediaSelectionBottomBarViewModel(INavigationService navigationService, IEventAggregator eventAggregator)
+        public DefaultBottomBarViewModel(INavigationService navigationService, IEventAggregator eventAggregator)
         {
             _navigationService = navigationService;
             _eventAggregator = eventAggregator;
-            SelectedItems = new ObservableCollection<MenuItemViewModel>();
+            SelectedItems = new ObservableCollection<IMenuItemViewModel>();
         }
 
         public void AddToPlaylist()

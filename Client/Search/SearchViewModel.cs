@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Client.Common.Models.Subsonic;
 using Client.Common.ViewModels;
-using Subsonic8.BottomBar;
 using Subsonic8.Framework.Extensions;
 using Subsonic8.MenuItem;
 using Subsonic8.Shell;
@@ -13,14 +12,12 @@ namespace Subsonic8.Search
 {
     public class SearchViewModel : ViewModelBase, ISearchViewModel
     {
-        private readonly IShellViewModel _shellViewModel;
-        private readonly IMediaSelectionBottomBarViewModel _mediaSelectionBottomBarViewModel;
         private SearchResultCollection _parameter;
         private List<MenuItemViewModel> _menuItemViewModels;
 
-        public ObservableCollection<MenuItemViewModel> SelectedItems
+        public ObservableCollection<IMenuItemViewModel> SelectedItems
         {
-            get { return _mediaSelectionBottomBarViewModel.SelectedItems; }
+            get { return  ((IDefaultBottomBarViewModel) BottomBar).SelectedItems; }
         }
 
         public SearchResultCollection Parameter
@@ -63,11 +60,8 @@ namespace Subsonic8.Search
             }
         }
 
-        public SearchViewModel(IShellViewModel shellViewModel, IMediaSelectionBottomBarViewModel mediaSelectionBottomBarViewModel)
+        public SearchViewModel()
         {
-            _shellViewModel = shellViewModel;
-            _mediaSelectionBottomBarViewModel = mediaSelectionBottomBarViewModel;
-
             MenuItemViewModels = new List<MenuItemViewModel>();
         }
 
@@ -100,12 +94,6 @@ namespace Subsonic8.Search
             var navigableEntity = ((MenuItemViewModel) eventArgs.ClickedItem).Item;
 
             NavigationService.NavigateByEntityType(navigableEntity);
-        }
-
-        protected override void OnActivate()
-        {
-            base.OnActivate();
-            _shellViewModel.BottomBar = _mediaSelectionBottomBarViewModel;
         }
 
         private void UpdateDisplayName()

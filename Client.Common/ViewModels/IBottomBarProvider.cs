@@ -1,6 +1,4 @@
-﻿using Subsonic8.BottomBar;
-
-namespace Subsonic8.Shell
+﻿namespace Client.Common.ViewModels
 {
     public interface IBottomBarViewModelProvider
     {

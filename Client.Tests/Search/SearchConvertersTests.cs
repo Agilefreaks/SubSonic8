@@ -1,4 +1,5 @@
-﻿using Client.Common.Models;
+﻿using Caliburn.Micro;
+using Client.Common.Models;
 using Client.Common.Models.Subsonic;
 using FluentAssertions;
 using Subsonic8.Framework.Extensions;
@@ -25,6 +26,8 @@ namespace Client.Tests.Search
         [TestInitialize]
         public void TestInitialize()
         {
+            IoC.GetInstance = (type, s) => null;
+
             _expandedArtist = new ExpandedArtist
                                   {
                                       Id = 42,

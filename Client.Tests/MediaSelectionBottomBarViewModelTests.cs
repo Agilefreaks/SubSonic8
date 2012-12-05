@@ -1,17 +1,17 @@
 ﻿using System.Collections.ObjectModel;
+using Client.Common.ViewModels;
 using Client.Tests.Mocks;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using Subsonic8.BottomBar;
 using Subsonic8.MenuItem;
-using Subsonic8.Playback;
 
 namespace Client.Tests
 {
     [TestClass]
     public class MediaSelectionBottomBarViewModelTests
     {
-        private MediaSelectionBottomBarViewModel _subject;
+        private DefaultBottomBarViewModel _subject;
         private MockEventAggregator _eventAggregator;
         private MockNavigationService _navigationService;
 
@@ -20,7 +20,7 @@ namespace Client.Tests
         {
             _eventAggregator = new MockEventAggregator();
             _navigationService = new MockNavigationService();
-            _subject = new MediaSelectionBottomBarViewModel(_navigationService, _eventAggregator);
+            _subject = new DefaultBottomBarViewModel(_navigationService, _eventAggregator);
         }
 
         [TestMethod]
@@ -51,7 +51,7 @@ namespace Client.Tests
         [TestMethod]
         public void IsOpened_SelectedItemsIsEmpty_ReturnsFalse()
         {
-            _subject.SelectedItems = new ObservableCollection<MenuItemViewModel>();
+            _subject.SelectedItems = new ObservableCollection<IMenuItemViewModel>();
 
             var isOpened = _subject.IsOpened;
 
@@ -61,7 +61,7 @@ namespace Client.Tests
         [TestMethod]
         public void IsOpened_SelectedItemsIsNotEmpty_ReturnsTrue()
         {
-            _subject.SelectedItems = new ObservableCollection<MenuItemViewModel> { new MenuItemViewModel() };
+            _subject.SelectedItems = new ObservableCollection<IMenuItemViewModel> { new MenuItemViewModel() };
 
             var isOpened = _subject.IsOpened;
 

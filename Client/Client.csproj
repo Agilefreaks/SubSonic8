@@ -116,11 +116,10 @@
     </Compile>
     <Compile Include="Artist\ArtistViewModel.cs" />
     <Compile Include="Artist\IArtistViewModel.cs" />
-    <Compile Include="BottomBar\IMediaSelectionBottomBarViewModel.cs" />
-    <Compile Include="BottomBar\MediaSelectionBottomBarView.xaml.cs">
-      <DependentUpon>MediaSelectionBottomBarView.xaml</DependentUpon>
+    <Compile Include="BottomBar\DefaultBottomBarView.xaml.cs">
+      <DependentUpon>DefaultBottomBarView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BottomBar\MediaSelectionBottomBarViewModel.cs" />
+    <Compile Include="BottomBar\DefaultBottomBarViewModel.cs" />
     <Compile Include="Dialogs\DialogService.cs" />
     <Compile Include="Framework\DetailViewModelBase.cs" />
     <Compile Include="Framework\Extensions\NavigationServiceExtensions.cs" />
@@ -171,11 +170,8 @@
       <DependentUpon>MenuItemView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Messages\PlayFile.cs" />
-    <Compile Include="BottomBar\IBottomBarViewModel.cs" />
     <Compile Include="Shell\IPlayerControls.cs" />
-    <Compile Include="Shell\IShellViewModel.cs" />
     <Compile Include="Search\SearchViewModel.cs" />
-    <Compile Include="Shell\IMenuBarProvider.cs" />
     <Compile Include="Shell\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
@@ -209,7 +205,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="BottomBar\MediaSelectionBottomBarView.xaml">
+    <Page Include="BottomBar\DefaultBottomBarView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

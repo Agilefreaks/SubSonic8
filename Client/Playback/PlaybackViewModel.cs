@@ -5,7 +5,6 @@ using Client.Common.Models;
 using Client.Common.Services;
 using Client.Common.ViewModels;
 using Subsonic8.Messages;
-using Subsonic8.Shell;
 
 namespace Subsonic8.Playback
 {

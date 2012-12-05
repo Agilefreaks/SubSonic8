@@ -7,6 +7,7 @@ namespace Client.Common.ViewModels
     {
         private INavigationService _navigationService;
         private ISubsonicService _subsonicService;
+        private IBottomBarViewModel _bottomBar;
 
         public INavigationService NavigationService
         {
@@ -37,6 +38,21 @@ namespace Client.Common.ViewModels
             }
         }
 
+        public IBottomBarViewModel BottomBar
+        {
+            get
+            {
+                return _bottomBar;
+            }
+
+            set
+            {
+                _bottomBar = value;
+                NotifyOfPropertyChange();
+                SetShellBottomBar();
+            }
+        }
+
         public bool CanGoBack
         {
             get
@@ -48,6 +64,23 @@ namespace Client.Common.ViewModels
         public void GoBack()
         {
             NavigationService.GoBack();
+        }
+
+        protected ViewModelBase()
+        {
+            SubsonicService = IoC.Get<ISubsonicService>();
+            NavigationService = IoC.Get<INavigationService>();
+            SetBottomBar(IoC.Get<IShellViewModel>());
+        }
+
+        protected virtual void SetBottomBar(IShellViewModel shell)
+        {
+            BottomBar = IoC.Get<IDefaultBottomBarViewModel>();
+        }
+
+        private void SetShellBottomBar()
+        {
+            IoC.Get<IShellViewModel>().BottomBar = BottomBar;
         }
     }
 }

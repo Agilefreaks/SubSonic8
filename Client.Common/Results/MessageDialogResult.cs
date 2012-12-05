@@ -18,7 +18,7 @@ namespace Client.Common.Results
 
         public async Task Execute()
         {
-            await Execute(new ActionExecutionContext());
+            await Execute();
         }
 
         protected override async Task ExecuteCore(ActionExecutionContext context = null)

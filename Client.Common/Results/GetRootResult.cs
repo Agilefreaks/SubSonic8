@@ -5,7 +5,7 @@ using System.Xml.Serialization;
 using Client.Common.Models.Subsonic;
 using Client.Common.Services;
 
-namespace Client.Common.Results
+namespace Client.Common.Results 
 {
     public class GetRootResult : ServiceResultBase<IList<IndexItem>>, IGetRootResult
     {

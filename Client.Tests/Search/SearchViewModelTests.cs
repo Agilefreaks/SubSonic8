@@ -7,7 +7,6 @@ using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using Subsonic8.BottomBar;
 using Subsonic8.MenuItem;
 using Subsonic8.Search;
-using Subsonic8.Shell;
 
 namespace Client.Tests.Search
 {
@@ -16,18 +15,18 @@ namespace Client.Tests.Search
     {
         private ISearchViewModel _subject;
         private MockEventAggregator _eventAggregator;
-        private MockSubsonicService _subsonicService;
-        private ShellViewModel _shellViewModel;
         private MockNavigationService _navigationService;
 
         [TestInitialize]
         public void TestInitialize()
         {
             _eventAggregator = new MockEventAggregator();
-            _subsonicService = new MockSubsonicService();
             _navigationService = new MockNavigationService();
-            _shellViewModel = new ShellViewModel(_eventAggregator, _subsonicService, _navigationService);
-            _subject = new SearchViewModel(_shellViewModel, new MediaSelectionBottomBarViewModel(_navigationService, _eventAggregator));
+            var bottomBarViewModel = new DefaultBottomBarViewModel(_navigationService, _eventAggregator);
+            _subject = new SearchViewModel
+                           {
+                               BottomBar = bottomBarViewModel
+                           };
         }
 
         [TestMethod]

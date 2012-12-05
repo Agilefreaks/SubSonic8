@@ -9,6 +9,8 @@ namespace Client.Common.ViewModels
 
         ISubsonicService SubsonicService { get; set; }
 
+        IBottomBarViewModel BottomBar { get; set; }
+
         bool CanGoBack { get; }
 
         void GoBack();

@@ -1,9 +1,10 @@
-using Caliburn.Micro;
 using Client.Common.Models;
+using Client.Common.ViewModels;
+using PropertyChangedBase = Caliburn.Micro.PropertyChangedBase;
 
 namespace Subsonic8.MenuItem
 {
-    public class MenuItemViewModel : PropertyChangedBase
+    public class MenuItemViewModel : PropertyChangedBase, IMenuItemViewModel
     {
         private string _title;
         private string _subtitle;

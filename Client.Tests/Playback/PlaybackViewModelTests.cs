@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using Caliburn.Micro;
 using Client.Common.Models;
 using Client.Common.Models.Subsonic;
 using Client.Tests.Mocks;
@@ -24,6 +25,8 @@ namespace Client.Tests.Playback
         [TestInitialize]
         public void TestInitialize()
         {
+            IoC.GetInstance = (type, s) => null;
+
             _eventAggregator = new MockEventAggregator();
             _subsonicService = new MockSubsonicService();
             _navigationService = new MockNavigationService();

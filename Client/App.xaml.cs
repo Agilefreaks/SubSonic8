@@ -34,7 +34,7 @@ namespace Subsonic8
             _container.RegisterSingleton(typeof(ISubsonicService), "SubsonicService", typeof(SubsonicService));
             _container.RegisterSingleton(typeof(IShellViewModel), "ShellViewModel", typeof(ShellViewModel));
             _container.RegisterSingleton(typeof(IPlaybackViewModel), "PlaybackViewModel", typeof(PlaybackViewModel));
-            RegisterDefaultViewModels();
+            _container.RegisterSingleton(typeof(IDefaultBottomBarViewModel), "DefaultBottomBarViewModel", typeof(DefaultBottomBarViewModel));
 
             SettingsPane.GetForCurrentView().CommandsRequested += (sender, args) => args.AddSetting<SettingsViewModel>();
         }
@@ -42,16 +42,6 @@ namespace Subsonic8
         protected override object GetInstance(Type service, string key)
         {
             var result = _container.GetInstance(service, key);
-
-            // silly hack injecting NavigationService and SubsonicService
-            if (result is ViewModelBase)
-            {
-                var subsonicService = (ISubsonicService)GetInstance(typeof(ISubsonicService), null);
-                var navigationSerice = (INavigationService)GetInstance(typeof(INavigationService), null);
-                var viewModelBase = result as ViewModelBase;
-                viewModelBase.NavigationService = navigationSerice;
-                viewModelBase.SubsonicService = subsonicService;
-            }
 
             return result;
         }
@@ -110,14 +100,9 @@ namespace Subsonic8
             _container.GetInstance(typeof(IPlaybackViewModel), null);
         }
 
-        private void RegisterDefaultViewModels()
-        {
-            _container.RegisterPerRequest(typeof(IMediaSelectionBottomBarViewModel), "BottomBarViewModel", typeof(MediaSelectionBottomBarViewModel));
-        }
-
         private void RegisterNavigationService(Frame shellFrame, bool treatViewAsLoaded = false)
         {
-            _container.RegisterInstance(typeof(INavigationService), null, new CustomFrameAdapter(shellFrame, treatViewAsLoaded));
+            _container.RegisterInstance(typeof(INavigationService), "NavigationService", new CustomFrameAdapter(shellFrame, treatViewAsLoaded));
         }
 
         private async void InitializeSubsonicService()

@@ -21,6 +21,8 @@ namespace Client.Tests.Main
         [TestInitialize]
         public void TestInitialize()
         {
+            IoC.GetInstance = (type, s) => null;
+
             _navigationService = new MockNavigationService();
             _subsonicService = new SubsonicService();
             _subject = new MainViewModel { NavigationService = _navigationService, SubsonicService = _subsonicService };

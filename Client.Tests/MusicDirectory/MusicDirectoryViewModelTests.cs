@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Caliburn.Micro;
 using Client.Common.Models.Subsonic;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
@@ -14,6 +15,8 @@ namespace Client.Tests.MusicDirectory
         [TestInitialize]
         public void TestInitialize()
         {
+            IoC.GetInstance = (type, s) => null;
+
             _subject = new MusicDirectoryViewModel();
         }
 

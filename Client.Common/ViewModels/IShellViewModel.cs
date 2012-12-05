@@ -5,7 +5,7 @@ using Client.Common.Models.Subsonic;
 using Client.Common.Services;
 using Windows.UI.Xaml;
 
-namespace Subsonic8.Shell
+namespace Client.Common.ViewModels
 {
     public interface IShellViewModel : IViewAware, IScreen, IBottomBarViewModelProvider
     {
