@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
+using Client.Common.ViewModels;
 using Subsonic8.MenuItem;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -16,16 +17,16 @@ namespace Subsonic8.Search
             "SelectedItems",
             typeof(object),
             typeof(MultipleSelectBehavior),
-            new PropertyMetadata(new ObservableCollection<MenuItemViewModel>(), AttchedPropertyChanged));
+            new PropertyMetadata(new ObservableCollection<IMenuItemViewModel>(), AttchedPropertyChanged));
 
-        public static void SetSelectedItems(DependencyObject obj, ObservableCollection<MenuItemViewModel> selectedItems)
+        public static void SetSelectedItems(DependencyObject obj, ObservableCollection<IMenuItemViewModel> selectedItems)
         {
             obj.SetValue(SelectedItemsProperty, selectedItems);
         }
 
-        public static ObservableCollection<MenuItemViewModel> GetSelectedItems(DependencyObject obj)
+        public static ObservableCollection<IMenuItemViewModel> GetSelectedItems(DependencyObject obj)
         {
-            return (ObservableCollection<MenuItemViewModel>)obj.GetValue(SelectedItemsProperty);
+            return (ObservableCollection<IMenuItemViewModel>)obj.GetValue(SelectedItemsProperty);
         }
 
         private static void AttchedPropertyChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs eventArgs)
@@ -56,14 +57,14 @@ namespace Subsonic8.Search
         private static NotifyCollectionChangedEventHandler SetupSourceCollectionChangedEventHandler(DependencyObject dependencyObject,
                                                                                           INotifyCollectionChanged observableCollection)
         {
-            NotifyCollectionChangedEventHandler sourceChangedHandler = (s, ev) => 
-                SelectedItemsChangedFromSource(dependencyObject, s as ObservableCollection<MenuItemViewModel>);
+            NotifyCollectionChangedEventHandler sourceChangedHandler = (s, ev) =>
+                SelectedItemsChangedFromSource(dependencyObject, s as ObservableCollection<IMenuItemViewModel>);
             observableCollection.CollectionChanged += sourceChangedHandler;
 
             return sourceChangedHandler;
         }
 
-        private static void SelectedItemsChangedFromSource(DependencyObject dependencyObject, IEnumerable<MenuItemViewModel> source)
+        private static void SelectedItemsChangedFromSource(DependencyObject dependencyObject, IEnumerable<IMenuItemViewModel> source)
         {
             var selectedItems = ((GridView)dependencyObject).SelectedItems;
             if (source != null)
@@ -86,12 +87,12 @@ namespace Subsonic8.Search
             var selectedItems = GetSelectedItems((DependencyObject)sender);
             foreach (var item in e.RemovedItems.Where(selectedItems.Contains))
             {
-                selectedItems.Remove((MenuItemViewModel)item);
+                selectedItems.Remove((IMenuItemViewModel)item);
             }
 
             foreach (var item in e.AddedItems.Where(item => !selectedItems.Contains(item)))
             {
-                selectedItems.Add((MenuItemViewModel)item);
+                selectedItems.Add((IMenuItemViewModel)item);
             }
         }
     }
