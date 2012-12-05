@@ -4,11 +4,13 @@ using System.Linq;
 using Caliburn.Micro;
 using Subsonic8.MenuItem;
 using Subsonic8.Messages;
+using Subsonic8.Playback;
 
 namespace Subsonic8.BottomBar
 {
     public class MediaSelectionBottomBarViewModel : Screen, IMediaSelectionBottomBarViewModel
     {
+        private readonly INavigationService _navigationService;
         private readonly IEventAggregator _eventAggregator;
         private bool _isOpened;
         private ObservableCollection<MenuItemViewModel> _selectedItems;
@@ -44,8 +46,9 @@ namespace Subsonic8.BottomBar
             }
         }
 
-        public MediaSelectionBottomBarViewModel(IEventAggregator eventAggregator)
+        public MediaSelectionBottomBarViewModel(INavigationService navigationService, IEventAggregator eventAggregator)
         {
+            _navigationService = navigationService;
             _eventAggregator = eventAggregator;
             SelectedItems = new ObservableCollection<MenuItemViewModel>();
         }
@@ -54,6 +57,11 @@ namespace Subsonic8.BottomBar
         {
             _eventAggregator.Publish(new PlaylistMessage { Queue = SelectedItems.Select(i => i.Item).ToList() });
             SelectedItems.Clear();
+        }
+
+        public void NavigateToPlaylist()
+        {
+            _navigationService.NavigateToViewModel<PlaybackViewModel>();
         }
 
         private void ManageSelectedItemsHooks(INotifyCollectionChanged newCollection, INotifyCollectionChanged oldCollection)

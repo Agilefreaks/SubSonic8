@@ -27,7 +27,7 @@ namespace Client.Tests.Search
             _subsonicService = new MockSubsonicService();
             _navigationService = new MockNavigationService();
             _shellViewModel = new ShellViewModel(_eventAggregator, _subsonicService, _navigationService);
-            _subject = new SearchViewModel(_shellViewModel, new MediaSelectionBottomBarViewModel(_eventAggregator));
+            _subject = new SearchViewModel(_shellViewModel, new MediaSelectionBottomBarViewModel(_navigationService, _eventAggregator));
         }
 
         [TestMethod]

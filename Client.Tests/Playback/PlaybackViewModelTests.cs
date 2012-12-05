@@ -28,7 +28,7 @@ namespace Client.Tests.Playback
             _subsonicService = new MockSubsonicService();
             _navigationService = new MockNavigationService();
             _shellViewModel = new ShellViewModel(_eventAggregator, _subsonicService, _navigationService);
-            _subject = new PlaybackViewModel(_eventAggregator, _shellViewModel)
+            _subject = new PlaybackViewModel(_eventAggregator, _shellViewModel, _subsonicService)
                            {
                                NavigationService = _navigationService,
                                SubsonicService = _subsonicService

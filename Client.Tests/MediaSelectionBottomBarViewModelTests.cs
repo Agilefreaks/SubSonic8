@@ -4,6 +4,7 @@ using FluentAssertions;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using Subsonic8.BottomBar;
 using Subsonic8.MenuItem;
+using Subsonic8.Playback;
 
 namespace Client.Tests
 {
@@ -12,12 +13,14 @@ namespace Client.Tests
     {
         private MediaSelectionBottomBarViewModel _subject;
         private MockEventAggregator _eventAggregator;
+        private MockNavigationService _navigationService;
 
         [TestInitialize]
         public void TestInitialize()
         {
             _eventAggregator = new MockEventAggregator();
-            _subject = new MediaSelectionBottomBarViewModel(_eventAggregator);
+            _navigationService = new MockNavigationService();
+            _subject = new MediaSelectionBottomBarViewModel(_navigationService, _eventAggregator);
         }
 
         [TestMethod]

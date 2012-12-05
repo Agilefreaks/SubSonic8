@@ -5,7 +5,12 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:cal="using:Caliburn.Micro"
     mc:Ignorable="d">
 
-    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-        <Button Style="{StaticResource AddAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action AddToPlaylist()]"/>
-    </StackPanel>
+    <Grid>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+            <Button Style="{StaticResource AddAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action AddToPlaylist()]"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Style="{StaticResource ListAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action NavigateToPlaylist()]"/>
+        </StackPanel>
+    </Grid>
 </Page>

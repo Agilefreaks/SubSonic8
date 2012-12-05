@@ -7,6 +7,8 @@ namespace Subsonic8.BottomBar
     {
         void AddToPlaylist();
 
+        void NavigateToPlaylist();
+
         ObservableCollection<MenuItemViewModel> SelectedItems { get; set; }
     }
 }
