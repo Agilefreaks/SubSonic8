@@ -155,6 +155,7 @@
     <Compile Include="Playback\Playback\Video.xaml.cs">
       <DependentUpon>Video.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PlaylistItem\PlaylistItemViewModel.cs" />
     <Compile Include="Search\ISearchViewModel.cs" />
     <Compile Include="Framework\Extensions\SubsonicModelToMenuItemViewModelExtensions.cs" />
     <Compile Include="Search\MultipleSelectBehavior.cs" />

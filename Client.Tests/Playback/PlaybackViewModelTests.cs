@@ -94,6 +94,29 @@ namespace Client.Tests.Playback
         }
 
         [TestMethod]
+        public void HandleWithPlaylistMessageWithSunsonicModelsOfTypeVideoShouldCallSubsonicServiceGetUriForVideoWithId()
+        {
+            _subject.Handle(new PlaylistMessage { Queue = new List<ISubsonicModel> { new Song { IsVideo = true } } });
+
+            _subsonicService.GetUriForVideoWithIdCallCount.Should().Be(1);
+        }
+
+        [TestMethod]
+        public void HandleWithPlaylistMessageWithSubsonicModelOfAnyTypeVideoShouldAddNewItemsInPlalistItemsCollection()
+        {
+            _subject.Handle(new PlaylistMessage
+                                {
+                                    Queue = new List<ISubsonicModel>
+                                                {
+                                                    new Song { Id=  41 },
+                                                    new Song { Id = 42, IsVideo = true }
+                                                }
+                                });
+
+            _subject.PlaylistItems.Should().HaveCount(2);
+        }
+
+        [TestMethod]
         public void HandleWithPlayNextMessageShouldSetSourceOnShellViewModelToSecondElementInPlaylist()
         {
             _subject.Playlist = new ObservableCollection<ISubsonicModel> { new Song { Id = 1 }, new Song { Id = 2 } };

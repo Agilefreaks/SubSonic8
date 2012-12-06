@@ -27,6 +27,9 @@ namespace Client.Common.Models.Subsonic
         [XmlAttribute("songCount")]
         public int SongCount { get; set; }
 
+        [XmlAttribute("duration")]
+        public int Duration { get; set; }
+
         [XmlAttribute("isVideo")]
         public bool IsVideo { get; set; }
 

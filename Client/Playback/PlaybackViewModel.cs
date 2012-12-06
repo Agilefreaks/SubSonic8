@@ -2,9 +2,11 @@
 using System.Collections.ObjectModel;
 using Caliburn.Micro;
 using Client.Common.Models;
+using Client.Common.Models.Subsonic;
 using Client.Common.Services;
 using Client.Common.ViewModels;
 using Subsonic8.Messages;
+using Subsonic8.PlaylistItem;
 
 namespace Subsonic8.Playback
 {
@@ -18,6 +20,7 @@ namespace Subsonic8.Playback
         private PlaybackViewModelStateEnum _state;
         private Uri _source;
         private ObservableCollection<ISubsonicModel> _playlist;
+        private ObservableCollection<PlaylistItemViewModel> _playlistItems;
         private int _currentTrackNo;
         #endregion
 
@@ -67,6 +70,16 @@ namespace Subsonic8.Playback
             }
         }
 
+        public ObservableCollection<PlaylistItemViewModel> PlaylistItems
+        {
+            get { return _playlistItems; }
+            set
+            {
+                _playlistItems = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
         #endregion
 
         public PlaybackViewModel(IEventAggregator eventAggregator, IShellViewModel shellViewModel, ISubsonicService subsonicService)
@@ -76,6 +89,7 @@ namespace Subsonic8.Playback
             _eventAggregator.Subscribe(this);
             SubsonicService = subsonicService;
             Playlist = new ObservableCollection<ISubsonicModel>();
+            PlaylistItems = new ObservableCollection<PlaylistItemViewModel>();
         }
 
         public void StartPlayback()
@@ -101,7 +115,22 @@ namespace Subsonic8.Playback
         {
             foreach (var item in message.Queue)
             {
-                Playlist.Add(item);
+                var pi = new PlaylistItemViewModel();
+
+                if (item.Type == SubsonicModelTypeEnum.Song || item.Type == SubsonicModelTypeEnum.Video)
+                {
+                    var model = (Song) item;
+                    pi.Artist = model.Artist;
+                    pi.CoverArt = SubsonicService.GetCoverArtForId(model.CoverArt);
+                    pi.Duration = model.Duration;
+                    pi.Title = model.Title;
+                    pi.Uri = item.Type == SubsonicModelTypeEnum.Song
+                                 ? SubsonicService.GetUriForFileWithId(item.Id)
+                                 : SubsonicService.GetUriForVideoWithId(item.Id);
+
+                    Playlist.Add(item);
+                    PlaylistItems.Add(pi);
+                }
             }
         }
         

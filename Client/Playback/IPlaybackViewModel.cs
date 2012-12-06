@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using Caliburn.Micro;
 using Client.Common.Models;
 using Subsonic8.Messages;
+using Subsonic8.PlaylistItem;
 
 namespace Subsonic8.Playback
 {
@@ -12,6 +13,7 @@ namespace Subsonic8.Playback
         Uri Source { get; set; }
         PlaybackViewModelStateEnum State { get; set; }
         ObservableCollection<ISubsonicModel> Playlist { get; set; }
+        ObservableCollection<PlaylistItemViewModel> PlaylistItems { get; set; }
         void StartPlayback();
     }
 }

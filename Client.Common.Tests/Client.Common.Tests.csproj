@@ -131,27 +131,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Images\UnitTestLogo.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Images\UnitTestSmallLogo.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Images\UnitTestSplashScreen.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Images\UnitTestStoreLogo.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Client.Common\Client.Common.csproj">
       <Project>{a8f49761-4d7a-458f-b1b1-4a66c421b3aa}</Project>
       <Name>Client.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Client.Tests\Client.Tests.csproj">
-      <Project>{EFE94373-380B-483D-8C18-B64254C9BE6A}</Project>
-      <Name>Client.Tests</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -169,6 +151,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Windows.UI.Interactivity.1.0.2.0\lib\winrt45\Windows.UI.Interactivity.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Images\UnitTestLogo.png" />
+    <Content Include="Images\UnitTestSmallLogo.png" />
+    <Content Include="Images\UnitTestSplashScreen.png" />
+    <Content Include="Images\UnitTestStoreLogo.png" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '11.0' ">
     <VisualStudioVersion>11.0</VisualStudioVersion>

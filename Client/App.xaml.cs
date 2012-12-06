@@ -91,13 +91,13 @@ namespace Subsonic8
             _shellViewModel = (IShellViewModel) _container.GetInstance(typeof (IShellViewModel), null);
             ViewModelBinder.Bind(_shellViewModel, shellView, null);
 
-            StartPlaybackViewModel();
+            RegisterPlaybackViewModel();
         }
 
-        private void StartPlaybackViewModel()
+        private void RegisterPlaybackViewModel()
         {
-            //Assure Playback view model is subscribed to the event aggregator
-            _container.GetInstance(typeof(IPlaybackViewModel), null);
+            var instance = _container.GetInstance(typeof(IPlaybackViewModel), "PlaybackViewModel");
+            _container.RegisterInstance(typeof(PlaybackViewModel), "PlaybackViewModel", instance);
         }
 
         private void RegisterNavigationService(Frame shellFrame, bool treatViewAsLoaded = false)

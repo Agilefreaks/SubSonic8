@@ -46,9 +46,18 @@ namespace Client.Common.Services
             return new Uri(string.Format(_configuration.ServiceUrl, "stream.view", _configuration.Username, _configuration.Password) + string.Format("&id={0}", id));
         }
 
-        public Uri GetUriForVideoWithId(int id)
+        public virtual Uri GetUriForVideoWithId(int id)
         {
             return new Uri(string.Format("{0}stream/stream.ts?id={1}&hls=true&timeOffset=0", _configuration.BaseUrl, id));
+        }
+
+        public virtual Uri GetCoverArtForId(string coverArt)
+        {
+            Uri result = null;
+            if (!string.IsNullOrEmpty(coverArt))
+                result = new Uri(string.Format(_configuration.ServiceUrl, "getCoverArt.view", _configuration.Username, _configuration.Password) + string.Format("&id={0}", coverArt));
+
+            return result;
         }
 
         private ISearchResult SearchImpl(string query)
