@@ -11,7 +11,7 @@ using Subsonic8.Search;
 namespace Client.Tests.Search
 {
     [TestClass]
-    public class SearchViewModelTests
+    public class SearchViewModelTests : TestBase
     {
         private ISearchViewModel _subject;
         private MockEventAggregator _eventAggregator;

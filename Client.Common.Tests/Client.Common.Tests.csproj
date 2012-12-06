@@ -149,6 +149,10 @@
       <Project>{a8f49761-4d7a-458f-b1b1-4a66c421b3aa}</Project>
       <Name>Client.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Client.Tests\Client.Tests.csproj">
+      <Project>{EFE94373-380B-483D-8C18-B64254C9BE6A}</Project>
+      <Name>Client.Tests</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Caliburn.Micro, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">

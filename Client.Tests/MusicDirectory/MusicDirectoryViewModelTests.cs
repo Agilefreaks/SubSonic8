@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Caliburn.Micro;
 using Client.Common.Models.Subsonic;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
@@ -8,15 +7,13 @@ using Subsonic8.MusicDirectory;
 namespace Client.Tests.MusicDirectory
 {
     [TestClass]
-    public class MusicDirectoryViewModelTests
+    public class MusicDirectoryViewModelTests : TestBase
     {
         private IMusicDirectoryViewModel _subject;
 
         [TestInitialize]
         public void TestInitialize()
         {
-            IoC.GetInstance = (type, s) => null;
-
             _subject = new MusicDirectoryViewModel();
         }
 

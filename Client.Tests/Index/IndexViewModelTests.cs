@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Caliburn.Micro;
 using Client.Common.Models.Subsonic;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
@@ -8,15 +7,13 @@ using Subsonic8.Index;
 namespace Client.Tests.Index
 {
     [TestClass]
-    public class IndexViewModelTests
+    public class IndexViewModelTests : TestBase
     {
         private IIndexViewModel _subject;
 
         [TestInitialize]
         public void TestInitialize()
         {
-            IoC.GetInstance = (type, s) => null;
-
             _subject = new IndexViewModel();
         }
 

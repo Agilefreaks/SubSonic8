@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Caliburn.Micro;
 using Client.Common.Models;
 using Client.Common.Models.Subsonic;
 using Client.Tests.Mocks;
@@ -14,7 +13,7 @@ using Subsonic8.Shell;
 namespace Client.Tests.Playback
 {
     [TestClass]
-    public class PlaybackViewModelTests
+    public class PlaybackViewModelTests : TestBase
     {
         private PlaybackViewModel _subject;
         private MockEventAggregator _eventAggregator;
@@ -25,8 +24,6 @@ namespace Client.Tests.Playback
         [TestInitialize]
         public void TestInitialize()
         {
-            IoC.GetInstance = (type, s) => null;
-
             _eventAggregator = new MockEventAggregator();
             _subsonicService = new MockSubsonicService();
             _navigationService = new MockNavigationService();
@@ -36,6 +33,12 @@ namespace Client.Tests.Playback
                                NavigationService = _navigationService,
                                SubsonicService = _subsonicService
                            };
+        }
+
+        [TestMethod]
+        public void CtorShouldInitializePlaylistItems()
+        {
+            _subject.PlaylistItems.Should().NotBeNull();
         }
 
         [TestMethod]
@@ -83,6 +86,14 @@ namespace Client.Tests.Playback
         }
 
         [TestMethod]
+        public void HandleWithPlaylistMessageWithSubsonicModelsWithTypeSongShouldCallSubsonicServiceGetUriForFileWithId()
+        {
+            _subject.Handle(new PlaylistMessage { Queue = new List<ISubsonicModel> { new Song { Id = 42 } } });
+
+            _subsonicService.GetUriForFileWithIdCallCount.Should().Be(1);
+        }
+
+        [TestMethod]
         public void HandleWithPlayNextMessageShouldSetSourceOnShellViewModelToSecondElementInPlaylist()
         {
             _subject.Playlist = new ObservableCollection<ISubsonicModel> { new Song { Id = 1 }, new Song { Id = 2 } };
@@ -108,7 +119,7 @@ namespace Client.Tests.Playback
         {
             _subject.Playlist = new ObservableCollection<ISubsonicModel> { new Song { Id = 1 }, new Song { Id = 2 } };
             _subject.Handle(new PlayNextMessage());
-            
+
             _subject.Handle(new PlayPreviousMessage());
 
             var newUri = _subsonicService.GetUriForFileWithId(1);
@@ -124,6 +135,5 @@ namespace Client.Tests.Playback
 
             _shellViewModel.Source.Should().BeNull();
         }
-
     }
 }

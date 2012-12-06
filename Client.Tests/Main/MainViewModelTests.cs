@@ -12,7 +12,7 @@ using Subsonic8.Main;
 namespace Client.Tests.Main
 {
     [TestClass]
-    public class MainViewModelTests
+    public class MainViewModelTests : TestBase
     {
         private IMainViewModel _subject;
         private INavigationService _navigationService;
@@ -21,8 +21,6 @@ namespace Client.Tests.Main
         [TestInitialize]
         public void TestInitialize()
         {
-            IoC.GetInstance = (type, s) => null;
-
             _navigationService = new MockNavigationService();
             _subsonicService = new SubsonicService();
             _subject = new MainViewModel { NavigationService = _navigationService, SubsonicService = _subsonicService };
