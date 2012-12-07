@@ -1,7 +1,9 @@
 ﻿using Caliburn.Micro;
 using Client.Common.Services;
+using Subsonic8.BottomBar;
+using Subsonic8.Shell;
 
-namespace Client.Common.ViewModels
+namespace Subsonic8.Framework.ViewModel
 {
     public abstract class ViewModelBase : Screen, IViewModel
     {

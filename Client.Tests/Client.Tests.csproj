@@ -112,7 +112,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Album\AlbumViewModelTests.cs" />
-    <Compile Include="MediaSelectionBottomBarViewModelTests.cs" />
+    <Compile Include="ClientTestBase.cs" />
+    <Compile Include="DefaultBottomBar\DefaultBottomBarViewModelTests.cs" />
     <Compile Include="Index\IndexViewModelTests.cs" />
     <Compile Include="Main\MainViewModelTests.cs" />
     <Compile Include="Mocks\MockEventAggregator.cs" />
@@ -125,7 +126,7 @@
     <Compile Include="Search\SearchViewModelTests.cs" />
     <Compile Include="Shell\ShellViewModelTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestBase.cs" />
+    <Compile Include="Framework\ViewModel\ViewModelBaseTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

@@ -2,39 +2,25 @@
 using Caliburn.Micro;
 using Client.Common.Models.Subsonic;
 using Client.Common.Services;
-using Client.Common.ViewModels;
 using Client.Tests.Mocks;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using Subsonic8.Album;
-using Subsonic8.Shell;
 
 namespace Client.Tests.Album
 {
     [TestClass]
-    public class AlbumViewModelTests
+    public class AlbumViewModelTests : ClientTestBase
     {
         private IAlbumViewModel _subject;
         private INavigationService _navigationService;
         private ISubsonicService _subsonicService;
-        private IEventAggregator _eventAggregator;
 
         [TestInitialize]
         public void TestInitialize()
         {
-            IoC.GetInstance = (type, s) =>
-            {
-                if (type == typeof(IShellViewModel))
-                {
-                    return new ShellViewModel(_eventAggregator, _subsonicService, _navigationService);
-                }
-
-                return null;
-            };
-
             _navigationService = new MockNavigationService();
-            _subsonicService = new SubsonicService();
-            _eventAggregator = new MockEventAggregator();
+            _subsonicService = new MockSubsonicService();
             _subject = new AlbumViewModel { NavigationService = _navigationService, SubsonicService = _subsonicService };
         }
 

@@ -136,14 +136,7 @@
     <Compile Include="Services\ISubsonicServiceConfiguration.cs" />
     <Compile Include="Services\SubsonicService.cs" />
     <Compile Include="Services\SubsonicServiceConfiguration.cs" />
-    <Compile Include="ViewModels\IBottomBarProvider.cs" />
-    <Compile Include="ViewModels\IBottomBarViewModel.cs" />
-    <Compile Include="ViewModels\IDefaultBottomBarViewModel.cs" />
-    <Compile Include="ViewModels\IMenuItemViewModel.cs" />
-    <Compile Include="ViewModels\IShellViewModel.cs" />
-    <Compile Include="ViewModels\IViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModels\ViewModelBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Caliburn.Micro, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">

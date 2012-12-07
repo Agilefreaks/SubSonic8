@@ -1,15 +1,14 @@
 ﻿using System.Collections.ObjectModel;
-using Client.Common.ViewModels;
 using Client.Tests.Mocks;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using Subsonic8.BottomBar;
 using Subsonic8.MenuItem;
 
-namespace Client.Tests
+namespace Client.Tests.DefaultBottomBar
 {
     [TestClass]
-    public class MediaSelectionBottomBarViewModelTests
+    public class DefaultBottomBarViewModelTests
     {
         private DefaultBottomBarViewModel _subject;
         private MockEventAggregator _eventAggregator;

@@ -2,7 +2,6 @@
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
-using Client.Common.ViewModels;
 using Subsonic8.MenuItem;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;

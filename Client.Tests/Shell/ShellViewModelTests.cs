@@ -2,7 +2,6 @@
 using Caliburn.Micro;
 using Client.Common.Results;
 using Client.Common.Services;
-using Client.Common.ViewModels;
 using Client.Tests.Mocks;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;

@@ -7,7 +7,7 @@ using Subsonic8.Index;
 namespace Client.Tests.Index
 {
     [TestClass]
-    public class IndexViewModelTests : TestBase
+    public class IndexViewModelTests : ClientTestBase
     {
         private IIndexViewModel _subject;
 

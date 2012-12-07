@@ -1,13 +1,12 @@
 ﻿using Caliburn.Micro;
-using Client.Common.ViewModels;
 using Client.Tests.Mocks;
 using Subsonic8.Shell;
 
 namespace Client.Tests
 {
-    public abstract class TestBase
+    public abstract class ClientTestBase
     {
-        protected TestBase()
+        protected ClientTestBase()
         {
             Configure();
         }
@@ -17,7 +16,7 @@ namespace Client.Tests
             var mockEventAggregator = new MockEventAggregator();
             var mockSubsonicService = new MockSubsonicService();
             var mockNavigationService = new MockNavigationService();
-         
+
             var shellViewModel = new ShellViewModel(mockEventAggregator, mockSubsonicService, mockNavigationService);
 
             IoC.GetInstance = (type, s) =>

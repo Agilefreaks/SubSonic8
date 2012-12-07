@@ -121,9 +121,16 @@
     </Compile>
     <Compile Include="BottomBar\DefaultBottomBarViewModel.cs" />
     <Compile Include="Dialogs\DialogService.cs" />
-    <Compile Include="Framework\DetailViewModelBase.cs" />
+    <Compile Include="Framework\ViewModel\DetailViewModelBase.cs" />
     <Compile Include="Framework\Extensions\NavigationServiceExtensions.cs" />
-    <Compile Include="Framework\IDetailViewModel.cs" />
+    <Compile Include="Framework\ViewModel\IDetailViewModel.cs" />
+    <Compile Include="Shell\IBottomBarProvider.cs" />
+    <Compile Include="BottomBar\IBottomBarViewModel.cs" />
+    <Compile Include="BottomBar\IDefaultBottomBarViewModel.cs" />
+    <Compile Include="MenuItem\IMenuItemViewModel.cs" />
+    <Compile Include="Shell\IShellViewModel.cs" />
+    <Compile Include="Framework\ViewModel\IViewModel.cs" />
+    <Compile Include="Framework\ViewModel\ViewModelBase.cs" />
     <Compile Include="Index\IIndexViewModel.cs" />
     <Compile Include="Index\IndexViewModel.cs" />
     <Compile Include="Index\IndexView.xaml.cs">

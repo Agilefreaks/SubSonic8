@@ -12,7 +12,7 @@ using Subsonic8.Main;
 namespace Client.Tests.Main
 {
     [TestClass]
-    public class MainViewModelTests : TestBase
+    public class MainViewModelTests : ClientTestBase
     {
         private IMainViewModel _subject;
         private INavigationService _navigationService;

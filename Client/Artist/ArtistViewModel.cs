@@ -4,6 +4,7 @@ using Client.Common.Models;
 using Client.Common.Models.Subsonic;
 using Client.Common.Results;
 using Subsonic8.Framework;
+using Subsonic8.Framework.ViewModel;
 using Subsonic8.MenuItem;
 
 namespace Subsonic8.Artist

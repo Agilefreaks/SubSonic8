@@ -1,6 +1,6 @@
 using Client.Common.Models;
 
-namespace Client.Common.ViewModels
+namespace Subsonic8.MenuItem
 {
     public interface IMenuItemViewModel
     {

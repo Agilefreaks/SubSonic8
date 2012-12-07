@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Caliburn.Micro;
 using Client.Common.Models.Subsonic;
 using Client.Common.Services;
-using Client.Common.ViewModels;
+using Subsonic8.BottomBar;
 using Subsonic8.Messages;
 using Subsonic8.Search;
 using Windows.ApplicationModel.Search;

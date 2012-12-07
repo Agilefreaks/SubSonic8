@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
+using Subsonic8.MenuItem;
 
-namespace Client.Common.ViewModels
+namespace Subsonic8.BottomBar
 {
     public interface IDefaultBottomBarViewModel : IBottomBarViewModel
     {

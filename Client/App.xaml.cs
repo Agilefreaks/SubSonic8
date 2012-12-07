@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Caliburn.Micro;
 using Client.Common.Services;
-using Client.Common.ViewModels;
 using Subsonic8.BottomBar;
 using Subsonic8.Main;
 using Subsonic8.Playback;

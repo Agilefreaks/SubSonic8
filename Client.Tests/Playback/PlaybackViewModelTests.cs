@@ -13,7 +13,7 @@ using Subsonic8.Shell;
 namespace Client.Tests.Playback
 {
     [TestClass]
-    public class PlaybackViewModelTests : TestBase
+    public class PlaybackViewModelTests : ClientTestBase
     {
         private PlaybackViewModel _subject;
         private MockEventAggregator _eventAggregator;

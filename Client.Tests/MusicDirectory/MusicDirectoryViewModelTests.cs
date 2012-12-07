@@ -7,7 +7,7 @@ using Subsonic8.MusicDirectory;
 namespace Client.Tests.MusicDirectory
 {
     [TestClass]
-    public class MusicDirectoryViewModelTests : TestBase
+    public class MusicDirectoryViewModelTests : ClientTestBase
     {
         private IMusicDirectoryViewModel _subject;
 

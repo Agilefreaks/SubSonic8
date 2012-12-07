@@ -4,9 +4,10 @@ using Caliburn.Micro;
 using Client.Common.Models;
 using Client.Common.Models.Subsonic;
 using Client.Common.Services;
-using Client.Common.ViewModels;
+using Subsonic8.Framework.ViewModel;
 using Subsonic8.Messages;
 using Subsonic8.PlaylistItem;
+using Subsonic8.Shell;
 
 namespace Subsonic8.Playback
 {

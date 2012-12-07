@@ -121,7 +121,6 @@
     <Compile Include="Results\GetRootResultTests.cs" />
     <Compile Include="Services\SubsonicServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModels\ViewModelBaseTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

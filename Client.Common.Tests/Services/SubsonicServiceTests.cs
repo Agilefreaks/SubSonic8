@@ -21,7 +21,7 @@ namespace Client.Common.Tests.Services
         {
             var result = _subject.GetRootIndex();
 
-            Assert.IsInstanceOfType(result, typeof(GetRootResult));
+            result.Should().BeOfType<GetRootResult>();
         }
 
         [TestMethod]

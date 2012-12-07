@@ -415,15 +415,16 @@
         <Setter Property="AutomationProperties.Name" Value="List"/>
         <Setter Property="Content" Value="&#xE14C;"/>
     </Style>
-    <!-- 
-        Standard AppBarButton Styles for use with Button and ToggleButton
-    
-        An AppBarButton Style is provided for each of the glyphs in the Segoe UI Symbol font.  
-        Uncomment any style you reference (as not all may be required).
-    -->
-
-    <!--
-    
+    <Style x:Key="NextAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
+        <Setter Property="AutomationProperties.AutomationId" Value="NextAppBarButton"/>
+        <Setter Property="AutomationProperties.Name" Value="Next"/>
+        <Setter Property="Content" Value="&#xE111;"/>
+    </Style>
+    <Style x:Key="PreviousAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
+        <Setter Property="AutomationProperties.AutomationId" Value="PreviousAppBarButton"/>
+        <Setter Property="AutomationProperties.Name" Value="Previous"/>
+        <Setter Property="Content" Value="&#xE112;"/>
+    </Style>
     <Style x:Key="SkipBackAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
         <Setter Property="AutomationProperties.AutomationId" Value="SkipBackAppBarButton"/>
         <Setter Property="AutomationProperties.Name" Value="Skip Back"/>
@@ -444,6 +445,20 @@
         <Setter Property="AutomationProperties.Name" Value="Pause"/>
         <Setter Property="Content" Value="&#xE103;"/>
     </Style>
+    <Style x:Key="StopAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
+        <Setter Property="AutomationProperties.AutomationId" Value="StopAppBarButton"/>
+        <Setter Property="AutomationProperties.Name" Value="Stop"/>
+        <Setter Property="Content" Value="&#xE15B;"/>
+    </Style>
+    <!-- 
+        Standard AppBarButton Styles for use with Button and ToggleButton
+    
+        An AppBarButton Style is provided for each of the glyphs in the Segoe UI Symbol font.  
+        Uncomment any style you reference (as not all may be required).
+    -->
+
+    <!--
+    
     <Style x:Key="EditAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
         <Setter Property="AutomationProperties.AutomationId" Value="EditAppBarButton"/>
         <Setter Property="AutomationProperties.Name" Value="Edit"/>
@@ -503,16 +518,6 @@
         <Setter Property="AutomationProperties.AutomationId" Value="OutAppBarButton"/>
         <Setter Property="AutomationProperties.Name" Value="Out"/>
         <Setter Property="Content" Value="&#xE110;"/>
-    </Style>
-    <Style x:Key="NextAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
-        <Setter Property="AutomationProperties.AutomationId" Value="NextAppBarButton"/>
-        <Setter Property="AutomationProperties.Name" Value="Next"/>
-        <Setter Property="Content" Value="&#xE111;"/>
-    </Style>
-    <Style x:Key="PreviousAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
-        <Setter Property="AutomationProperties.AutomationId" Value="PreviousAppBarButton"/>
-        <Setter Property="AutomationProperties.Name" Value="Previous"/>
-        <Setter Property="Content" Value="&#xE112;"/>
     </Style>
     <Style x:Key="FavoriteAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
         <Setter Property="AutomationProperties.AutomationId" Value="FavoriteAppBarButton"/>
@@ -852,11 +857,6 @@
         <Setter Property="AutomationProperties.AutomationId" Value="CaptionAppBarButton"/>
         <Setter Property="AutomationProperties.Name" Value="Caption"/>
         <Setter Property="Content" Value="&#xE15A;"/>
-    </Style>
-    <Style x:Key="StopAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
-        <Setter Property="AutomationProperties.AutomationId" Value="StopAppBarButton"/>
-        <Setter Property="AutomationProperties.Name" Value="Stop"/>
-        <Setter Property="Content" Value="&#xE15B;"/>
     </Style>
     <Style x:Key="ShowResultsAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
         <Setter Property="AutomationProperties.AutomationId" Value="ShowResultsAppBarButton"/>

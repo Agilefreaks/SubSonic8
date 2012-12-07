@@ -3,12 +3,11 @@ using System.Linq;
 using Caliburn.Micro;
 using Client.Common.Models;
 using Client.Common.Results;
-using Client.Common.ViewModels;
 using Subsonic8.Framework.Extensions;
 using Subsonic8.MenuItem;
 using Windows.UI.Xaml.Controls;
 
-namespace Subsonic8.Framework
+namespace Subsonic8.Framework.ViewModel
 {
     public abstract class DetailViewModelBase<T> : ViewModelBase, IDetailViewModel<T>
         where T : ISubsonicModel
