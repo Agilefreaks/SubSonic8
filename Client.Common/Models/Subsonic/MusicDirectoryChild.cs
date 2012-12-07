@@ -19,13 +19,16 @@ namespace Client.Common.Models.Subsonic
         public string Album { get; set; }
 
         [XmlAttribute("coverArt")]
-        public string CovertArt { get; set; }
+        public string CoverArt { get; set; }
 
         [XmlAttribute("isDir")]
         public bool IsDirectory { get; set; }
 
         [XmlAttribute("isVideo")]
         public bool IsVideo { get; set; }
+
+        [XmlAttribute("duration")]
+        public int Duration { get; set; }
 
         public override SubsonicModelTypeEnum Type
         {

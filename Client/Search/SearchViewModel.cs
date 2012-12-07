@@ -16,11 +16,6 @@ namespace Subsonic8.Search
         private SearchResultCollection _parameter;
         private List<MenuItemViewModel> _menuItemViewModels;
 
-        public ObservableCollection<IMenuItemViewModel> SelectedItems
-        {
-            get { return  ((IDefaultBottomBarViewModel) BottomBar).SelectedItems; }
-        }
-
         public SearchResultCollection Parameter
         {
             get

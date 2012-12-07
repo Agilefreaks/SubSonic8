@@ -1,6 +1,8 @@
-﻿using Caliburn.Micro;
+﻿using System.Collections.ObjectModel;
+using Caliburn.Micro;
 using Client.Common.Services;
 using Subsonic8.BottomBar;
+using Subsonic8.MenuItem;
 using Subsonic8.Shell;
 
 namespace Subsonic8.Framework.ViewModel
@@ -61,6 +63,11 @@ namespace Subsonic8.Framework.ViewModel
             {
                 return NavigationService != null && NavigationService.CanGoBack;
             }
+        }
+
+        public ObservableCollection<IMenuItemViewModel> SelectedItems
+        {
+            get { return  ((IDefaultBottomBarViewModel) BottomBar).SelectedItems; }
         }
 
         public void GoBack()

@@ -120,7 +120,7 @@ namespace Subsonic8.Playback
 
                 if (item.Type == SubsonicModelTypeEnum.Song || item.Type == SubsonicModelTypeEnum.Video)
                 {
-                    var model = (Song) item;
+                    var model = item as MusicDirectoryChild;
                     pi.Artist = model.Artist;
                     pi.CoverArt = SubsonicService.GetCoverArtForId(model.CoverArt);
                     pi.Duration = model.Duration;
