@@ -13,6 +13,8 @@ namespace Subsonic8.Shell
 
         ISubsonicService SubsonicService { get; set; }
 
+        IPlayerControls PlayerControls { get; set; }
+
         Action<SearchResultCollection> NavigateToSearhResult { get; set; }
 
         Task PerformSubsonicSearch(string query);
@@ -20,5 +22,9 @@ namespace Subsonic8.Shell
         void PlayNext(object sender, RoutedEventArgs routedEventArgs);
 
         void PlayPrevious(object sender, RoutedEventArgs routedEventArgs);
+        
+        void PlayPause();
+
+        void Stop();
     }
 }

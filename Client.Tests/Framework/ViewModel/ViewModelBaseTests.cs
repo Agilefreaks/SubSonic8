@@ -69,7 +69,6 @@ namespace Client.Tests.Framework.ViewModel
     internal class MockDefaultBottomBarViewModel : IDefaultBottomBarViewModel
     {
         public bool IsOpened { get; set; }
-        public bool IsPlaying { get; set; }
 
         public void NavigateToPlaylist()
         {
@@ -82,6 +81,11 @@ namespace Client.Tests.Framework.ViewModel
         }
 
         public void PlayNext()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void PlayPause()
         {
             throw new System.NotImplementedException();
         }

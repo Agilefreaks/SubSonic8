@@ -34,8 +34,8 @@
                   ItemsSource="{Binding Source={StaticResource GroupedSource}}"
                   custom:MultipleSelectBehavior.SelectedItems="{Binding SelectedItems, Mode=TwoWay}"
                   ItemTemplate="{StaticResource MenuItemTemplate}"
-                  IsItemClickEnabled="True"
-                  cal:Message.Attach="[Event ItemClick] = [Action SearchResultClick($eventArgs)]">
+                  IsItemClickEnabled="True" 
+                  cal:Message.Attach="[Event ItemClick] = [Action SearchResultClick($eventArgs)];">
 
             <GridView.ItemsPanel>
                 <ItemsPanelTemplate>

@@ -145,9 +145,19 @@ namespace Subsonic8.Playback
         {
             _currentTrackNo++;
             if (_currentTrackNo < Playlist.Count)
+            {
                 Handle(new PlayFile { Id = Playlist[_currentTrackNo].Id });
+            }
             else
-                _shellViewModel.Source = null;
+            {
+                StopAndReset();
+            }
+        }
+
+        private void StopAndReset()
+        {
+            _currentTrackNo = 0;
+            _shellViewModel.Source = null;
         }
 
         public void Handle(PlayPreviousMessage message)
@@ -156,7 +166,22 @@ namespace Subsonic8.Playback
             if (_currentTrackNo > -1)
                 Handle(new PlayFile { Id = Playlist[_currentTrackNo].Id });
             else
-                _shellViewModel.Source = null;
+            {
+                StopAndReset();
+            }
+        }
+
+        public void Handle(PlayPauseMessage message)
+        {
+            if (Source != null || _shellViewModel.Source != null)
+                _shellViewModel.PlayPause();
+            else
+                Handle(new PlayNextMessage());
+        }
+
+        public void Handle(StopMessage message)
+        {
+            _shellViewModel.Stop();
         }
     }
 }

@@ -1,8 +1,5 @@
 ﻿using System;
-using Caliburn.Micro;
-using Subsonic8.Messages;
 using Windows.Media;
-using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
@@ -13,8 +10,10 @@ namespace Subsonic8.Shell
     public sealed partial class ShellView : IPlayerControls
     {
         public event RoutedEventHandler PlayNextClicked;
-
+        
         public event RoutedEventHandler PlayPreviousClicked;
+
+        public Action PlayPause { get; private set; }
 
         public Frame ShellFrame
         {
@@ -29,6 +28,7 @@ namespace Subsonic8.Shell
 
         private void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
         {
+            PlayPause = CallPlayPause;
             MediaControl.PlayPressed += MediaControlPlayPressed;
             MediaControl.PausePressed += MediaControlPausePressed;
             MediaControl.PlayPauseTogglePressed += MediaControlPlayPauseTogglePressed;
@@ -76,6 +76,11 @@ namespace Subsonic8.Shell
         public void PlayPreviousTrackPressed(object sender, object e)
         {
             PlayPreviousClicked(mediaElement, (RoutedEventArgs)e);
+        }
+
+        private void CallPlayPause()
+        {
+            MediaControlPlayPauseTogglePressed(null, null);
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)

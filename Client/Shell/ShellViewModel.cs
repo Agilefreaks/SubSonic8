@@ -16,6 +16,7 @@ namespace Subsonic8.Shell
         private readonly IEventAggregator _eventAggregator;
         private Uri _source;
         private IBottomBarViewModel _bottomBar;
+        private IPlayerControls _playerControls;
 
         public Uri Source
         {
@@ -31,7 +32,7 @@ namespace Subsonic8.Shell
                 NotifyOfPropertyChange();
             }
         }
-        
+
         public IBottomBarViewModel BottomBar
         {
             get
@@ -48,6 +49,16 @@ namespace Subsonic8.Shell
         }
 
         public ISubsonicService SubsonicService { get; set; }
+
+        public IPlayerControls PlayerControls
+        {
+            get { return _playerControls; }
+            set
+            {
+                _playerControls = value;
+                NotifyOfPropertyChange();
+            }
+        }
 
         public INavigationService NavigationService { get; set; }
 
@@ -80,23 +91,34 @@ namespace Subsonic8.Shell
             _eventAggregator.Publish(new PlayPreviousMessage());
         }
 
+        public void PlayPause()
+        {
+            if (_playerControls != null)
+                _playerControls.PlayPause();
+        }
+
+        public void Stop()
+        {
+            if (_playerControls != null)
+                Source = null;
+        }
+
         protected override void OnViewAttached(object view, object context)
         {
             base.OnViewAttached(view, context);
-        
+
             SearchPane.GetForCurrentView().QuerySubmitted += OnQuerySubmitted;
 
-            IPlayerControls playerControls;
-            if ((playerControls = view as IPlayerControls) != null)
+            if ((_playerControls = view as IPlayerControls) != null)
             {
-                playerControls.PlayNextClicked += PlayNext;
-                playerControls.PlayPreviousClicked += PlayPrevious;
+                _playerControls.PlayNextClicked += PlayNext;
+                _playerControls.PlayPreviousClicked += PlayPrevious;
             }
         }
 
         private void NavigateToSearchResultCall(SearchResultCollection searchResultCollection)
         {
-            NavigationService.NavigateToViewModel<SearchViewModel>(searchResultCollection);            
+            NavigationService.NavigateToViewModel<SearchViewModel>(searchResultCollection);
         }
 
         private async void OnQuerySubmitted(SearchPane sender, SearchPaneQuerySubmittedEventArgs args)

@@ -144,7 +144,9 @@
     <Compile Include="Main\MainViewModel.cs" />
     <Compile Include="Messages\PlayNextMessage.cs" />
     <Compile Include="Messages\PlaylistMessage.cs" />
+    <Compile Include="Messages\PlayPauseMessage.cs" />
     <Compile Include="Messages\PlayPreviousMessage.cs" />
+    <Compile Include="Messages\StopMessage.cs" />
     <Compile Include="MusicDirectory\IMusicDirectoryViewModel.cs" />
     <Compile Include="MusicDirectory\MusicDirectoryView.xaml.cs">
       <DependentUpon>MusicDirectoryView.xaml</DependentUpon>

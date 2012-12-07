@@ -769,7 +769,7 @@
         <Setter Property="AutomationProperties.AutomationId" Value="DockLeftAppBarButton"/>
         <Setter Property="AutomationProperties.Name" Value="Dock Left"/>
         <Setter Property="Content" Value="&#xE145;"/>
-    </Style>
+    </Style> 
     <Style x:Key="DockRightAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
         <Setter Property="AutomationProperties.AutomationId" Value="DockRightAppBarButton"/>
         <Setter Property="AutomationProperties.Name" Value="Dock Right"/>

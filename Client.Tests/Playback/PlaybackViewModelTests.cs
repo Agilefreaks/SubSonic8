@@ -9,6 +9,7 @@ using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using Subsonic8.Messages;
 using Subsonic8.Playback;
 using Subsonic8.Shell;
+using Windows.UI.Xaml;
 
 namespace Client.Tests.Playback
 {
@@ -20,6 +21,7 @@ namespace Client.Tests.Playback
         private MockSubsonicService _subsonicService;
         private MockNavigationService _navigationService;
         private ShellViewModel _shellViewModel;
+        private MockPlayerControls _playerControls;
 
         [TestInitialize]
         public void TestInitialize()
@@ -27,7 +29,12 @@ namespace Client.Tests.Playback
             _eventAggregator = new MockEventAggregator();
             _subsonicService = new MockSubsonicService();
             _navigationService = new MockNavigationService();
-            _shellViewModel = new ShellViewModel(_eventAggregator, _subsonicService, _navigationService);
+            _playerControls = new MockPlayerControls();
+            _shellViewModel = new ShellViewModel(_eventAggregator, _subsonicService, _navigationService)
+                                  {
+                                      PlayerControls = _playerControls
+                                  };
+
             _subject = new PlaybackViewModel(_eventAggregator, _shellViewModel, _subsonicService)
                            {
                                NavigationService = _navigationService,
@@ -157,6 +164,44 @@ namespace Client.Tests.Playback
             _subject.Handle(new PlayPreviousMessage());
 
             _shellViewModel.Source.Should().BeNull();
+        }
+
+        [TestMethod]
+        public void HandleWithStopMessageShouldSetSourceOnShellToNull()
+        {
+            _subject.Handle(new StopMessage());
+
+            _shellViewModel.Source.Should().BeNull();
+        }
+
+        [TestMethod]
+        public void HandleWithPlayPauseMessageIfShellViewModelSourceIsNotNullCallsPlayPauseOnIPlayerControls()
+        {
+            _shellViewModel.Source = new Uri("http://test.t");
+
+            _subject.Handle(new PlayPauseMessage());
+
+            _playerControls.PlayPauseCallCount.Should().Be(1);
+        }
+    }
+
+    internal class MockPlayerControls : IPlayerControls
+    {
+        public event RoutedEventHandler PlayNextClicked;
+        public event RoutedEventHandler PlayPreviousClicked;
+        
+        public Action PlayPause { get; private set; }
+
+        public int PlayPauseCallCount { get; set; }
+
+        public MockPlayerControls()
+        {
+            PlayPause = PlayPauseImpl;
+        }
+
+        private void PlayPauseImpl()
+        {
+            PlayPauseCallCount++;
         }
     }
 }

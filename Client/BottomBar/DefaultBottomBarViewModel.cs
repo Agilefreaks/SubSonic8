@@ -2,7 +2,7 @@
 using System.Collections.Specialized;
 using System.Linq;
 using Caliburn.Micro;
-using Client.Common.ViewModels;
+using Subsonic8.MenuItem;
 using Subsonic8.Messages;
 using Subsonic8.Playback;
 
@@ -51,6 +51,7 @@ namespace Subsonic8.BottomBar
             _navigationService = navigationService;
             _eventAggregator = eventAggregator;
             SelectedItems = new ObservableCollection<IMenuItemViewModel>();
+            SelectedItems.CollectionChanged += OnSelectedItemsChanged;
         }
 
         public void AddToPlaylist()
@@ -62,6 +63,26 @@ namespace Subsonic8.BottomBar
         public void NavigateToPlaylist()
         {
             _navigationService.NavigateToViewModel<PlaybackViewModel>();
+        }
+
+        public void PlayPrevious()
+        {
+            _eventAggregator.Publish(new PlayPreviousMessage());
+        }
+
+        public void PlayNext()
+        {
+            _eventAggregator.Publish(new PlayNextMessage());
+        }
+
+        public void PlayPause()
+        {
+            _eventAggregator.Publish(new PlayPauseMessage());
+        }
+
+        public void Stop()
+        {
+            _eventAggregator.Publish(new StopMessage());
         }
 
         private void ManageSelectedItemsHooks(INotifyCollectionChanged newCollection, INotifyCollectionChanged oldCollection)

@@ -1,3 +1,4 @@
+using System;
 using Windows.UI.Xaml;
 
 namespace Subsonic8.Shell
@@ -6,5 +7,6 @@ namespace Subsonic8.Shell
     {
         event RoutedEventHandler PlayNextClicked;
         event RoutedEventHandler PlayPreviousClicked;
+        Action PlayPause { get; }
     }
 }

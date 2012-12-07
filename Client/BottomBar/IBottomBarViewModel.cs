@@ -4,15 +4,13 @@ namespace Subsonic8.BottomBar
     {
         bool IsOpened { get; set; }
 
-        bool IsPlaying { get; set; }
-
         void NavigateToPlaylist();
 
         void PlayPrevious();
 
         void PlayNext();
 
-        void Play();
+        void PlayPause();
 
         void Stop();
     }
