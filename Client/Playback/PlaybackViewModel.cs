@@ -8,6 +8,7 @@ using Subsonic8.Framework.ViewModel;
 using Subsonic8.Messages;
 using Subsonic8.PlaylistItem;
 using Subsonic8.Shell;
+using Windows.UI.Xaml.Controls;
 
 namespace Subsonic8.Playback
 {
@@ -110,6 +111,11 @@ namespace Subsonic8.Playback
                     State = PlaybackViewModelStateEnum.Video;
                 }
             }
+        }
+
+        public void StartPlayback(object sender, object e)
+        {
+            _shellViewModel.Source = ((PlaylistItemViewModel)(((ItemClickEventArgs) e).ClickedItem)).Uri;
         }
 
         public void Handle(PlaylistMessage message)
