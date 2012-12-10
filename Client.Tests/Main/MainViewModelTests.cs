@@ -12,12 +12,12 @@ using Subsonic8.Main;
 namespace Client.Tests.Main
 {
     [TestClass]
-    public class MainViewModelTests : ViewModelBaseTests<MainViewModel>
+    public class MainViewModelTests : ViewModelBaseTests<IMainViewModel>
     {
         private INavigationService _navigationService;
         private ISubsonicService _subsonicService;
 
-        protected override MainViewModel Subject { get; set; }
+        protected override IMainViewModel Subject { get; set; }
 
         [TestInitialize]
         public void TestInitialize()

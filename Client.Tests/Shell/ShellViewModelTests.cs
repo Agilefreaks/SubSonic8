@@ -12,7 +12,8 @@ namespace Client.Tests.Shell
     [TestClass]
     public class ShellViewModelTests
     {
-        private IShellViewModel _subject;
+        protected IShellViewModel Subject { get; set; }
+
         private readonly MockEventAggregator _eventAggregator = new MockEventAggregator();
         private MockSubsonicService _mockSubsonicService;
         private MockNavigationService _mockNavigationService;
@@ -24,13 +25,13 @@ namespace Client.Tests.Shell
 
             _mockSubsonicService = new MockSubsonicService();
             _mockNavigationService = new MockNavigationService();
-            _subject = new ShellViewModel(_eventAggregator, _mockSubsonicService, _mockNavigationService);
+            Subject = new ShellViewModel(_eventAggregator, _mockSubsonicService, _mockNavigationService);
         }
 
         [TestMethod]
         public void CtorShouldSubscribeToEventAggregator()
         {
-            _eventAggregator.Subscriber.Should().Be(_subject);
+            _eventAggregator.Subscriber.Should().Be(Subject);
         }
 
         [TestMethod]
@@ -38,7 +39,7 @@ namespace Client.Tests.Shell
         {
             var callCount = 0;
             var searchResult = new MockSearchResult(new SubsonicServiceConfiguration(), "test");
-            _subject.NavigateToSearhResult = (collection) => { };
+            Subject.NavigateToSearhResult = collection => { };
             _mockSubsonicService.Search = s =>
                                               {
                                                   Assert.AreEqual("test", s);
@@ -46,7 +47,7 @@ namespace Client.Tests.Shell
                                                   return searchResult;
                                               };
 
-            await _subject.PerformSubsonicSearch("test");
+            await Subject.PerformSubsonicSearch("test");
 
             Assert.AreEqual(1, callCount);
         }
@@ -57,9 +58,9 @@ namespace Client.Tests.Shell
             var called = false;
             var searchResult = new MockSearchResult(new SubsonicServiceConfiguration(), "test");
             _mockSubsonicService.Search = s => searchResult;
-            _subject.NavigateToSearhResult = collection => { called = true; };
+            Subject.NavigateToSearhResult = collection => { called = true; };
 
-            await _subject.PerformSubsonicSearch("test");
+            await Subject.PerformSubsonicSearch("test");
 
             Assert.IsTrue(called);
         }
@@ -67,14 +68,14 @@ namespace Client.Tests.Shell
         [TestMethod]
         public void PlayNextShouldCallPublishOnEventAggregator()
         {
-            _subject.PlayNext(null, null);
+            Subject.PlayNext(null, null);
             _eventAggregator.PublishCallCount.Should().Be(1);
         }
 
         [TestMethod]
         public void PlayPreviousShouldCallPublishOnEventAggregator()
         {
-            _subject.PlayPrevious(null, null);
+            Subject.PlayPrevious(null, null);
 
             _eventAggregator.PublishCallCount.Should().Be(1);
         }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Client.Common.Models.Subsonic;
+using Client.Tests.Framework.ViewModel;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using Subsonic8.MusicDirectory;
@@ -7,28 +8,28 @@ using Subsonic8.MusicDirectory;
 namespace Client.Tests.MusicDirectory
 {
     [TestClass]
-    public class MusicDirectoryViewModelTests : ClientTestBase
+    public class MusicDirectoryViewModelTests : ViewModelBaseTests<IMusicDirectoryViewModel>
     {
-        private IMusicDirectoryViewModel _subject;
-
+        protected override IMusicDirectoryViewModel Subject { get; set; }
+ 
         [TestInitialize]
         public void TestInitialize()
         {
-            _subject = new MusicDirectoryViewModel();
+            Subject = new MusicDirectoryViewModel();
         }
 
         [TestMethod]
         public void CtorShouldSetMenuItems()
         {
-            _subject.MenuItems.Should().BeEmpty();
+            Subject.MenuItems.Should().BeEmpty();
         }
 
         [TestMethod]
         public void ParameterSetShouldPopulateMenuItems()
         {
-            _subject.Item = new Common.Models.Subsonic.MusicDirectory { Children = new List<MusicDirectoryChild> { new MusicDirectoryChild(), new MusicDirectoryChild() } };
+            Subject.Item = new Common.Models.Subsonic.MusicDirectory { Children = new List<MusicDirectoryChild> { new MusicDirectoryChild(), new MusicDirectoryChild() } };
 
-            _subject.MenuItems.Should().HaveCount(2);
+            Subject.MenuItems.Should().HaveCount(2);
         }
     }
 }

@@ -11,7 +11,7 @@ namespace Client.Tests
             Configure();
         }
 
-        protected virtual void Configure()
+        protected void Configure()
         {
             var mockEventAggregator = new MockEventAggregator();
             var mockSubsonicService = new MockSubsonicService();

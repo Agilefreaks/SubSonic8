@@ -2,6 +2,7 @@
 using Caliburn.Micro;
 using Client.Common.Models.Subsonic;
 using Client.Common.Services;
+using Client.Tests.Framework.ViewModel;
 using Client.Tests.Mocks;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
@@ -10,9 +11,10 @@ using Subsonic8.Album;
 namespace Client.Tests.Album
 {
     [TestClass]
-    public class AlbumViewModelTests : ClientTestBase
+    public class AlbumViewModelTests : ViewModelBaseTests<IAlbumViewModel>
     {
-        private IAlbumViewModel _subject;
+        protected override IAlbumViewModel Subject { get; set; }
+
         private INavigationService _navigationService;
         private ISubsonicService _subsonicService;
 
@@ -21,13 +23,13 @@ namespace Client.Tests.Album
         {
             _navigationService = new MockNavigationService();
             _subsonicService = new MockSubsonicService();
-            _subject = new AlbumViewModel { NavigationService = _navigationService, SubsonicService = _subsonicService };
+            Subject = new AlbumViewModel { NavigationService = _navigationService, SubsonicService = _subsonicService };
         }
 
         [TestMethod]
         public void CtroShouldInstantiateMenuItems()
         {
-            _subject.MenuItems.Should().NotBeNull();
+            Subject.MenuItems.Should().NotBeNull();
         }
 
         [TestMethod]
@@ -35,9 +37,9 @@ namespace Client.Tests.Album
         {
             var album = new Common.Models.Subsonic.Album { Songs = new List<Song> { new Song(), new Song() } };
 
-            _subject.Item = album;
+            Subject.Item = album;
 
-            _subject.MenuItems.Should().HaveCount(2);
+            Subject.MenuItems.Should().HaveCount(2);
         }
     }
 }

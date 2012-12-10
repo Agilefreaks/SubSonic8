@@ -9,7 +9,7 @@ namespace Client.Tests.Framework.ViewModel
 {
     [TestClass]
     public abstract class ViewModelBaseTests<TViewModel> : ClientTestBase
-        where TViewModel : ViewModelBase
+        where TViewModel : IViewModel
     {
         protected abstract TViewModel Subject { get; set; }
 

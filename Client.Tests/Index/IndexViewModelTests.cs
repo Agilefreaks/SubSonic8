@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Client.Common.Models.Subsonic;
+using Client.Tests.Framework.ViewModel;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using Subsonic8.Index;
@@ -7,28 +8,28 @@ using Subsonic8.Index;
 namespace Client.Tests.Index
 {
     [TestClass]
-    public class IndexViewModelTests : ClientTestBase
+    public class IndexViewModelTests : ViewModelBaseTests<IIndexViewModel>
     {
-        private IIndexViewModel _subject;
+        protected override IIndexViewModel Subject { get; set; }
 
         [TestInitialize]
         public void TestInitialize()
         {
-            _subject = new IndexViewModel();
+            Subject = new IndexViewModel();
         }
 
         [TestMethod]
         public void CtorShouldSetMenuItems()
         {
-            _subject.MenuItems.Should().BeEmpty();
+            Subject.MenuItems.Should().BeEmpty();
         }
 
         [TestMethod]
         public void ParameterSetShouldPopulateMenuItems()
         {
-            _subject.Parameter = new IndexItem { Artists = new List<Artist> { new Artist(), new Artist() } };
+            Subject.Parameter = new IndexItem { Artists = new List<Artist> { new Artist(), new Artist() } };
 
-            _subject.MenuItems.Should().HaveCount(2);
+            Subject.MenuItems.Should().HaveCount(2);
         }
     }
 }

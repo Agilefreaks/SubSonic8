@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using Client.Common.Models.Subsonic;
+using Subsonic8.Framework.ViewModel;
 using Subsonic8.MenuItem;
 
 namespace Subsonic8.Search
 {
-    public interface ISearchViewModel
+    public interface ISearchViewModel : IViewModel
     {
         SearchResultCollection Parameter { get; set; }
 
