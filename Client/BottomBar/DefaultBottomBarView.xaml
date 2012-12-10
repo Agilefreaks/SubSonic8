@@ -3,17 +3,18 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:cal="using:Caliburn.Micro"
-    mc:Ignorable="d">
+    xmlns:ic="using:Subsonic8.Controls" mc:Ignorable="d">
     
     <Grid>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
             <Button Style="{StaticResource AddAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action AddToPlaylist()]"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Style="{StaticResource PreviousAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action PlayPrevious()]"/>
-            <Button Style="{StaticResource PlayAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action PlayPause()]"/>
+            <ic:AppBarToggleButton Style="{StaticResource PlayAppBarButtonStyle}" CheckedStyle="{StaticResource PauseAppBarButtonStyle}" 
+                                   cal:Message.Attach="[Event Click] = [Action PlayPause()]" AutoToggle="True"/>
             <Button Style="{StaticResource StopAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action Stop()]"/>
             <Button Style="{StaticResource NextAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action PlayNext()]"/>
+            <Button Style="{StaticResource PreviousAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action PlayPrevious()]"/>
             <Button Style="{StaticResource ListAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action NavigateToPlaylist()]"/>
         </StackPanel>
     </Grid>
