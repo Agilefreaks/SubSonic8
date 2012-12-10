@@ -2,7 +2,6 @@
 using Caliburn.Micro;
 using Client.Common.Services;
 using Subsonic8.BottomBar;
-using Subsonic8.MenuItem;
 using Subsonic8.Shell;
 
 namespace Subsonic8.Framework.ViewModel
@@ -79,6 +78,11 @@ namespace Subsonic8.Framework.ViewModel
         {
             SubsonicService = IoC.Get<ISubsonicService>();
             NavigationService = IoC.Get<INavigationService>();
+        }
+
+        protected override void OnActivate()
+        {
+            base.OnActivate();
             SetBottomBar(IoC.Get<IShellViewModel>());
         }
 

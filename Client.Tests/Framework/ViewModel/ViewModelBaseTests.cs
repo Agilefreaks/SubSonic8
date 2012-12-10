@@ -1,111 +1,28 @@
-﻿using System.Collections.ObjectModel;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
+using Client.Tests.Mocks;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using Subsonic8.BottomBar;
 using Subsonic8.Framework.ViewModel;
-using Subsonic8.MenuItem;
-using Subsonic8.Shell;
 
 namespace Client.Tests.Framework.ViewModel
 {
     [TestClass]
-    public class ViewModelBaseTests : ClientTestBase
+    public abstract class ViewModelBaseTests<TViewModel> : ClientTestBase
+        where TViewModel : ViewModelBase
     {
-        private ViewModelBaseImpl _subject;
-
-        [TestInitialize]
-        public void TestInitialize()
-        {
-            _subject = new ViewModelBaseImpl();
-        }
+        protected abstract TViewModel Subject { get; set; }
 
         [TestMethod]
-        public void CtorAlwaysSetsBottomBarToCurrentlyRegisteredDefaultBottomBar()
+        public void OnActivateShouldSetDefaultBottomBar()
         {
             var defaultBottomBar = new MockDefaultBottomBarViewModel();
-            var oldGetInstance = IoC.GetInstance;
-            IoC.GetInstance = (type, s) =>
-                                  {
-                                      var obj = oldGetInstance(type, s);
-                                      if (type == typeof(IDefaultBottomBarViewModel))
-                                          obj = defaultBottomBar;
+            var mockShellViewMode = new MockShellViewModel();
+            IoC.GetInstance = (type, s) => type == typeof (IDefaultBottomBarViewModel) ? (object) defaultBottomBar : mockShellViewMode;
 
-                                      return obj;
-                                  };
+            ((IActivate)Subject).Activate();
 
-            _subject = new ViewModelBaseImpl();
-
-            _subject.BottomBar.Should().Be(defaultBottomBar);
-        }
-
-        [TestMethod]
-        public void BottomBarWhenSetShouldSetBottomBarOnShellViewModel()
-        {
-            var defaultBottomBar = new MockDefaultBottomBarViewModel();
-            var oldGetInstance = IoC.GetInstance;
-            IoC.GetInstance = (type, s) =>
-            {
-                var obj = oldGetInstance(type, s);
-                if (type == typeof(IDefaultBottomBarViewModel))
-                    obj = defaultBottomBar;
-
-                return obj;
-            };
-
-            _subject = new ViewModelBaseImpl();
-            var bottomBarViewModel = new MockDefaultBottomBarViewModel();
-            _subject.BottomBar = bottomBarViewModel;
-
-            IoC.Get<IShellViewModel>().BottomBar.Should().Be(bottomBarViewModel);
+            Subject.BottomBar.Should().Be(defaultBottomBar);
         }
     }
-
-    #region Mocks
-    internal class ViewModelBaseImpl : ViewModelBase
-    {
-    }
-
-    internal class MockDefaultBottomBarViewModel : IDefaultBottomBarViewModel
-    {
-        public bool IsOpened { get; set; }
-
-        public void NavigateToPlaylist()
-        {
-
-        }
-
-        public void PlayPrevious()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void PlayNext()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void PlayPause()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void Play()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void Stop()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void AddToPlaylist()
-        {
-
-        }
-
-        public ObservableCollection<object> SelectedItems { get; set; }
-    }
-#endregion
 }

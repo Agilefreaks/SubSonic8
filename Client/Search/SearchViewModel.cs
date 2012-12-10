@@ -1,12 +1,9 @@
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using Client.Common.Models.Subsonic;
-using Subsonic8.BottomBar;
 using Subsonic8.Framework.Extensions;
 using Subsonic8.Framework.ViewModel;
 using Subsonic8.MenuItem;
-using Subsonic8.Shell;
 using Windows.UI.Xaml.Controls;
 
 namespace Subsonic8.Search

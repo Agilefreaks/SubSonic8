@@ -47,6 +47,6 @@
                     SelectionMode = "Multiple"
                     CanDragItems = "True" CanReorderItems = "True" AllowDrop = "True"
                     IsItemClickEnabled = "True"
-                    cal:Message.Attach = "[Event ItemClick] = [Action StartPlayback($sender, $eventArgs)]"/>
+                    cal:Message.Attach = "[Event ItemClick] = [Action StartPlayback($dataContext)]"/>
     </Grid>
 </Page>

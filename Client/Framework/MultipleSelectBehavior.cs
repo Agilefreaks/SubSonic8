@@ -85,12 +85,12 @@ namespace Subsonic8.Framework
             var selectedItems = GetSelectedItems((DependencyObject)sender);
             foreach (var item in e.RemovedItems.Where(selectedItems.Contains))
             {
-                selectedItems.Remove((object)item);
+                selectedItems.Remove(item);
             }
 
             foreach (var item in e.AddedItems.Where(item => !selectedItems.Contains(item)))
             {
-                selectedItems.Add((object)item);
+                selectedItems.Add(item);
             }
         }
     }

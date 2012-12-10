@@ -114,6 +114,8 @@
     <Compile Include="Album\AlbumViewModelTests.cs" />
     <Compile Include="ClientTestBase.cs" />
     <Compile Include="DefaultBottomBar\DefaultBottomBarViewModelTests.cs" />
+    <Compile Include="Mocks\MockDefaultBottomBarViewModel.cs" />
+    <Compile Include="Mocks\MockShellViewModel.cs" />
     <Compile Include="Index\IndexViewModelTests.cs" />
     <Compile Include="Main\MainViewModelTests.cs" />
     <Compile Include="Mocks\MockEventAggregator.cs" />

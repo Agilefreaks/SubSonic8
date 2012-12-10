@@ -1,5 +1,4 @@
 ﻿using Caliburn.Micro;
-using Client.Common;
 using Client.Common.Results;
 using Subsonic8.Framework.ViewModel;
 using Subsonic8.Index;
