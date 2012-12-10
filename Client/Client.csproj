@@ -168,7 +168,7 @@
     <Compile Include="PlaylistItem\PlaylistItemViewModel.cs" />
     <Compile Include="Search\ISearchViewModel.cs" />
     <Compile Include="Framework\Extensions\SubsonicModelToMenuItemViewModelExtensions.cs" />
-    <Compile Include="Search\MultipleSelectBehavior.cs" />
+    <Compile Include="Framework\MultipleSelectBehavior.cs" />
     <Compile Include="Search\SearchView.xaml.cs">
       <DependentUpon>SearchView.xaml</DependentUpon>
     </Compile>

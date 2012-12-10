@@ -13,9 +13,9 @@ namespace Subsonic8.BottomBar
         private readonly INavigationService _navigationService;
         private readonly IEventAggregator _eventAggregator;
         private bool _isOpened;
-        private ObservableCollection<IMenuItemViewModel> _selectedItems;
+        private ObservableCollection<object> _selectedItems;
 
-        public ObservableCollection<IMenuItemViewModel> SelectedItems
+        public ObservableCollection<object> SelectedItems
         {
             get
             {
@@ -50,13 +50,13 @@ namespace Subsonic8.BottomBar
         {
             _navigationService = navigationService;
             _eventAggregator = eventAggregator;
-            SelectedItems = new ObservableCollection<IMenuItemViewModel>();
+            SelectedItems = new ObservableCollection<object>();
             SelectedItems.CollectionChanged += OnSelectedItemsChanged;
         }
 
         public void AddToPlaylist()
         {
-            _eventAggregator.Publish(new PlaylistMessage { Queue = SelectedItems.Select(i => i.Item).ToList() });
+            _eventAggregator.Publish(new PlaylistMessage { Queue = SelectedItems.Select(i => ((IMenuItemViewModel) i).Item).ToList() });
             SelectedItems.Clear();
         }
 

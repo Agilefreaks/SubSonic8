@@ -105,7 +105,7 @@ namespace Client.Tests.Framework.ViewModel
 
         }
 
-        public ObservableCollection<IMenuItemViewModel> SelectedItems { get; set; }
+        public ObservableCollection<object> SelectedItems { get; set; }
     }
 #endregion
 }

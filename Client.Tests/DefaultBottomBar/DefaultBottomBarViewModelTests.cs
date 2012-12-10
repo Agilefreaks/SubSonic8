@@ -50,7 +50,7 @@ namespace Client.Tests.DefaultBottomBar
         [TestMethod]
         public void IsOpened_SelectedItemsIsEmpty_ReturnsFalse()
         {
-            _subject.SelectedItems = new ObservableCollection<IMenuItemViewModel>();
+            _subject.SelectedItems = new ObservableCollection<object>();
 
             var isOpened = _subject.IsOpened;
 
@@ -60,7 +60,7 @@ namespace Client.Tests.DefaultBottomBar
         [TestMethod]
         public void IsOpened_SelectedItemsIsNotEmpty_ReturnsTrue()
         {
-            _subject.SelectedItems = new ObservableCollection<IMenuItemViewModel> { new MenuItemViewModel() };
+            _subject.SelectedItems = new ObservableCollection<object> { new MenuItemViewModel() };
 
             var isOpened = _subject.IsOpened;
 

@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using Subsonic8.MenuItem;
 
 namespace Subsonic8.BottomBar
 {
@@ -7,6 +6,6 @@ namespace Subsonic8.BottomBar
     {
         void AddToPlaylist();
 
-        ObservableCollection<IMenuItemViewModel> SelectedItems { get; set; }
+        ObservableCollection<object> SelectedItems { get; set; }
     }
 }

@@ -65,7 +65,7 @@ namespace Subsonic8.Framework.ViewModel
             }
         }
 
-        public ObservableCollection<IMenuItemViewModel> SelectedItems
+        public ObservableCollection<object> SelectedItems
         {
             get { return  ((IDefaultBottomBarViewModel) BottomBar).SelectedItems; }
         }

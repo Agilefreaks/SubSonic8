@@ -5,7 +5,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:cal="using:Caliburn.Micro"
-    xmlns:i="using:WinRtBehaviors" xmlns:custom="using:Subsonic8.Search" mc:Ignorable="d">
+    xmlns:i="using:WinRtBehaviors" xmlns:custom="using:Subsonic8.Search" xmlns:Framework="using:Subsonic8.Framework"
+    mc:Ignorable="d">
     
     <Page.Resources>
         <CollectionViewSource x:Key="GroupedSource" IsSourceGrouped="True" Source="{Binding MenuItems}" />
@@ -32,7 +33,7 @@
         
         <GridView Grid.Row="1" Margin="0,-3,0,0" Padding="116,0,116,46" SelectionMode="Multiple" 
                   ItemsSource="{Binding Source={StaticResource GroupedSource}}"
-                  custom:MultipleSelectBehavior.SelectedItems="{Binding SelectedItems, Mode=TwoWay}"
+                  Framework:MultipleSelectBehavior.SelectedItems="{Binding SelectedItems, Mode=TwoWay}"
                   ItemTemplate="{StaticResource MenuItemTemplate}"
                   IsItemClickEnabled="True" 
                   cal:Message.Attach="[Event ItemClick] = [Action SearchResultClick($eventArgs)];">
