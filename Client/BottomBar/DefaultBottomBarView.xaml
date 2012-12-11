@@ -9,8 +9,8 @@
     </Page.Resources>
     <Grid>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-            <Button Style="{StaticResource RemoveAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action RemoveFromPlaylist()]"/>
             <Button Style="{StaticResource AddAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action AddToPlaylist()]" Visibility="{Binding AreItemsSelected, Converter={StaticResource VisibilityConverter}}" />
+            <Button Style="{StaticResource RemoveAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action RemoveFromPlaylist()]" Visibility="{Binding CanRemoveFromPlaylist, Converter={StaticResource VisibilityConverter}}" />
         </StackPanel>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
             <ic:AppBarToggleButton Style="{StaticResource PlayAppBarButtonStyle}" CheckedStyle="{StaticResource PauseAppBarButtonStyle}" 

@@ -52,6 +52,11 @@ namespace Subsonic8.BottomBar
             get { return SelectedItems.Any(); } 
         }
 
+        public bool CanRemoveFromPlaylist
+        {
+            get { return AreItemsSelected && SelectedItems.All(x => x.GetType() == typeof (PlaylistItemViewModel)); }
+        }
+
         public DefaultBottomBarViewModel(INavigationService navigationService, IEventAggregator eventAggregator)
         {
             _navigationService = navigationService;
@@ -117,6 +122,7 @@ namespace Subsonic8.BottomBar
         private void UpdateIsOpened()
         {
             NotifyOfPropertyChange(() => AreItemsSelected);
+            NotifyOfPropertyChange(() => CanRemoveFromPlaylist);
             IsOpened = SelectedItems.Count != 0;
         }
     }
