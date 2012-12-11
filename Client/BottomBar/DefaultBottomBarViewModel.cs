@@ -47,6 +47,11 @@ namespace Subsonic8.BottomBar
             }
         }
 
+        public bool AreItemsSelected
+        {
+            get { return SelectedItems.Any(); } 
+        }
+
         public DefaultBottomBarViewModel(INavigationService navigationService, IEventAggregator eventAggregator)
         {
             _navigationService = navigationService;
@@ -111,6 +116,7 @@ namespace Subsonic8.BottomBar
 
         private void UpdateIsOpened()
         {
+            NotifyOfPropertyChange(() => AreItemsSelected);
             IsOpened = SelectedItems.Count != 0;
         }
     }

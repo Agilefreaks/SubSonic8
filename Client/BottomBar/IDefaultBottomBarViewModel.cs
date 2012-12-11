@@ -1,6 +1,4 @@
-﻿using System.Collections.ObjectModel;
-
-namespace Subsonic8.BottomBar
+﻿namespace Subsonic8.BottomBar
 {
     public interface IDefaultBottomBarViewModel : IBottomBarViewModel
     {

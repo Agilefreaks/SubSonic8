@@ -4,11 +4,13 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:cal="using:Caliburn.Micro"
     xmlns:ic="using:Subsonic8.Controls" mc:Ignorable="d">
-    
+    <Page.Resources>
+        <cal:BooleanToVisibilityConverter x:Key="VisibilityConverter"/>
+    </Page.Resources>
     <Grid>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-            <Button Style="{StaticResource AddAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action AddToPlaylist()]"/>
             <Button Style="{StaticResource RemoveAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action RemoveFromPlaylist()]"/>
+            <Button Style="{StaticResource AddAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action AddToPlaylist()]" Visibility="{Binding AreItemsSelected, Converter={StaticResource VisibilityConverter}}" />
         </StackPanel>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
             <ic:AppBarToggleButton Style="{StaticResource PlayAppBarButtonStyle}" CheckedStyle="{StaticResource PauseAppBarButtonStyle}" 
