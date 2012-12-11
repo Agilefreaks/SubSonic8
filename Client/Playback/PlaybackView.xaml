@@ -48,6 +48,6 @@
                     Framework:MultipleSelectBehavior.SelectedItems="{Binding SelectedItems, Mode=TwoWay}"
                     CanDragItems = "True" CanReorderItems = "True" AllowDrop = "True"
                     IsItemClickEnabled = "True"
-                    cal:Message.Attach = "[Event ItemClick] = [Action StartPlayback($dataContext)]"/>
+                    cal:Message.Attach = "[Event ItemClick] = [Action StartPlayback($eventArgs)]"/>
     </Grid>
 </Page>
