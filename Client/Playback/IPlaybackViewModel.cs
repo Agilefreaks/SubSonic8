@@ -19,8 +19,6 @@ namespace Subsonic8.Playback
 
         PlaybackViewModelStateEnum State { get; set; }
 
-        ObservableCollection<ISubsonicModel> Playlist { get; set; }
-
         ObservableCollection<PlaylistItemViewModel> PlaylistItems { get; set; }
 
         void StartPlayback();

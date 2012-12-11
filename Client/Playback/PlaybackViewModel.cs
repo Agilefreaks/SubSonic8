@@ -21,7 +21,6 @@ namespace Subsonic8.Playback
         private ISubsonicModel _parameter;
         private PlaybackViewModelStateEnum _state;
         private Uri _source;
-        private ObservableCollection<ISubsonicModel> _playlist;
         private ObservableCollection<PlaylistItemViewModel> _playlistItems;
         private int _currentTrackNo;
         #endregion
@@ -62,16 +61,6 @@ namespace Subsonic8.Playback
             }
         }
 
-        public ObservableCollection<ISubsonicModel> Playlist
-        {
-            get { return _playlist; }
-            set
-            {
-                _playlist = value;
-                NotifyOfPropertyChange();
-            }
-        }
-
         public ObservableCollection<PlaylistItemViewModel> PlaylistItems
         {
             get { return _playlistItems; }
@@ -90,7 +79,6 @@ namespace Subsonic8.Playback
             _shellViewModel = shellViewModel;
             _eventAggregator.Subscribe(this);
             SubsonicService = subsonicService;
-            Playlist = new ObservableCollection<ISubsonicModel>();
             PlaylistItems = new ObservableCollection<PlaylistItemViewModel>();
         }
 
@@ -101,7 +89,7 @@ namespace Subsonic8.Playback
             {
                 if (song.Type == SubsonicModelTypeEnum.Song)
                 {
-                    Handle(new PlayFile {Id = song.Id});
+                    Handle(new PlayFile { Id = song.Id });
                     State = PlaybackViewModelStateEnum.Audio;
                 }
                 else
@@ -113,9 +101,11 @@ namespace Subsonic8.Playback
             }
         }
 
-        public void StartPlayback(object sender, object e)
+        public void StartPlayback(object e)
         {
-            _shellViewModel.Source = ((PlaylistItemViewModel)(((ItemClickEventArgs) e).ClickedItem)).Uri;
+            var pressedItem = (PlaylistItemViewModel)(((ItemClickEventArgs)e).ClickedItem);
+            _shellViewModel.Source = null;
+            _shellViewModel.Source = pressedItem.Uri;
         }
 
         public void Handle(PlaylistMessage message)
@@ -124,7 +114,7 @@ namespace Subsonic8.Playback
             {
                 var pi = new PlaylistItemViewModel();
 
-                if (item.Type == SubsonicModelTypeEnum.Song || item.Type == SubsonicModelTypeEnum.Video)
+                if ((item.Type == SubsonicModelTypeEnum.Song || item.Type == SubsonicModelTypeEnum.Video) && item is MusicDirectoryChild)
                 {
                     var model = item as MusicDirectoryChild;
                     pi.Artist = model.Artist;
@@ -135,7 +125,6 @@ namespace Subsonic8.Playback
                                  ? SubsonicService.GetUriForFileWithId(item.Id)
                                  : SubsonicService.GetUriForVideoWithId(item.Id);
 
-                    Playlist.Add(item);
                     PlaylistItems.Add(pi);
                 }
             }
@@ -158,9 +147,9 @@ namespace Subsonic8.Playback
         public void Handle(PlayNextMessage message)
         {
             _currentTrackNo++;
-            if (_currentTrackNo < Playlist.Count)
+            if (_currentTrackNo < PlaylistItems.Count)
             {
-                Handle(new PlayFile { Id = Playlist[_currentTrackNo].Id });
+                _shellViewModel.Source = PlaylistItems[_currentTrackNo].Uri;
             }
             else
             {
@@ -172,7 +161,7 @@ namespace Subsonic8.Playback
         {
             _currentTrackNo--;
             if (_currentTrackNo > -1)
-                Handle(new PlayFile { Id = Playlist[_currentTrackNo].Id });
+                _shellViewModel.Source = PlaylistItems[_currentTrackNo].Uri;
             else
             {
                 StopAndReset();
