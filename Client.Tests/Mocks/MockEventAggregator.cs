@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Caliburn.Micro;
 using Action = System.Action;
 
@@ -8,7 +9,17 @@ namespace Client.Tests.Mocks
     {
         public object Subscriber { get; private set; }
 
-        public int PublishCallCount { get; set; }
+        public List<object> Messages { get; set; }
+
+        public int PublishCallCount
+        {
+            get { return Messages.Count; }
+        }
+
+        public MockEventAggregator()
+        {
+            Messages = new List<object>();
+        }
 
         public void Subscribe(object instance)
         {
@@ -22,7 +33,7 @@ namespace Client.Tests.Mocks
 
         public void Publish(object message)
         {
-            PublishCallCount++;
+            Messages.Add(message);
         }
 
         public void Publish(object message, Action<Action> marshal)

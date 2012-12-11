@@ -5,6 +5,7 @@ using Caliburn.Micro;
 using Subsonic8.MenuItem;
 using Subsonic8.Messages;
 using Subsonic8.Playback;
+using Subsonic8.PlaylistItem;
 
 namespace Subsonic8.BottomBar
 {
@@ -56,8 +57,13 @@ namespace Subsonic8.BottomBar
 
         public void AddToPlaylist()
         {
-            _eventAggregator.Publish(new PlaylistMessage { Queue = SelectedItems.Select(i => ((IMenuItemViewModel) i).Item).ToList() });
+            _eventAggregator.Publish(new PlaylistMessage { Queue = SelectedItems.Select(i => ((IMenuItemViewModel)i).Item).ToList() });
             SelectedItems.Clear();
+        }
+
+        public void RemoveFromPlaylist()
+        {
+            _eventAggregator.Publish(new RemoveFromPlaylistMessage { Queue = SelectedItems.Select(x => (PlaylistItemViewModel) x).ToList() });
         }
 
         public void NavigateToPlaylist()

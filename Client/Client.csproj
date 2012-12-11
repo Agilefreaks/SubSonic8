@@ -125,6 +125,7 @@
     <Compile Include="Framework\ViewModel\DetailViewModelBase.cs" />
     <Compile Include="Framework\Extensions\NavigationServiceExtensions.cs" />
     <Compile Include="Framework\ViewModel\IDetailViewModel.cs" />
+    <Compile Include="Messages\RemoveFromPlaylistMessage.cs" />
     <Compile Include="Shell\IBottomBarProvider.cs" />
     <Compile Include="BottomBar\IBottomBarViewModel.cs" />
     <Compile Include="BottomBar\IDefaultBottomBarViewModel.cs" />

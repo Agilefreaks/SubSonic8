@@ -30,7 +30,7 @@ namespace Subsonic8.Framework
         private static void AttchedPropertyChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs eventArgs)
         {
             var observableCollection = eventArgs.NewValue as INotifyCollectionChanged;
-            var gridView = (GridView)dependencyObject;
+            var gridView = (ListViewBase)dependencyObject;
 
             var sourceChangedHandler = SetupSourceCollectionChangedEventHandler(dependencyObject, observableCollection);
             gridView.SelectionChanged += OnSelectionChanged;
@@ -46,10 +46,10 @@ namespace Subsonic8.Framework
             unloadedEventHandler = (sender, args) =>
                                        {
                                            observableCollection.CollectionChanged -= sourceChangedHandler;
-                                           ((GridView)sender).SelectionChanged -= OnSelectionChanged;
-                                           ((GridView)sender).Unloaded -= unloadedEventHandler;
+                                           ((ListViewBase)sender).SelectionChanged -= OnSelectionChanged;
+                                           ((ListViewBase)sender).Unloaded -= unloadedEventHandler;
                                        };
-            ((GridView)dependencyObject).Unloaded += unloadedEventHandler;
+            ((ListViewBase)dependencyObject).Unloaded += unloadedEventHandler;
         }
 
         private static NotifyCollectionChangedEventHandler SetupSourceCollectionChangedEventHandler(DependencyObject dependencyObject,
@@ -64,7 +64,7 @@ namespace Subsonic8.Framework
 
         private static void SelectedItemsChangedFromSource(DependencyObject dependencyObject, IEnumerable<object> source)
         {
-            var selectedItems = ((GridView)dependencyObject).SelectedItems;
+            var selectedItems = ((ListViewBase)dependencyObject).SelectedItems;
             if (source != null)
             {
                 var toRemove = selectedItems.Where(i => !source.Contains(i)).ToList();

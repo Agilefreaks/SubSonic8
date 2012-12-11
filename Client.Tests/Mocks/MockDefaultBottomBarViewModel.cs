@@ -42,6 +42,11 @@ namespace Client.Tests.Mocks
 
         }
 
+        public void RemoveFromPlaylist()
+        {
+            
+        }
+
         public ObservableCollection<object> SelectedItems { get; set; }
     }
 }

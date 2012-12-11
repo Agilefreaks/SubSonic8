@@ -78,11 +78,6 @@ namespace Subsonic8.Framework.ViewModel
         {
             SubsonicService = IoC.Get<ISubsonicService>();
             NavigationService = IoC.Get<INavigationService>();
-        }
-
-        protected override void OnActivate()
-        {
-            base.OnActivate();
             SetBottomBar(IoC.Get<IShellViewModel>());
         }
 

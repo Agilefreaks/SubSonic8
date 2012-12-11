@@ -1,9 +1,13 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using Client.Tests.Mocks;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using Subsonic8.BottomBar;
 using Subsonic8.MenuItem;
+using Subsonic8.Messages;
+using Subsonic8.PlaylistItem;
 
 namespace Client.Tests.DefaultBottomBar
 {
@@ -45,6 +49,32 @@ namespace Client.Tests.DefaultBottomBar
             _subject.AddToPlaylist();
 
             _subject.SelectedItems.Should().HaveCount(0);
+        }
+
+        [TestMethod]
+        public void RemoveFromPlaylistCallsEventAggregatorPublish()
+        {
+            _subject.RemoveFromPlaylist();
+
+            _eventAggregator.PublishCallCount.Should().Be(1);
+        }
+
+        [TestMethod]
+        public void RemoveFromPlaylistCallsEventAggregatorPublishWithRemoveFromPlaylistMessageType()
+        {
+            _subject.RemoveFromPlaylist();
+
+            _eventAggregator.Messages.Last().GetType().Should().Be<RemoveFromPlaylistMessage>();
+        }
+
+        [TestMethod]
+        public void RemoveFromPlaylistCallsEventAggregatorPublishWithQueueParameterSetToSelectedItems()
+        {
+            _subject.SelectedItems = new ObservableCollection<object> { new PlaylistItemViewModel() };
+            
+            _subject.RemoveFromPlaylist();
+
+            ((RemoveFromPlaylistMessage)_eventAggregator.Messages.Last()).Queue.Should().HaveCount(1);
         }
 
         [TestMethod]

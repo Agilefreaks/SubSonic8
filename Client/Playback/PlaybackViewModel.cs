@@ -140,7 +140,15 @@ namespace Subsonic8.Playback
                 }
             }
         }
-        
+
+        public void Handle(RemoveFromPlaylistMessage message)
+        {
+            foreach (var item in message.Queue)
+            {
+                PlaylistItems.Remove(item);
+            }
+        }
+
         public void Handle(PlayFile message)
         {
             Source = null;
@@ -158,12 +166,6 @@ namespace Subsonic8.Playback
             {
                 StopAndReset();
             }
-        }
-
-        private void StopAndReset()
-        {
-            _currentTrackNo = 0;
-            _shellViewModel.Source = null;
         }
 
         public void Handle(PlayPreviousMessage message)
@@ -188,6 +190,12 @@ namespace Subsonic8.Playback
         public void Handle(StopMessage message)
         {
             _shellViewModel.Stop();
+        }
+
+        private void StopAndReset()
+        {
+            _currentTrackNo = 0;
+            _shellViewModel.Source = null;
         }
     }
 }

@@ -8,8 +8,8 @@ using Subsonic8.PlaylistItem;
 
 namespace Subsonic8.Playback
 {
-    public interface IPlaybackViewModel : IHandle<PlaylistMessage>, IHandle<PlayFile>, 
-        IHandle<PlayNextMessage>, IHandle<PlayPreviousMessage>, 
+    public interface IPlaybackViewModel : IHandle<PlaylistMessage>, IHandle<RemoveFromPlaylistMessage>,
+        IHandle<PlayFile>, IHandle<PlayNextMessage>, IHandle<PlayPreviousMessage>, 
         IHandle<PlayPauseMessage>, IHandle<StopMessage>,
         IViewModel
     {
