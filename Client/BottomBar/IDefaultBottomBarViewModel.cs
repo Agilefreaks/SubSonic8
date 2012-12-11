@@ -7,7 +7,5 @@ namespace Subsonic8.BottomBar
         void AddToPlaylist();
 
         void RemoveFromPlaylist();
-
-        ObservableCollection<object> SelectedItems { get; set; }
     }
 }

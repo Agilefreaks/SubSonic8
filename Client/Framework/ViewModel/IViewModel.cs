@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using Caliburn.Micro;
 using Client.Common.Services;
 using Subsonic8.BottomBar;
@@ -11,6 +12,8 @@ namespace Subsonic8.Framework.ViewModel
         ISubsonicService SubsonicService { get; set; }
 
         IBottomBarViewModel BottomBar { get; set; }
+
+        ObservableCollection<object> SelectedItems { get; }
 
         bool CanGoBack { get; }
 

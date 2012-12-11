@@ -24,5 +24,13 @@ namespace Client.Tests.Framework.ViewModel
 
             Subject.BottomBar.Should().Be(defaultBottomBar);
         }
+
+        [TestMethod]
+        public void SelectedItemWhenBottomBarIsNillShouldNotThrowException()
+        {
+            Subject.BottomBar = null;
+
+            Subject.SelectedItems.Should().NotBeNull();
+        }
     }
 }

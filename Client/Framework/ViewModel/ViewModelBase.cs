@@ -52,7 +52,16 @@ namespace Subsonic8.Framework.ViewModel
             {
                 _bottomBar = value;
                 NotifyOfPropertyChange();
+                NotifyOfPropertyChange(() => SelectedItems);
                 SetShellBottomBar();
+            }
+        }
+
+        public ObservableCollection<object> SelectedItems
+        {
+            get
+            {
+                return BottomBar != null ? BottomBar.SelectedItems : new ObservableCollection<object>();
             }
         }
 
@@ -64,11 +73,6 @@ namespace Subsonic8.Framework.ViewModel
             }
         }
 
-        public ObservableCollection<object> SelectedItems
-        {
-            get { return  ((IDefaultBottomBarViewModel) BottomBar).SelectedItems; }
-        }
-
         public void GoBack()
         {
             NavigationService.GoBack();
@@ -78,6 +82,11 @@ namespace Subsonic8.Framework.ViewModel
         {
             SubsonicService = IoC.Get<ISubsonicService>();
             NavigationService = IoC.Get<INavigationService>();
+        }
+
+        protected override void OnActivate()
+        {
+            base.OnActivate();
             SetBottomBar(IoC.Get<IShellViewModel>());
         }
 
