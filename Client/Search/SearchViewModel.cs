@@ -12,6 +12,7 @@ namespace Subsonic8.Search
     {
         private SearchResultCollection _parameter;
         private List<MenuItemViewModel> _menuItemViewModels;
+        private bool _searchSuccess;
 
         public SearchResultCollection Parameter
         {
@@ -28,6 +29,7 @@ namespace Subsonic8.Search
                 NotifyOfPropertyChange();
                 UpdateDisplayName();
                 PopulateMenuItems();
+                SearchSuccess = _menuItemViewModels.Any();
             }
         }
 
@@ -50,6 +52,17 @@ namespace Subsonic8.Search
             {
                 _menuItemViewModels = value;
                 NotifyOfPropertyChange(() => MenuItems);
+            }
+        }
+
+        public bool SearchSuccess
+        {
+            get { return _searchSuccess; }
+         
+            private set
+            {
+                _searchSuccess = value;
+                NotifyOfPropertyChange();
             }
         }
 

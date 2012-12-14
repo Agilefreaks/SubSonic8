@@ -14,6 +14,8 @@ namespace Subsonic8.Search
 
         List<MenuItemViewModel> MenuItemViewModels { get; }
 
+        bool SearchSuccess { get; }
+
         void PopulateMenuItems();
 
         void PopulateArtists(List<ExpandedArtist> artists);

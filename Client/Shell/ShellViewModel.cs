@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using Client.Common.Models.Subsonic;
@@ -124,6 +126,12 @@ namespace Subsonic8.Shell
         private async void OnQuerySubmitted(SearchPane sender, SearchPaneQuerySubmittedEventArgs args)
         {
             await PerformSubsonicSearch(args.QueryText);
+        }
+
+        public void MainAppBarClosed(object sender, object e)
+        {
+            Debugger.Break();
+            BottomBar.IsOpened = BottomBar.SelectedItems.Any();
         }
     }
 }

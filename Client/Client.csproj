@@ -121,6 +121,7 @@
     </Compile>
     <Compile Include="BottomBar\DefaultBottomBarViewModel.cs" />
     <Compile Include="Controls\AppBarToggleButton.cs" />
+    <Compile Include="Converters\InvertedBooleanToVisibilityConverter.cs" />
     <Compile Include="Dialogs\DialogService.cs" />
     <Compile Include="Framework\ViewModel\DetailViewModelBase.cs" />
     <Compile Include="Framework\Extensions\NavigationServiceExtensions.cs" />

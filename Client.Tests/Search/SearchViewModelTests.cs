@@ -88,6 +88,14 @@ namespace Client.Tests.Search
         }
 
         [TestMethod]
+        public void Parameter_WhenSetWithNotEmptySearchCollectionResult_SetsSearchSuccessToTrue()
+        {
+            Subject.Parameter = new SearchResultCollection { Songs = new List<Song>{ new Song() } };
+
+            Subject.SearchSuccess.Should().BeTrue();
+        }
+
+        [TestMethod]
         public void PopulateArtistsShouldAddMenuItems()
         {
             Subject.PopulateArtists(new List<ExpandedArtist> { new ExpandedArtist() });
