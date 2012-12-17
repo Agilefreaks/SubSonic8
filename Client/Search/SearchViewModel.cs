@@ -55,6 +55,17 @@ namespace Subsonic8.Search
             }
         }
 
+        public bool SearchSuccess
+        {
+            get { return _searchSuccess; }
+         
+            private set
+            {
+                _searchSuccess = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
         public SearchResultState State
         {
             get { return _state; }
