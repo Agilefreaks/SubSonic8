@@ -126,6 +126,13 @@
     <Compile Include="Framework\Extensions\NavigationServiceExtensions.cs" />
     <Compile Include="Framework\ViewModel\IDetailViewModel.cs" />
     <Compile Include="Messages\RemoveFromPlaylistMessage.cs" />
+    <Compile Include="Search\SearchResultState.cs" />
+    <Compile Include="Search\Search\NoResultsFound.xaml.cs">
+      <DependentUpon>NoResultsFound.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Search\Search\ResultsFound.xaml.cs">
+      <DependentUpon>ResultsFound.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Shell\IBottomBarProvider.cs" />
     <Compile Include="BottomBar\IBottomBarViewModel.cs" />
     <Compile Include="BottomBar\IDefaultBottomBarViewModel.cs" />
@@ -259,6 +266,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Search\SearchView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Search\Search\NoResultsFound.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Search\Search\ResultsFound.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

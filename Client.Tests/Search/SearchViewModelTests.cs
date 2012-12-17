@@ -88,6 +88,22 @@ namespace Client.Tests.Search
         }
 
         [TestMethod]
+        public void Parameter_WhenSetWithNotEmptySearchCollectionResult_SetsStateToResultsFound()
+        {
+            Subject.Parameter = new SearchResultCollection { Songs = new List<Song>{ new Song() } };
+
+            Subject.State.Should().Be(SearchResultState.ResultsFound);
+        }
+
+        [TestMethod]
+        public void Parameter_WhenSetWithEmptySearchCollectionResult_SetsStateToNoResultsFound()
+        {
+            Subject.Parameter = new SearchResultCollection();
+
+            Subject.State.Should().Be(SearchResultState.NoResultsFound);
+        }
+
+        [TestMethod]
         public void PopulateArtistsShouldAddMenuItems()
         {
             Subject.PopulateArtists(new List<ExpandedArtist> { new ExpandedArtist() });

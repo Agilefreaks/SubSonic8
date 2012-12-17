@@ -12,6 +12,7 @@ namespace Subsonic8.Search
     {
         private SearchResultCollection _parameter;
         private List<MenuItemViewModel> _menuItemViewModels;
+        private SearchResultState _state;
 
         public SearchResultCollection Parameter
         {
@@ -28,6 +29,7 @@ namespace Subsonic8.Search
                 NotifyOfPropertyChange();
                 UpdateDisplayName();
                 PopulateMenuItems();
+                State = _menuItemViewModels.Any() ? SearchResultState.ResultsFound : SearchResultState.NoResultsFound;
             }
         }
 
@@ -35,11 +37,11 @@ namespace Subsonic8.Search
         {
             get
             {
-                return (from item in MenuItemViewModels 
-                        group item by item.Type 
-                        into gr 
-                        orderby gr.Key 
-                        select gr).ToList();
+                return (from item in MenuItemViewModels
+                        group item by item.Type
+                            into gr
+                            orderby gr.Key
+                            select gr).ToList();
             }
         }
 
@@ -53,9 +55,21 @@ namespace Subsonic8.Search
             }
         }
 
+        public SearchResultState State
+        {
+            get { return _state; }
+            
+            set
+            {
+                _state = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
         public SearchViewModel()
         {
             MenuItemViewModels = new List<MenuItemViewModel>();
+            State = SearchResultState.NoResultsFound;
         }
 
         public void PopulateMenuItems()
@@ -84,7 +98,7 @@ namespace Subsonic8.Search
 
         public void SearchResultClick(ItemClickEventArgs eventArgs)
         {
-            var navigableEntity = ((MenuItemViewModel) eventArgs.ClickedItem).Item;
+            var navigableEntity = ((MenuItemViewModel)eventArgs.ClickedItem).Item;
 
             NavigationService.NavigateByEntityType(navigableEntity);
         }

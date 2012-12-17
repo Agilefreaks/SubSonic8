@@ -1,0 +1,46 @@
+﻿<ContentControl
+    x:Class="Subsonic8.Search.Search.ResultsFound"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:cal="using:Caliburn.Micro"
+    xmlns:Framework="using:Subsonic8.Framework" mc:Ignorable="d">
+
+    <ContentControl.Resources>
+        <CollectionViewSource x:Key="GroupedSource" IsSourceGrouped="True" Source="{Binding MenuItems}" />
+        <DataTemplate x:Key="MenuItemTemplate">
+            <ContentControl cal:View.Model="{Binding}"/>
+        </DataTemplate>
+    </ContentControl.Resources>
+
+    <GridView Margin="0,-3,0,0" Padding="116,0,116,46" SelectionMode="Multiple" 
+              ItemsSource="{Binding Source={StaticResource GroupedSource}}"
+              Framework:MultipleSelectBehavior.SelectedItems="{Binding SelectedItems, Mode=TwoWay}"
+              ItemTemplate="{StaticResource MenuItemTemplate}"
+              IsItemClickEnabled="True" 
+              cal:Message.Attach="[Event ItemClick] = [Action SearchResultClick($eventArgs)];">
+
+        <GridView.ItemsPanel>
+            <ItemsPanelTemplate>
+                <StackPanel Orientation="Horizontal"/>
+            </ItemsPanelTemplate>
+        </GridView.ItemsPanel>
+
+        <GridView.GroupStyle>
+            <GroupStyle>
+                <GroupStyle.HeaderTemplate>
+                    <DataTemplate>
+                        <TextBlock Margin="20,20,0,0" Text="{Binding Key}" Style="{StaticResource PageSubheaderTextStyle}" />
+                    </DataTemplate>
+                </GroupStyle.HeaderTemplate>
+
+                <GroupStyle.Panel>
+                    <ItemsPanelTemplate>
+                        <VariableSizedWrapGrid />
+                    </ItemsPanelTemplate>
+                </GroupStyle.Panel>
+            </GroupStyle>
+        </GridView.GroupStyle>
+    </GridView>
+</ContentControl>
