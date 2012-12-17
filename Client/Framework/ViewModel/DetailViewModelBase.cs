@@ -28,6 +28,7 @@ namespace Subsonic8.Framework.ViewModel
                 _parameter = value;
                 NotifyOfPropertyChange();
                 LoadModel();
+                UpdateDisplayName();
             }
         }
 
@@ -76,6 +77,11 @@ namespace Subsonic8.Framework.ViewModel
         protected abstract IServiceResultBase<T> GetResult(int id);
 
         protected abstract IEnumerable<ISubsonicModel> GetItemsToDisplay();
+
+        protected override void UpdateDisplayName()
+        {
+            DisplayName = _parameter.GetDescription().Item1;
+        }
 
         private async void LoadModel()
         {

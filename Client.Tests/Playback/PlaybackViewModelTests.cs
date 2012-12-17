@@ -52,6 +52,12 @@ namespace Client.Tests.Playback
         }
 
         [TestMethod]
+        public void CtorShouldSetDisplayNameToPlaylist()
+        {
+            Subject.DisplayName.Should().Be("Playlist");
+        }
+
+        [TestMethod]
         public void ParameterWhenSetToTypeVideoShouldSetSourceOnShellViewModelToNullAndSourceOnPlaybackViewModelToNewUri
             ()
         {

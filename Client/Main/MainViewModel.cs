@@ -14,6 +14,7 @@ namespace Subsonic8.Main
         public MainViewModel()
         {
             MenuItems = new BindableCollection<MenuItemViewModel>();
+            UpdateDisplayName();
         }
 
         public void IndexClick(ItemClickEventArgs eventArgs)
@@ -54,6 +55,11 @@ namespace Subsonic8.Main
         {
             base.OnInitialize();
             Populate();
+        }
+
+        protected override void UpdateDisplayName()
+        {
+            DisplayName = "Subsonic8";
         }
     }
 }

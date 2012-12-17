@@ -80,6 +80,7 @@ namespace Subsonic8.Playback
             _eventAggregator.Subscribe(this);
             SubsonicService = subsonicService;
             PlaylistItems = new ObservableCollection<PlaylistItemViewModel>();
+            UpdateDisplayName();
         }
 
         public void StartPlayback()
@@ -179,6 +180,11 @@ namespace Subsonic8.Playback
         public void Handle(StopMessage message)
         {
             _shellViewModel.Stop();
+        }
+
+        protected override void UpdateDisplayName()
+        {
+            DisplayName = "Playlist";
         }
 
         private void StopAndReset()

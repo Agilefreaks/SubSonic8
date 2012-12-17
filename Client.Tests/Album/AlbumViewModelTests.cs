@@ -11,7 +11,7 @@ using Subsonic8.Album;
 namespace Client.Tests.Album
 {
     [TestClass]
-    public class AlbumViewModelTests : ViewModelBaseTests<IAlbumViewModel>
+    public class AlbumViewModelTests : DetailViewModelBaseTests<Client.Common.Models.Subsonic.Album, IAlbumViewModel>
     {
         protected override IAlbumViewModel Subject { get; set; }
 
