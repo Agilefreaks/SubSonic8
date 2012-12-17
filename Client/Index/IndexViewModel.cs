@@ -44,6 +44,7 @@ namespace Subsonic8.Index
         public IndexViewModel()
         {
             MenuItems = new BindableCollection<MenuItemViewModel>();
+            UpdateDisplayName();
         }
 
         public async void ArtistClick(ItemClickEventArgs eventArgs)
@@ -54,6 +55,11 @@ namespace Subsonic8.Index
             await getMusicDirectoryResult.Execute();
 
             NavigationService.NavigateToViewModel<MusicDirectoryViewModel>(getMusicDirectoryResult.Result);
+        }
+
+        protected override void UpdateDisplayName()
+        {
+            DisplayName = "Subsonic8";
         }
 
         private void PopulateMenuItems()

@@ -120,6 +120,9 @@
       <DependentUpon>DefaultBottomBarView.xaml</DependentUpon>
     </Compile>
     <Compile Include="BottomBar\DefaultBottomBarViewModel.cs" />
+    <Compile Include="Common\PageHeader.xaml.cs">
+      <DependentUpon>PageHeader.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\AppBarToggleButton.cs" />
     <Compile Include="Converters\InvertedBooleanToVisibilityConverter.cs" />
     <Compile Include="Dialogs\DialogService.cs" />
@@ -233,6 +236,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Page>
+    <Page Include="Common\PageHeader.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Common\StandardStyles.xaml">
       <Generator>MSBuild:Compile</Generator>

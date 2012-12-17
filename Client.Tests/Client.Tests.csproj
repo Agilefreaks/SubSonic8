@@ -114,6 +114,7 @@
     <Compile Include="Album\AlbumViewModelTests.cs" />
     <Compile Include="ClientTestBase.cs" />
     <Compile Include="DefaultBottomBar\DefaultBottomBarViewModelTests.cs" />
+    <Compile Include="Framework\ViewModel\DetailViewModelBaseTests.cs" />
     <Compile Include="Mocks\MockDefaultBottomBarViewModel.cs" />
     <Compile Include="Mocks\MockShellViewModel.cs" />
     <Compile Include="Index\IndexViewModelTests.cs" />
@@ -121,6 +122,7 @@
     <Compile Include="Mocks\MockEventAggregator.cs" />
     <Compile Include="Mocks\MockGetRootResult.cs" />
     <Compile Include="Mocks\MockNavigationService.cs" />
+    <Compile Include="Mocks\MockSubsonicModel.cs" />
     <Compile Include="Mocks\MockSubsonicService.cs" />
     <Compile Include="MusicDirectory\MusicDirectoryViewModelTests.cs" />
     <Compile Include="Playback\PlaybackViewModelTests.cs" />

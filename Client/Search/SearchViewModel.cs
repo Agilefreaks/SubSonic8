@@ -103,7 +103,7 @@ namespace Subsonic8.Search
             NavigationService.NavigateByEntityType(navigableEntity);
         }
 
-        private void UpdateDisplayName()
+        protected override void UpdateDisplayName()
         {
             DisplayName = string.Format("Searched for: \"{0}\"", Parameter.Query);
         }

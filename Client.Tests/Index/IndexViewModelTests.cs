@@ -25,6 +25,12 @@ namespace Client.Tests.Index
         }
 
         [TestMethod]
+        public void CtorShouldSetDisplayNameToSubsonic8()
+        {
+            Subject.DisplayName.Should().Be("Subsonic8");
+        }
+
+        [TestMethod]
         public void ParameterSetShouldPopulateMenuItems()
         {
             Subject.Parameter = new IndexItem { Artists = new List<Artist> { new Artist(), new Artist() } };

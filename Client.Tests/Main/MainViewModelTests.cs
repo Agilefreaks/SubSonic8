@@ -35,6 +35,12 @@ namespace Client.Tests.Main
         }
 
         [TestMethod]
+        public void CtorShouldChangeTitleOfPageToSubsonic8()
+        {
+            Subject.DisplayName.Should().Be("Subsonic8");
+        }
+
+        [TestMethod]
         public void SetMenuItemsShouldAddMenuItems()
         {
             var getRootResult = new GetRootResult(null)

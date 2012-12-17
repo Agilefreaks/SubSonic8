@@ -84,6 +84,8 @@ namespace Subsonic8.Framework.ViewModel
             NavigationService = IoC.Get<INavigationService>();
         }
 
+        protected abstract void UpdateDisplayName();
+
         protected override void OnActivate()
         {
             base.OnActivate();

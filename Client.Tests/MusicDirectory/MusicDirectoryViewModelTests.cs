@@ -8,7 +8,7 @@ using Subsonic8.MusicDirectory;
 namespace Client.Tests.MusicDirectory
 {
     [TestClass]
-    public class MusicDirectoryViewModelTests : ViewModelBaseTests<IMusicDirectoryViewModel>
+    public class MusicDirectoryViewModelTests : DetailViewModelBaseTests<Common.Models.Subsonic.MusicDirectory, IMusicDirectoryViewModel>
     {
         protected override IMusicDirectoryViewModel Subject { get; set; }
  
