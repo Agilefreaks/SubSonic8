@@ -7,8 +7,6 @@
     xmlns:cal="using:Caliburn.Micro" 
     mc:Ignorable="d">
     
-        <cal:BooleanToVisibilityConverter x:Key="VisibilityConverter"/>
-        <Converters:InvertedBooleanToVisibilityConverter x:Key="InvertedVisibilityConverter"/>
     <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="140"/>
@@ -25,9 +23,6 @@
             <Button x:Name="GoBack" Style="{StaticResource BackButtonStyle}"/>
             <TextBlock x:Name="DisplayName" Style="{StaticResource PageHeaderTextStyle}" Grid.Column="1"/>
         </Grid>
-        <TextBlock Grid.Row="1" Visibility="{Binding SearchSuccess, Converter={StaticResource InvertedVisibilityConverter}}"
         <ContentControl Grid.Row="1" cal:View.Context="{Binding State}" cal:View.Model="{Binding}"/>
-        <GridView Grid.Row="2" Visibility="{Binding SearchSuccess, Converter={StaticResource VisibilityConverter}}"
-                  Margin="0,-3,0,0" Padding="116,0,116,46" SelectionMode="Multiple" 
     </Grid>
 </Page>
