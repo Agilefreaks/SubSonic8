@@ -4,6 +4,7 @@ using Caliburn.Micro;
 using Client.Common.Models;
 using Client.Common.Models.Subsonic;
 using Client.Common.Services;
+using Subsonic8.Framework;
 using Subsonic8.Framework.ViewModel;
 using Subsonic8.Messages;
 using Subsonic8.PlaylistItem;
@@ -18,6 +19,7 @@ namespace Subsonic8.Playback
 
         private readonly IEventAggregator _eventAggregator;
         private readonly IShellViewModel _shellViewModel;
+        private readonly INotificationManager _notificationManager;
         private ISubsonicModel _parameter;
         private PlaybackViewModelStateEnum _state;
         private Uri _source;
@@ -73,14 +75,15 @@ namespace Subsonic8.Playback
 
         #endregion
 
-        public PlaybackViewModel(IEventAggregator eventAggregator, IShellViewModel shellViewModel, ISubsonicService subsonicService)
+        public PlaybackViewModel(IEventAggregator eventAggregator, IShellViewModel shellViewModel, ISubsonicService subsonicService, INotificationManager notificationManager)
         {
             _eventAggregator = eventAggregator;
             _shellViewModel = shellViewModel;
+            _notificationManager = notificationManager;
             _eventAggregator.Subscribe(this);
             SubsonicService = subsonicService;
             PlaylistItems = new ObservableCollection<PlaylistItemViewModel>();
-            UpdateDisplayName();
+            _currentTrackNo--;
         }
 
         public void StartPlayback()
@@ -148,9 +151,16 @@ namespace Subsonic8.Playback
         public void Handle(PlayNextMessage message)
         {
             _currentTrackNo++;
+            
             if (_currentTrackNo < PlaylistItems.Count)
             {
                 _shellViewModel.Source = PlaylistItems[_currentTrackNo].Uri;
+                _notificationManager.Show(new NotificationOptions
+                {
+                    ImageUrl = PlaylistItems[_currentTrackNo].CoverArt,
+                    Title = PlaylistItems[_currentTrackNo].Title,
+                    Subtitle = PlaylistItems[_currentTrackNo].Artist
+                });
             }
             else
             {
@@ -162,7 +172,9 @@ namespace Subsonic8.Playback
         {
             _currentTrackNo--;
             if (_currentTrackNo > -1)
+            {
                 _shellViewModel.Source = PlaylistItems[_currentTrackNo].Uri;
+            }
             else
             {
                 StopAndReset();
@@ -172,14 +184,25 @@ namespace Subsonic8.Playback
         public void Handle(PlayPauseMessage message)
         {
             if (Source != null || _shellViewModel.Source != null)
+            {
                 _shellViewModel.PlayPause();
+            }
             else
+            {
                 Handle(new PlayNextMessage());
+            }
         }
 
         public void Handle(StopMessage message)
         {
             _shellViewModel.Stop();
+        }
+
+        protected override void OnActivate()
+        {
+            base.OnActivate();
+
+            UpdateDisplayName();
         }
 
         protected override void UpdateDisplayName()
@@ -189,7 +212,7 @@ namespace Subsonic8.Playback
 
         private void StopAndReset()
         {
-            _currentTrackNo = 0;
+            _currentTrackNo = -1;
             _shellViewModel.Source = null;
         }
     }

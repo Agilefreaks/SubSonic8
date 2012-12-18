@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using Caliburn.Micro;
 using Client.Common.Models;
 using Client.Common.Models.Subsonic;
 using Client.Tests.Framework.ViewModel;
@@ -12,6 +13,7 @@ using Subsonic8.Playback;
 using Subsonic8.PlaylistItem;
 using Subsonic8.Shell;
 using Windows.UI.Xaml;
+using Action = System.Action;
 
 namespace Client.Tests.Playback
 {
@@ -25,6 +27,7 @@ namespace Client.Tests.Playback
         private MockNavigationService _navigationService;
         private ShellViewModel _shellViewModel;
         private MockPlayerControls _playerControls;
+        private MockNotificationManager _notificationManager;
 
         [TestInitialize]
         public void TestInitialize()
@@ -33,12 +36,13 @@ namespace Client.Tests.Playback
             _subsonicService = new MockSubsonicService();
             _navigationService = new MockNavigationService();
             _playerControls = new MockPlayerControls();
+            _notificationManager = new MockNotificationManager();
             _shellViewModel = new ShellViewModel(_eventAggregator, _subsonicService, _navigationService)
                                   {
                                       PlayerControls = _playerControls
                                   };
 
-            Subject = new PlaybackViewModel(_eventAggregator, _shellViewModel, _subsonicService)
+            Subject = new PlaybackViewModel(_eventAggregator, _shellViewModel, _subsonicService, _notificationManager)
                           {
                               NavigationService = _navigationService,
                               SubsonicService = _subsonicService
@@ -52,8 +56,10 @@ namespace Client.Tests.Playback
         }
 
         [TestMethod]
-        public void CtorShouldSetDisplayNameToPlaylist()
+        public void OnActivateShouldSetDisplayNameToPlaylist()
         {
+            Subject.Activate();
+
             Subject.DisplayName.Should().Be("Playlist");
         }
 
@@ -140,6 +146,7 @@ namespace Client.Tests.Playback
             var file1 = new PlaylistItemViewModel { Uri = new Uri("http://file1") };
             var file2 = new PlaylistItemViewModel { Uri = new Uri("http://file2") };
             Subject.PlaylistItems = new ObservableCollection<PlaylistItemViewModel> { file1, file2 };
+            Subject.Handle(new PlayNextMessage());
 
             Subject.Handle(new PlayNextMessage());
 
@@ -151,10 +158,21 @@ namespace Client.Tests.Playback
         {
             var uri = new Uri("http://test");
             Subject.PlaylistItems = new ObservableCollection<PlaylistItemViewModel> { new PlaylistItemViewModel { Uri = uri } };
+            Subject.Handle(new PlayNextMessage());
 
             Subject.Handle(new PlayNextMessage());
 
             _shellViewModel.Source.Should().BeNull();
+        }
+
+        [TestMethod]
+        public void HandleWithPlayNextMessageCallsNotificationManagerShow()
+        {
+            Subject.PlaylistItems = new ObservableCollection<PlaylistItemViewModel> { new PlaylistItemViewModel() };
+
+            Subject.Handle(new PlayNextMessage());
+
+            _notificationManager.ShowCallCount.Should().Be(1);
         }
 
         [TestMethod]
@@ -163,6 +181,7 @@ namespace Client.Tests.Playback
             var file1 = new PlaylistItemViewModel { Uri = new Uri("http://file1") };
             var file2 = new PlaylistItemViewModel { Uri = new Uri("http://file2") };
             Subject.PlaylistItems = new ObservableCollection<PlaylistItemViewModel> { file1, file2 };
+            Subject.Handle(new PlayNextMessage());
 
             Subject.Handle(new PlayNextMessage());
             Subject.Handle(new PlayPreviousMessage());
