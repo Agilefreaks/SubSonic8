@@ -23,11 +23,11 @@ namespace Client.Tests
             IoC.GetInstance = (type, s) =>
                                   {
                                       object instance = null;
-                                      if (type == typeof (IShellViewModel))
+                                      if (type == typeof(IShellViewModel))
                                       {
                                           instance = shellViewModel;
                                       }
-                                      if(type == typeof(ISubsonicService))
+                                      else if (type == typeof(ISubsonicService))
                                       {
                                           instance = mockSubsonicService;
                                       }
