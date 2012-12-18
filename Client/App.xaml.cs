@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Caliburn.Micro;
 using Client.Common.Services;
 using Subsonic8.BottomBar;
+using Subsonic8.Framework;
 using Subsonic8.Main;
 using Subsonic8.Playback;
 using Subsonic8.Settings;
@@ -34,6 +35,7 @@ namespace Subsonic8
             _container.RegisterSingleton(typeof(IShellViewModel), "ShellViewModel", typeof(ShellViewModel));
             _container.RegisterSingleton(typeof(IPlaybackViewModel), "PlaybackViewModel", typeof(PlaybackViewModel));
             _container.RegisterSingleton(typeof(IDefaultBottomBarViewModel), "DefaultBottomBarViewModel", typeof(DefaultBottomBarViewModel));
+            _container.RegisterSingleton(typeof(INotificationManager), "NotificationManager", typeof(ToastsNotificationManager));
 
             SettingsPane.GetForCurrentView().CommandsRequested += (sender, args) => args.AddSetting<SettingsViewModel>();
         }
