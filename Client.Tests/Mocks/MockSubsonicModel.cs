@@ -9,6 +9,8 @@ namespace Client.Tests.Mocks
 
         public SubsonicModelTypeEnum Type { get; private set; }
 
+        public string CoverArt { get; set; }
+
         public Tuple<string, string> GetDescription()
         {
             return new Tuple<string, string>("testName", "testDescription");

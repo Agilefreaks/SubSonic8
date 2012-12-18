@@ -129,6 +129,7 @@
     <Compile Include="Framework\ViewModel\DetailViewModelBase.cs" />
     <Compile Include="Framework\Extensions\NavigationServiceExtensions.cs" />
     <Compile Include="Framework\ViewModel\IDetailViewModel.cs" />
+    <Compile Include="Framework\ViewModel\ItemViewModelBase.cs" />
     <Compile Include="Messages\RemoveFromPlaylistMessage.cs" />
     <Compile Include="Search\SearchResultState.cs" />
     <Compile Include="Search\Search\NoResultsFound.xaml.cs">
@@ -208,6 +209,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\CoverArtPlaceholder.jpg" />
     <Content Include="Assets\Logo.png" />
     <Content Include="Assets\SmallLogo.png" />
     <Content Include="Assets\SplashScreen.png" />

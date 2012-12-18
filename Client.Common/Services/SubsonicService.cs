@@ -51,11 +51,11 @@ namespace Client.Common.Services
             return new Uri(string.Format("{0}stream/stream.ts?id={1}&hls=true&timeOffset=0", _configuration.BaseUrl, id));
         }
 
-        public virtual Uri GetCoverArtForId(string coverArt)
+        public virtual string GetCoverArtForId(string coverArt)
         {
-            Uri result = null;
+            var result = string.Empty;
             if (!string.IsNullOrEmpty(coverArt))
-                result = new Uri(string.Format(_configuration.ServiceUrl, "getCoverArt.view", _configuration.Username, _configuration.Password) + string.Format("&id={0}", coverArt));
+                result = string.Format(_configuration.ServiceUrl, "getCoverArt.view", _configuration.Username, _configuration.Password) + string.Format("&id={0}", coverArt) + string.Format("&size={0}", 80);
 
             return result;
         }

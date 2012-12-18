@@ -18,9 +18,6 @@ namespace Client.Common.Models.Subsonic
         [XmlAttribute("album")]
         public string Album { get; set; }
 
-        [XmlAttribute("coverArt")]
-        public string CoverArt { get; set; }
-
         [XmlAttribute("isDir")]
         public bool IsDirectory { get; set; }
 

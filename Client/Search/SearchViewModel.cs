@@ -58,7 +58,7 @@ namespace Subsonic8.Search
         public SearchResultState State
         {
             get { return _state; }
-            
+
             set
             {
                 _state = value;
@@ -79,21 +79,31 @@ namespace Subsonic8.Search
             PopulateArtists(Parameter.Artists);
             PopulateAlbums(Parameter.Albums);
             PopulateSongs(Parameter.Songs);
+
+            foreach (var subsonicModel in _menuItemViewModels.Select(x => x.Item))
+            {
+                subsonicModel.CoverArt = SubsonicService.GetCoverArtForId(subsonicModel.CoverArt);
+            }
         }
 
-        public void PopulateArtists(List<ExpandedArtist> collection)
+        public void PopulateArtists(List<ExpandedArtist> artists)
         {
-            MenuItemViewModels.AddRange(collection.Select(a => a.AsMenuItemViewModel()));
+            var menuItemViewModels = artists.Select(a => a.AsMenuItemViewModel()).ToList();
+            RemoveCoverArt(menuItemViewModels);
+            MenuItemViewModels.AddRange(menuItemViewModels);
         }
 
         public void PopulateAlbums(List<Client.Common.Models.Subsonic.Album> albums)
         {
-            MenuItemViewModels.AddRange(albums.Select(a => a.AsMenuItemViewModel()));
+            var menuItemViewModels = albums.Select(a => a.AsMenuItemViewModel()).ToList();
+            RemoveCoverArt(menuItemViewModels);
+            MenuItemViewModels.AddRange(menuItemViewModels);
         }
 
         public void PopulateSongs(List<Song> songs)
         {
-            MenuItemViewModels.AddRange(songs.Select(a => a.AsMenuItemViewModel()));
+            var menuItemViewModels = songs.Select(a => a.AsMenuItemViewModel()).ToList();
+            MenuItemViewModels.AddRange(menuItemViewModels);
         }
 
         public void SearchResultClick(ItemClickEventArgs eventArgs)
@@ -106,6 +116,14 @@ namespace Subsonic8.Search
         protected override void UpdateDisplayName()
         {
             DisplayName = string.Format("Searched for: \"{0}\"", Parameter.Query);
+        }
+
+        private void RemoveCoverArt(IEnumerable<MenuItemViewModel> menuItemViewModels)
+        {
+            foreach (var menuItemViewModel in menuItemViewModels)
+            {
+                menuItemViewModel.CoverArt = string.Empty;
+            }
         }
     }
 }
