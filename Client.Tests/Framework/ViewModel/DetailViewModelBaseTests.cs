@@ -11,6 +11,8 @@ namespace Client.Tests.Framework.ViewModel
         where TViewModel : IDetailViewModel<TSubsonicModel>
         where TSubsonicModel : ISubsonicModel
     {
+        protected MockSubsonicService SubsonicService;
+
         [TestMethod]
         public void WhenParameterIsSetShouldChangeTheScreenDisplayName()
         {

@@ -11,8 +11,9 @@ namespace Subsonic8.Framework.Extensions
             var description = item.GetDescription();
             return new MenuItemViewModel
                        {
-                           Type = string.Format("{0}(s)", item.Type.ToString()),
                            Title = description.Item1,
+                           CoverArt = item.CoverArt,
+                           Type = string.Format("{0}(s)", item.Type.ToString()),
                            Subtitle = description.Item2,
                            Item = item
                        };

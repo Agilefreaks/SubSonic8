@@ -14,7 +14,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <Image Source="{Binding Image}"/>
+                <Image Source="{Binding CoverArt}" Width="40" Height="40"/>
 
                 <StackPanel Grid.Column="1">
                     <TextBlock Text="{Binding Artist}"></TextBlock>

@@ -9,6 +9,8 @@ namespace Client.Tests.Mocks
 
         public int GetUriForVideoWithIdCallCount { get; set; }
 
+        public int GetCoverArtForIdCallCount { get; set; }
+
         public override Uri GetUriForFileWithId(int id)
         {
             GetUriForFileWithIdCallCount++;
@@ -21,6 +23,13 @@ namespace Client.Tests.Mocks
             GetUriForVideoWithIdCallCount++;
 
             return new Uri("http://test.mock");
+        }
+
+        public override string GetCoverArtForId(string coverArt)
+        {
+            GetCoverArtForIdCallCount++;
+
+            return string.Empty;
         }
     }
 }

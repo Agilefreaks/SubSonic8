@@ -32,7 +32,6 @@ namespace Client.Tests.Search
                                   {
                                       Id = 42,
                                       AlbumCount = 12,
-                                      CovertArt = "cover",
                                       Name = "artist"
                                   };
             _artistMenuItemViewModel = _expandedArtist.AsMenuItemViewModel();

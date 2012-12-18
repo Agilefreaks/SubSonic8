@@ -10,6 +10,9 @@ namespace Client.Common.Models.Subsonic
 
         public abstract SubsonicModelTypeEnum Type { get; }
 
+        [XmlAttribute("coverArt")]
+        public virtual string CoverArt { get; set; }
+
         public virtual Tuple<string, string> GetDescription()
         {
             return new Tuple<string, string>(GetType().Name, Id.ToString());

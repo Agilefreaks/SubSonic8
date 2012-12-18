@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using Client.Common.Services;
 using Client.Tests.Mocks;
 using Subsonic8.Shell;
 
@@ -22,9 +23,13 @@ namespace Client.Tests
             IoC.GetInstance = (type, s) =>
                                   {
                                       object instance = null;
-                                      if (type == typeof (IShellViewModel))
+                                      if (type == typeof(IShellViewModel))
                                       {
                                           instance = shellViewModel;
+                                      }
+                                      else if (type == typeof(ISubsonicService))
+                                      {
+                                          instance = mockSubsonicService;
                                       }
                                       return instance;
                                   };

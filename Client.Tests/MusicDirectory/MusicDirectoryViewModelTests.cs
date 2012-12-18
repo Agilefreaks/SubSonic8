@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Client.Common.Models.Subsonic;
 using Client.Tests.Framework.ViewModel;
+using Client.Tests.Mocks;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using Subsonic8.MusicDirectory;
@@ -16,6 +17,7 @@ namespace Client.Tests.MusicDirectory
         public void TestInitialize()
         {
             Subject = new MusicDirectoryViewModel();
+            Subject.SubsonicService = new MockSubsonicService();
         }
 
         [TestMethod]

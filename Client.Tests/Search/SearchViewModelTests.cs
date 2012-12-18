@@ -16,6 +16,7 @@ namespace Client.Tests.Search
     {
         private MockEventAggregator _eventAggregator;
         private MockNavigationService _navigationService;
+        private MockSubsonicService _subsonicService;
 
         protected override ISearchViewModel Subject { get; set; }
 
@@ -24,10 +25,13 @@ namespace Client.Tests.Search
         {
             _eventAggregator = new MockEventAggregator();
             _navigationService = new MockNavigationService();
+            _subsonicService = new MockSubsonicService();
+
             var bottomBarViewModel = new DefaultBottomBarViewModel(_navigationService, _eventAggregator);
             Subject = new SearchViewModel
                            {
-                               BottomBar = bottomBarViewModel
+                               BottomBar = bottomBarViewModel,
+                               SubsonicService = _subsonicService
                            };
         }
 
@@ -90,7 +94,7 @@ namespace Client.Tests.Search
         [TestMethod]
         public void Parameter_WhenSetWithNotEmptySearchCollectionResult_SetsStateToResultsFound()
         {
-            Subject.Parameter = new SearchResultCollection { Songs = new List<Song>{ new Song() } };
+            Subject.Parameter = new SearchResultCollection { Songs = new List<Song> { new Song() } };
 
             Subject.State.Should().Be(SearchResultState.ResultsFound);
         }
@@ -125,6 +129,16 @@ namespace Client.Tests.Search
             Subject.PopulateSongs(new List<Song> { new Song() });
 
             Subject.MenuItemViewModels.Should().HaveCount(1);
+        }
+
+        [TestMethod]
+        public void PopulateMenuItemsShouldCallSubsonicServiceGetCoverArtForId()
+        {
+            Subject.Parameter = new SearchResultCollection { Albums = new List<Common.Models.Subsonic.Album> { new Common.Models.Subsonic.Album() } };
+
+            Subject.PopulateMenuItems();
+
+            (_subsonicService.GetCoverArtForIdCallCount > 0).Should().BeTrue();
         }
 
         [TestMethod]

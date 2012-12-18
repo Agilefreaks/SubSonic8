@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Client.Common.Models;
 using Client.Common.Results;
-using Subsonic8.Framework;
 using Subsonic8.Framework.ViewModel;
 
 namespace Subsonic8.Album

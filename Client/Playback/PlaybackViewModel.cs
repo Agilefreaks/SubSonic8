@@ -119,7 +119,7 @@ namespace Subsonic8.Playback
                 {
                     var model = item as MusicDirectoryChild;
                     pi.Artist = model.Artist;
-                    pi.CoverArt = SubsonicService.GetCoverArtForId(model.CoverArt);
+                    pi.CoverArt = model.CoverArt;
                     pi.Duration = model.Duration;
                     pi.Title = model.Title;
                     pi.Uri = item.Type == SubsonicModelTypeEnum.Song
