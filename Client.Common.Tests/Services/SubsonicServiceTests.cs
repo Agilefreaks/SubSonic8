@@ -13,7 +13,16 @@ namespace Client.Common.Tests.Services
         [TestInitialize]
         public void Setup()
         {
-            _subject = new SubsonicService();
+            _subject = new SubsonicService
+            {
+                Configuration = new SubsonicServiceConfiguration
+                                    {
+                                        BaseUrl = "http://test",
+                                        ServiceUrl = "http://test",
+                                        Username = "test",
+                                        Password = "test"
+                                    }
+            };
         }
 
         [TestMethod]
@@ -31,6 +40,30 @@ namespace Client.Common.Tests.Services
             _subject.GetRootIndex.Should().NotBeNull();
             _subject.GetAlbum.Should().NotBeNull();
             _subject.Search.Should().NotBeNull();
+        }
+
+        [TestMethod]
+        public void GetCoverArtForIdWhenParameterIsNullReturnsStringEmpty()
+        {
+            _subject.GetCoverArtForId(null).Should().Be(string.Empty);
+        }
+
+        [TestMethod]
+        public void GetCoverArtForIdWhenParameterIsStringEmptyReturnsStringEmpty()
+        {
+            _subject.GetCoverArtForId(string.Empty).Should().Be(string.Empty);
+        }
+
+        [TestMethod]
+        public void GetCoverArtForIdWhenParamterIsNotNullOrEmptyReturnsFormattedUrlAsString()
+        {
+            _subject.GetCoverArtForId("test").Should().Contain("&id=test");
+        }
+
+        [TestMethod]
+        public void GetCoverArtForIdWhenParameterIsNotNullOrEmptyReturnsUrlThatContainSize()
+        {
+            _subject.GetCoverArtForId("test").Should().Contain("&size=");
         }
     }
 }

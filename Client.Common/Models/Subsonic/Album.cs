@@ -16,9 +16,6 @@ namespace Client.Common.Models.Subsonic
         [XmlAttribute("artistId")]
         public int ArtistId { get; set; }
 
-        [XmlAttribute("coverArt")]
-        public string CoverArt { get; set; }
-
         [XmlAttribute("songCount")]
         public int SongCount { get; set; }
 

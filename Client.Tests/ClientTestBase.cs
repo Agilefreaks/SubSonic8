@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using Client.Common.Services;
 using Client.Tests.Mocks;
 using Subsonic8.Shell;
 
@@ -25,6 +26,10 @@ namespace Client.Tests
                                       if (type == typeof (IShellViewModel))
                                       {
                                           instance = shellViewModel;
+                                      }
+                                      if(type == typeof(ISubsonicService))
+                                      {
+                                          instance = mockSubsonicService;
                                       }
                                       return instance;
                                   };

@@ -1,26 +1,13 @@
 ﻿using System;
-using Caliburn.Micro;
+using Subsonic8.Framework.ViewModel;
 
 namespace Subsonic8.PlaylistItem
 {
-    public class PlaylistItemViewModel : PropertyChangedBase
+    public class PlaylistItemViewModel : ItemViewModelBase
     {
-        private Uri _coverArt;
         private string _artist;
-        private string _title;
         private int _duration;
         private Uri _uri;
-
-        public Uri CoverArt
-        {
-            get { return _coverArt; }
-
-            set
-            {
-                _coverArt = value;
-                NotifyOfPropertyChange();
-            }
-        }
 
         public string Artist
         {
@@ -31,17 +18,7 @@ namespace Subsonic8.PlaylistItem
                 NotifyOfPropertyChange();
             }
         }
-
-        public string Title
-        {
-            get { return _title; }
-            set
-            {
-                _title = value;
-                NotifyOfPropertyChange();
-            }
-        }
-
+        
         public int Duration
         {
             get { return _duration; }

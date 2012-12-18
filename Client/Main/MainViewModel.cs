@@ -46,6 +46,7 @@ namespace Subsonic8.Main
                                   {
                                       Title = index.Name,
                                       Subtitle = string.Format("{0} artists", index.Artists.Count),
+                                      CoverArt = index.CoverArt,
                                       Item = index
                                   });
             }

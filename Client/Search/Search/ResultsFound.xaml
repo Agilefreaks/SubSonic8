@@ -5,7 +5,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:cal="using:Caliburn.Micro"
-    xmlns:Framework="using:Subsonic8.Framework" mc:Ignorable="d">
+    xmlns:Framework="using:Subsonic8.Framework" 
+    mc:Ignorable="d">
 
     <ContentControl.Resources>
         <CollectionViewSource x:Key="GroupedSource" IsSourceGrouped="True" Source="{Binding MenuItems}" />

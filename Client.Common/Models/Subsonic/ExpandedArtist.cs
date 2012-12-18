@@ -7,14 +7,25 @@ namespace Client.Common.Models.Subsonic
     [XmlRoot(ElementName = "artist", Namespace = "http://subsonic.org/restapi")]
     public class ExpandedArtist : Artist
     {
-        [XmlAttribute("coverArt")]
-        public string CovertArt { get; set; }
-
         [XmlAttribute("albumCount")]
         public int AlbumCount { get; set; }
 
         [XmlElement(ElementName = "album", Namespace = "http://subsonic.org/restapi")]
         public List<Album> Albums { get; set; }
+
+        [XmlIgnore]
+        public override string CoverArt
+        {
+            get
+            {
+                return base.CoverArt;
+            }
+
+            set
+            {
+                base.CoverArt = value;
+            }
+        }
 
         public ExpandedArtist()
         {

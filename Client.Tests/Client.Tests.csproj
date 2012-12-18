@@ -115,6 +115,8 @@
     <Compile Include="ClientTestBase.cs" />
     <Compile Include="DefaultBottomBar\DefaultBottomBarViewModelTests.cs" />
     <Compile Include="Framework\ViewModel\DetailViewModelBaseTests.cs" />
+    <Compile Include="Framework\ViewModel\ItemViewModelBaseTests.cs" />
+    <Compile Include="MenuItem\MenuItemViewModelBaseTests.cs" />
     <Compile Include="Mocks\MockDefaultBottomBarViewModel.cs" />
     <Compile Include="Mocks\MockShellViewModel.cs" />
     <Compile Include="Index\IndexViewModelTests.cs" />
@@ -126,6 +128,7 @@
     <Compile Include="Mocks\MockSubsonicService.cs" />
     <Compile Include="MusicDirectory\MusicDirectoryViewModelTests.cs" />
     <Compile Include="Playback\PlaybackViewModelTests.cs" />
+    <Compile Include="PlaylistItem\PlaylistItemViewModelTests.cs" />
     <Compile Include="Search\SearchConvertersTests.cs" />
     <Compile Include="Search\SearchViewModelTests.cs" />
     <Compile Include="Shell\ShellViewModelTests.cs" />
