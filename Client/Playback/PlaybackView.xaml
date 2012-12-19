@@ -62,6 +62,7 @@
                 <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
                     <Button Style="{StaticResource PlayAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action Play]"/>
                     <Button Style="{StaticResource PauseAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action Pause]"/>
+                    <Button Style="{StaticResource StopAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action Stop]"/>
                 </StackPanel>
             </Grid>
 

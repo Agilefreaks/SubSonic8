@@ -281,6 +281,26 @@ namespace Client.Tests.Playback
 
             ((MockShellViewModel)Subject.ShellViewModel).PlayPauseCallCount.Should().Be(0);
         }
+
+        [TestMethod]
+        public void StopWillCallShellViewModelStop()
+        {
+            Subject.ShellViewModel = new MockShellViewModel();
+
+            Subject.Stop();
+
+            ((MockShellViewModel) Subject.ShellViewModel).StopCallCount.Should().Be(1);
+        }
+
+        [TestMethod]
+        public void PlayUriShouldSetUriToShellViewModelSource()
+        {
+            var uri = new Uri("http://test.cc");
+
+            ((PlaybackViewModel)Subject).PlayUri(uri);
+
+            Subject.ShellViewModel.Source.Should().Be(uri);
+        }
     }
 
     internal class MockPlayerControls : IPlayerControls

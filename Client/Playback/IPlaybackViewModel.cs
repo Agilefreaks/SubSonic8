@@ -31,5 +31,7 @@ namespace Subsonic8.Playback
         void Play();
 
         void Pause();
+
+        void Stop();
     }
 }

@@ -21,6 +21,8 @@ namespace Client.Tests.Mocks
 
         public int PlayPauseCallCount { get; set; }
 
+        public int StopCallCount { get; set; }
+
         public Action<SearchResultCollection> NavigateToSearhResult { get; set; }
 
         public Task PerformSubsonicSearch(string query)
@@ -45,7 +47,7 @@ namespace Client.Tests.Mocks
 
         public void Stop()
         {
-            throw new NotImplementedException();
+            StopCallCount++;
         }
     }
 }

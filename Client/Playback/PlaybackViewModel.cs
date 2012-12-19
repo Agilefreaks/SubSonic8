@@ -142,6 +142,7 @@ namespace Subsonic8.Playback
             var pressedItem = (PlaylistItemViewModel)(((ItemClickEventArgs)e).ClickedItem);
             ShellViewModel.Source = null;
             ShellViewModel.Source = pressedItem.Uri;
+            _currentTrackNo = PlaylistItems.IndexOf(pressedItem);
         }
 
         public void Play()
@@ -151,12 +152,12 @@ namespace Subsonic8.Playback
                 if (_currentTrackNo == -1)
                 {
                     _currentTrackNo++;
-                    ShellViewModel.Source = PlaylistItems[_currentTrackNo].Uri;
+                    PlayUri(PlaylistItems[_currentTrackNo].Uri);
                 }
                 else
                 {
-                    ShellViewModel.Source = null;
-                    ShellViewModel.Source = PlaylistItems[_currentTrackNo].Uri;
+                    PlayUri(null);
+                    PlayUri(PlaylistItems[_currentTrackNo].Uri);
                 }
 
                 IsPlaying = true;
@@ -170,6 +171,16 @@ namespace Subsonic8.Playback
                 ShellViewModel.PlayPause();
                 IsPlaying = false;
             }
+        }
+
+        public void Stop()
+        {
+            ShellViewModel.Stop();
+        }
+
+        public void PlayUri(Uri source)
+        {
+            ShellViewModel.Source = source;
         }
 
         public void Handle(PlaylistMessage message)
@@ -205,7 +216,8 @@ namespace Subsonic8.Playback
         public void Handle(PlayFile message)
         {
             Source = null;
-            ShellViewModel.Source = SubsonicService.GetUriForFileWithId(message.Id);
+            var source = SubsonicService.GetUriForFileWithId(message.Id);
+            PlayUri(source);
         }
 
         public void Handle(PlayNextMessage message)
@@ -214,7 +226,7 @@ namespace Subsonic8.Playback
             
             if (_currentTrackNo < PlaylistItems.Count)
             {
-                ShellViewModel.Source = PlaylistItems[_currentTrackNo].Uri;
+                PlayUri(PlaylistItems[_currentTrackNo].Uri);
                 _notificationManager.Show(new NotificationOptions
                 {
                     ImageUrl = PlaylistItems[_currentTrackNo].CoverArt,
@@ -233,7 +245,7 @@ namespace Subsonic8.Playback
             _currentTrackNo--;
             if (_currentTrackNo > -1)
             {
-                ShellViewModel.Source = PlaylistItems[_currentTrackNo].Uri;
+                PlayUri(PlaylistItems[_currentTrackNo].Uri);
             }
             else
             {
@@ -255,13 +267,13 @@ namespace Subsonic8.Playback
 
         public void Handle(StopMessage message)
         {
-            ShellViewModel.Stop();
+            Stop();
         }
 
         private void StopAndReset()
         {
             _currentTrackNo = -1;
-            ShellViewModel.Source = null;
+            PlayUri(null);
         }
     }
 }
