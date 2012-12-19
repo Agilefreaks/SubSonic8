@@ -113,6 +113,7 @@
   <ItemGroup>
     <Compile Include="Album\AlbumViewModelTests.cs" />
     <Compile Include="ClientTestBase.cs" />
+    <Compile Include="Converters\IntToTimeStringConverterTests.cs" />
     <Compile Include="DefaultBottomBar\DefaultBottomBarViewModelTests.cs" />
     <Compile Include="Framework\ViewModel\DetailViewModelBaseTests.cs" />
     <Compile Include="Framework\ViewModel\ItemViewModelBaseTests.cs" />

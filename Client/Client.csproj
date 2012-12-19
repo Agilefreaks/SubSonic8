@@ -125,6 +125,7 @@
     </Compile>
     <Compile Include="Controls\AppBarToggleButton.cs" />
     <Compile Include="Converters\InvertedBooleanToVisibilityConverter.cs" />
+    <Compile Include="Converters\IntToTimeStringConverter.cs" />
     <Compile Include="Dialogs\DialogService.cs" />
     <Compile Include="Framework\INotificationManager.cs" />
     <Compile Include="Framework\NotificationOptions.cs" />
