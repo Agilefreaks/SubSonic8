@@ -13,6 +13,7 @@ namespace Subsonic8.Main
         void IndexClick(ItemClickEventArgs eventArgs);
 
         void Populate();
+
         void SetMenuItems(IGetRootResult getIndexResult);
     }
 }

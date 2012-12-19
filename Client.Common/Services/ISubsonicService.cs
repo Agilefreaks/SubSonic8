@@ -22,5 +22,7 @@ namespace Client.Common.Services
         Uri GetUriForVideoWithId(int id);
 
         string GetCoverArtForId(string coverArt);
+
+        string GetCoverArtForId(string coverArt, ImageType imageType);
     }
 }

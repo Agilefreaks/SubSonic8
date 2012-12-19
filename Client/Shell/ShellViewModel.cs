@@ -29,7 +29,6 @@ namespace Subsonic8.Shell
 
             set
             {
-                if (Equals(value, _source)) return;
                 _source = value;
                 NotifyOfPropertyChange();
             }

@@ -5,7 +5,7 @@ namespace Client.Tests.Mocks
 {
     public class MockSubsonicModel : ISubsonicModel
     {
-        public int Id { get; private set; }
+        public int Id { get; set; }
 
         public SubsonicModelTypeEnum Type { get; private set; }
 

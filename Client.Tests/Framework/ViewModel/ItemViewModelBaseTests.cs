@@ -21,21 +21,5 @@ namespace Client.Tests.Framework.ViewModel
 
             subsonicService.GetCoverArtForIdCallCount.Should().Be(1);
         }
-
-        [TestMethod]
-        public void CoverArtWhenSetToNullShouldReturnCoverArtPlaceholder()
-        {
-            Subject.CoverArt = null;
-
-            Subject.CoverArt.Should().Be(ItemViewModelBase.CoverArtPlaceholder);
-        }
-
-        [TestMethod]
-        public void CoverArtWhenSetToEmptyStringShouldReturnCoverArtPlaceholder()
-        {
-            Subject.CoverArt = string.Empty;
-
-            Subject.CoverArt.Should().Be(ItemViewModelBase.CoverArtPlaceholder);
-        }
     }
 }

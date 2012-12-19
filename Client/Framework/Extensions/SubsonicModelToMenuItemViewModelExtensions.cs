@@ -12,7 +12,7 @@ namespace Subsonic8.Framework.Extensions
             return new MenuItemViewModel
                        {
                            Title = description.Item1,
-                           CoverArt = item.CoverArt,
+                           CoverArtId = item.CoverArt,
                            Type = string.Format("{0}(s)", item.Type.ToString()),
                            Subtitle = description.Item2,
                            Item = item

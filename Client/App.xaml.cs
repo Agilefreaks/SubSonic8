@@ -6,6 +6,7 @@ using Subsonic8.BottomBar;
 using Subsonic8.Framework;
 using Subsonic8.Main;
 using Subsonic8.Playback;
+using Subsonic8.PlaylistItem;
 using Subsonic8.Settings;
 using Subsonic8.Shell;
 using WinRtUtility;
@@ -89,10 +90,11 @@ namespace Subsonic8
             var navigationService = _container.GetInstance(typeof (INavigationService), null) as INavigationService;
             navigationService.NavigateToViewModel<MainViewModel>();
 
-            _shellViewModel = (IShellViewModel) _container.GetInstance(typeof (IShellViewModel), null);
-            ViewModelBinder.Bind(_shellViewModel, shellView, null);
 
             RegisterPlaybackViewModel();
+
+            _shellViewModel = (IShellViewModel) _container.GetInstance(typeof (IShellViewModel), null);
+            ViewModelBinder.Bind(_shellViewModel, shellView, null);
         }
 
         private void RegisterPlaybackViewModel()

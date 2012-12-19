@@ -125,6 +125,7 @@
     </Compile>
     <Compile Include="Controls\AppBarToggleButton.cs" />
     <Compile Include="Converters\InvertedBooleanToVisibilityConverter.cs" />
+    <Compile Include="Converters\IntToTimeStringConverter.cs" />
     <Compile Include="Dialogs\DialogService.cs" />
     <Compile Include="Framework\INotificationManager.cs" />
     <Compile Include="Framework\NotificationOptions.cs" />
@@ -134,6 +135,9 @@
     <Compile Include="Framework\ViewModel\IDetailViewModel.cs" />
     <Compile Include="Framework\ViewModel\ItemViewModelBase.cs" />
     <Compile Include="Messages\RemoveFromPlaylistMessage.cs" />
+    <Compile Include="PlaylistItem\PlaylistItemView.xaml.cs">
+      <DependentUpon>PlaylistItemView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Search\SearchResultState.cs" />
     <Compile Include="Search\Search\NoResultsFound.xaml.cs">
       <DependentUpon>NoResultsFound.xaml</DependentUpon>
@@ -277,6 +281,10 @@
     <Page Include="Playback\Playback\Video.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="PlaylistItem\PlaylistItemView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Search\SearchView.xaml">
       <SubType>Designer</SubType>
