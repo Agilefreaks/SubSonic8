@@ -197,6 +197,19 @@ namespace Subsonic8.Playback
             }
         }
 
+        public void Previous()
+        {
+            _currentTrackNo--;
+            if (_currentTrackNo > -1)
+            {
+                PlayUri(PlaylistItems[_currentTrackNo].Uri);
+            }
+            else
+            {
+                StopAndReset();
+            }
+        }
+
         public void PlayUri(Uri source)
         {
             ShellViewModel.Source = source;
@@ -246,15 +259,7 @@ namespace Subsonic8.Playback
 
         public void Handle(PlayPreviousMessage message)
         {
-            _currentTrackNo--;
-            if (_currentTrackNo > -1)
-            {
-                PlayUri(PlaylistItems[_currentTrackNo].Uri);
-            }
-            else
-            {
-                StopAndReset();
-            }
+            Previous();
         }
 
         public void Handle(PlayPauseMessage message)

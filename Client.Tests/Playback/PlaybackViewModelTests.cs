@@ -174,7 +174,7 @@ namespace Client.Tests.Playback
         }
 
         [TestMethod]
-        public void HandleWithPlayPreviousMessageShouldSetSourceOnShellViewModelToPreviousElementInPlaylist()
+        public void PreviousShouldSetSourceOnShellViewModelToPreviousElementInPlaylist()
         {
             var file1 = new PlaylistItemViewModel { Uri = new Uri("http://file1") };
             var file2 = new PlaylistItemViewModel { Uri = new Uri("http://file2") };
@@ -188,7 +188,7 @@ namespace Client.Tests.Playback
         }
 
         [TestMethod]
-        public void HandleWithPlayPreviousMessageIfCurrentTrackIsFirstShouldSetShellViewModelSourceToNull()
+        public void PreviousIfCurrentTrackIsFirstShouldSetShellViewModelSourceToNull()
         {
             Subject.PlaylistItems = new ObservableCollection<PlaylistItemViewModel> { new PlaylistItemViewModel{ Uri = new Uri("http://test")} };
 
