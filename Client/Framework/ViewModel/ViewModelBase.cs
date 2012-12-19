@@ -3,6 +3,7 @@ using Caliburn.Micro;
 using Client.Common.Services;
 using Subsonic8.BottomBar;
 using Subsonic8.Shell;
+using Action = System.Action;
 
 namespace Subsonic8.Framework.ViewModel
 {
@@ -78,18 +79,20 @@ namespace Subsonic8.Framework.ViewModel
             NavigationService.GoBack();
         }
 
+        public Action UpdateDisplayName { get; set; }
+
         protected ViewModelBase()
         {
             SubsonicService = IoC.Get<ISubsonicService>();
             NavigationService = IoC.Get<INavigationService>();
+            UpdateDisplayName = () => DisplayName = "Subsonic8";
         }
-
-        protected abstract void UpdateDisplayName();
 
         protected override void OnActivate()
         {
             base.OnActivate();
             SetBottomBar(IoC.Get<IShellViewModel>());
+            UpdateDisplayName();
         }
 
         protected virtual void SetBottomBar(IShellViewModel shell)

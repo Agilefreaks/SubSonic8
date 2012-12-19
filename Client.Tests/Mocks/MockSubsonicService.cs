@@ -10,7 +10,7 @@ namespace Client.Tests.Mocks
         public int GetUriForVideoWithIdCallCount { get; set; }
 
         public int GetCoverArtForIdCallCount { get; set; }
-
+     
         public override Uri GetUriForFileWithId(int id)
         {
             GetUriForFileWithIdCallCount++;

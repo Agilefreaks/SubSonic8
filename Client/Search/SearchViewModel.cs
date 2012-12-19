@@ -70,6 +70,7 @@ namespace Subsonic8.Search
         {
             MenuItemViewModels = new List<MenuItemViewModel>();
             State = SearchResultState.NoResultsFound;
+            UpdateDisplayName = () => DisplayName = string.Format("Searched for: \"{0}\"", Parameter != null ? Parameter.Query : string.Empty);
         }
 
         public void PopulateMenuItems()
@@ -111,11 +112,6 @@ namespace Subsonic8.Search
             var navigableEntity = ((MenuItemViewModel)eventArgs.ClickedItem).Item;
 
             NavigationService.NavigateByEntityType(navigableEntity);
-        }
-
-        protected override void UpdateDisplayName()
-        {
-            DisplayName = string.Format("Searched for: \"{0}\"", Parameter.Query);
         }
 
         private void RemoveCoverArt(IEnumerable<MenuItemViewModel> menuItemViewModels)

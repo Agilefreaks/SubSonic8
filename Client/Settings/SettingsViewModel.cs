@@ -29,7 +29,7 @@ namespace Subsonic8.Settings
         {
             get
             {
-                return "Credentials";
+                return "Settings";
             }
         }
 

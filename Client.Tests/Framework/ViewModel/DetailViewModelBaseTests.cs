@@ -12,15 +12,5 @@ namespace Client.Tests.Framework.ViewModel
         where TSubsonicModel : ISubsonicModel
     {
         protected MockSubsonicService SubsonicService;
-
-        [TestMethod]
-        public void WhenParameterIsSetShouldChangeTheScreenDisplayName()
-        {
-            Subject.DisplayName = "test";
-
-            Subject.Parameter = new MockSubsonicModel();
-
-            Subject.DisplayName.Should().NotBe("test");
-        }
     }
 }

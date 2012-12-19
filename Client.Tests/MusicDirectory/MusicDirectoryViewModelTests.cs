@@ -16,8 +16,11 @@ namespace Client.Tests.MusicDirectory
         [TestInitialize]
         public void TestInitialize()
         {
-            Subject = new MusicDirectoryViewModel();
-            Subject.SubsonicService = new MockSubsonicService();
+            Subject = new MusicDirectoryViewModel
+                          {
+                              SubsonicService = new MockSubsonicService(),
+                              UpdateDisplayName = () => Subject.DisplayName = ""
+                          };
         }
 
         [TestMethod]

@@ -1,6 +1,5 @@
 using Client.Common.Models;
 using Subsonic8.Framework.ViewModel;
-using PropertyChangedBase = Caliburn.Micro.PropertyChangedBase;
 
 namespace Subsonic8.MenuItem
 {

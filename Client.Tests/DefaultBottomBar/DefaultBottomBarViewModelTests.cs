@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
+using Caliburn.Micro;
 using Client.Tests.Mocks;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
@@ -42,6 +43,7 @@ namespace Client.Tests.DefaultBottomBar
         [TestMethod]
         public void AddToPlaylistCallShouldClearSelectedItemsCollection()
         {
+            IoC.GetInstance = (type, s) => null;
             _subject.SelectedItems.Add(new MenuItemViewModel());
             _subject.SelectedItems.Add(new MenuItemViewModel());
 

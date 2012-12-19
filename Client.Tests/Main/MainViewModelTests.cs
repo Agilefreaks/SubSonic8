@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Caliburn.Micro;
 using Client.Common.Models.Subsonic;
 using Client.Common.Results;
+using Client.Common.Services;
 using Client.Tests.Framework.ViewModel;
 using Client.Tests.Mocks;
 using FluentAssertions;
@@ -15,6 +16,7 @@ namespace Client.Tests.Main
     {
         private INavigationService _navigationService;
         private MockSubsonicService _subsonicService;
+        private MockGetRootResult _mockGetRootResult;
 
         protected override IMainViewModel Subject { get; set; }
 
@@ -22,21 +24,24 @@ namespace Client.Tests.Main
         public void TestInitialize()
         {
             _navigationService = new MockNavigationService();
-            _subsonicService = new MockSubsonicService();
+            _mockGetRootResult = new MockGetRootResult();
+            _subsonicService = new MockSubsonicService
+                                   {
+                                       GetRootIndex = () => _mockGetRootResult
+                                   };
 
-            Subject = new MainViewModel { NavigationService = _navigationService, SubsonicService = _subsonicService };
+            Subject = new MainViewModel
+                          {
+                              NavigationService = _navigationService, 
+                              SubsonicService = _subsonicService,
+                              UpdateDisplayName = () => Subject.DisplayName = ""
+                          };
         }
 
         [TestMethod]
         public void CtorShouldInstantiateMenuItems()
         {
             Subject.MenuItems.Should().NotBeNull();
-        }
-
-        [TestMethod]
-        public void CtorShouldChangeTitleOfPageToSubsonic8()
-        {
-            Subject.DisplayName.Should().Be("Subsonic8");
         }
 
         [TestMethod]
@@ -55,12 +60,9 @@ namespace Client.Tests.Main
         [TestMethod]
         public async Task PopulateShouldExecuteAGetRootResult()
         {
-            var mockResult = new MockGetRootResult();
-            _subsonicService.GetRootIndex = () => mockResult;
-
             await Task.Run(() => Subject.Populate());
 
-            mockResult.ExecuteCallCount.Should().Be(1);
+            _mockGetRootResult.ExecuteCallCount.Should().Be(1);
         }
     }
 }

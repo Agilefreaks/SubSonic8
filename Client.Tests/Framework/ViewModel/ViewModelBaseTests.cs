@@ -32,5 +32,15 @@ namespace Client.Tests.Framework.ViewModel
 
             Subject.SelectedItems.Should().NotBeNull();
         }
+
+        [TestMethod]
+        public void OnActivateShouldSetDiplayName()
+        {
+            Subject.UpdateDisplayName = () => Subject.DisplayName = "42";
+
+            ((IActivate)Subject).Activate();
+
+            Subject.DisplayName.Should().Be("42");
+        }
     }
 }

@@ -15,19 +15,16 @@ namespace Client.Tests.Index
         [TestInitialize]
         public void TestInitialize()
         {
-            Subject = new IndexViewModel();
+            Subject = new IndexViewModel
+                          {
+                              UpdateDisplayName = () => Subject.DisplayName = ""
+                          };
         }
 
         [TestMethod]
         public void CtorShouldSetMenuItems()
         {
             Subject.MenuItems.Should().BeEmpty();
-        }
-
-        [TestMethod]
-        public void CtorShouldSetDisplayNameToSubsonic8()
-        {
-            Subject.DisplayName.Should().Be("Subsonic8");
         }
 
         [TestMethod]
