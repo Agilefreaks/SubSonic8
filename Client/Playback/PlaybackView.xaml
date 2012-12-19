@@ -7,34 +7,11 @@
     xmlns:cal="using:Caliburn.Micro"
     xmlns:framework="using:Subsonic8.Framework"
     xmlns:common="using:Subsonic8.Common"
-    xmlns:converters="using:Subsonic8.Converters"
     mc:Ignorable="d">
 
     <Page.Resources>
-        <converters:IntToTimeStringConverter x:Key="TimeConverter"/>
-        <DataTemplate x:Key="PlaylistItem">
-            <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}" HorizontalAlignment="Stretch" Width="Auto" Height="Auto" >
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-
-                <Image Source="{Binding CoverArt}" Width="40" Height="40"/>
-
-                <Grid Grid.Column="1" HorizontalAlignment="Stretch">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-                    
-                    <StackPanel>
-                        <TextBlock Text="{Binding Artist}"></TextBlock>
-                        <TextBlock Text="{Binding Title}"></TextBlock>
-                    </StackPanel>
-
-                    <TextBlock Grid.Column="1" Text="{Binding Duration, Converter={StaticResource TimeConverter}}"/>
-                </Grid>
-            </Grid>
+        <DataTemplate x:Key="PlaylistItemTemplate">
+            <ContentControl cal:View.Model="{Binding}" HorizontalContentAlignment="Stretch"/>
         </DataTemplate>
     </Page.Resources>
 
@@ -59,7 +36,7 @@
                 </Grid.RowDefinitions>
 
                 <Image Height="500" Source="{Binding CoverArt}"/>
-                <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
+                <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
                     <Button Style="{StaticResource PlayAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action Play]"/>
                     <Button Style="{StaticResource PauseAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action Pause]"/>
                     <Button Style="{StaticResource StopAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action Stop]"/>
@@ -69,19 +46,19 @@
             </Grid>
 
             <ListView Grid.Column="1"
-                    ItemsSource = "{Binding PlaylistItems}"  ItemTemplate = "{StaticResource PlaylistItem}" 
+                    ItemsSource = "{Binding PlaylistItems}" ItemTemplate="{StaticResource PlaylistItemTemplate}"
                     SelectionMode = "Multiple"
                     framework:MultipleSelectBehavior.SelectedItems="{Binding SelectedItems, Mode=TwoWay}"
                     CanDragItems = "True" CanReorderItems = "True" AllowDrop = "True"
                     IsItemClickEnabled = "True"
                     cal:Message.Attach = "[Event ItemClick] = [Action StartPlayback($eventArgs)]">
-                
+
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
                         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                     </Style>
                 </ListView.ItemContainerStyle>
-            
+
             </ListView>
         </Grid>
     </Grid>
