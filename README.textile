@@ -4,7 +4,7 @@ A simple client app for the popular "Subsonic":http://www.subsonic.org media ser
 
 h1. Contributing
 # Fork it.
-# Create a branch (git checkout -b my_markup)
+# Create a branch (git checkout -b my_cool_feature)
 # Commit your changes (git commit -am "Added CoolFeature")
 # Push to the branch (git push origin my_cool_feature)
 # Open a Pull Request
