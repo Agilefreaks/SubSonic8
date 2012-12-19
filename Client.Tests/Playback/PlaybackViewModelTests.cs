@@ -81,8 +81,7 @@ namespace Client.Tests.Playback
         }
 
         [TestMethod]
-        public void
-            HandleWithPlayFileOfTypeSongShouldSetSourceOnShellViewModelToNewUriAndSourceOnPlaybackViewModelToNull()
+        public void HandleWithPlayFileOfTypeSongShouldSetSourceOnShellViewModelToNewUriAndSourceOnPlaybackViewModelToNull()
         {
             Subject.Source = new Uri("http://this-should-become.null");
             Subject.Handle(new PlayFile { Id = 42 });
@@ -140,7 +139,7 @@ namespace Client.Tests.Playback
         }
 
         [TestMethod]
-        public void HandleWithPlayNextMessageShouldSetSourceOnShellViewModelToSecondElementInPlaylist()
+        public void NextShouldSetSourceOnShellViewModelToSecondElementInPlaylist()
         {
             var file1 = new PlaylistItemViewModel { Uri = new Uri("http://file1") };
             var file2 = new PlaylistItemViewModel { Uri = new Uri("http://file2") };
@@ -153,7 +152,7 @@ namespace Client.Tests.Playback
         }
 
         [TestMethod]
-        public void HandleWithPlayNextMessageIfCurrentTrackIsLastShouldSetShellViewModelSourceToNull()
+        public void NextIfCurrentTrackIsLastShouldSetShellViewModelSourceToNull()
         {
             var uri = new Uri("http://test");
             Subject.PlaylistItems = new ObservableCollection<PlaylistItemViewModel> { new PlaylistItemViewModel { Uri = uri } };
@@ -165,7 +164,7 @@ namespace Client.Tests.Playback
         }
 
         [TestMethod]
-        public void HandleWithPlayNextMessageCallsNotificationManagerShow()
+        public void NextCallsNotificationManagerShow()
         {
             Subject.PlaylistItems = new ObservableCollection<PlaylistItemViewModel> { new PlaylistItemViewModel() };
 

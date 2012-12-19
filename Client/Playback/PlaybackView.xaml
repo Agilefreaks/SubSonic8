@@ -63,6 +63,7 @@
                     <Button Style="{StaticResource PlayAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action Play]"/>
                     <Button Style="{StaticResource PauseAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action Pause]"/>
                     <Button Style="{StaticResource StopAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action Stop]"/>
+                    <Button Style="{StaticResource NextAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action Next]"/>
                 </StackPanel>
             </Grid>
 

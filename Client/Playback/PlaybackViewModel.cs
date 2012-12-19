@@ -177,6 +177,26 @@ namespace Subsonic8.Playback
             ShellViewModel.Stop();
         }
 
+        public void Next()
+        {
+            _currentTrackNo++;
+
+            if (_currentTrackNo < PlaylistItems.Count)
+            {
+                PlayUri(PlaylistItems[_currentTrackNo].Uri);
+                _notificationManager.Show(new NotificationOptions
+                {
+                    ImageUrl = PlaylistItems[_currentTrackNo].CoverArt,
+                    Title = PlaylistItems[_currentTrackNo].Title,
+                    Subtitle = PlaylistItems[_currentTrackNo].Artist
+                });
+            }
+            else
+            {
+                StopAndReset();
+            }
+        }
+
         public void PlayUri(Uri source)
         {
             ShellViewModel.Source = source;
@@ -221,22 +241,7 @@ namespace Subsonic8.Playback
 
         public void Handle(PlayNextMessage message)
         {
-            _currentTrackNo++;
-            
-            if (_currentTrackNo < PlaylistItems.Count)
-            {
-                PlayUri(PlaylistItems[_currentTrackNo].Uri);
-                _notificationManager.Show(new NotificationOptions
-                {
-                    ImageUrl = PlaylistItems[_currentTrackNo].CoverArt,
-                    Title = PlaylistItems[_currentTrackNo].Title,
-                    Subtitle = PlaylistItems[_currentTrackNo].Artist
-                });
-            }
-            else
-            {
-                StopAndReset();
-            }
+            Next();
         }
 
         public void Handle(PlayPreviousMessage message)
