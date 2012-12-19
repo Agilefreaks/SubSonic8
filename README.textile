@@ -1,0 +1,11 @@
+h1. Subsonic8
+
+A simple client app for the popular "Subsonic":http://www.subsonic.org media server. Written for WinRT (latest and greates from Microsoft).
+
+h1. Contributing
+# Fork it.
+# Create a branch (git checkout -b my_markup)
+# Commit your changes (git commit -am "Added CoolFeature")
+# Push to the branch (git push origin my_cool_feature)
+# Open a Pull Request
+# Enjoy a refreshing Diet Coke and wait (wille listening to a great song of course)
