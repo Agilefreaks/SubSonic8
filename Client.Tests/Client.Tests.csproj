@@ -118,6 +118,7 @@
     <Compile Include="Framework\ViewModel\ItemViewModelBaseTests.cs" />
     <Compile Include="MenuItem\MenuItemViewModelBaseTests.cs" />
     <Compile Include="Mocks\MockDefaultBottomBarViewModel.cs" />
+    <Compile Include="Mocks\MockNotificationManager.cs" />
     <Compile Include="Mocks\MockShellViewModel.cs" />
     <Compile Include="Index\IndexViewModelTests.cs" />
     <Compile Include="Main\MainViewModelTests.cs" />
