@@ -156,7 +156,6 @@ namespace Subsonic8.Playback
                 }
                 else
                 {
-                    PlayUri(null);
                     PlayUri(PlaylistItems[_currentTrackNo].Uri);
                 }
 
