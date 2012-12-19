@@ -6,6 +6,8 @@ namespace Client.Common.Services
 {
     public class SubsonicService : PropertyChangedBase, ISubsonicService
     {
+        public const string CoverArtPlaceholder = @"/Assets/CoverArtPlaceholder.jpg";
+
         private SubsonicServiceConfiguration _configuration;
 
         public SubsonicServiceConfiguration Configuration
@@ -51,11 +53,25 @@ namespace Client.Common.Services
             return new Uri(string.Format("{0}stream/stream.ts?id={1}&hls=true&timeOffset=0", _configuration.BaseUrl, id));
         }
 
-        public virtual string GetCoverArtForId(string coverArt)
+        public string GetCoverArtForId(string coverArt)
         {
-            var result = string.Empty;
+            return GetCoverArtForId(coverArt, ImageType.Thumbnail);
+        }
+
+        public virtual string GetCoverArtForId(string coverArt, ImageType imageType)
+        {
+            string result;
             if (!string.IsNullOrEmpty(coverArt))
-                result = string.Format(_configuration.ServiceUrl, "getCoverArt.view", _configuration.Username, _configuration.Password) + string.Format("&id={0}", coverArt) + string.Format("&size={0}", 80);
+            {
+                result =
+                    string.Format(_configuration.ServiceUrl, "getCoverArt.view", _configuration.Username,
+                                  _configuration.Password) + string.Format("&id={0}", coverArt) +
+                    string.Format("&size={0}", (int) imageType);
+            }
+            else
+            {
+                result = CoverArtPlaceholder;
+            }
 
             return result;
         }

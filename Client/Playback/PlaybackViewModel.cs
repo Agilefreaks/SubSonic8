@@ -26,6 +26,7 @@ namespace Subsonic8.Playback
         private ObservableCollection<PlaylistItemViewModel> _playlistItems;
         private int _currentTrackNo;
         private bool _isPlaying;
+        private string _coverArt;
 
         #endregion
 
@@ -91,6 +92,20 @@ namespace Subsonic8.Playback
             }
         }
 
+        public string CoverArt
+        {
+            get
+            {
+                return _coverArt;
+            }
+
+            set
+            {
+                _coverArt = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
         public ObservableCollection<PlaylistItemViewModel> PlaylistItems
         {
             get { return _playlistItems; }
@@ -125,7 +140,7 @@ namespace Subsonic8.Playback
             {
                 if (song.Type == SubsonicModelTypeEnum.Song)
                 {
-                    Handle(new PlayFile { Id = song.Id });
+                    Handle(new PlayFile { Model = song });
                     State = PlaybackViewModelStateEnum.Audio;
                 }
                 else
@@ -140,8 +155,8 @@ namespace Subsonic8.Playback
         public void StartPlayback(object e)
         {
             var pressedItem = (PlaylistItemViewModel)(((ItemClickEventArgs)e).ClickedItem);
-            ShellViewModel.Source = null;
-            ShellViewModel.Source = pressedItem.Uri;
+            PlayUri(pressedItem.Uri);
+            SetCoverArt(pressedItem.CoverArtId);
             _currentTrackNo = PlaylistItems.IndexOf(pressedItem);
         }
 
@@ -152,13 +167,10 @@ namespace Subsonic8.Playback
                 if (_currentTrackNo == -1)
                 {
                     _currentTrackNo++;
-                    PlayUri(PlaylistItems[_currentTrackNo].Uri);
-                }
-                else
-                {
-                    PlayUri(PlaylistItems[_currentTrackNo].Uri);
                 }
 
+                PlayUri(PlaylistItems[_currentTrackNo].Uri);
+                SetCoverArt(PlaylistItems[_currentTrackNo].CoverArtId);
                 IsPlaying = true;
             }
         }
@@ -184,9 +196,10 @@ namespace Subsonic8.Playback
             if (_currentTrackNo < PlaylistItems.Count)
             {
                 PlayUri(PlaylistItems[_currentTrackNo].Uri);
+                SetCoverArt(PlaylistItems[_currentTrackNo].CoverArtId);
                 _notificationManager.Show(new NotificationOptions
                 {
-                    ImageUrl = PlaylistItems[_currentTrackNo].CoverArt,
+                    ImageUrl = PlaylistItems[_currentTrackNo].CoverArtId,
                     Title = PlaylistItems[_currentTrackNo].Title,
                     Subtitle = PlaylistItems[_currentTrackNo].Artist
                 });
@@ -203,6 +216,7 @@ namespace Subsonic8.Playback
             if (_currentTrackNo > -1)
             {
                 PlayUri(PlaylistItems[_currentTrackNo].Uri);
+                SetCoverArt(PlaylistItems[_currentTrackNo].CoverArtId);
             }
             else
             {
@@ -225,7 +239,7 @@ namespace Subsonic8.Playback
                 {
                     var model = item as MusicDirectoryChild;
                     pi.Artist = model.Artist;
-                    pi.CoverArt = model.CoverArt;
+                    pi.CoverArtId = model.CoverArt;
                     pi.Duration = model.Duration;
                     pi.Title = model.Title;
                     pi.Uri = item.Type == SubsonicModelTypeEnum.Song
@@ -248,8 +262,9 @@ namespace Subsonic8.Playback
         public void Handle(PlayFile message)
         {
             Source = null;
-            var source = SubsonicService.GetUriForFileWithId(message.Id);
+            var source = SubsonicService.GetUriForFileWithId(message.Model.Id);
             PlayUri(source);
+            SetCoverArt(message.Model.CoverArt);
         }
 
         public void Handle(PlayNextMessage message)
@@ -277,6 +292,11 @@ namespace Subsonic8.Playback
         public void Handle(StopMessage message)
         {
             Stop();
+        }
+
+        public void SetCoverArt(string coverArt)
+        {
+            CoverArt = SubsonicService.GetCoverArtForId(coverArt, ImageType.Original);
         }
 
         private void StopAndReset()

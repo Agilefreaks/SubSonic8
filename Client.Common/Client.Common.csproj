@@ -132,6 +132,7 @@
     <Compile Include="Results\ServiceResultBase.cs" />
     <Compile Include="Results\VisualStateResult.cs" />
     <Compile Include="Services\CustomFrameAdapter.cs" />
+    <Compile Include="Services\ImageType.cs" />
     <Compile Include="Services\ISubsonicService.cs" />
     <Compile Include="Services\ISubsonicServiceConfiguration.cs" />
     <Compile Include="Services\SubsonicService.cs" />

@@ -24,6 +24,8 @@ namespace Subsonic8.Playback
 
         bool IsPlaying { get; set; }
 
+        string CoverArt { get; set; }
+
         ObservableCollection<PlaylistItemViewModel> PlaylistItems { get; set; }
 
         void StartPlayback();

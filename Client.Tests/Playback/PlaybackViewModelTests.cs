@@ -63,8 +63,7 @@ namespace Client.Tests.Playback
         }
 
         [TestMethod]
-        public void ParameterWhenSetToTypeVideoShouldSetSourceOnShellViewModelToNullAndSourceOnPlaybackViewModelToNewUri
-            ()
+        public void ParameterWhenSetToTypeVideoShouldSetSourceOnShellViewModelToNullAndSourceOnPlaybackViewModelToNewUri()
         {
             _shellViewModel.Source = new Uri("http://this-should-become.null");
             Subject.Parameter = new Common.Models.Subsonic.Album { Id = 42 };
@@ -76,7 +75,7 @@ namespace Client.Tests.Playback
         [TestMethod]
         public void HandleWithPlayFileShouldSetSourceOnShellViewModel()
         {
-            Subject.Handle(new PlayFile { Id = 42 });
+            Subject.Handle(new PlayFile { Model = new MockSubsonicModel { Id = 42 } });
             _shellViewModel.Source.OriginalString.Should().Be("http://subsonic.org?id=42");
         }
 
@@ -84,7 +83,7 @@ namespace Client.Tests.Playback
         public void HandleWithPlayFileOfTypeSongShouldSetSourceOnShellViewModelToNewUriAndSourceOnPlaybackViewModelToNull()
         {
             Subject.Source = new Uri("http://this-should-become.null");
-            Subject.Handle(new PlayFile { Id = 42 });
+            Subject.Handle(new PlayFile { Model = new MockSubsonicModel { Id = 42 } });
 
             Subject.Source.Should().BeNull();
             _shellViewModel.Source.Should().NotBeNull();
@@ -190,7 +189,7 @@ namespace Client.Tests.Playback
         [TestMethod]
         public void PreviousIfCurrentTrackIsFirstShouldSetShellViewModelSourceToNull()
         {
-            Subject.PlaylistItems = new ObservableCollection<PlaylistItemViewModel> { new PlaylistItemViewModel{ Uri = new Uri("http://test")} };
+            Subject.PlaylistItems = new ObservableCollection<PlaylistItemViewModel> { new PlaylistItemViewModel { Uri = new Uri("http://test") } };
 
             Subject.Handle(new PlayPreviousMessage());
 
@@ -220,7 +219,7 @@ namespace Client.Tests.Playback
         public void PlayIfCurrentTrackIsNulShouldSetSourceOnShellViewModelToFirstItemInThePlaylist()
         {
             var uri = new Uri("http://tests.cs");
-            Subject.PlaylistItems.Add(new PlaylistItemViewModel{ Uri = uri});
+            Subject.PlaylistItems.Add(new PlaylistItemViewModel { Uri = uri });
 
             Subject.Play();
 
@@ -231,7 +230,7 @@ namespace Client.Tests.Playback
         public void PlayIfCurrentTrackIsNotNullShouldSetTheSourceOnShellToSame()
         {
             var uri = new Uri("http://tests.cs");
-            Subject.PlaylistItems.Add(new PlaylistItemViewModel{ Uri = uri});
+            Subject.PlaylistItems.Add(new PlaylistItemViewModel { Uri = uri });
             Subject.Play();
 
             Subject.Play();
@@ -288,7 +287,7 @@ namespace Client.Tests.Playback
 
             Subject.Stop();
 
-            ((MockShellViewModel) Subject.ShellViewModel).StopCallCount.Should().Be(1);
+            ((MockShellViewModel)Subject.ShellViewModel).StopCallCount.Should().Be(1);
         }
 
         [TestMethod]
@@ -299,6 +298,25 @@ namespace Client.Tests.Playback
             ((PlaybackViewModel)Subject).PlayUri(uri);
 
             Subject.ShellViewModel.Source.Should().Be(uri);
+        }
+
+        [TestMethod]
+        public void SetCoverArtCallsSubsonicServiceGetCoverArtForId()
+        {
+            var mockSubsonicService = new MockSubsonicService();
+            Subject.SubsonicService = mockSubsonicService;
+
+            ((PlaybackViewModel)Subject).SetCoverArt("42");
+
+            mockSubsonicService.GetCoverArtForIdCallCount.Should().Be(1);
+        }
+
+        [TestMethod]
+        public void SetCoverArtSetsCoverArtProperty()
+        {
+            ((PlaybackViewModel)Subject).SetCoverArt("42");
+
+            Subject.CoverArt.Should().NotBeNull();
         }
     }
 

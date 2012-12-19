@@ -7,7 +7,7 @@
     xmlns:cal="using:Caliburn.Micro"
     xmlns:framework="using:Subsonic8.Framework"
     xmlns:common="using:Subsonic8.Common"
-    xmlns:ic="using:Subsonic8.Controls" xmlns:converters="using:Subsonic8.Converters"
+    xmlns:converters="using:Subsonic8.Converters"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -58,7 +58,7 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <Image Height="500"/>
+                <Image Height="500" Source="{Binding CoverArt}"/>
                 <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
                     <Button Style="{StaticResource PlayAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action Play]"/>
                     <Button Style="{StaticResource PauseAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action Pause]"/>

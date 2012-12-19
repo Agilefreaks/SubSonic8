@@ -8,7 +8,6 @@ namespace Subsonic8.Framework.ViewModel
         private string _title;
         private string _coverArt;
         private string _coverArtUrl;
-        public const string CoverArtPlaceholder = @"/Assets/CoverArtPlaceholder.jpg";
 
         public ISubsonicService SubsonicService { get; set; }
 
@@ -30,23 +29,22 @@ namespace Subsonic8.Framework.ViewModel
         {
             get
             {
-                if(string.IsNullOrEmpty(_coverArtUrl))
-                {
-                    _coverArtUrl = SubsonicService.GetCoverArtForId(_coverArt);
-                    
-                    if(string.IsNullOrEmpty(_coverArtUrl))
-                    {
-                        _coverArtUrl = CoverArtPlaceholder;
-                    }
-                }
-                return _coverArtUrl;
+                return _coverArtUrl ?? (_coverArtUrl = SubsonicService.GetCoverArtForId(_coverArt));
+            }
+        }
+
+        public string CoverArtId
+        {
+            get
+            {
+                return _coverArt;
             }
 
             set
             {
                 _coverArt = value;
-                _coverArtUrl = null;
                 NotifyOfPropertyChange();
+                NotifyOfPropertyChange(() => CoverArt);
             }
         }
 

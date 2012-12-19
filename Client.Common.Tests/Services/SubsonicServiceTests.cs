@@ -45,13 +45,13 @@ namespace Client.Common.Tests.Services
         [TestMethod]
         public void GetCoverArtForIdWhenParameterIsNullReturnsStringEmpty()
         {
-            _subject.GetCoverArtForId(null).Should().Be(string.Empty);
+            _subject.GetCoverArtForId(null).Should().Be(SubsonicService.CoverArtPlaceholder);
         }
 
         [TestMethod]
         public void GetCoverArtForIdWhenParameterIsStringEmptyReturnsStringEmpty()
         {
-            _subject.GetCoverArtForId(string.Empty).Should().Be(string.Empty);
+            _subject.GetCoverArtForId(string.Empty).Should().Be(SubsonicService.CoverArtPlaceholder);
         }
 
         [TestMethod]
@@ -61,9 +61,17 @@ namespace Client.Common.Tests.Services
         }
 
         [TestMethod]
-        public void GetCoverArtForIdWhenParameterIsNotNullOrEmptyReturnsUrlThatContainSize()
+        public void GetCoverArtForIdWhenParameterIsNotNullOrEmptyReturnsUrlThatContainThumbnailSize()
         {
-            _subject.GetCoverArtForId("test").Should().Contain("&size=");
+            _subject.GetCoverArtForId("test").Should().Contain(string.Format("&size={0}", (int) ImageType.Thumbnail));
+        }
+
+        [TestMethod]
+        public void GetCoverARtForIdWhenParamterIsNotNullAndImageTypeIsOriginalReturnsStringContainigSize()
+        {
+            _subject.GetCoverArtForId("test", ImageType.Original)
+                    .Should()
+                    .Contain(string.Format("&size={0}", (int) ImageType.Original));
         }
     }
 }
