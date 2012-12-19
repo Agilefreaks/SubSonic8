@@ -22,11 +22,14 @@ namespace Subsonic8.Framework.ViewModel
             {
                 return _parameter;
             }
+
             set
             {
                 if (Equals(value, _parameter)) return;
+                
                 _parameter = value;
                 NotifyOfPropertyChange();
+               
                 LoadModel();
                 UpdateDisplayName();
             }
@@ -54,6 +57,7 @@ namespace Subsonic8.Framework.ViewModel
             {
                 return _menuItems;
             }
+
             set
             {
                 if (Equals(value, _menuItems)) return;
@@ -65,6 +69,7 @@ namespace Subsonic8.Framework.ViewModel
         protected DetailViewModelBase()
         {
             MenuItems = new BindableCollection<MenuItemViewModel>();
+            UpdateDisplayName = () => DisplayName = _parameter.GetDescription().Item1;
         }
 
         public void ChildClick(ItemClickEventArgs eventArgs)
@@ -77,11 +82,6 @@ namespace Subsonic8.Framework.ViewModel
         protected abstract IServiceResultBase<T> GetResult(int id);
 
         protected abstract IEnumerable<ISubsonicModel> GetItemsToDisplay();
-
-        protected override void UpdateDisplayName()
-        {
-            DisplayName = _parameter.GetDescription().Item1;
-        }
 
         private async void LoadModel()
         {

@@ -5,6 +5,9 @@ namespace Subsonic8.Controls
 {
     public class AppBarToggleButton : Button
     {
+        private object _content;
+        private Style _style;
+
         // TO USE IsChecked It has to be initialized LAST in XAML
         public bool IsChecked
         {
@@ -42,23 +45,20 @@ namespace Subsonic8.Controls
         public static readonly DependencyProperty AutoToggleProperty =
             DependencyProperty.Register("AutoToggle", typeof(bool), typeof(AppBarToggleButton), null);
 
-        private object content;
-        private Style style;
-
         private void IsCheckedChanged()
         {
             if (IsChecked)
             {
-                content = Content;
-                style = Style;
+                _content = Content;
+                _style = Style;
 
                 if (CheckedStyle == null) Content = CheckedContent;
                 else Style = CheckedStyle;
             }
             else
             {
-                if (CheckedStyle == null) Content = content;
-                else Style = style;
+                if (CheckedStyle == null) Content = _content;
+                else Style = _style;
             }
         }
 

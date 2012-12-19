@@ -20,7 +20,11 @@ namespace Client.Tests.Album
         public void TestInitialize()
         {
             _navigationService = new MockNavigationService();
-            Subject = new AlbumViewModel { NavigationService = _navigationService, SubsonicService = new MockSubsonicService() };
+            Subject = new AlbumViewModel { 
+                NavigationService = _navigationService, 
+                SubsonicService = new MockSubsonicService(),
+                UpdateDisplayName = () => Subject.DisplayName = string.Empty
+            };
         }
 
         [TestMethod]

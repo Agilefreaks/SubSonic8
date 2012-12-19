@@ -82,6 +82,10 @@ namespace Subsonic8.Playback
             _notificationManager = notificationManager;
             _eventAggregator.Subscribe(this);
             SubsonicService = subsonicService;
+
+            UpdateDisplayName = () => DisplayName = "Playlist";
+
+            // playlist stuff that need refactoring
             PlaylistItems = new ObservableCollection<PlaylistItemViewModel>();
             _currentTrackNo--;
         }
@@ -196,18 +200,6 @@ namespace Subsonic8.Playback
         public void Handle(StopMessage message)
         {
             _shellViewModel.Stop();
-        }
-
-        protected override void OnActivate()
-        {
-            base.OnActivate();
-
-            UpdateDisplayName();
-        }
-
-        protected override void UpdateDisplayName()
-        {
-            DisplayName = "Playlist";
         }
 
         private void StopAndReset()

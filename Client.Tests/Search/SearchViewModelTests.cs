@@ -31,7 +31,8 @@ namespace Client.Tests.Search
             Subject = new SearchViewModel
                            {
                                BottomBar = bottomBarViewModel,
-                               SubsonicService = _subsonicService
+                               SubsonicService = _subsonicService,
+                               Parameter = new SearchResultCollection { Query = "I search high and low" }
                            };
         }
 

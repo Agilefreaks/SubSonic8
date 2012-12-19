@@ -14,8 +14,11 @@ namespace Client.Tests.Artist
         [TestInitialize]
         public void TestInitialize()
         {
-            Subject = new ArtistViewModel();
-            Subject.SubsonicService = new MockSubsonicService();
+            Subject = new ArtistViewModel
+                          {
+                              SubsonicService = new MockSubsonicService(),
+                              UpdateDisplayName = () => Subject.DisplayName = ""
+                          };
         }
     }
 }

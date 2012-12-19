@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using Caliburn.Micro;
 using Client.Common.Services;
 using Subsonic8.BottomBar;
+using Action = System.Action;
 
 namespace Subsonic8.Framework.ViewModel
 {
@@ -18,5 +19,7 @@ namespace Subsonic8.Framework.ViewModel
         bool CanGoBack { get; }
 
         void GoBack();
+
+        Action UpdateDisplayName { get; set; }
     }
 }
