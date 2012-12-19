@@ -118,7 +118,7 @@ namespace Subsonic8.Search
         {
             foreach (var menuItemViewModel in menuItemViewModels)
             {
-                menuItemViewModel.CoverArt = string.Empty;
+                menuItemViewModel.CoverArtId = string.Empty;
             }
         }
     }

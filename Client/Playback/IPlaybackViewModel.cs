@@ -5,6 +5,7 @@ using Client.Common.Models;
 using Subsonic8.Framework.ViewModel;
 using Subsonic8.Messages;
 using Subsonic8.PlaylistItem;
+using Subsonic8.Shell;
 
 namespace Subsonic8.Playback
 {
@@ -13,14 +14,30 @@ namespace Subsonic8.Playback
         IHandle<PlayPauseMessage>, IHandle<StopMessage>,
         IViewModel
     {
+        IShellViewModel ShellViewModel { get; set; }
+
         ISubsonicModel Parameter { get; set; }
 
         Uri Source { get; set; }
 
         PlaybackViewModelStateEnum State { get; set; }
 
+        bool IsPlaying { get; set; }
+
+        string CoverArt { get; set; }
+
         ObservableCollection<PlaylistItemViewModel> PlaylistItems { get; set; }
 
         void StartPlayback();
+
+        void Play();
+
+        void Pause();
+
+        void Stop();
+
+        void Next();
+
+        void Previous();
     }
 }

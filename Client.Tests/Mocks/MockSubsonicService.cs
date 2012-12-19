@@ -25,7 +25,7 @@ namespace Client.Tests.Mocks
             return new Uri("http://test.mock");
         }
 
-        public override string GetCoverArtForId(string coverArt)
+        public override string GetCoverArtForId(string coverArt, ImageType imageType)
         {
             GetCoverArtForIdCallCount++;
 

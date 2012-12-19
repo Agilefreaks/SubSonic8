@@ -18,16 +18,32 @@ namespace Subsonic8.Playback
         #region Private Fields
 
         private readonly IEventAggregator _eventAggregator;
-        private readonly IShellViewModel _shellViewModel;
         private readonly INotificationManager _notificationManager;
+        private IShellViewModel _shellViewModel;
         private ISubsonicModel _parameter;
         private PlaybackViewModelStateEnum _state;
         private Uri _source;
         private ObservableCollection<PlaylistItemViewModel> _playlistItems;
         private int _currentTrackNo;
+        private bool _isPlaying;
+        private string _coverArt;
+
         #endregion
 
         #region Public Properties
+
+        public IShellViewModel ShellViewModel
+        {
+            get
+            {
+                return _shellViewModel;
+            }
+            
+            set
+            {
+                _shellViewModel = value; NotifyOfPropertyChange();
+            }
+        }
 
         public ISubsonicModel Parameter
         {
@@ -63,6 +79,33 @@ namespace Subsonic8.Playback
             }
         }
 
+        public bool IsPlaying
+        {
+            get
+            {
+                return _isPlaying;
+            }
+            
+            set
+            {
+                _isPlaying = value; NotifyOfPropertyChange();
+            }
+        }
+
+        public string CoverArt
+        {
+            get
+            {
+                return _coverArt;
+            }
+
+            set
+            {
+                _coverArt = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
         public ObservableCollection<PlaylistItemViewModel> PlaylistItems
         {
             get { return _playlistItems; }
@@ -78,7 +121,7 @@ namespace Subsonic8.Playback
         public PlaybackViewModel(IEventAggregator eventAggregator, IShellViewModel shellViewModel, ISubsonicService subsonicService, INotificationManager notificationManager)
         {
             _eventAggregator = eventAggregator;
-            _shellViewModel = shellViewModel;
+            ShellViewModel = shellViewModel;
             _notificationManager = notificationManager;
             _eventAggregator.Subscribe(this);
             SubsonicService = subsonicService;
@@ -97,13 +140,13 @@ namespace Subsonic8.Playback
             {
                 if (song.Type == SubsonicModelTypeEnum.Song)
                 {
-                    Handle(new PlayFile { Id = song.Id });
+                    Handle(new PlayFile { Model = song });
                     State = PlaybackViewModelStateEnum.Audio;
                 }
                 else
                 {
                     Source = SubsonicService.GetUriForFileWithId(song.Id);
-                    _shellViewModel.Source = null;
+                    ShellViewModel.Source = null;
                     State = PlaybackViewModelStateEnum.Video;
                 }
             }
@@ -112,8 +155,78 @@ namespace Subsonic8.Playback
         public void StartPlayback(object e)
         {
             var pressedItem = (PlaylistItemViewModel)(((ItemClickEventArgs)e).ClickedItem);
-            _shellViewModel.Source = null;
-            _shellViewModel.Source = pressedItem.Uri;
+            PlayUri(pressedItem.Uri);
+            SetCoverArt(pressedItem.CoverArtId);
+            _currentTrackNo = PlaylistItems.IndexOf(pressedItem);
+        }
+
+        public void Play()
+        {
+            if (PlaylistItems.Count > 0)
+            {
+                if (_currentTrackNo == -1)
+                {
+                    _currentTrackNo++;
+                }
+
+                PlayUri(PlaylistItems[_currentTrackNo].Uri);
+                SetCoverArt(PlaylistItems[_currentTrackNo].CoverArtId);
+                IsPlaying = true;
+            }
+        }
+
+        public void Pause()
+        {
+            if (IsPlaying)
+            {
+                ShellViewModel.PlayPause();
+                IsPlaying = false;
+            }
+        }
+
+        public void Stop()
+        {
+            ShellViewModel.Stop();
+        }
+
+        public void Next()
+        {
+            _currentTrackNo++;
+
+            if (_currentTrackNo < PlaylistItems.Count)
+            {
+                PlayUri(PlaylistItems[_currentTrackNo].Uri);
+                SetCoverArt(PlaylistItems[_currentTrackNo].CoverArtId);
+                _notificationManager.Show(new NotificationOptions
+                {
+                    ImageUrl = PlaylistItems[_currentTrackNo].CoverArtId,
+                    Title = PlaylistItems[_currentTrackNo].Title,
+                    Subtitle = PlaylistItems[_currentTrackNo].Artist
+                });
+            }
+            else
+            {
+                StopAndReset();
+            }
+        }
+
+        public void Previous()
+        {
+            _currentTrackNo--;
+            if (_currentTrackNo > -1)
+            {
+                PlayUri(PlaylistItems[_currentTrackNo].Uri);
+                SetCoverArt(PlaylistItems[_currentTrackNo].CoverArtId);
+            }
+            else
+            {
+                StopAndReset();
+            }
+        }
+
+        public void PlayUri(Uri source)
+        {
+            ShellViewModel.Source = source;
         }
 
         public void Handle(PlaylistMessage message)
@@ -126,7 +239,7 @@ namespace Subsonic8.Playback
                 {
                     var model = item as MusicDirectoryChild;
                     pi.Artist = model.Artist;
-                    pi.CoverArt = model.CoverArt;
+                    pi.CoverArtId = model.CoverArt;
                     pi.Duration = model.Duration;
                     pi.Title = model.Title;
                     pi.Uri = item.Type == SubsonicModelTypeEnum.Song
@@ -149,63 +262,47 @@ namespace Subsonic8.Playback
         public void Handle(PlayFile message)
         {
             Source = null;
-            _shellViewModel.Source = SubsonicService.GetUriForFileWithId(message.Id);
+            var source = SubsonicService.GetUriForFileWithId(message.Model.Id);
+            PlayUri(source);
+            SetCoverArt(message.Model.CoverArt);
         }
 
         public void Handle(PlayNextMessage message)
         {
-            _currentTrackNo++;
-            
-            if (_currentTrackNo < PlaylistItems.Count)
-            {
-                _shellViewModel.Source = PlaylistItems[_currentTrackNo].Uri;
-                _notificationManager.Show(new NotificationOptions
-                {
-                    ImageUrl = PlaylistItems[_currentTrackNo].CoverArt,
-                    Title = PlaylistItems[_currentTrackNo].Title,
-                    Subtitle = PlaylistItems[_currentTrackNo].Artist
-                });
-            }
-            else
-            {
-                StopAndReset();
-            }
+            Next();
         }
 
         public void Handle(PlayPreviousMessage message)
         {
-            _currentTrackNo--;
-            if (_currentTrackNo > -1)
-            {
-                _shellViewModel.Source = PlaylistItems[_currentTrackNo].Uri;
-            }
-            else
-            {
-                StopAndReset();
-            }
+            Previous();
         }
 
         public void Handle(PlayPauseMessage message)
         {
-            if (Source != null || _shellViewModel.Source != null)
+            if (IsPlaying)
             {
-                _shellViewModel.PlayPause();
+                Pause();
             }
             else
             {
-                Handle(new PlayNextMessage());
+                Play();
             }
         }
 
         public void Handle(StopMessage message)
         {
-            _shellViewModel.Stop();
+            Stop();
+        }
+
+        public void SetCoverArt(string coverArt)
+        {
+            CoverArt = SubsonicService.GetCoverArtForId(coverArt, ImageType.Original);
         }
 
         private void StopAndReset()
         {
             _currentTrackNo = -1;
-            _shellViewModel.Source = null;
+            PlayUri(null);
         }
     }
 }
