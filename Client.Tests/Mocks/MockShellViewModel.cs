@@ -19,6 +19,8 @@ namespace Client.Tests.Mocks
 
         public IPlayerControls PlayerControls { get; set; }
 
+        public int PlayPauseCallCount { get; set; }
+
         public Action<SearchResultCollection> NavigateToSearhResult { get; set; }
 
         public Task PerformSubsonicSearch(string query)
@@ -38,7 +40,7 @@ namespace Client.Tests.Mocks
 
         public void PlayPause()
         {
-            throw new NotImplementedException();
+            PlayPauseCallCount++;
         }
 
         public void Stop()

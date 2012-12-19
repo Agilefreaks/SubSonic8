@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Caliburn.Micro;
 using Client.Common.Models;
 using Client.Common.Models.Subsonic;
 using Client.Tests.Framework.ViewModel;
@@ -25,7 +24,7 @@ namespace Client.Tests.Playback
         private MockEventAggregator _eventAggregator;
         private MockSubsonicService _subsonicService;
         private MockNavigationService _navigationService;
-        private ShellViewModel _shellViewModel;
+        private IShellViewModel _shellViewModel;
         private MockPlayerControls _playerControls;
         private MockNotificationManager _notificationManager;
 
@@ -208,16 +207,6 @@ namespace Client.Tests.Playback
         }
 
         [TestMethod]
-        public void HandleWithPlayPauseMessageIfShellViewModelSourceIsNotNullCallsPlayPauseOnIPlayerControls()
-        {
-            _shellViewModel.Source = new Uri("http://test.t");
-
-            Subject.Handle(new PlayPauseMessage());
-
-            _playerControls.PlayPauseCallCount.Should().Be(1);
-        }
-
-        [TestMethod]
         public void HandleWithRemoveFromPlaylistMessageShouldItemsInQueueFromCurrentPlaylist()
         {
             var playlistItemViewModel = new PlaylistItemViewModel();
@@ -226,6 +215,71 @@ namespace Client.Tests.Playback
             Subject.Handle(new RemoveFromPlaylistMessage { Queue = new List<PlaylistItemViewModel> { playlistItemViewModel } });
 
             Subject.PlaylistItems.Should().HaveCount(0);
+        }
+
+        [TestMethod]
+        public void PlayIfCurrentTrackIsNulShouldSetSourceOnShellViewModelToFirstItemInThePlaylist()
+        {
+            var uri = new Uri("http://tests.cs");
+            Subject.PlaylistItems.Add(new PlaylistItemViewModel{ Uri = uri});
+
+            Subject.Play();
+
+            _shellViewModel.Source.Should().Be(uri);
+        }
+
+        [TestMethod]
+        public void PlayIfCurrentTrackIsNotNullShouldSetTheSourceOnShellToSame()
+        {
+            var uri = new Uri("http://tests.cs");
+            Subject.PlaylistItems.Add(new PlaylistItemViewModel{ Uri = uri});
+            Subject.Play();
+
+            Subject.Play();
+
+            _shellViewModel.Source.Should().Be(uri);
+        }
+
+        [TestMethod]
+        public void PlayWhenPlaylistHasElementsSetsIsPlayingToTrue()
+        {
+            Subject.PlaylistItems.Add(new PlaylistItemViewModel());
+
+            Subject.Play();
+
+            Subject.IsPlaying.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void PlayWhenPlaylistDoesNotHaveElementsSetsIsPlayingToFalse()
+        {
+            Subject.PlaylistItems.Clear();
+
+            Subject.Play();
+
+            Subject.IsPlaying.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void PauseIfPlayerIsPlayingCallsShellViewModelPlayPause()
+        {
+            Subject.ShellViewModel = new MockShellViewModel();
+            Subject.IsPlaying = true;
+
+            Subject.Pause();
+
+            ((MockShellViewModel)Subject.ShellViewModel).PlayPauseCallCount.Should().Be(1);
+        }
+
+        [TestMethod]
+        public void PauseIfPlayerIsNotPlayingDoesNotCallShellViewModelPlayPause()
+        {
+            Subject.ShellViewModel = new MockShellViewModel();
+            Subject.IsPlaying = false;
+
+            Subject.Pause();
+
+            ((MockShellViewModel)Subject.ShellViewModel).PlayPauseCallCount.Should().Be(0);
         }
     }
 

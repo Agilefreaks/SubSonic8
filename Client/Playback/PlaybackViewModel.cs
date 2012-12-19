@@ -18,16 +18,31 @@ namespace Subsonic8.Playback
         #region Private Fields
 
         private readonly IEventAggregator _eventAggregator;
-        private readonly IShellViewModel _shellViewModel;
         private readonly INotificationManager _notificationManager;
+        private IShellViewModel _shellViewModel;
         private ISubsonicModel _parameter;
         private PlaybackViewModelStateEnum _state;
         private Uri _source;
         private ObservableCollection<PlaylistItemViewModel> _playlistItems;
         private int _currentTrackNo;
+        private bool _isPlaying;
+
         #endregion
 
         #region Public Properties
+
+        public IShellViewModel ShellViewModel
+        {
+            get
+            {
+                return _shellViewModel;
+            }
+            
+            set
+            {
+                _shellViewModel = value; NotifyOfPropertyChange();
+            }
+        }
 
         public ISubsonicModel Parameter
         {
@@ -63,6 +78,19 @@ namespace Subsonic8.Playback
             }
         }
 
+        public bool IsPlaying
+        {
+            get
+            {
+                return _isPlaying;
+            }
+            
+            set
+            {
+                _isPlaying = value; NotifyOfPropertyChange();
+            }
+        }
+
         public ObservableCollection<PlaylistItemViewModel> PlaylistItems
         {
             get { return _playlistItems; }
@@ -78,7 +106,7 @@ namespace Subsonic8.Playback
         public PlaybackViewModel(IEventAggregator eventAggregator, IShellViewModel shellViewModel, ISubsonicService subsonicService, INotificationManager notificationManager)
         {
             _eventAggregator = eventAggregator;
-            _shellViewModel = shellViewModel;
+            ShellViewModel = shellViewModel;
             _notificationManager = notificationManager;
             _eventAggregator.Subscribe(this);
             SubsonicService = subsonicService;
@@ -99,7 +127,7 @@ namespace Subsonic8.Playback
                 else
                 {
                     Source = SubsonicService.GetUriForFileWithId(song.Id);
-                    _shellViewModel.Source = null;
+                    ShellViewModel.Source = null;
                     State = PlaybackViewModelStateEnum.Video;
                 }
             }
@@ -108,8 +136,36 @@ namespace Subsonic8.Playback
         public void StartPlayback(object e)
         {
             var pressedItem = (PlaylistItemViewModel)(((ItemClickEventArgs)e).ClickedItem);
-            _shellViewModel.Source = null;
-            _shellViewModel.Source = pressedItem.Uri;
+            ShellViewModel.Source = null;
+            ShellViewModel.Source = pressedItem.Uri;
+        }
+
+        public void Play()
+        {
+            if (PlaylistItems.Count > 0)
+            {
+                if (_currentTrackNo == -1)
+                {
+                    _currentTrackNo++;
+                    ShellViewModel.Source = PlaylistItems[_currentTrackNo].Uri;
+                }
+                else
+                {
+                    ShellViewModel.Source = null;
+                    ShellViewModel.Source = PlaylistItems[_currentTrackNo].Uri;
+                }
+
+                IsPlaying = true;
+            }
+        }
+
+        public void Pause()
+        {
+            if (IsPlaying)
+            {
+                ShellViewModel.PlayPause();
+                IsPlaying = false;
+            }
         }
 
         public void Handle(PlaylistMessage message)
@@ -145,7 +201,7 @@ namespace Subsonic8.Playback
         public void Handle(PlayFile message)
         {
             Source = null;
-            _shellViewModel.Source = SubsonicService.GetUriForFileWithId(message.Id);
+            ShellViewModel.Source = SubsonicService.GetUriForFileWithId(message.Id);
         }
 
         public void Handle(PlayNextMessage message)
@@ -154,7 +210,7 @@ namespace Subsonic8.Playback
             
             if (_currentTrackNo < PlaylistItems.Count)
             {
-                _shellViewModel.Source = PlaylistItems[_currentTrackNo].Uri;
+                ShellViewModel.Source = PlaylistItems[_currentTrackNo].Uri;
                 _notificationManager.Show(new NotificationOptions
                 {
                     ImageUrl = PlaylistItems[_currentTrackNo].CoverArt,
@@ -173,7 +229,7 @@ namespace Subsonic8.Playback
             _currentTrackNo--;
             if (_currentTrackNo > -1)
             {
-                _shellViewModel.Source = PlaylistItems[_currentTrackNo].Uri;
+                ShellViewModel.Source = PlaylistItems[_currentTrackNo].Uri;
             }
             else
             {
@@ -183,19 +239,19 @@ namespace Subsonic8.Playback
 
         public void Handle(PlayPauseMessage message)
         {
-            if (Source != null || _shellViewModel.Source != null)
+            if (IsPlaying)
             {
-                _shellViewModel.PlayPause();
+                Pause();
             }
             else
             {
-                Handle(new PlayNextMessage());
+                Play();
             }
         }
 
         public void Handle(StopMessage message)
         {
-            _shellViewModel.Stop();
+            ShellViewModel.Stop();
         }
 
         protected override void OnActivate()
@@ -213,7 +269,7 @@ namespace Subsonic8.Playback
         private void StopAndReset()
         {
             _currentTrackNo = -1;
-            _shellViewModel.Source = null;
+            ShellViewModel.Source = null;
         }
     }
 }

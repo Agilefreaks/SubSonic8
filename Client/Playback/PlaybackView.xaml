@@ -60,10 +60,8 @@
 
                 <Image Height="500"/>
                 <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
-                    <ic:AppBarToggleButton Style="{StaticResource PlayAppBarButtonStyle}" CheckedStyle="{StaticResource PauseAppBarButtonStyle}" AutoToggle="True"/>
-                    <Button Style="{StaticResource StopAppBarButtonStyle}" />
-                    <Button Style="{StaticResource PreviousAppBarButtonStyle}" />
-                    <Button Style="{StaticResource NextAppBarButtonStyle}" />
+                    <Button Style="{StaticResource PlayAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action Play]"/>
+                    <Button Style="{StaticResource PauseAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action Pause]"/>
                 </StackPanel>
             </Grid>
 
