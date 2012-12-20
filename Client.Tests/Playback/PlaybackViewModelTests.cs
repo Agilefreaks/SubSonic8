@@ -479,11 +479,34 @@ namespace Client.Tests.Playback
         {
             var mockSubsonicService = new MockSubsonicService();
             Subject.SubsonicService = mockSubsonicService;
-            
+
             Subject.Start(new PlaylistItemViewModel { Item = new Song() });
 
             (mockSubsonicService.GetCoverArtForIdCallCount > 0).Should().BeTrue();
         }
+
+        [TestMethod]
+        public void HandleWithPlayfileShouldAddItemToPlaylist()
+        {
+            var model = new Song();
+
+            Subject.Handle(new PlayFile { Model = model });
+
+            Subject.PlaylistItems.Select(pi => pi.Item).Should().Contain(model);
+        }
+
+        [TestMethod]
+        public void HandleWithPlayfileShouldCallStart()
+        {
+            var called = false;
+            Subject.Start = item => { called = true; };
+            var model = new Song();
+
+            Subject.Handle(new PlayFile { Model = model });
+
+            called.Should().BeTrue();
+        }
+
     }
 
     internal class MockPlayerControls : IPlayerControls

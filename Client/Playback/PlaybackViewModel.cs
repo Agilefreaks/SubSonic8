@@ -271,12 +271,17 @@ namespace Subsonic8.Playback
         public void Handle(PlayFile message)
         {
             var playlistItem = new PlaylistItemViewModel
-                                   {
-                                       Item = message.Model,
-                                       Uri = SubsonicService.GetUriForFileWithId(message.Model.Id),
-                                       CoverArtId = message.Model.CoverArt
-                                   };
+            {
+                Artist = message.Model.GetDescription().Item1,
+                Title = message.Model.GetDescription().Item2,
+                SubsonicService = SubsonicService,
+                Item = message.Model,
+                Uri = SubsonicService.GetUriForFileWithId(message.Model.Id),
+                CoverArtId = message.Model.CoverArt,
+                PlayingState = PlaylistItemState.NotPlaying,
+            };
             Start(playlistItem);
+            PlaylistItems.Add(playlistItem);
         }
 
         public void Handle(PlayNextMessage message)
