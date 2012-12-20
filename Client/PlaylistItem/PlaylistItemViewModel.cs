@@ -55,5 +55,10 @@ namespace Subsonic8.PlaylistItem
                 NotifyOfPropertyChange();
             }
         }
+
+        public PlaylistItemViewModel()
+        {
+            PlayingState = PlaylistItemState.NotPlaying;
+        }
     }
 }

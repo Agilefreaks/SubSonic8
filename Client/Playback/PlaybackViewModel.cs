@@ -157,6 +157,12 @@ namespace Subsonic8.Playback
             SetCoverArt(model.CoverArtId);
             SetPlaying(model);
             PlayUri(model.Uri);
+            _notificationManager.Show(new NotificationOptions
+            {
+                ImageUrl = model.CoverArtId,
+                Title = model.Title,
+                Subtitle = model.Artist
+            });
         }
 
         public void Play()
@@ -192,13 +198,6 @@ namespace Subsonic8.Playback
             if (_currentTrackNo < PlaylistItems.Count)
             {
                 Start(PlaylistItems[_currentTrackNo]);
-                // Event aggregator _______
-                _notificationManager.Show(new NotificationOptions
-                {
-                    ImageUrl = PlaylistItems[_currentTrackNo].CoverArtId,
-                    Title = PlaylistItems[_currentTrackNo].Title,
-                    Subtitle = PlaylistItems[_currentTrackNo].Artist
-                });
             }
             else
             {
