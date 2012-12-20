@@ -76,8 +76,14 @@ namespace Subsonic8.Playback
 
             set
             {
-                _source = value;
-                NotifyOfPropertyChange();
+                try
+                {
+                    _source = value;
+                    NotifyOfPropertyChange();
+                }
+                catch (Exception)
+                {
+                }
             }
         }
 
@@ -153,10 +159,22 @@ namespace Subsonic8.Playback
 
         public void StartImpl(PlaylistItemViewModel model)
         {
-            Source = null;
-            SetCoverArt(model.CoverArtId);
-            SetPlaying(model);
-            PlayUri(model.Uri);
+            if (model.Item.Type == SubsonicModelTypeEnum.Song)
+            {
+                Source = null;
+                SetCoverArt(model.CoverArtId);
+                SetPlaying(model);
+                State = PlaybackViewModelStateEnum.Audio;
+                PlayUri(model.Uri);
+            }
+            else
+            {
+                ShellViewModel.Source = null;
+                State = PlaybackViewModelStateEnum.Video;
+                SetPlaying(model);
+                Source = SubsonicService.GetUriForVideoWithId(model.Item.Id);
+            }
+
             _notificationManager.Show(new NotificationOptions
             {
                 ImageUrl = model.CoverArtId,
@@ -227,6 +245,7 @@ namespace Subsonic8.Playback
                 if ((item.Type == SubsonicModelTypeEnum.Song || item.Type == SubsonicModelTypeEnum.Video) && item is MusicDirectoryChild)
                 {
                     var model = item as MusicDirectoryChild;
+                    pi.Item = model;
                     pi.Artist = model.Artist;
                     pi.CoverArtId = model.CoverArt;
                     pi.Duration = model.Duration;
@@ -253,6 +272,7 @@ namespace Subsonic8.Playback
         {
             var playlistItem = new PlaylistItemViewModel
                                    {
+                                       Item = message.Model,
                                        Uri = SubsonicService.GetUriForFileWithId(message.Model.Id),
                                        CoverArtId = message.Model.CoverArt
                                    };
