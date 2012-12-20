@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using Caliburn.Micro;
 using Client.Common.Models;
 using Client.Common.Models.Subsonic;
@@ -52,7 +53,10 @@ namespace Subsonic8.Playback
             set
             {
                 _parameter = value;
-                Handle(new PlayFile { Model = _parameter });
+                if (_parameter != null)
+                {
+                    Handle(new PlayFile {Model = _parameter});
+                }
             }
         }
 
@@ -123,10 +127,11 @@ namespace Subsonic8.Playback
         public PlaybackViewModel(IEventAggregator eventAggregator, IShellViewModel shellViewModel, ISubsonicService subsonicService, INotificationManager notificationManager)
         {
             _eventAggregator = eventAggregator;
-            ShellViewModel = shellViewModel;
             _notificationManager = notificationManager;
             _eventAggregator.Subscribe(this);
             SubsonicService = subsonicService;
+            ShellViewModel = shellViewModel;
+            State = PlaybackViewModelStateEnum.Audio;
 
             UpdateDisplayName = () => DisplayName = "Playlist";
             Start = StartImpl;
@@ -222,27 +227,12 @@ namespace Subsonic8.Playback
             }
         }
 
-        public void Handle(PlaylistMessage message)
+        public async void Handle(PlaylistMessage message)
         {
-            foreach (var item in message.Queue)
+            foreach (var item in message.Queue.Where(item => (item.Type == SubsonicModelTypeEnum.Song || item.Type == SubsonicModelTypeEnum.Video)))
             {
-                var pi = new PlaylistItemViewModel();
-
-                if ((item.Type == SubsonicModelTypeEnum.Song || item.Type == SubsonicModelTypeEnum.Video) && item is MusicDirectoryChild)
-                {
-                    var model = item as MusicDirectoryChild;
-                    pi.Item = model;
-                    pi.Artist = model.Artist;
-                    pi.CoverArtId = model.CoverArt;
-                    pi.Duration = model.Duration;
-                    pi.Title = model.Title;
-                    pi.Uri = item.Type == SubsonicModelTypeEnum.Song
-                                 ? SubsonicService.GetUriForFileWithId(item.Id)
-                                 : SubsonicService.GetUriForVideoWithId(item.Id);
-                    pi.PlayingState = PlaylistItemState.NotPlaying;
-
-                    PlaylistItems.Add(pi);
-                }
+                var pi = await LoadModel(item);
+                PlaylistItems.Add(pi);
             }
         }
 
@@ -256,21 +246,7 @@ namespace Subsonic8.Playback
 
         public async void Handle(PlayFile message)
         {
-            var result = SubsonicService.GetSong(message.Model.Id);
-            await result.Execute();
-            var item = result.Result;
-
-            var playlistItem = new PlaylistItemViewModel
-            {
-                Artist = item.Artist,
-                Title = item.Title,
-                Item = item,
-                Uri = SubsonicService.GetUriForFileWithId(item.Id),
-                CoverArtId = item.CoverArt,
-                PlayingState = PlaylistItemState.NotPlaying,
-                Duration = item.Duration
-            };
-
+            var playlistItem = await LoadModel(message.Model);
             Start(playlistItem);
             PlaylistItems.Add(playlistItem);
         }
@@ -326,6 +302,30 @@ namespace Subsonic8.Playback
         {
             _currentTrackNo = -1;
             PlayUri(null);
+        }
+
+        private async Task<PlaylistItemViewModel> LoadModel(IId model)
+        {
+            PlaylistItemViewModel playlistItem = null;
+            if (model != null)
+            {
+                var result = SubsonicService.GetSong(model.Id);
+                await result.Execute();
+                var item = result.Result;
+
+                playlistItem = new PlaylistItemViewModel
+                {
+                    Artist = item.Artist,
+                    Title = item.Title,
+                    Item = item,
+                    Uri = SubsonicService.GetUriForFileWithId(item.Id),
+                    CoverArtId = item.CoverArt,
+                    PlayingState = PlaylistItemState.NotPlaying,
+                    Duration = item.Duration
+                };
+            }
+
+            return playlistItem;
         }
     }
 }
