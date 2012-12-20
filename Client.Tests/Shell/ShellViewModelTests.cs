@@ -22,7 +22,6 @@ namespace Client.Tests.Shell
         public void TestInitialize()
         {
             IoC.GetInstance = (type, s) => null;
-
             _mockSubsonicService = new MockSubsonicService();
             _mockNavigationService = new MockNavigationService();
             Subject = new ShellViewModel(_eventAggregator, _mockSubsonicService, _mockNavigationService);

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using Client.Common.Models;
 using Client.Common.Models.Subsonic;
 using Client.Tests.Framework.ViewModel;
@@ -138,6 +139,14 @@ namespace Client.Tests.Playback
         }
 
         [TestMethod]
+        public void HandleWithPlaylistMessageShouldSetStatePropertyToNotPlayingOnAllItems()
+        {
+            Subject.Handle(new PlaylistMessage { Queue = new List<ISubsonicModel> { new Song(), new Song(), new Song() } });
+
+            Subject.PlaylistItems.All(pi => pi.PlayingState == PlaylistItemState.NotPlaying).Should().BeTrue();
+        }
+
+        [TestMethod]
         public void NextShouldSetSourceOnShellViewModelToSecondElementInPlaylist()
         {
             var file1 = new PlaylistItemViewModel { Uri = new Uri("http://file1") };
@@ -148,6 +157,25 @@ namespace Client.Tests.Playback
             Subject.Handle(new PlayNextMessage());
 
             _shellViewModel.Source.Should().Be(file2.Uri);
+        }
+
+        [TestMethod]
+        public void HandleWithStopMessageShouldSetSourceOnShellToNull()
+        {
+            Subject.Handle(new StopMessage());
+
+            _shellViewModel.Source.Should().BeNull();
+        }
+
+        [TestMethod]
+        public void HandleWithRemoveFromPlaylistMessageShouldItemsInQueueFromCurrentPlaylist()
+        {
+            var playlistItemViewModel = new PlaylistItemViewModel();
+            Subject.PlaylistItems.Add(playlistItemViewModel);
+
+            Subject.Handle(new RemoveFromPlaylistMessage { Queue = new List<PlaylistItemViewModel> { playlistItemViewModel } });
+
+            Subject.PlaylistItems.Should().HaveCount(0);
         }
 
         [TestMethod]
@@ -173,15 +201,27 @@ namespace Client.Tests.Playback
         }
 
         [TestMethod]
+        public void NextCallsStartIfThereAreElementsToPlay()
+        {
+            var called = false;
+            Subject.Start = item => { called = true; };
+            Subject.PlaylistItems.Add(new PlaylistItemViewModel());
+
+            Subject.Next();
+
+            called.Should().BeTrue();
+        }
+
+        [TestMethod]
         public void PreviousShouldSetSourceOnShellViewModelToPreviousElementInPlaylist()
         {
             var file1 = new PlaylistItemViewModel { Uri = new Uri("http://file1") };
             var file2 = new PlaylistItemViewModel { Uri = new Uri("http://file2") };
             Subject.PlaylistItems = new ObservableCollection<PlaylistItemViewModel> { file1, file2 };
-            Subject.Handle(new PlayNextMessage());
+            Subject.Play();
+            Subject.Next();
 
-            Subject.Handle(new PlayNextMessage());
-            Subject.Handle(new PlayPreviousMessage());
+            Subject.Previous();
 
             _shellViewModel.Source.Should().Be(file1.Uri);
         }
@@ -191,28 +231,24 @@ namespace Client.Tests.Playback
         {
             Subject.PlaylistItems = new ObservableCollection<PlaylistItemViewModel> { new PlaylistItemViewModel { Uri = new Uri("http://test") } };
 
-            Subject.Handle(new PlayPreviousMessage());
+            Subject.Previous();
 
             _shellViewModel.Source.Should().BeNull();
         }
 
         [TestMethod]
-        public void HandleWithStopMessageShouldSetSourceOnShellToNull()
+        public void PreviousCallsStartIfThereAreElementsToPlay()
         {
-            Subject.Handle(new StopMessage());
+            var called = false;
+            Subject.Start = item => { called = true; };
+            Subject.PlaylistItems.Add(new PlaylistItemViewModel());
+            Subject.PlaylistItems.Add(new PlaylistItemViewModel());
+            Subject.Play();
+            Subject.Next();
 
-            _shellViewModel.Source.Should().BeNull();
-        }
+            Subject.Previous();
 
-        [TestMethod]
-        public void HandleWithRemoveFromPlaylistMessageShouldItemsInQueueFromCurrentPlaylist()
-        {
-            var playlistItemViewModel = new PlaylistItemViewModel();
-            Subject.PlaylistItems.Add(playlistItemViewModel);
-
-            Subject.Handle(new RemoveFromPlaylistMessage { Queue = new List<PlaylistItemViewModel> { playlistItemViewModel } });
-
-            Subject.PlaylistItems.Should().HaveCount(0);
+            called.Should().BeTrue();
         }
 
         [TestMethod]
@@ -239,6 +275,22 @@ namespace Client.Tests.Playback
         }
 
         [TestMethod]
+        public void IsPlayingReturnsTrueIfAnyOfThePlaylistElementsHasStatePlaying()
+        {
+            Subject.PlaylistItems.Add(new PlaylistItemViewModel { PlayingState = PlaylistItemState.Playing });
+
+            Subject.IsPlaying.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void IsPlayingShouldBeFalseIfAllOfThePlaylistElementsHasStateNotPlaying()
+        {
+            Subject.PlaylistItems.Add(new PlaylistItemViewModel { PlayingState = PlaylistItemState.NotPlaying });
+
+            Subject.IsPlaying.Should().BeFalse();
+        }
+
+        [TestMethod]
         public void PlayWhenPlaylistHasElementsSetsIsPlayingToTrue()
         {
             Subject.PlaylistItems.Add(new PlaylistItemViewModel());
@@ -259,10 +311,37 @@ namespace Client.Tests.Playback
         }
 
         [TestMethod]
+        public void PlaySetsStateOnFirstPlaylistItemToPlaying()
+        {
+            var song1 = new PlaylistItemViewModel();
+            var song2 = new PlaylistItemViewModel();
+            var song3 = new PlaylistItemViewModel();
+            Subject.PlaylistItems.Add(song1);
+            Subject.PlaylistItems.Add(song2);
+            Subject.PlaylistItems.Add(song3);
+
+            Subject.Play();
+
+            song1.PlayingState.Should().Be(PlaylistItemState.Playing);
+        }
+
+        [TestMethod]
+        public void PlayCallsStartIfPlaylistContainsElements()
+        {
+            var called = false;
+            Subject.Start = item => { called = true; };
+            Subject.PlaylistItems.Add(new PlaylistItemViewModel());
+
+            Subject.Play();
+
+            called.Should().BeTrue();
+        }
+
+        [TestMethod]
         public void PauseIfPlayerIsPlayingCallsShellViewModelPlayPause()
         {
+            Subject.PlaylistItems.Add(new PlaylistItemViewModel { PlayingState = PlaylistItemState.Playing });
             Subject.ShellViewModel = new MockShellViewModel();
-            Subject.IsPlaying = true;
 
             Subject.Pause();
 
@@ -272,8 +351,8 @@ namespace Client.Tests.Playback
         [TestMethod]
         public void PauseIfPlayerIsNotPlayingDoesNotCallShellViewModelPlayPause()
         {
+            Subject.PlaylistItems.Add(new PlaylistItemViewModel { PlayingState = PlaylistItemState.NotPlaying });
             Subject.ShellViewModel = new MockShellViewModel();
-            Subject.IsPlaying = false;
 
             Subject.Pause();
 
@@ -291,32 +370,61 @@ namespace Client.Tests.Playback
         }
 
         [TestMethod]
-        public void PlayUriShouldSetUriToShellViewModelSource()
+        public void StartShouldSetUriToShellViewModelSource()
         {
             var uri = new Uri("http://test.cc");
 
-            ((PlaybackViewModel)Subject).PlayUri(uri);
+            Subject.Start(new PlaylistItemViewModel { Uri = uri });
 
             Subject.ShellViewModel.Source.Should().Be(uri);
         }
 
         [TestMethod]
-        public void SetCoverArtCallsSubsonicServiceGetCoverArtForId()
+        public void StartCallsSubsonicServiceGetCoverArtForId()
         {
             var mockSubsonicService = new MockSubsonicService();
             Subject.SubsonicService = mockSubsonicService;
 
-            ((PlaybackViewModel)Subject).SetCoverArt("42");
+            Subject.Start(new PlaylistItemViewModel { CoverArtId = "42" });
 
             mockSubsonicService.GetCoverArtForIdCallCount.Should().Be(1);
         }
 
         [TestMethod]
-        public void SetCoverArtSetsCoverArtProperty()
+        public void StartSetsCoverArtProperty()
         {
-            ((PlaybackViewModel)Subject).SetCoverArt("42");
+            Subject.Start(new PlaylistItemViewModel { CoverArtId = "42" });
 
             Subject.CoverArt.Should().NotBeNull();
+        }
+        [TestMethod]
+        public void StartSetsPlayingStateToOnlyOneObjectFromPlaylist()
+        {
+            var song1 = new PlaylistItemViewModel { PlayingState = PlaylistItemState.Playing };
+            var song2 = new PlaylistItemViewModel { PlayingState = PlaylistItemState.Playing };
+            var song3 = new PlaylistItemViewModel { PlayingState = PlaylistItemState.Playing };
+            Subject.PlaylistItems.Add(song1);
+            Subject.PlaylistItems.Add(song2);
+            Subject.PlaylistItems.Add(song3);
+
+            Subject.Start(song2);
+
+            Subject.PlaylistItems.Count(pi => pi.PlayingState == PlaylistItemState.Playing).Should().Be(1);
+        }
+
+        [TestMethod]
+        public void StartSetsPlayingStateToObjectFromParameter()
+        {
+            var song1 = new PlaylistItemViewModel { PlayingState = PlaylistItemState.Playing };
+            var song2 = new PlaylistItemViewModel { PlayingState = PlaylistItemState.Playing };
+            var song3 = new PlaylistItemViewModel { PlayingState = PlaylistItemState.Playing };
+            Subject.PlaylistItems.Add(song1);
+            Subject.PlaylistItems.Add(song2);
+            Subject.PlaylistItems.Add(song3);
+
+            Subject.Start(song3);
+
+            song3.PlayingState.Should().Be(PlaylistItemState.Playing);
         }
     }
 
