@@ -389,17 +389,6 @@ namespace Client.Tests.Playback
         }
 
         [TestMethod]
-        public void StartCallsSubsonicServiceGetCoverArtForId()
-        {
-            var mockSubsonicService = new MockSubsonicService();
-            Subject.SubsonicService = mockSubsonicService;
-
-            Subject.Start(new PlaylistItemViewModel { CoverArtId = "42", Item = new Song { IsVideo = false } });
-
-            mockSubsonicService.GetCoverArtForIdCallCount.Should().Be(1);
-        }
-
-        [TestMethod]
         public void StartWhenItemIsSongSetsCoverArtProperty()
         {
             Subject.Start(new PlaylistItemViewModel { CoverArtId = "42", Item = new Song { IsVideo = false } });
@@ -483,6 +472,17 @@ namespace Client.Tests.Playback
             Subject.Next();
 
             Subject.State.Should().Be(PlaybackViewModelStateEnum.Audio);
+        }
+
+        [TestMethod]
+        public void StartAlwaysCallSubsonicServiceGetCoverArtForId()
+        {
+            var mockSubsonicService = new MockSubsonicService();
+            Subject.SubsonicService = mockSubsonicService;
+            
+            Subject.Start(new PlaylistItemViewModel { Item = new Song() });
+
+            (mockSubsonicService.GetCoverArtForIdCallCount > 0).Should().BeTrue();
         }
     }
 

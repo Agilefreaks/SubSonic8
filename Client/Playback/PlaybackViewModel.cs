@@ -177,7 +177,7 @@ namespace Subsonic8.Playback
 
             _notificationManager.Show(new NotificationOptions
             {
-                ImageUrl = model.CoverArtId,
+                ImageUrl = SubsonicService.GetCoverArtForId(model.CoverArtId),
                 Title = model.Title,
                 Subtitle = model.Artist
             });
