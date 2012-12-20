@@ -64,34 +64,6 @@ namespace Client.Tests.Playback
         }
 
         [TestMethod]
-        public void ParameterWhenSetToTypeVideoShouldSetSourceOnShellViewModelToNullAndSourceOnPlaybackViewModelToNewUri()
-        {
-            _shellViewModel.Source = new Uri("http://this-should-become.null");
-            Subject.Parameter = new Song { Id = 42, IsVideo = true };
-
-            Subject.Source.Should().NotBeNull();
-            _shellViewModel.Source.Should().BeNull();
-        }
-
-        [TestMethod]
-        public void HandleWithPlayFileShouldSetSourceOnShellViewModel()
-        {
-            Subject.Handle(new PlayFile { Model = new Song { Id = 42, IsVideo = false } });
-
-            _shellViewModel.Source.OriginalString.Should().Be("http://subsonic.org?id=42");
-        }
-
-        [TestMethod]
-        public void HandleWithPlayFileOfTypeSongShouldSetSourceOnShellViewModelToNewUriAndSourceOnPlaybackViewModelToNull()
-        {
-            Subject.Source = new Uri("http://this-should-become.null");
-            Subject.Handle(new PlayFile { Model = new Song { Id = 42, IsVideo = false } });
-
-            Subject.Source.Should().BeNull();
-            _shellViewModel.Source.Should().NotBeNull();
-        }
-
-        [TestMethod]
         public void HandleWithPlaylistShouldAddFilesInQueueToPlaylist()
         {
             Subject.Handle(new PlaylistMessage { Queue = new List<ISubsonicModel> { new Song(), new Song() } });
@@ -484,29 +456,6 @@ namespace Client.Tests.Playback
 
             (mockSubsonicService.GetCoverArtForIdCallCount > 0).Should().BeTrue();
         }
-
-        [TestMethod]
-        public void HandleWithPlayfileShouldAddItemToPlaylist()
-        {
-            var model = new Song();
-
-            Subject.Handle(new PlayFile { Model = model });
-
-            Subject.PlaylistItems.Select(pi => pi.Item).Should().Contain(model);
-        }
-
-        [TestMethod]
-        public void HandleWithPlayfileShouldCallStart()
-        {
-            var called = false;
-            Subject.Start = item => { called = true; };
-            var model = new Song();
-
-            Subject.Handle(new PlayFile { Model = model });
-
-            called.Should().BeTrue();
-        }
-
     }
 
     internal class MockPlayerControls : IPlayerControls

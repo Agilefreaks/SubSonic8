@@ -117,10 +117,12 @@
     <Compile Include="Results\GetArtistsResult.cs" />
     <Compile Include="Results\GetMusicDirectoryResult.cs" />
     <Compile Include="Results\GetRootResult.cs" />
+    <Compile Include="Results\GetSongResult.cs" />
     <Compile Include="Results\IGetAlbumResult.cs" />
     <Compile Include="Results\IGetArtistResult.cs" />
     <Compile Include="Results\IGetMusicDirectoryResult.cs" />
     <Compile Include="Results\IGetRootResult.cs" />
+    <Compile Include="Results\IGetSongResult.cs" />
     <Compile Include="Results\IResultBase.cs" />
     <Compile Include="Results\ISearchResult.cs" />
     <Compile Include="Results\IServiceResultBase.cs" />

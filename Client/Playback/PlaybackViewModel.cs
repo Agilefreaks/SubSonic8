@@ -52,21 +52,7 @@ namespace Subsonic8.Playback
             set
             {
                 _parameter = value;
-                NotifyOfPropertyChange();
-                if (_parameter != null)
-                {
-                    if (_parameter.Type == SubsonicModelTypeEnum.Song)
-                    {
-                        Handle(new PlayFile { Model = _parameter });
-                        State = PlaybackViewModelStateEnum.Audio;
-                    }
-                    else
-                    {
-                        Source = SubsonicService.GetUriForFileWithId(_parameter.Id);
-                        ShellViewModel.Source = null;
-                        State = PlaybackViewModelStateEnum.Video;
-                    }
-                }
+                Handle(new PlayFile { Model = _parameter });
             }
         }
 
@@ -268,18 +254,23 @@ namespace Subsonic8.Playback
             }
         }
 
-        public void Handle(PlayFile message)
+        public async void Handle(PlayFile message)
         {
+            var result = SubsonicService.GetSong(message.Model.Id);
+            await result.Execute();
+            var item = result.Result;
+
             var playlistItem = new PlaylistItemViewModel
             {
-                Artist = message.Model.GetDescription().Item1,
-                Title = message.Model.GetDescription().Item2,
-                SubsonicService = SubsonicService,
-                Item = message.Model,
-                Uri = SubsonicService.GetUriForFileWithId(message.Model.Id),
-                CoverArtId = message.Model.CoverArt,
+                Artist = item.Artist,
+                Title = item.Title,
+                Item = item,
+                Uri = SubsonicService.GetUriForFileWithId(item.Id),
+                CoverArtId = item.CoverArt,
                 PlayingState = PlaylistItemState.NotPlaying,
+                Duration = item.Duration
             };
+
             Start(playlistItem);
             PlaylistItems.Add(playlistItem);
         }
