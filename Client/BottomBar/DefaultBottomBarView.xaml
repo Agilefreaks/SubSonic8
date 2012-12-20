@@ -16,8 +16,8 @@
             <ic:AppBarToggleButton Style="{StaticResource PlayAppBarButtonStyle}" CheckedStyle="{StaticResource PauseAppBarButtonStyle}" 
                                    cal:Message.Attach="[Event Click] = [Action PlayPause()]" AutoToggle="True"/>
             <Button Style="{StaticResource StopAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action Stop()]"/>
-            <Button Style="{StaticResource NextAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action PlayNext()]"/>
             <Button Style="{StaticResource PreviousAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action PlayPrevious()]"/>
+            <Button Style="{StaticResource NextAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action PlayNext()]"/>
             <Button Style="{StaticResource ListAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action NavigateToPlaylist()]"/>
         </StackPanel>
     </Grid>
