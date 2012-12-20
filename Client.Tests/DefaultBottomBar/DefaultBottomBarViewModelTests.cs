@@ -21,6 +21,7 @@ namespace Client.Tests.DefaultBottomBar
         [TestInitialize]
         public void TestInitialize()
         {
+            IoC.GetInstance = (type, s) => null;
             _eventAggregator = new MockEventAggregator();
             _navigationService = new MockNavigationService();
             _subject = new DefaultBottomBarViewModel(_navigationService, _eventAggregator);
@@ -43,7 +44,6 @@ namespace Client.Tests.DefaultBottomBar
         [TestMethod]
         public void AddToPlaylistCallShouldClearSelectedItemsCollection()
         {
-            IoC.GetInstance = (type, s) => null;
             _subject.SelectedItems.Add(new MenuItemViewModel());
             _subject.SelectedItems.Add(new MenuItemViewModel());
 

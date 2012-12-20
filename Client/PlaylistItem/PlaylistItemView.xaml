@@ -11,7 +11,7 @@
         <converters:IntToTimeStringConverter x:Key="TimeConverter"/>
     </UserControl.Resources>
     
-    <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}" HorizontalAlignment="Stretch" Width="Auto" Height="Auto" >
+    <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}" HorizontalAlignment="Stretch" Width="Auto" Height="Auto">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*" />

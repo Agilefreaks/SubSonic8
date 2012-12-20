@@ -135,6 +135,7 @@
     <Compile Include="Framework\ViewModel\IDetailViewModel.cs" />
     <Compile Include="Framework\ViewModel\ItemViewModelBase.cs" />
     <Compile Include="Messages\RemoveFromPlaylistMessage.cs" />
+    <Compile Include="PlaylistItem\PlaylistItemState.cs" />
     <Compile Include="PlaylistItem\PlaylistItemView.xaml.cs">
       <DependentUpon>PlaylistItemView.xaml</DependentUpon>
     </Compile>
