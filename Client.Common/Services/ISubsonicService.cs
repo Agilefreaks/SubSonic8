@@ -11,9 +11,11 @@ namespace Client.Common.Services
 
         Func<int, IGetMusicDirectoryResult> GetMusicDirectory { get; set; }
 
+        Func<int, IGetArtistResult> GetArtist { get; set; }
+
         Func<int, IGetAlbumResult> GetAlbum { get; set; }
 
-        Func<int, IGetArtistResult> GetArtist { get; set; }
+        Func<int, IGetSongResult> GetSong { get; set; }
 
         Func<string, ISearchResult> Search { get; set; }
 

@@ -64,98 +64,6 @@ namespace Client.Tests.Playback
         }
 
         [TestMethod]
-        public void ParameterWhenSetToTypeVideoShouldSetSourceOnShellViewModelToNullAndSourceOnPlaybackViewModelToNewUri()
-        {
-            _shellViewModel.Source = new Uri("http://this-should-become.null");
-            Subject.Parameter = new Song { Id = 42, IsVideo = true };
-
-            Subject.Source.Should().NotBeNull();
-            _shellViewModel.Source.Should().BeNull();
-        }
-
-        [TestMethod]
-        public void HandleWithPlayFileShouldSetSourceOnShellViewModel()
-        {
-            Subject.Handle(new PlayFile { Model = new Song { Id = 42, IsVideo = false } });
-
-            _shellViewModel.Source.OriginalString.Should().Be("http://subsonic.org?id=42");
-        }
-
-        [TestMethod]
-        public void HandleWithPlayFileOfTypeSongShouldSetSourceOnShellViewModelToNewUriAndSourceOnPlaybackViewModelToNull()
-        {
-            Subject.Source = new Uri("http://this-should-become.null");
-            Subject.Handle(new PlayFile { Model = new Song { Id = 42, IsVideo = false } });
-
-            Subject.Source.Should().BeNull();
-            _shellViewModel.Source.Should().NotBeNull();
-        }
-
-        [TestMethod]
-        public void HandleWithPlaylistShouldAddFilesInQueueToPlaylist()
-        {
-            Subject.Handle(new PlaylistMessage { Queue = new List<ISubsonicModel> { new Song(), new Song() } });
-
-            Subject.PlaylistItems.Should().HaveCount(2);
-        }
-
-        [TestMethod]
-        public void HandleWithPlaylistShouldKeepElementsInPlaylist()
-        {
-            Subject.Handle(new PlaylistMessage { Queue = new List<ISubsonicModel> { new Song(), new Song() } });
-            Subject.Handle(new PlaylistMessage { Queue = new List<ISubsonicModel> { new Song() } });
-
-            Subject.PlaylistItems.Should().HaveCount(3);
-        }
-
-        [TestMethod]
-        public void HandleWithPlaylistMessageWithSubsonicModelsWithTypeSongShouldCallSubsonicServiceGetUriForFileWithId()
-        {
-            Subject.Handle(new PlaylistMessage { Queue = new List<ISubsonicModel> { new Song { Id = 42 } } });
-
-            _subsonicService.GetUriForFileWithIdCallCount.Should().Be(1);
-        }
-
-        [TestMethod]
-        public void HandleWithPlaylistMessageWithSunsonicModelsOfTypeVideoShouldCallSubsonicServiceGetUriForVideoWithId()
-        {
-            Subject.Handle(new PlaylistMessage { Queue = new List<ISubsonicModel> { new Song { IsVideo = true } } });
-
-            _subsonicService.GetUriForVideoWithIdCallCount.Should().Be(1);
-        }
-
-        [TestMethod]
-        public void HandleWithPlaylistMessageWithSubsonicModelOfAnyTypeVideoShouldAddNewItemsInPlalistItemsCollection()
-        {
-            Subject.Handle(new PlaylistMessage
-                               {
-                                   Queue = new List<ISubsonicModel>
-                                               {
-                                                   new Song {Id = 41},
-                                                   new Song {Id = 42, IsVideo = true}
-                                               }
-                               });
-
-            Subject.PlaylistItems.Should().HaveCount(2);
-        }
-
-        [TestMethod]
-        public void HandleWithPlaylistMessageShouldSetStatePropertyToNotPlayingOnAllItems()
-        {
-            Subject.Handle(new PlaylistMessage { Queue = new List<ISubsonicModel> { new Song(), new Song(), new Song() } });
-
-            Subject.PlaylistItems.All(pi => pi.PlayingState == PlaylistItemState.NotPlaying).Should().BeTrue();
-        }
-
-        [TestMethod]
-        public void HandleWithPlaylistMessageShouldSetItemPropertyToAllPlaylistItemViewModels()
-        {
-            Subject.Handle(new PlaylistMessage { Queue = new List<ISubsonicModel> { new Song(), new Song(), new Song() } });
-
-            Subject.PlaylistItems.All(pi => pi.Item != null).Should().BeTrue();
-        }
-
-        [TestMethod]
         public void NextShouldSetSourceOnShellViewModelToSecondElementInPlaylist()
         {
             var file1 = new PlaylistItemViewModel { Uri = new Uri("http://file1"), Item = new Song { IsVideo = false } };
@@ -479,7 +387,7 @@ namespace Client.Tests.Playback
         {
             var mockSubsonicService = new MockSubsonicService();
             Subject.SubsonicService = mockSubsonicService;
-            
+
             Subject.Start(new PlaylistItemViewModel { Item = new Song() });
 
             (mockSubsonicService.GetCoverArtForIdCallCount > 0).Should().BeTrue();
