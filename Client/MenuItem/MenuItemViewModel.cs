@@ -6,7 +6,6 @@ namespace Subsonic8.MenuItem
     public class MenuItemViewModel : ItemViewModelBase, IMenuItemViewModel
     {
         private string _subtitle;
-        private ISubsonicModel _item;
         private string _type;
 
         public string Subtitle
@@ -19,21 +18,6 @@ namespace Subsonic8.MenuItem
             set
             {
                 _subtitle = value;
-                NotifyOfPropertyChange();
-            }
-        }
-
-        public ISubsonicModel Item
-        {
-            get
-            {
-                return _item;
-            }
-
-            set
-            {
-                if (Equals(value, _item)) return;
-                _item = value;
                 NotifyOfPropertyChange();
             }
         }

@@ -6,7 +6,6 @@ using Subsonic8.BottomBar;
 using Subsonic8.Framework;
 using Subsonic8.Main;
 using Subsonic8.Playback;
-using Subsonic8.PlaylistItem;
 using Subsonic8.Settings;
 using Subsonic8.Shell;
 using WinRtUtility;

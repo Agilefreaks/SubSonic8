@@ -6,10 +6,7 @@
     xmlns:mmppf="using:Microsoft.PlayerFramework" mc:Ignorable="d">
 
     <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}" x:Name="LayoutRoot">
-        <mmppf:MediaPlayer x:Name="player" Source="{Binding Path=Source}" Width="720" Height="576" IsFullScreenVisible="False">
-            <mmppf:MediaPlayer.Plugins>
-                <mmppf:PlaylistPlugin AutoAdvance="True" />
-            </mmppf:MediaPlayer.Plugins>
+        <mmppf:MediaPlayer x:Name="player" Source="{Binding Path=Source}" Width="Auto" Height="Auto" IsFullScreenVisible="False">
         </mmppf:MediaPlayer>
     </Grid>
 </Page>
