@@ -242,6 +242,11 @@ namespace Subsonic8.Playback
                 var pi = await LoadModel(item);
                 PlaylistItems.Add(pi);
             }
+
+            if (Source == null && ShellViewModel.Source == null && PlaylistItems.Any())
+            {
+                Start(PlaylistItems.First());
+            }
         }
 
         public void Handle(RemoveFromPlaylistMessage message)
