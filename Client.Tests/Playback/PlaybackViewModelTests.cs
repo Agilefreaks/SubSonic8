@@ -285,6 +285,17 @@ namespace Client.Tests.Playback
         }
 
         [TestMethod]
+        public void StopWillSetIsPlayingToFalse()
+        {
+            Subject.PlaylistItems.Add(new PlaylistItemViewModel { Item = new Song { IsVideo = false } });
+            Subject.Play();
+
+            Subject.Stop();
+
+            Subject.IsPlaying.Should().BeFalse();
+        }
+
+        [TestMethod]
         public void StartShouldSetUriToShellViewModelSource()
         {
             var uri = new Uri("http://test.cc");
@@ -300,6 +311,16 @@ namespace Client.Tests.Playback
             Subject.Start(new PlaylistItemViewModel { CoverArtId = "42", Item = new Song { IsVideo = false } });
 
             Subject.CoverArt.Should().NotBeNull();
+        }
+
+        [TestMethod]
+        public void StartSetsIsPlayingToTrue()
+        {
+            Subject.PlaylistItems.Add(new PlaylistItemViewModel { Item = new Song() });
+
+            Subject.Play();
+
+            Subject.IsPlaying.Should().BeTrue();
         }
 
         [TestMethod]
