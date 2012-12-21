@@ -24,7 +24,7 @@ namespace Client.Tests.DefaultBottomBar
             IoC.GetInstance = (type, s) => null;
             _eventAggregator = new MockEventAggregator();
             _navigationService = new MockNavigationService();
-            _subject = new DefaultBottomBarViewModel(_navigationService, _eventAggregator);
+            _subject = new DefaultBottomBarViewModel(_navigationService, _eventAggregator) { Navigate = _navigationService.DoNavigate };
         }
 
         [TestMethod]
@@ -69,6 +69,22 @@ namespace Client.Tests.DefaultBottomBar
             _subject.PlayAll();
 
             _eventAggregator.PublishCallCount.Should().Be(1);
+        }
+
+        [TestMethod]
+        public void PlayAllCallsNavigationServiceNavigateToViewModel()
+        {
+            _subject.PlayAll();
+
+            _navigationService.NavigateToViewModelCalls.Count.Should().Be(1);
+        }
+
+        [TestMethod]
+        public void AddAllCallsNavigationServiceNavigateToViewModel()
+        {
+            _subject.AddToPlaylist();
+
+            _navigationService.NavigateToViewModelCalls.Count.Should().Be(1);
         }
 
         [TestMethod]

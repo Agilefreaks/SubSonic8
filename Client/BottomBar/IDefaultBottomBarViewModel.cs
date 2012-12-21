@@ -1,7 +1,11 @@
-﻿namespace Subsonic8.BottomBar
+﻿using System;
+
+namespace Subsonic8.BottomBar
 {
     public interface IDefaultBottomBarViewModel : IBottomBarViewModel
     {
+        Action Navigate { get; set; }
+
         void AddToPlaylist();
 
         void PlayAll();
