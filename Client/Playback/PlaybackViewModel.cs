@@ -152,6 +152,7 @@ namespace Subsonic8.Playback
 
         public void StartImpl(PlaylistItemViewModel model)
         {
+            Stop();
             if (model.Item.Type == SubsonicModelTypeEnum.Song)
             {
                 Source = null;
@@ -206,6 +207,7 @@ namespace Subsonic8.Playback
             if (IsPlaying)
             {
                 ShellViewModel.PlayPause();
+                SetPlaying(null);
             }
         }
 
@@ -248,7 +250,6 @@ namespace Subsonic8.Playback
             if (message.ClearCurrent)
             {
                 PlaylistItems.Clear();
-                Stop();
             }
 
             foreach (var item in message.Queue.Where(item => (item.Type == SubsonicModelTypeEnum.Song || item.Type == SubsonicModelTypeEnum.Video)))
@@ -326,7 +327,7 @@ namespace Subsonic8.Playback
         private void StopAndReset()
         {
             _currentTrackNo = -1;
-            PlayUri(null);
+            Stop();
         }
 
         private async Task<PlaylistItemViewModel> LoadModelImpl(IId model)

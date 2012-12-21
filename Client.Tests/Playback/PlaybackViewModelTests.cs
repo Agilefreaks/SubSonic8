@@ -413,6 +413,17 @@ namespace Client.Tests.Playback
         }
 
         [TestMethod]
+        public void PauseWillSetIsPlayingToFalse()
+        {
+            Subject.PlaylistItems.Add(new PlaylistItemViewModel { Item = new Song() });
+            Subject.Play();
+
+            Subject.Pause();
+
+            Subject.IsPlaying.Should().BeFalse();
+        }
+
+        [TestMethod]
         public async Task ParameterWhenSetToTypeVideoShouldSetSourceOnShellViewModelToNullAndSourceOnPlaybackViewModelToNewUri()
         {
             Subject.LoadModel = model =>
