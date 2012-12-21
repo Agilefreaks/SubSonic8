@@ -122,6 +122,8 @@ namespace Subsonic8.Playback
 
         public Action<PlaylistItemViewModel> Start { get; set; }
 
+        public Func<IId, Task<PlaylistItemViewModel>> LoadModel { get; set; }
+
         #endregion
 
         public PlaybackViewModel(IEventAggregator eventAggregator, IShellViewModel shellViewModel, ISubsonicService subsonicService, INotificationManager notificationManager)
@@ -135,6 +137,7 @@ namespace Subsonic8.Playback
 
             UpdateDisplayName = () => DisplayName = "Playlist";
             Start = StartImpl;
+            LoadModel = LoadModelImpl;
 
             // playlist stuff that need refactoring
             PlaylistItems = new ObservableCollection<PlaylistItemViewModel>();
@@ -304,7 +307,7 @@ namespace Subsonic8.Playback
             PlayUri(null);
         }
 
-        private async Task<PlaylistItemViewModel> LoadModel(IId model)
+        private async Task<PlaylistItemViewModel> LoadModelImpl(IId model)
         {
             PlaylistItemViewModel playlistItem = null;
             if (model != null)
