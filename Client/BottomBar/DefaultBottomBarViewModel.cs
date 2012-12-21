@@ -47,14 +47,14 @@ namespace Subsonic8.BottomBar
             }
         }
 
-        public bool AreItemsSelected
+        public bool CanAddToPlaylist
         {
-            get { return SelectedItems.Any(); } 
+            get { return SelectedItems.Any() && SelectedItems.All(x => x.GetType() == typeof(MenuItemViewModel)); } 
         }
 
         public bool CanRemoveFromPlaylist
         {
-            get { return AreItemsSelected && SelectedItems.All(x => x.GetType() == typeof (PlaylistItemViewModel)); }
+            get { return SelectedItems.Any() && SelectedItems.All(x => x.GetType() == typeof (PlaylistItemViewModel)); }
         }
 
         public DefaultBottomBarViewModel(INavigationService navigationService, IEventAggregator eventAggregator)
@@ -68,6 +68,12 @@ namespace Subsonic8.BottomBar
         public void AddToPlaylist()
         {
             _eventAggregator.Publish(new PlaylistMessage { Queue = SelectedItems.Select(i => ((IMenuItemViewModel)i).Item).ToList() });
+            SelectedItems.Clear();
+        }
+
+        public void PlayAll()
+        {
+            _eventAggregator.Publish(new PlaylistMessage { Queue = SelectedItems.Select(i => ((IMenuItemViewModel)i).Item).ToList(), ClearCurrent = true });
             SelectedItems.Clear();
         }
 
@@ -121,7 +127,7 @@ namespace Subsonic8.BottomBar
 
         private void UpdateIsOpened()
         {
-            NotifyOfPropertyChange(() => AreItemsSelected);
+            NotifyOfPropertyChange(() => CanAddToPlaylist);
             NotifyOfPropertyChange(() => CanRemoveFromPlaylist);
             IsOpened = SelectedItems.Count != 0;
         }

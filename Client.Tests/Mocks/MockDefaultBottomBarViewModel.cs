@@ -42,10 +42,18 @@ namespace Client.Tests.Mocks
 
         }
 
+        public void PlayAll()
+        {
+            throw new System.NotImplementedException();
+        }
+
         public void RemoveFromPlaylist()
         {
             
         }
+
+        public bool CanAddToPlaylist { get; private set; }
+        public bool CanRemoveFromPlaylist { get; private set; }
 
         public ObservableCollection<object> SelectedItems { get; set; }
     }

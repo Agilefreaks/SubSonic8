@@ -122,6 +122,8 @@ namespace Subsonic8.Playback
 
         public Action<PlaylistItemViewModel> Start { get; set; }
 
+        public Func<IId, Task<PlaylistItemViewModel>> LoadModel { get; set; }
+
         #endregion
 
         public PlaybackViewModel(IEventAggregator eventAggregator, IShellViewModel shellViewModel, ISubsonicService subsonicService, INotificationManager notificationManager)
@@ -135,6 +137,7 @@ namespace Subsonic8.Playback
 
             UpdateDisplayName = () => DisplayName = "Playlist";
             Start = StartImpl;
+            LoadModel = LoadModelImpl;
 
             // playlist stuff that need refactoring
             PlaylistItems = new ObservableCollection<PlaylistItemViewModel>();
@@ -198,6 +201,7 @@ namespace Subsonic8.Playback
         public void Stop()
         {
             ShellViewModel.Stop();
+            Source = null;
         }
 
         public void Next()
@@ -229,10 +233,21 @@ namespace Subsonic8.Playback
 
         public async void Handle(PlaylistMessage message)
         {
+            if (message.ClearCurrent)
+            {
+                PlaylistItems.Clear();
+                Stop();
+            }
+
             foreach (var item in message.Queue.Where(item => (item.Type == SubsonicModelTypeEnum.Song || item.Type == SubsonicModelTypeEnum.Video)))
             {
                 var pi = await LoadModel(item);
                 PlaylistItems.Add(pi);
+            }
+
+            if (Source == null && ShellViewModel.Source == null && PlaylistItems.Any())
+            {
+                Start(PlaylistItems.First());
             }
         }
 
@@ -304,7 +319,7 @@ namespace Subsonic8.Playback
             PlayUri(null);
         }
 
-        private async Task<PlaylistItemViewModel> LoadModel(IId model)
+        private async Task<PlaylistItemViewModel> LoadModelImpl(IId model)
         {
             PlaylistItemViewModel playlistItem = null;
             if (model != null)
