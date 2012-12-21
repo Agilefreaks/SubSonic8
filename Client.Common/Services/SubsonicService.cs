@@ -28,11 +28,13 @@ namespace Client.Common.Services
 
         public Func<int, IGetMusicDirectoryResult> GetMusicDirectory { get; set; }
 
+        public Func<int, IGetArtistResult> GetArtist { get; set; }
+
         public Func<int, IGetAlbumResult> GetAlbum { get; set; }
 
-        public Func<string, ISearchResult> Search { get; set; }
+        public Func<int, IGetSongResult> GetSong { get; set; }
 
-        public Func<int, IGetArtistResult> GetArtist { get; set; }
+        public Func<string, ISearchResult> Search { get; set; }
 
         public SubsonicService()
         {
@@ -40,6 +42,7 @@ namespace Client.Common.Services
             GetMusicDirectory = GetMusicDirectoryImpl;
             GetAlbum = GetAlbumImpl;
             GetArtist = GetArtistImpl;
+            GetSong = GetSongImpl;
             Search = SearchImpl;
         }
 
@@ -91,14 +94,19 @@ namespace Client.Common.Services
             return new GetMusicDirectoryResult(_configuration, id);
         }
 
+        private IGetArtistResult GetArtistImpl(int id)
+        {
+            return new GetArtistsResult(_configuration, id);
+        }
+
         private IGetAlbumResult GetAlbumImpl(int id)
         {
             return new GetAlbumResult(_configuration, id);
         }
 
-        private IGetArtistResult GetArtistImpl(int id)
+        private IGetSongResult GetSongImpl(int id)
         {
-            return new GetArtistsResult(_configuration, id);
+            return new GetSongResult(_configuration, id);
         }
     }
 }

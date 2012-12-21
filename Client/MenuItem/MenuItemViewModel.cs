@@ -1,4 +1,3 @@
-using Client.Common.Models;
 using Subsonic8.Framework.ViewModel;
 
 namespace Subsonic8.MenuItem
@@ -30,7 +29,6 @@ namespace Subsonic8.MenuItem
             }
             set
             {
-                if (value == _type) return;
                 _type = value;
                 NotifyOfPropertyChange(() => Type);
             }
