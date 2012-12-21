@@ -8,6 +8,7 @@ namespace Subsonic8.PlaylistItem
         private string _artist;
         private int _duration;
         private Uri _uri;
+        private PlaylistItemState _playingState;
 
         public string Artist
         {
@@ -39,6 +40,25 @@ namespace Subsonic8.PlaylistItem
                 _uri = value;
                 NotifyOfPropertyChange();
             }
+        }
+
+        public PlaylistItemState PlayingState
+        {
+            get
+            {
+                return _playingState;
+            }
+
+            set
+            {
+                _playingState = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
+        public PlaylistItemViewModel()
+        {
+            PlayingState = PlaylistItemState.NotPlaying;
         }
     }
 }

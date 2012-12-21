@@ -58,7 +58,6 @@
                         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                     </Style>
                 </ListView.ItemContainerStyle>
-
             </ListView>
         </Grid>
     </Grid>

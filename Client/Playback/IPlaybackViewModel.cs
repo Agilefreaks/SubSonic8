@@ -22,13 +22,13 @@ namespace Subsonic8.Playback
 
         PlaybackViewModelStateEnum State { get; set; }
 
-        bool IsPlaying { get; set; }
+        bool IsPlaying { get; }
 
         string CoverArt { get; set; }
 
         ObservableCollection<PlaylistItemViewModel> PlaylistItems { get; set; }
 
-        void StartPlayback();
+        Action<PlaylistItemViewModel> Start { get; set; }
 
         void Play();
 
