@@ -492,6 +492,18 @@ namespace Client.Tests.Playback
         }
 
         [TestMethod]
+        public async Task HandleWithPlaylistMessageWhenClearCurrentIsTrueClearsTheCurrentPlaylist()
+        {
+            Subject.PlaylistItems.Add(new PlaylistItemViewModel());
+            Subject.PlaylistItems.Add(new PlaylistItemViewModel());
+            Subject.PlaylistItems.Add(new PlaylistItemViewModel());
+
+            await Task.Run(() => Subject.Handle(new PlaylistMessage { Queue = new List<ISubsonicModel>(), ClearCurrent = true }));
+
+            Subject.PlaylistItems.Count.Should().Be(0);
+        }
+
+        [TestMethod]
         public async Task HandleWithPlayFileShouldSetSourceOnShellViewModel()
         {
             Subject.LoadModel = model =>
@@ -562,7 +574,7 @@ namespace Client.Tests.Playback
                 return tcr.Task;
             };
 
-            await Task.Run(() => Subject.Handle(new PlayFile {Model = new Song()}));
+            await Task.Run(() => Subject.Handle(new PlayFile { Model = new Song() }));
 
             Subject.PlaylistItems.Select(pi => pi.Item).Should().Contain(item);
         }

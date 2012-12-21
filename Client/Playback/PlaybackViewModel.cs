@@ -232,6 +232,11 @@ namespace Subsonic8.Playback
 
         public async void Handle(PlaylistMessage message)
         {
+            if (message.ClearCurrent)
+            {
+                PlaylistItems.Clear();
+            }
+
             foreach (var item in message.Queue.Where(item => (item.Type == SubsonicModelTypeEnum.Song || item.Type == SubsonicModelTypeEnum.Video)))
             {
                 var pi = await LoadModel(item);

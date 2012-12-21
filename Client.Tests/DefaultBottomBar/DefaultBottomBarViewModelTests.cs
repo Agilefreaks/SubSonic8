@@ -53,6 +53,25 @@ namespace Client.Tests.DefaultBottomBar
         }
 
         [TestMethod]
+        public void PlayAllCallShouldClearSelectedItemsCollection()
+        {
+            _subject.SelectedItems.Add(new MenuItemViewModel());
+            _subject.SelectedItems.Add(new MenuItemViewModel());
+
+            _subject.PlayAll();
+
+            _subject.SelectedItems.Should().HaveCount(0);
+        }
+
+        [TestMethod]
+        public void PlayAllCallsEventAggregatorPublish()
+        {
+            _subject.PlayAll();
+
+            _eventAggregator.PublishCallCount.Should().Be(1);
+        }
+
+        [TestMethod]
         public void RemoveFromPlaylistCallsEventAggregatorPublish()
         {
             _subject.RemoveFromPlaylist();
@@ -72,7 +91,7 @@ namespace Client.Tests.DefaultBottomBar
         public void RemoveFromPlaylistCallsEventAggregatorPublishWithQueueParameterSetToSelectedItems()
         {
             _subject.SelectedItems = new ObservableCollection<object> { new PlaylistItemViewModel() };
-            
+
             _subject.RemoveFromPlaylist();
 
             ((RemoveFromPlaylistMessage)_eventAggregator.Messages.Last()).Queue.Should().HaveCount(1);
@@ -96,6 +115,46 @@ namespace Client.Tests.DefaultBottomBar
             var isOpened = _subject.IsOpened;
 
             isOpened.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void CanAddToPlaylist_SelectedItemsAreOfTypeMenuItemViewModel_ReturnsTrue()
+        {
+            _subject.SelectedItems.Add(new MenuItemViewModel());
+            _subject.SelectedItems.Add(new MenuItemViewModel());
+            _subject.SelectedItems.Add(new MenuItemViewModel());
+
+            _subject.CanAddToPlaylist.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void CanAddToPlaylist_SelectedItemsAreNotAllOfTypeMenuItemViewModel_ReturnsFalse()
+        {
+            _subject.SelectedItems.Add(new MenuItemViewModel());
+            _subject.SelectedItems.Add(42);
+            _subject.SelectedItems.Add(new PlaylistItemViewModel());
+
+            _subject.CanAddToPlaylist.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void CanRemoveFromPlaylist_SelectedItemsAreOfTypePlaylistItemViewModel_ReturnsTrue()
+        {
+            _subject.SelectedItems.Add(new PlaylistItemViewModel());
+            _subject.SelectedItems.Add(new PlaylistItemViewModel());
+            _subject.SelectedItems.Add(new PlaylistItemViewModel());
+
+            _subject.CanRemoveFromPlaylist.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void CanAddToPlaylist_SelectedItemsAreNotAllOfTypePlaylisttemViewModel_ReturnsFalse()
+        {
+            _subject.SelectedItems.Add(42);
+            _subject.SelectedItems.Add(new PlaylistItemViewModel());
+            _subject.SelectedItems.Add(new MenuItemViewModel());
+
+            _subject.CanAddToPlaylist.Should().BeFalse();
         }
     }
 }
