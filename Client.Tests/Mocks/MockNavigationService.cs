@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Caliburn.Micro;
+using Subsonic8.Framework.ViewModel;
 using Windows.UI.Xaml.Navigation;
 
 namespace Client.Tests.Mocks
@@ -56,6 +57,10 @@ namespace Client.Tests.Mocks
         {
             throw new NotImplementedException();
         }
-        
+
+        public void DoNavigate()
+        {
+            NavigateToViewModelCalls.Add(typeof(IViewModel), null);
+        }
     }
 }
