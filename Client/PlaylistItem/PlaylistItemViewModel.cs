@@ -1,4 +1,6 @@
 ﻿using System;
+using Client.Common.Models;
+using Client.Common.Models.Subsonic;
 using Subsonic8.Framework.ViewModel;
 
 namespace Subsonic8.PlaylistItem

@@ -29,21 +29,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-
-                <Image Height="500" Source="{Binding CoverArt}"/>
-                <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
-                    <Button Style="{StaticResource PlayAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action Play]"/>
-                    <Button Style="{StaticResource PauseAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action Pause]"/>
-                    <Button Style="{StaticResource StopAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action Stop]"/>
-                    <Button Style="{StaticResource PreviousAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action Previous]"/>
-                    <Button Style="{StaticResource NextAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action Next]"/>
-                </StackPanel>
-            </Grid>
+            <ContentControl cal:View.Context="{Binding State}" cal:View.Model="{Binding}" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="116,0,116,46"/>
 
             <ListView Grid.Column="1"
                     ItemsSource = "{Binding PlaylistItems}" ItemTemplate="{StaticResource PlaylistItemTemplate}"
@@ -51,7 +37,8 @@
                     framework:MultipleSelectBehavior.SelectedItems="{Binding SelectedItems, Mode=TwoWay}"
                     CanDragItems = "True" CanReorderItems = "True" AllowDrop = "True"
                     IsItemClickEnabled = "True"
-                    cal:Message.Attach = "[Event ItemClick] = [Action StartPlayback($eventArgs)]">
+                    cal:Message.Attach = "[Event ItemClick] = [Action StartPlayback($eventArgs)]"
+                    Padding="116,0,116,46">
 
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">

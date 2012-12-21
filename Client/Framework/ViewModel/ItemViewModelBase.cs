@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using Client.Common.Models;
 using Client.Common.Services;
 
 namespace Subsonic8.Framework.ViewModel
@@ -8,6 +9,7 @@ namespace Subsonic8.Framework.ViewModel
         private string _title;
         private string _coverArt;
         private string _coverArtUrl;
+        private ISubsonicModel _item; 
 
         public ISubsonicService SubsonicService { get; set; }
 
@@ -45,6 +47,20 @@ namespace Subsonic8.Framework.ViewModel
                 _coverArt = value;
                 NotifyOfPropertyChange();
                 NotifyOfPropertyChange(() => CoverArt);
+            }
+        }
+
+        public ISubsonicModel Item
+        {
+            get
+            {
+                return _item;
+            }
+
+            set
+            {
+                _item = value;
+                NotifyOfPropertyChange();
             }
         }
 
