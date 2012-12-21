@@ -4,6 +4,12 @@
     {
         void AddToPlaylist();
 
+        void PlayAll();
+
         void RemoveFromPlaylist();
+
+        bool CanAddToPlaylist { get; }
+
+        bool CanRemoveFromPlaylist { get; }
     }
 }

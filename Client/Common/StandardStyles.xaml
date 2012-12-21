@@ -405,10 +405,15 @@
         <Setter Property="Content" Value="&#xE115;"/>
     </Style>
     
-    <Style x:Key="AddAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
+    <Style x:Key="AddAllAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
         <Setter Property="AutomationProperties.AutomationId" Value="AddAppBarButton"/>
-        <Setter Property="AutomationProperties.Name" Value="Add"/>
+        <Setter Property="AutomationProperties.Name" Value="Add to playlist"/>
         <Setter Property="Content" Value="&#xE109;"/>
+    </Style>
+    <Style x:Key="PlayAllAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
+        <Setter Property="AutomationProperties.AutomationId" Value="PlayAppBarButton"/>
+        <Setter Property="AutomationProperties.Name" Value="Play all"/>
+        <Setter Property="Content" Value="&#xE102;"/>
     </Style>
     <Style x:Key="RemoveAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
         <Setter Property="AutomationProperties.AutomationId" Value="RemoveAppBarButton"/>

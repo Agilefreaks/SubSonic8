@@ -1,5 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using Caliburn.Micro;
 using Client.Common.Models;
 using Subsonic8.Framework.ViewModel;
@@ -29,6 +30,8 @@ namespace Subsonic8.Playback
         ObservableCollection<PlaylistItemViewModel> PlaylistItems { get; set; }
 
         Action<PlaylistItemViewModel> Start { get; set; }
+
+        Func<IId, Task<PlaylistItemViewModel>> LoadModel { get; set; }
 
         void Play();
 
