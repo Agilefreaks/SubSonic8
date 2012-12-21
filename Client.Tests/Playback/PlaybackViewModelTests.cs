@@ -47,6 +47,7 @@ namespace Client.Tests.Playback
                           {
                               NavigationService = _navigationService,
                               SubsonicService = _subsonicService,
+                              BottomBar = new MockDefaultBottomBarViewModel(),
                               LoadModel = model =>
                                               {
                                                   var tcr = new TaskCompletionSource<PlaylistItemViewModel>();
@@ -243,6 +244,16 @@ namespace Client.Tests.Playback
         }
 
         [TestMethod]
+        public void PlaySetsIsOpenOnBottomBarToTrue()
+        {
+            Subject.PlaylistItems.Add(new PlaylistItemViewModel { Item = new Song() });
+
+            Subject.Play();
+
+            Subject.BottomBar.IsPlaying.Should().BeTrue();
+        }
+
+        [TestMethod]
         public void PauseIfPlayerIsPlayingCallsShellViewModelPlayPause()
         {
             Subject.PlaylistItems.Add(new PlaylistItemViewModel { PlayingState = PlaylistItemState.Playing });
@@ -262,6 +273,16 @@ namespace Client.Tests.Playback
             Subject.Pause();
 
             ((MockShellViewModel)Subject.ShellViewModel).PlayPauseCallCount.Should().Be(0);
+        }
+
+        [TestMethod]
+        public void StopSetsIsOpenOnBottomBarToFalse()
+        {
+            Subject.BottomBar.IsPlaying = true;
+
+            Subject.Stop();
+
+            Subject.BottomBar.IsPlaying.Should().BeFalse();
         }
 
         [TestMethod]

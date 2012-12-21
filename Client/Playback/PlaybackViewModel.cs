@@ -250,6 +250,7 @@ namespace Subsonic8.Playback
             if (message.ClearCurrent)
             {
                 PlaylistItems.Clear();
+                Stop();
             }
 
             foreach (var item in message.Queue.Where(item => (item.Type == SubsonicModelTypeEnum.Song || item.Type == SubsonicModelTypeEnum.Video)))
@@ -316,6 +317,7 @@ namespace Subsonic8.Playback
                 model.PlayingState = PlaylistItemState.Playing;
             }
 
+            BottomBar.IsPlaying = IsPlaying;
             NotifyOfPropertyChange(() => IsPlaying);
         }
 

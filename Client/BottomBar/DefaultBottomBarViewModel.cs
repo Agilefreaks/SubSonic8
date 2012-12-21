@@ -15,6 +15,7 @@ namespace Subsonic8.BottomBar
         private readonly INavigationService _navigationService;
         private readonly IEventAggregator _eventAggregator;
         private bool _isOpened;
+        private bool _isPlaying;
         private ObservableCollection<object> _selectedItems;
 
         public ObservableCollection<object> SelectedItems
@@ -48,15 +49,31 @@ namespace Subsonic8.BottomBar
             }
         }
 
+        public bool IsPlaying
+        {
+            get
+            {
+                return _isPlaying;
+            }
+            
+            set
+            {
+                _isPlaying = value; 
+                NotifyOfPropertyChange();
+            }
+        }
+
         public bool CanAddToPlaylist
         {
-            get { return SelectedItems.Any() && SelectedItems.All(x => x.GetType() == typeof(MenuItemViewModel)); } 
+            get { return SelectedItems.Any() && SelectedItems.All(x => x.GetType() == typeof(MenuItemViewModel)); }
         }
 
         public bool CanRemoveFromPlaylist
         {
-            get { return SelectedItems.Any() && SelectedItems.All(x => x.GetType() == typeof (PlaylistItemViewModel)); }
+            get { return SelectedItems.Any() && SelectedItems.All(x => x.GetType() == typeof(PlaylistItemViewModel)); }
         }
+
+        public Action Navigate { get; set; }
 
         public DefaultBottomBarViewModel(INavigationService navigationService, IEventAggregator eventAggregator)
         {
@@ -66,8 +83,6 @@ namespace Subsonic8.BottomBar
             SelectedItems.CollectionChanged += OnSelectedItemsChanged;
             Navigate = () => _navigationService.NavigateToViewModel<PlaybackViewModel>();
         }
-
-        public Action Navigate { get; set; }
 
         public void AddToPlaylist()
         {
@@ -85,7 +100,7 @@ namespace Subsonic8.BottomBar
 
         public void RemoveFromPlaylist()
         {
-            _eventAggregator.Publish(new RemoveFromPlaylistMessage { Queue = SelectedItems.Select(x => (PlaylistItemViewModel) x).ToList() });
+            _eventAggregator.Publish(new RemoveFromPlaylistMessage { Queue = SelectedItems.Select(x => (PlaylistItemViewModel)x).ToList() });
         }
 
         public void NavigateToPlaylist()
