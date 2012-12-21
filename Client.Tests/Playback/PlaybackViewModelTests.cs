@@ -50,7 +50,7 @@ namespace Client.Tests.Playback
                               LoadModel = model =>
                                               {
                                                   var tcr = new TaskCompletionSource<PlaylistItemViewModel>();
-                                                  tcr.SetResult(new PlaylistItemViewModel { Item = (ISubsonicModel) model });
+                                                  tcr.SetResult(new PlaylistItemViewModel { Item = (ISubsonicModel)model });
                                                   return tcr.Task;
                                               }
                           };
@@ -272,6 +272,16 @@ namespace Client.Tests.Playback
             Subject.Stop();
 
             ((MockShellViewModel)Subject.ShellViewModel).StopCallCount.Should().Be(1);
+        }
+
+        [TestMethod]
+        public void StopWillSetSourceToNull()
+        {
+            Subject.Source = new Uri("http://this-will-be.null");
+
+            Subject.Stop();
+
+            Subject.Source.Should().BeNull();
         }
 
         [TestMethod]
@@ -507,7 +517,7 @@ namespace Client.Tests.Playback
         public async Task HandleWithPlaylistMessageWhenSourceOnPlaybackViewModelAndOnShellViewModelAreNullCallsStart()
         {
             var called = false;
-            Subject.Start = item => { called = true; };            
+            Subject.Start = item => { called = true; };
             Subject.LoadModel = model =>
             {
                 var tcr = new TaskCompletionSource<PlaylistItemViewModel>();
@@ -524,7 +534,7 @@ namespace Client.Tests.Playback
                 return tcr.Task;
             };
 
-            await Task.Run(() => Subject.Handle(new PlaylistMessage { Queue = new List<ISubsonicModel>{ new Song {IsVideo = false}}}));
+            await Task.Run(() => Subject.Handle(new PlaylistMessage { Queue = new List<ISubsonicModel> { new Song { IsVideo = false } } }));
 
             called.Should().BeTrue();
         }
@@ -581,6 +591,26 @@ namespace Client.Tests.Playback
             await Task.Run(() => Subject.Handle(new PlaylistMessage { Queue = new List<ISubsonicModel> { new Song { IsVideo = false } } }));
 
             called.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public async Task HandleWithPlaylistWhenClearCurrentIsSetToTrueSetsSourceOnShellViewModelToNull()
+        {
+            Subject.ShellViewModel.Source = new Uri("http://this-will-be.null");
+
+            await Task.Run(() => Subject.Handle(new PlaylistMessage { ClearCurrent = true }));
+
+            Subject.ShellViewModel.Source.Should().BeNull();
+        }
+
+        [TestMethod]
+        public async Task HandleWithPLaylistWhenClearCurrentIsSetToTrueSetsSourceOnPlaybacViewModelToNull()
+        {
+            Subject.Source = new Uri("http://this-will-be.null");
+
+            await Task.Run(() => Subject.Handle(new PlaylistMessage { ClearCurrent = true }));
+
+            Subject.Source.Should().BeNull();
         }
 
         [TestMethod]

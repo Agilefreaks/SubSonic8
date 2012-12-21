@@ -201,6 +201,7 @@ namespace Subsonic8.Playback
         public void Stop()
         {
             ShellViewModel.Stop();
+            Source = null;
         }
 
         public void Next()
@@ -235,6 +236,7 @@ namespace Subsonic8.Playback
             if (message.ClearCurrent)
             {
                 PlaylistItems.Clear();
+                Stop();
             }
 
             foreach (var item in message.Queue.Where(item => (item.Type == SubsonicModelTypeEnum.Song || item.Type == SubsonicModelTypeEnum.Video)))
