@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using Subsonic8.BottomBar;
 
 namespace Client.Tests.Mocks
@@ -36,6 +37,8 @@ namespace Client.Tests.Mocks
         {
             throw new System.NotImplementedException();
         }
+
+        public Action Navigate { get; set; }
 
         public void AddToPlaylist()
         {

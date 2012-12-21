@@ -6,6 +6,7 @@ using Subsonic8.MenuItem;
 using Subsonic8.Messages;
 using Subsonic8.Playback;
 using Subsonic8.PlaylistItem;
+using Action = System.Action;
 
 namespace Subsonic8.BottomBar
 {
@@ -63,18 +64,23 @@ namespace Subsonic8.BottomBar
             _eventAggregator = eventAggregator;
             SelectedItems = new ObservableCollection<object>();
             SelectedItems.CollectionChanged += OnSelectedItemsChanged;
+            Navigate = () => _navigationService.NavigateToViewModel<PlaybackViewModel>();
         }
+
+        public Action Navigate { get; set; }
 
         public void AddToPlaylist()
         {
             _eventAggregator.Publish(new PlaylistMessage { Queue = SelectedItems.Select(i => ((IMenuItemViewModel)i).Item).ToList() });
             SelectedItems.Clear();
+            Navigate();
         }
 
         public void PlayAll()
         {
             _eventAggregator.Publish(new PlaylistMessage { Queue = SelectedItems.Select(i => ((IMenuItemViewModel)i).Item).ToList(), ClearCurrent = true });
             SelectedItems.Clear();
+            Navigate();
         }
 
         public void RemoveFromPlaylist()
