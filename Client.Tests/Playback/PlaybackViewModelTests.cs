@@ -26,7 +26,7 @@ namespace Client.Tests.Playback
         private MockNavigationService _navigationService;
         private IShellViewModel _shellViewModel;
         private MockPlayerControls _playerControls;
-        private MockNotificationManager _notificationManager;
+        private MockNotificationService _notificationService;
 
         [TestInitialize]
         public void TestInitialize()
@@ -35,13 +35,13 @@ namespace Client.Tests.Playback
             _subsonicService = new MockSubsonicService();
             _navigationService = new MockNavigationService();
             _playerControls = new MockPlayerControls();
-            _notificationManager = new MockNotificationManager();
+            _notificationService = new MockNotificationService();
             _shellViewModel = new ShellViewModel(_eventAggregator, _subsonicService, _navigationService)
                                   {
                                       PlayerControls = _playerControls
                                   };
 
-            Subject = new PlaybackViewModel(_eventAggregator, _shellViewModel, _subsonicService, _notificationManager)
+            Subject = new PlaybackViewModel(_eventAggregator, _shellViewModel, _subsonicService, _notificationService)
                           {
                               NavigationService = _navigationService,
                               SubsonicService = _subsonicService,
@@ -100,7 +100,7 @@ namespace Client.Tests.Playback
 
             Subject.Handle(new PlayNextMessage());
 
-            _notificationManager.ShowCallCount.Should().Be(1);
+            _notificationService.ShowCallCount.Should().Be(1);
         }
 
         [TestMethod]

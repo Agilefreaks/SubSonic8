@@ -4,18 +4,20 @@ using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using Client.Common.Services;
+using Subsonic8.Framework.Services;
 
 namespace Subsonic8.Settings
 {
     public class SettingsViewModel : Screen
     {
         private readonly ISubsonicService _subsonicService;
+        private readonly INotificationService _notificationService;
         private readonly IStorageService _storageService;
-        private SubsonicServiceConfiguration _configuration;
-        private bool _savingInProgress;
+        private Subsonic8Configuration _configuration;
         private IDisposable _propertyChangedObserver;
+        private bool _savingInProgress;
 
-        public SubsonicServiceConfiguration Configuration
+        public Subsonic8Configuration Configuration
         {
             get
             {
@@ -37,9 +39,11 @@ namespace Subsonic8.Settings
             }
         }
 
-        public SettingsViewModel(ISubsonicService subsonicService, IStorageService storageService)
+        public SettingsViewModel(ISubsonicService subsonicService, INotificationService notificationService,
+            IStorageService storageService)
         {
             _subsonicService = subsonicService;
+            _notificationService = notificationService;
             _storageService = storageService;
         }
 
@@ -48,18 +52,18 @@ namespace Subsonic8.Settings
             _savingInProgress = true;
 
             await _storageService.Save(Configuration);
-            _subsonicService.Configuration = Configuration;
 
+            _subsonicService.Configuration = Configuration.SubsonicServiceConfiguration;
+            _notificationService.UseSound = Configuration.ToastsUseSound;
             _savingInProgress = false;
         }
 
         public async Task Populate()
         {
-            Configuration = await _storageService.Load<SubsonicServiceConfiguration>() ??
-                            new SubsonicServiceConfiguration();
+            Configuration = await _storageService.Load<Subsonic8Configuration>() ??
+                            new Subsonic8Configuration { ToastsUseSound = false };
 
             _propertyChangedObserver = Observable.FromEventPattern<PropertyChangedEventArgs>(_configuration, "PropertyChanged")
-                                                 .Buffer(TimeSpan.FromMilliseconds(400))
                                                  .Where(eventPattern => !_savingInProgress)
                                                  .Subscribe(eventPattern => SaveSettings());
         }

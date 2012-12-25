@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Caliburn.Micro;
 using Client.Common.Services;
 using Subsonic8.BottomBar;
-using Subsonic8.Framework;
+using Subsonic8.Framework.Services;
 using Subsonic8.Main;
 using Subsonic8.Playback;
 using Subsonic8.Settings;
@@ -35,7 +36,7 @@ namespace Subsonic8
             _container.RegisterSingleton(typeof(IShellViewModel), "ShellViewModel", typeof(ShellViewModel));
             _container.RegisterSingleton(typeof(IPlaybackViewModel), "PlaybackViewModel", typeof(PlaybackViewModel));
             _container.RegisterSingleton(typeof(IDefaultBottomBarViewModel), "DefaultBottomBarViewModel", typeof(DefaultBottomBarViewModel));
-            _container.RegisterSingleton(typeof(INotificationManager), "NotificationManager", typeof(ToastsNotificationManager));
+            _container.RegisterSingleton(typeof(INotificationService), "NotificationService", typeof(ToastsNotificationService));
 
             SettingsPane.GetForCurrentView().CommandsRequested += (sender, args) => args.AddSetting<SettingsViewModel>();
         }
@@ -60,7 +61,7 @@ namespace Subsonic8
         protected override void PrepareViewFirst(Frame rootFrame)
         {
             base.PrepareViewFirst(rootFrame);
-            InitializeSubsonicService();
+            InitializeServices();
         }
 
         protected override void OnLaunched(LaunchActivatedEventArgs args)
@@ -107,23 +108,30 @@ namespace Subsonic8
             _container.RegisterInstance(typeof(INavigationService), "NavigationService", new CustomFrameAdapter(shellFrame, treatViewAsLoaded));
         }
 
-        private async void InitializeSubsonicService()
+        private async void InitializeServices()
         {
-            var storageService = GetInstance(typeof(IStorageService), null) as IStorageService ?? new StorageService();
-            var subsonicServiceConfiguration = await storageService.Load<SubsonicServiceConfiguration>();
+            var subsonic8Configuration = await GetSubsonic8Configuration();
 
+            var subsonicService = (ISubsonicService)GetInstance(typeof(ISubsonicService), null);
+            subsonicService.Configuration = subsonic8Configuration.SubsonicServiceConfiguration;
+            var notificationService = (INotificationService)GetInstance(typeof(INotificationService), null);
+            notificationService.UseSound = subsonic8Configuration.ToastsUseSound;
+        }
+
+        private async Task<Subsonic8Configuration> GetSubsonic8Configuration()
+        {
+            var storageService = GetInstance(typeof (IStorageService), null) as IStorageService ?? new StorageService();
+            var subsonic8Configuration = await storageService.Load<Subsonic8Configuration>() ?? new Subsonic8Configuration();
 #if DEBUG
             const string baseUrl = "http://cristibadila.dynalias.com:33770/music/";
-            subsonicServiceConfiguration = new SubsonicServiceConfiguration
-            {
-                BaseUrl = baseUrl,
-                Username = "media",
-                Password = "media"
-            };
+            subsonic8Configuration.SubsonicServiceConfiguration = new SubsonicServiceConfiguration
+                {
+                    BaseUrl = baseUrl,
+                    Username = "media",
+                    Password = "media"
+                };
 #endif
-
-            var subsonicService = GetInstance(typeof(ISubsonicService), null) as ISubsonicService ?? new SubsonicService();
-            subsonicService.Configuration = subsonicServiceConfiguration;
+            return subsonic8Configuration;
         }
     }
 }
