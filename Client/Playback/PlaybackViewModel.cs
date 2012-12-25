@@ -1,12 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using Client.Common.Models;
-using Client.Common.Models.Subsonic;
 using Client.Common.Services;
-using Subsonic8.Framework;
+using Subsonic8.Framework.Services;
 using Subsonic8.Framework.ViewModel;
 using Subsonic8.Messages;
 using Subsonic8.PlaylistItem;
@@ -20,7 +21,7 @@ namespace Subsonic8.Playback
         #region Private Fields
 
         private readonly IEventAggregator _eventAggregator;
-        private readonly INotificationManager _notificationManager;
+        private readonly INotificationService _notificationService;
         private IShellViewModel _shellViewModel;
         private ISubsonicModel _parameter;
         private PlaybackViewModelStateEnum _state;
@@ -55,7 +56,7 @@ namespace Subsonic8.Playback
                 _parameter = value;
                 if (_parameter != null)
                 {
-                    Handle(new PlayFile {Model = _parameter});
+                    Handle(new PlayFile { Model = _parameter });
                 }
             }
         }
@@ -71,8 +72,10 @@ namespace Subsonic8.Playback
                     _source = value;
                     NotifyOfPropertyChange();
                 }
-                catch (Exception)
+                catch (Exception exception)
                 {
+                    //This is due to a bug in winrt sdk
+                    Debug.WriteLine(exception.ToString());
                 }
             }
         }
@@ -126,10 +129,10 @@ namespace Subsonic8.Playback
 
         #endregion
 
-        public PlaybackViewModel(IEventAggregator eventAggregator, IShellViewModel shellViewModel, ISubsonicService subsonicService, INotificationManager notificationManager)
+        public PlaybackViewModel(IEventAggregator eventAggregator, IShellViewModel shellViewModel, ISubsonicService subsonicService, INotificationService notificationService)
         {
             _eventAggregator = eventAggregator;
-            _notificationManager = notificationManager;
+            _notificationService = notificationService;
             _eventAggregator.Subscribe(this);
             SubsonicService = subsonicService;
             ShellViewModel = shellViewModel;
@@ -169,12 +172,12 @@ namespace Subsonic8.Playback
                 Source = SubsonicService.GetUriForVideoWithId(model.Item.Id);
             }
 
-            _notificationManager.Show(new NotificationOptions
-            {
-                ImageUrl = SubsonicService.GetCoverArtForId(model.CoverArtId),
-                Title = model.Title,
-                Subtitle = model.Artist
-            });
+            _notificationService.Show(new NotificationOptions
+                {
+                    ImageUrl = SubsonicService.GetCoverArtForId(model.CoverArtId),
+                    Title = model.Title,
+                    Subtitle = model.Artist
+                });
         }
 
         public void Play()
@@ -235,14 +238,13 @@ namespace Subsonic8.Playback
         {
             if (message.ClearCurrent)
             {
-                PlaylistItems.Clear();
                 Stop();
+                PlaylistItems.Clear();
             }
 
-            foreach (var item in message.Queue.Where(item => (item.Type == SubsonicModelTypeEnum.Song || item.Type == SubsonicModelTypeEnum.Video)))
+            foreach (var item in message.Queue)
             {
-                var pi = await LoadModel(item);
-                PlaylistItems.Add(pi);
+                await AddToPlaylist(item);
             }
 
             if (Source == null && ShellViewModel.Source == null && PlaylistItems.Any())
@@ -291,6 +293,44 @@ namespace Subsonic8.Playback
         public void Handle(StopMessage message)
         {
             Stop();
+        }
+
+        private async Task AddToPlaylist(ISubsonicModel item)
+        {
+            if (item.Type == SubsonicModelTypeEnum.Song || item.Type == SubsonicModelTypeEnum.Video)
+            {
+                PlaylistItems.Add(await LoadModel(item));
+            }
+            else
+            {
+                var children = new List<ISubsonicModel>();
+                switch (item.Type)
+                {
+                    case SubsonicModelTypeEnum.Album:
+                        {
+                            var result = SubsonicService.GetAlbum(item.Id);
+                            await result.Execute();
+                            children.AddRange(result.Result.Songs);
+                        } break;
+                    case SubsonicModelTypeEnum.Artist:
+                        {
+                            var result = SubsonicService.GetArtist(item.Id);
+                            await result.Execute();
+                            children.AddRange(result.Result.Albums);
+                        } break;
+                    case SubsonicModelTypeEnum.MusicDirectory:
+                        {
+                            var result = SubsonicService.GetMusicDirectory(item.Id);
+                            await result.Execute();
+                            children.AddRange(result.Result.Children);
+                        } break;
+                }
+
+                foreach (var subsonicModel in children)
+                {
+                    await AddToPlaylist(subsonicModel);
+                }
+            }
         }
 
         private void PlayUri(Uri source)

@@ -24,7 +24,7 @@ namespace Client.Common.Results
         {
             get
             {
-                return string.Format(Configuration.ServiceUrl, ViewName, Configuration.Username, Configuration.Password);
+                return string.Format(Configuration.RequestFormat(), ViewName, Configuration.Username, Configuration.Password);
             }
         }
 

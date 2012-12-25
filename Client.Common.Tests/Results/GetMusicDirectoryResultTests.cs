@@ -13,7 +13,7 @@ namespace Client.Common.Tests.Results
         [TestInitialize]
         public void TestInitialize()
         {
-            _subject = new GetMusicDirectoryResult(new SubsonicServiceConfiguration { ServiceUrl = "{0}{1}{2}"  }, 42);
+            _subject = new GetMusicDirectoryResult(new SubsonicServiceConfiguration { BaseUrl = "http://test" }, 42);
         }
 
         [TestMethod]

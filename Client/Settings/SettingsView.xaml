@@ -12,12 +12,21 @@
 
     <StackPanel>
         <TextBlock Text="Subsonic Url" Style="{StaticResource SettingsTextStyle}"/>
-        <TextBox x:Name="Configuration_ServiceUrl" Style="{StaticResource SettingsTextBoxStyle}"/>
+        <TextBox x:Name="Configuration_SubsonicServiceConfiguration_BaseUrl" Style="{StaticResource SettingsTextBoxStyle}"/>
 
         <TextBlock Text="Username" Style="{StaticResource SettingsTextStyle}"/>
-        <TextBox x:Name="Configuration_Username" Style="{StaticResource SettingsTextBoxStyle}"/>
+        <TextBox x:Name="Configuration_SubsonicServiceConfiguration_Username" Style="{StaticResource SettingsTextBoxStyle}"/>
 
         <TextBlock Text="Password" Style="{StaticResource SettingsTextStyle}"/>
-        <TextBox x:Name="Configuration_Password" Style="{StaticResource SettingsTextBoxStyle}"/>
+        <TextBox x:Name="Configuration_SubsonicServiceConfiguration_Password" Style="{StaticResource SettingsTextBoxStyle}"/>
+
+        <ToggleSwitch Header="Sound For Notifications" IsOn="{Binding Path=Configuration.ToastsUseSound, Mode=TwoWay}"
+                      Margin="0,10" OffContent="Off" OnContent="On" Style="{StaticResource LightToggleSwitch}">
+            <ToggleSwitch.HeaderTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}" Style="{StaticResource SettingsTextStyle}"/>
+                </DataTemplate>
+            </ToggleSwitch.HeaderTemplate>
+        </ToggleSwitch>
     </StackPanel>
 </UserControl>

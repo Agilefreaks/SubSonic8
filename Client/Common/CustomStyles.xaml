@@ -11,10 +11,12 @@
         <Setter Property="Typography.DiscretionaryLigatures" Value="True"/>
         <Setter Property="Typography.CaseSensitiveForms" Value="True"/>
         <Setter Property="Margin" Value="10"/>
+        <Setter Property="FontWeight" Value="Bold"></Setter>
     </Style>
     
     <Style x:Key="SettingsTextBoxStyle" TargetType="TextBox">
         <Setter Property="BorderBrush" Value="Black"/>
         <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="Width" Value="200"/>
     </Style>
 </ResourceDictionary>
