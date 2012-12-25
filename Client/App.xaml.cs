@@ -8,7 +8,6 @@ using Subsonic8.Main;
 using Subsonic8.Playback;
 using Subsonic8.Settings;
 using Subsonic8.Shell;
-using WinRtUtility;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.ApplicationSettings;
 using Windows.UI.Xaml;
@@ -32,6 +31,7 @@ namespace Subsonic8
             _container.RegisterWinRTServices();
 
             _container.RegisterSingleton(typeof(ISubsonicService), "SubsonicService", typeof(SubsonicService));
+            _container.RegisterSingleton(typeof(IStorageService), "StorageService", typeof(StorageService));
             _container.RegisterSingleton(typeof(IShellViewModel), "ShellViewModel", typeof(ShellViewModel));
             _container.RegisterSingleton(typeof(IPlaybackViewModel), "PlaybackViewModel", typeof(PlaybackViewModel));
             _container.RegisterSingleton(typeof(IDefaultBottomBarViewModel), "DefaultBottomBarViewModel", typeof(DefaultBottomBarViewModel));
@@ -109,8 +109,8 @@ namespace Subsonic8
 
         private async void InitializeSubsonicService()
         {
-            var storageHelper = new ObjectStorageHelper<SubsonicServiceConfiguration>(StorageType.Roaming);
-            var subsonicServiceConfiguration = await storageHelper.LoadAsync();
+            var storageService = GetInstance(typeof(IStorageService), null) as IStorageService ?? new StorageService();
+            var subsonicServiceConfiguration = await storageService.Load<SubsonicServiceConfiguration>();
 
 #if DEBUG
             const string baseUrl = "http://cristibadila.dynalias.com:33770/music/";

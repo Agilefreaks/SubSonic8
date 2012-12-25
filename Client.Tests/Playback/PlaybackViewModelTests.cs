@@ -13,8 +13,6 @@ using Subsonic8.Messages;
 using Subsonic8.Playback;
 using Subsonic8.PlaylistItem;
 using Subsonic8.Shell;
-using Windows.UI.Xaml;
-using Action = System.Action;
 
 namespace Client.Tests.Playback
 {
@@ -409,6 +407,7 @@ namespace Client.Tests.Playback
                 tcr.SetResult(playlistItemViewModel);
                 return tcr.Task;
             };
+
             await Task.Run(() =>
             {
                 _shellViewModel.Source = new Uri("http://this-should-become.null");
@@ -699,26 +698,6 @@ namespace Client.Tests.Playback
             await Task.Run(() => Subject.Handle(new PlayFile { Model = model }));
 
             called.Should().BeTrue();
-        }
-    }
-
-    internal class MockPlayerControls : IPlayerControls
-    {
-        public event RoutedEventHandler PlayNextClicked;
-        public event RoutedEventHandler PlayPreviousClicked;
-
-        public Action PlayPause { get; private set; }
-
-        public int PlayPauseCallCount { get; set; }
-
-        public MockPlayerControls()
-        {
-            PlayPause = PlayPauseImpl;
-        }
-
-        private void PlayPauseImpl()
-        {
-            PlayPauseCallCount++;
         }
     }
 }

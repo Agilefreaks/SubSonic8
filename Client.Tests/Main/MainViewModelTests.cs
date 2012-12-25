@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Caliburn.Micro;
 using Client.Common.Models.Subsonic;
 using Client.Common.Results;
-using Client.Common.Services;
 using Client.Tests.Framework.ViewModel;
 using Client.Tests.Mocks;
 using FluentAssertions;
@@ -32,7 +31,7 @@ namespace Client.Tests.Main
 
             Subject = new MainViewModel
                           {
-                              NavigationService = _navigationService, 
+                              NavigationService = _navigationService,
                               SubsonicService = _subsonicService,
                               UpdateDisplayName = () => Subject.DisplayName = ""
                           };
@@ -56,7 +55,7 @@ namespace Client.Tests.Main
 
             Subject.MenuItems.Should().HaveCount(2);
         }
-        
+
         [TestMethod]
         public async Task PopulateShouldExecuteAGetRootResult()
         {

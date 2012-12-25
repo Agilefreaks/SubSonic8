@@ -1,15 +1,19 @@
+using System;
 using System.ComponentModel;
+using System.Reactive.Linq;
+using System.Threading.Tasks;
 using Caliburn.Micro;
 using Client.Common.Services;
-using WinRtUtility;
 
 namespace Subsonic8.Settings
 {
     public class SettingsViewModel : Screen
     {
         private readonly ISubsonicService _subsonicService;
-        private readonly ObjectStorageHelper<SubsonicServiceConfiguration> _storageHelper;
+        private readonly IStorageService _storageService;
         private SubsonicServiceConfiguration _configuration;
+        private bool _savingInProgress;
+        private IDisposable _propertyChangedObserver;
 
         public SubsonicServiceConfiguration Configuration
         {
@@ -33,30 +37,44 @@ namespace Subsonic8.Settings
             }
         }
 
-        public SettingsViewModel(ISubsonicService subsonicService)
+        public SettingsViewModel(ISubsonicService subsonicService, IStorageService storageService)
         {
             _subsonicService = subsonicService;
-            _storageHelper = new ObjectStorageHelper<SubsonicServiceConfiguration>(StorageType.Roaming);
+            _storageService = storageService;
+        }
+
+        public async void SaveSettings()
+        {
+            _savingInProgress = true;
+
+            await _storageService.Save(Configuration);
+            _subsonicService.Configuration = Configuration;
+
+            _savingInProgress = false;
+        }
+
+        public async Task Populate()
+        {
+            Configuration = await _storageService.Load<SubsonicServiceConfiguration>() ??
+                            new SubsonicServiceConfiguration();
+
+            _propertyChangedObserver = Observable.FromEventPattern<PropertyChangedEventArgs>(_configuration, "PropertyChanged")
+                                                 .Buffer(TimeSpan.FromMilliseconds(400))
+                                                 .Where(eventPattern => !_savingInProgress)
+                                                 .Subscribe(eventPattern => SaveSettings());
         }
 
         protected async override void OnActivate()
         {
             base.OnActivate();
 
-            Configuration = await _storageHelper.LoadAsync();
-            Configuration = Configuration ?? new SubsonicServiceConfiguration();
-            _configuration.PropertyChanged += ConfigurationOnPropertyChanged;
+            await Populate();
         }
 
-        private void ConfigurationOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
+        protected override void OnDeactivate(bool close)
         {
-            SaveSettings();
-        }
-
-        public async void SaveSettings()
-        {
-            await _storageHelper.SaveAsync(Configuration);
-            _subsonicService.Configuration = Configuration;
+            base.OnDeactivate(close);
+            _propertyChangedObserver.Dispose();
         }
     }
 }

@@ -16,5 +16,6 @@
     <Style x:Key="SettingsTextBoxStyle" TargetType="TextBox">
         <Setter Property="BorderBrush" Value="Black"/>
         <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="Width" Value="200"/>
     </Style>
 </ResourceDictionary>
