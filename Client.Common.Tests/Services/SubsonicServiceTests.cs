@@ -33,7 +33,7 @@ namespace Client.Common.Tests.Services
         }
 
         [TestMethod]
-        public void CtorShouldFunctions()
+        public void CtorShouldInitializeFunctions()
         {
             _subject.GetMusicDirectory.Should().NotBeNull();
             _subject.GetRootIndex.Should().NotBeNull();

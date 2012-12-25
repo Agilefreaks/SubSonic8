@@ -64,7 +64,8 @@ namespace Subsonic8.Settings
                             new Subsonic8Configuration { ToastsUseSound = false };
 
             _propertyChangedObserver = Observable.FromEventPattern<PropertyChangedEventArgs>(_configuration, "PropertyChanged")
-                                                 .Where(eventPattern => !_savingInProgress)
+                                                 .Buffer(TimeSpan.FromMilliseconds(400))
+                                                 .Where(eventPattern => eventPattern.Count > 0 && !_savingInProgress)
                                                  .Subscribe(eventPattern => SaveSettings());
         }
 
