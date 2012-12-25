@@ -6,6 +6,6 @@ namespace Client.Common.Services
 
         string Password { get; set; }
 
-        string ServiceUrl { get; set; }
+        string BaseUrl { get; set; }
     }
 }

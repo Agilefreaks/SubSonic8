@@ -117,7 +117,6 @@ namespace Subsonic8
             subsonicServiceConfiguration = new SubsonicServiceConfiguration
             {
                 BaseUrl = baseUrl,
-                ServiceUrl = baseUrl + "rest/{0}?u={1}&p={2}&v=1.8.0&c=SubSonic8",
                 Username = "media",
                 Password = "media"
             };

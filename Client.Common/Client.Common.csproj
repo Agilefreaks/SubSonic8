@@ -142,6 +142,7 @@
     <Compile Include="Services\SubsonicService.cs" />
     <Compile Include="Services\SubsonicServiceConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\SubsonicServiceConfigurationExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Caliburn.Micro, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">

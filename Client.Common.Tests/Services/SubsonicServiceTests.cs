@@ -18,7 +18,6 @@ namespace Client.Common.Tests.Services
                 Configuration = new SubsonicServiceConfiguration
                                     {
                                         BaseUrl = "http://test",
-                                        ServiceUrl = "http://test",
                                         Username = "test",
                                         Password = "test"
                                     }
