@@ -16,7 +16,7 @@
         </StackPanel>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
             <ic:AppBarToggleButton Style="{StaticResource PlayAppBarButtonStyle}" CheckedStyle="{StaticResource PauseAppBarButtonStyle}" 
-                                   cal:Message.Attach="[Event Click] = [Action PlayPause()]" AutoToggle="True"/>
+                                   cal:Message.Attach="[Event Click] = [Action PlayPause()]" AutoToggle="False" IsChecked="{Binding IsPlaying}"/>
             <Button Style="{StaticResource StopAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action Stop()]"/>
             <Button Style="{StaticResource PreviousAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action PlayPrevious()]"/>
             <Button Style="{StaticResource NextAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action PlayNext()]"/>
