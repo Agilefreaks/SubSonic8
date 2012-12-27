@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:caliburn="using:Caliburn.Micro"
+    xmlns:caliburn="using:Caliburn.Micro" xmlns:framework="using:Subsonic8.Framework"
     mc:Ignorable="d">
 
     <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
@@ -23,7 +23,8 @@
             <TextBlock Text="SubSonic8" Style="{StaticResource PageHeaderTextStyle}" Grid.Column="1" />
         </Grid>
 
-        <GridView x:Name="MenuItems" Grid.Row="1" Margin="0,-3,0,0" Padding="116,0,116,46" SelectionMode="Multiple" 
+        <GridView x:Name="MenuItems" Grid.Row="1" Margin="0,-3,0,0" Padding="116,0,116,46" SelectionMode="Multiple"
+                  framework:MultipleSelectBehavior.SelectedItems="{Binding SelectedItems, Mode=TwoWay}"
                   IsItemClickEnabled="True" caliburn:Message.Attach="[Event ItemClick] = [ChildClick($eventArgs)]" />
     </Grid>
 </Page>
