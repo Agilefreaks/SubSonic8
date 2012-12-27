@@ -8,6 +8,8 @@ namespace Client.Tests.Mocks
     {
         public bool IsOpened { get; set; }
 
+        public bool IsPlaying { get; set; }
+
         public void NavigateToPlaylist()
         {
 

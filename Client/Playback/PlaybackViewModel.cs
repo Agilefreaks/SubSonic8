@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using Client.Common.Models;
-using Client.Common.Models.Subsonic;
 using Client.Common.Services;
 using Subsonic8.Framework;
 using Subsonic8.Framework.ViewModel;
@@ -55,7 +54,7 @@ namespace Subsonic8.Playback
                 _parameter = value;
                 if (_parameter != null)
                 {
-                    Handle(new PlayFile {Model = _parameter});
+                    Handle(new PlayFile { Model = _parameter });
                 }
             }
         }
@@ -153,6 +152,7 @@ namespace Subsonic8.Playback
 
         public void StartImpl(PlaylistItemViewModel model)
         {
+            Stop();
             if (model.Item.Type == SubsonicModelTypeEnum.Song)
             {
                 Source = null;
@@ -177,6 +177,18 @@ namespace Subsonic8.Playback
             });
         }
 
+        public void PlayPause()
+        {
+            if (IsPlaying)
+            {
+                Pause();
+            }
+            else
+            {
+                Play();
+            }
+        }
+
         public void Play()
         {
             if (PlaylistItems.Count > 0)
@@ -195,6 +207,7 @@ namespace Subsonic8.Playback
             if (IsPlaying)
             {
                 ShellViewModel.PlayPause();
+                SetPlaying(null);
             }
         }
 
@@ -202,6 +215,7 @@ namespace Subsonic8.Playback
         {
             ShellViewModel.Stop();
             Source = null;
+            SetPlaying(null);
         }
 
         public void Next()
@@ -262,8 +276,8 @@ namespace Subsonic8.Playback
         public async void Handle(PlayFile message)
         {
             var playlistItem = await LoadModel(message.Model);
-            Start(playlistItem);
             PlaylistItems.Add(playlistItem);
+            Start(playlistItem);
         }
 
         public void Handle(PlayNextMessage message)
@@ -278,14 +292,7 @@ namespace Subsonic8.Playback
 
         public void Handle(PlayPauseMessage message)
         {
-            if (IsPlaying)
-            {
-                Pause();
-            }
-            else
-            {
-                Play();
-            }
+            PlayPause();
         }
 
         public void Handle(StopMessage message)
@@ -300,12 +307,18 @@ namespace Subsonic8.Playback
 
         private void SetPlaying(PlaylistItemViewModel model)
         {
-            foreach (var item in PlaylistItems)
+            foreach (var item in PlaylistItems.Where(pi => pi.PlayingState == PlaylistItemState.Playing))
             {
                 item.PlayingState = PlaylistItemState.NotPlaying;
             }
 
-            model.PlayingState = PlaylistItemState.Playing;
+            if (model != null)
+            {
+                model.PlayingState = PlaylistItemState.Playing;
+            }
+
+            BottomBar.IsPlaying = IsPlaying;
+            NotifyOfPropertyChange(() => IsPlaying);
         }
 
         private void SetCoverArt(string coverArt)
@@ -316,7 +329,7 @@ namespace Subsonic8.Playback
         private void StopAndReset()
         {
             _currentTrackNo = -1;
-            PlayUri(null);
+            Stop();
         }
 
         private async Task<PlaylistItemViewModel> LoadModelImpl(IId model)
