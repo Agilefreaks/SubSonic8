@@ -27,6 +27,8 @@ namespace Client.Tests.Playback
         private IShellViewModel _shellViewModel;
         private MockPlayerControls _playerControls;
         private MockNotificationService _notificationService;
+        private MockStorageService _mockStorageService;
+        private MockWinRTWrappersService _mockWinRTWrappersService;
 
         [TestInitialize]
         public void TestInitialize()
@@ -36,7 +38,10 @@ namespace Client.Tests.Playback
             _navigationService = new MockNavigationService();
             _playerControls = new MockPlayerControls();
             _notificationService = new MockNotificationService();
-            _shellViewModel = new ShellViewModel(_eventAggregator, _subsonicService, _navigationService)
+            _mockStorageService = new MockStorageService();
+            _mockWinRTWrappersService = new MockWinRTWrappersService();
+            _shellViewModel = new ShellViewModel(_eventAggregator, _subsonicService, _navigationService, _notificationService,
+                _mockStorageService, _mockWinRTWrappersService)
                                   {
                                       PlayerControls = _playerControls
                                   };

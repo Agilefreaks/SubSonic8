@@ -132,6 +132,7 @@
     <Compile Include="Mocks\MockStorageService.cs" />
     <Compile Include="Mocks\MockSubsonicModel.cs" />
     <Compile Include="Mocks\MockSubsonicService.cs" />
+    <Compile Include="Mocks\MockWinRTWrappersService.cs" />
     <Compile Include="MusicDirectory\MusicDirectoryViewModelTests.cs" />
     <Compile Include="Mocks\MockPlayerControls.cs" />
     <Compile Include="Playback\PlaybackViewModelTests.cs" />

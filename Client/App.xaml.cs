@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Caliburn.Micro;
 using Client.Common.Services;
 using Subsonic8.BottomBar;
 using Subsonic8.Framework.Services;
 using Subsonic8.Main;
 using Subsonic8.Playback;
-using Subsonic8.Settings;
 using Subsonic8.Shell;
 using Windows.ApplicationModel.Activation;
-using Windows.UI.ApplicationSettings;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -31,6 +28,7 @@ namespace Subsonic8
             _container = new WinRTContainer();
             _container.RegisterWinRTServices();
 
+            _container.RegisterSingleton(typeof(IWinRTWrappersService), "WinRTWrappersService", typeof(WinRTWrappersService));
             _container.RegisterSingleton(typeof(ISubsonicService), "SubsonicService", typeof(SubsonicService));
             _container.RegisterSingleton(typeof(IStorageService), "StorageService", typeof(StorageService));
             _container.RegisterSingleton(typeof(IShellViewModel), "ShellViewModel", typeof(ShellViewModel));
@@ -38,8 +36,6 @@ namespace Subsonic8
             _container.RegisterHandler(typeof(PlaybackViewModel), "PlaybackViewModel", container => container.GetInstance(typeof(IPlaybackViewModel), "PlaybackViewModel"));
             _container.RegisterSingleton(typeof(IDefaultBottomBarViewModel), "DefaultBottomBarViewModel", typeof(DefaultBottomBarViewModel));
             _container.RegisterSingleton(typeof(INotificationService), "NotificationService", typeof(ToastsNotificationService));
-
-            SettingsPane.GetForCurrentView().CommandsRequested += (sender, args) => args.AddSetting<SettingsViewModel>();
         }
 
         protected override object GetInstance(Type service, string key)
@@ -83,8 +79,6 @@ namespace Subsonic8
 
             BindShellViewModelToView(shellView);
 
-            LoadSettings();
-
             ShowMainViewModel();
         }
 
@@ -108,33 +102,6 @@ namespace Subsonic8
         {
             var navigationService = _container.GetInstance(typeof(INavigationService), null) as INavigationService;
             navigationService.NavigateToViewModel<MainViewModel>();
-        }
-
-        private async void LoadSettings()
-        {
-            var subsonic8Configuration = await GetSubsonic8Configuration();
-
-            var subsonicService = (ISubsonicService)GetInstance(typeof(ISubsonicService), null);
-            subsonicService.Configuration = subsonic8Configuration.SubsonicServiceConfiguration;
-
-            var notificationService = (INotificationService)GetInstance(typeof(INotificationService), null);
-            notificationService.UseSound = subsonic8Configuration.ToastsUseSound;
-        }
-
-        private async Task<Subsonic8Configuration> GetSubsonic8Configuration()
-        {
-            var storageService = GetInstance(typeof(IStorageService), null) as IStorageService ?? new StorageService();
-            var subsonic8Configuration = await storageService.Load<Subsonic8Configuration>() ?? new Subsonic8Configuration();
-#if DEBUG
-            const string baseUrl = "http://cristibadila.dynalias.com:33770/music/";
-            subsonic8Configuration.SubsonicServiceConfiguration = new SubsonicServiceConfiguration
-                {
-                    BaseUrl = baseUrl,
-                    Username = "media",
-                    Password = "media"
-                };
-#endif
-            return subsonic8Configuration;
         }
     }
 }

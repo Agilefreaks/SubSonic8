@@ -138,11 +138,13 @@
     <Compile Include="Services\IStorageService.cs" />
     <Compile Include="Services\ISubsonicService.cs" />
     <Compile Include="Services\ISubsonicServiceConfiguration.cs" />
+    <Compile Include="Services\IWinRTWrappersService.cs" />
     <Compile Include="Services\StorageService.cs" />
     <Compile Include="Services\SubsonicService.cs" />
     <Compile Include="Services\SubsonicServiceConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\SubsonicServiceConfigurationExtensions.cs" />
+    <Compile Include="Services\WinRTWrappersService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Caliburn.Micro, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">

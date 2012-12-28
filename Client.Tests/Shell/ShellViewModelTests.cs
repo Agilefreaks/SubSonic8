@@ -17,6 +17,9 @@ namespace Client.Tests.Shell
         private readonly MockEventAggregator _eventAggregator = new MockEventAggregator();
         private MockSubsonicService _mockSubsonicService;
         private MockNavigationService _mockNavigationService;
+        private MockNotificationService _mockNotificationService;
+        private MockStorageService _mockStorageService;
+        private MockWinRTWrappersService _mockWinRTWrappersService;
 
         [TestInitialize]
         public void TestInitialize()
@@ -24,7 +27,11 @@ namespace Client.Tests.Shell
             IoC.GetInstance = (type, s) => null;
             _mockSubsonicService = new MockSubsonicService();
             _mockNavigationService = new MockNavigationService();
-            Subject = new ShellViewModel(_eventAggregator, _mockSubsonicService, _mockNavigationService);
+            _mockNotificationService = new MockNotificationService();
+            _mockStorageService = new MockStorageService();
+            _mockWinRTWrappersService = new MockWinRTWrappersService();
+            Subject = new ShellViewModel(_eventAggregator, _mockSubsonicService, _mockNavigationService,
+                _mockNotificationService, _mockStorageService, _mockWinRTWrappersService);
         }
 
         [TestMethod]
@@ -84,7 +91,7 @@ namespace Client.Tests.Shell
         {
             public bool ExecuteCalled { get; set; }
 
-            public MockSearchResult(ISubsonicServiceConfiguration configuration, string query) 
+            public MockSearchResult(ISubsonicServiceConfiguration configuration, string query)
                 : base(configuration, query)
             {
                 ExecuteCalled = false;

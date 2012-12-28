@@ -6,8 +6,10 @@ using Caliburn.Micro;
 using Client.Common.Models.Subsonic;
 using Client.Common.Services;
 using Subsonic8.BottomBar;
+using Subsonic8.Framework.Services;
 using Subsonic8.Messages;
 using Subsonic8.Search;
+using Subsonic8.Settings;
 using Windows.ApplicationModel.Search;
 using Windows.UI.Xaml;
 
@@ -49,11 +51,13 @@ namespace Subsonic8.Shell
             }
         }
 
-        public ISubsonicService SubsonicService { get; set; }
-
         public IPlayerControls PlayerControls
         {
-            get { return _playerControls; }
+            get
+            {
+                return _playerControls;
+            }
+
             set
             {
                 _playerControls = value;
@@ -61,15 +65,27 @@ namespace Subsonic8.Shell
             }
         }
 
-        public INavigationService NavigationService { get; set; }
-
         public Action<SearchResultCollection> NavigateToSearhResult { get; set; }
 
-        public ShellViewModel(IEventAggregator eventAggregator, ISubsonicService subsonicService, INavigationService navigationService)
+        public ISubsonicService SubsonicService { get; set; }
+
+        public INavigationService NavigationService { get; set; }
+
+        public INotificationService NotificationService { get; set; }
+
+        public IStorageService StorageService { get; set; }
+
+        public IWinRTWrappersService WinRTWrappersService { get; set; }
+
+        public ShellViewModel(IEventAggregator eventAggregator, ISubsonicService subsonicService, INavigationService navigationService,
+            INotificationService notificationService, IStorageService storageService, IWinRTWrappersService winRTWrappersService)
         {
             _eventAggregator = eventAggregator;
             SubsonicService = subsonicService;
             NavigationService = navigationService;
+            NotificationService = notificationService;
+            StorageService = storageService;
+            WinRTWrappersService = winRTWrappersService;
             NavigateToSearhResult = NavigateToSearchResultCall;
             eventAggregator.Subscribe(this);
         }
@@ -108,13 +124,25 @@ namespace Subsonic8.Shell
         {
             base.OnViewAttached(view, context);
 
-            SearchPane.GetForCurrentView().QuerySubmitted += OnQuerySubmitted;
+            WinRTWrappersService.RegisterSearchQueryHandler(OnQuerySubmitted);
+            WinRTWrappersService.RegisterSettingsRequestedHandler((sender, args) => args.AddSetting<SettingsViewModel>());
 
-            if ((_playerControls = view as IPlayerControls) != null)
-            {
-                _playerControls.PlayNextClicked += PlayNext;
-                _playerControls.PlayPreviousClicked += PlayPrevious;
-            }
+            HookupPlayerControls((IPlayerControls)view);
+
+            LoadSettings();
+        }
+
+        public void MainAppBarClosed(object sender, object e)
+        {
+            Debugger.Break();
+            BottomBar.IsOpened = BottomBar.SelectedItems.Any();
+        }
+
+        private void HookupPlayerControls(IPlayerControls playerControls)
+        {
+            _playerControls = playerControls;
+            _playerControls.PlayNextClicked += PlayNext;
+            _playerControls.PlayPreviousClicked += PlayPrevious;
         }
 
         private void NavigateToSearchResultCall(SearchResultCollection searchResultCollection)
@@ -127,10 +155,28 @@ namespace Subsonic8.Shell
             await PerformSubsonicSearch(args.QueryText);
         }
 
-        public void MainAppBarClosed(object sender, object e)
+        private async void LoadSettings()
         {
-            Debugger.Break();
-            BottomBar.IsOpened = BottomBar.SelectedItems.Any();
+            var subsonic8Configuration = await GetSubsonic8Configuration();
+
+            SubsonicService.Configuration = subsonic8Configuration.SubsonicServiceConfiguration;
+
+            NotificationService.UseSound = subsonic8Configuration.ToastsUseSound;
+        }
+
+        private async Task<Subsonic8Configuration> GetSubsonic8Configuration()
+        {
+            var subsonic8Configuration = await StorageService.Load<Subsonic8Configuration>() ?? new Subsonic8Configuration();
+#if DEBUG
+            const string baseUrl = "http://cristibadila.dynalias.com:33770/music/";
+            subsonic8Configuration.SubsonicServiceConfiguration = new SubsonicServiceConfiguration
+            {
+                BaseUrl = baseUrl,
+                Username = "media",
+                Password = "media"
+            };
+#endif
+            return subsonic8Configuration;
         }
     }
 }
