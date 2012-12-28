@@ -561,7 +561,7 @@ namespace Client.Tests.Playback
         public async Task HandleWithPlaylistMessage_QueHasItemOfTypeArtist_CallsSubsonicServiceGetArtistAndAddsAllSongsFromAllAlbumsToThePlaylist()
         {
             MockLoadModel();
-            var addToPlaylistQue = new List<ISubsonicModel> { new Common.Models.Subsonic.Artist { Id = 5 } };
+            var addToPlaylistQue = new List<ISubsonicModel> { new ExpandedArtist { Id = 5 } };
             var albums = new List<Common.Models.Subsonic.Album> { new Common.Models.Subsonic.Album(), new Common.Models.Subsonic.Album() };
             var artist = new ExpandedArtist { Albums = albums };
             var mockGetAlbumResult = new MockGetArtistResult { GetResultFunc = () => artist };
