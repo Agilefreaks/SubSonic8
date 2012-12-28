@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using Client.Common.Models.Subsonic;
@@ -132,12 +130,6 @@ namespace Subsonic8.Shell
             LoadSettings();
         }
 
-        public void MainAppBarClosed(object sender, object e)
-        {
-            Debugger.Break();
-            BottomBar.IsOpened = BottomBar.SelectedItems.Any();
-        }
-
         private void HookupPlayerControls(IPlayerControls playerControls)
         {
             _playerControls = playerControls;
@@ -166,7 +158,7 @@ namespace Subsonic8.Shell
 
         private async Task<Subsonic8Configuration> GetSubsonic8Configuration()
         {
-            var subsonic8Configuration = await StorageService.Load<Subsonic8Configuration>() ?? new Subsonic8Configuration();
+            var subsonic8Configuration = await StorageService.Load<Subsonic8Configuration>() ??new Subsonic8Configuration();
 #if DEBUG
             const string baseUrl = "http://cristibadila.dynalias.com:33770/music/";
             subsonic8Configuration.SubsonicServiceConfiguration = new SubsonicServiceConfiguration

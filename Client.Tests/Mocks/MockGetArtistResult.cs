@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using Client.Common.Models.Subsonic;
@@ -18,7 +17,7 @@ namespace Client.Tests.Mocks
 
         public ISubsonicServiceConfiguration Configuration { get; private set; }
 
-        public Func<Task<Stream>> Response { get; set; }
+        public Func<Task<HttpStreamResult>> Response { get; set; }
 
         public ExpandedArtist Result { get; private set; }
 

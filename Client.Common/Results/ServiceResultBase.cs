@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Net.Http;
+using System.ServiceModel;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Caliburn.Micro;
@@ -18,7 +19,7 @@ namespace Client.Common.Results
 
         public abstract string ViewName { get; }
 
-        public Func<Task<Stream>> Response { get; set; }
+        public Func<Task<HttpStreamResult>> Response { get; set; }
 
         public virtual string RequestUrl
         {
@@ -38,19 +39,20 @@ namespace Client.Common.Results
 
         public override async Task Execute(ActionExecutionContext context = null)
         {
-            try
-            {
-                await new VisualStateResult("Loading").Execute();
+            await new VisualStateResult("Loading").Execute();
 
-                var stream = await Response();
-                HandleStreamResponse(stream);
+            var response = await Response();
 
-                await new VisualStateResult("LoadingComplete").Execute();
-            }
-            catch (HttpRequestException e)
+            if (response.Exception != null)
             {
-                OnError(e);
+                OnError(new CommunicationException("Could not connect to the server. Please check the values in the settings panel.\r\n", response.Exception));
             }
+            else
+            {
+                HandleStreamResponse(response.Stream);
+            }
+
+            await new VisualStateResult("LoadingComplete").Execute();
         }
 
         public virtual void HandleStreamResponse(Stream stream)
@@ -78,12 +80,26 @@ namespace Client.Common.Results
             return null;
         }
 
-        private async Task<Stream> ResponseFunc()
+        protected override async void OnError(Exception error)
         {
-            var response = await Client.GetAsync(RequestUrl);
-            var stream = await response.Content.ReadAsStreamAsync();
+            base.OnError(error);
+            await new MessageDialogResult(error.ToString(), "Ooops...").Execute();
+        }
 
-            return stream;
+        private async Task<HttpStreamResult> ResponseFunc()
+        {
+            var result = new HttpStreamResult();
+            try
+            {
+                var response = await Client.GetAsync(RequestUrl);
+                result.Stream = await response.Content.ReadAsStreamAsync();
+            }
+            catch (Exception exception)
+            {
+                result.Exception = exception;
+            }
+
+            return result;
         }
     }
 }

@@ -118,6 +118,7 @@
     <Compile Include="Results\GetMusicDirectoryResult.cs" />
     <Compile Include="Results\GetRootResult.cs" />
     <Compile Include="Results\GetSongResult.cs" />
+    <Compile Include="Results\HttpStreamResult.cs" />
     <Compile Include="Results\IGetAlbumResult.cs" />
     <Compile Include="Results\IGetArtistResult.cs" />
     <Compile Include="Results\IGetMusicDirectoryResult.cs" />

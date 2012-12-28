@@ -17,7 +17,7 @@ namespace Client.Tests.Mocks
 
         public string ViewName { get; private set; }
 
-        public Func<Task<Stream>> Response { get; set; }
+        public Func<Task<HttpStreamResult>> Response { get; set; }
 
         public string RequestUrl { get; private set; }
 
