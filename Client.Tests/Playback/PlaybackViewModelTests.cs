@@ -50,6 +50,7 @@ namespace Client.Tests.Playback
                           {
                               NavigationService = _navigationService,
                               SubsonicService = _subsonicService,
+                              BottomBar = new MockDefaultBottomBarViewModel(),
                               LoadModel = model =>
                                               {
                                                   var tcr = new TaskCompletionSource<PlaylistItemViewModel>();
@@ -246,6 +247,16 @@ namespace Client.Tests.Playback
         }
 
         [TestMethod]
+        public void PlaySetsIsOpenOnBottomBarToTrue()
+        {
+            Subject.PlaylistItems.Add(new PlaylistItemViewModel { Item = new Song() });
+
+            Subject.Play();
+
+            Subject.BottomBar.IsPlaying.Should().BeTrue();
+        }
+
+        [TestMethod]
         public void PauseIfPlayerIsPlayingCallsShellViewModelPlayPause()
         {
             Subject.PlaylistItems.Add(new PlaylistItemViewModel { PlayingState = PlaylistItemState.Playing });
@@ -265,6 +276,16 @@ namespace Client.Tests.Playback
             Subject.Pause();
 
             ((MockShellViewModel)Subject.ShellViewModel).PlayPauseCallCount.Should().Be(0);
+        }
+
+        [TestMethod]
+        public void StopSetsIsOpenOnBottomBarToFalse()
+        {
+            Subject.BottomBar.IsPlaying = true;
+
+            Subject.Stop();
+
+            Subject.BottomBar.IsPlaying.Should().BeFalse();
         }
 
         [TestMethod]
@@ -288,6 +309,17 @@ namespace Client.Tests.Playback
         }
 
         [TestMethod]
+        public void StopWillSetIsPlayingToFalse()
+        {
+            Subject.PlaylistItems.Add(new PlaylistItemViewModel { Item = new Song { IsVideo = false } });
+            Subject.Play();
+
+            Subject.Stop();
+
+            Subject.IsPlaying.Should().BeFalse();
+        }
+
+        [TestMethod]
         public void StartShouldSetUriToShellViewModelSource()
         {
             var uri = new Uri("http://test.cc");
@@ -303,6 +335,16 @@ namespace Client.Tests.Playback
             Subject.Start(new PlaylistItemViewModel { CoverArtId = "42", Item = new Song { IsVideo = false } });
 
             Subject.CoverArt.Should().NotBeNull();
+        }
+
+        [TestMethod]
+        public void StartSetsIsPlayingToTrue()
+        {
+            Subject.PlaylistItems.Add(new PlaylistItemViewModel { Item = new Song() });
+
+            Subject.Play();
+
+            Subject.IsPlaying.Should().BeTrue();
         }
 
         [TestMethod]
@@ -392,6 +434,17 @@ namespace Client.Tests.Playback
             Subject.Start(new PlaylistItemViewModel { Item = new Song() });
 
             (mockSubsonicService.GetCoverArtForIdCallCount > 0).Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void PauseWillSetIsPlayingToFalse()
+        {
+            Subject.PlaylistItems.Add(new PlaylistItemViewModel { Item = new Song() });
+            Subject.Play();
+
+            Subject.Pause();
+
+            Subject.IsPlaying.Should().BeFalse();
         }
 
         [TestMethod]
