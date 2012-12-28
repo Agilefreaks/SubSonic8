@@ -9,5 +9,8 @@ namespace Client.Common.Services
 
         Task<T> Load<T>()
             where T : class;
+
+        Task Delete<T>()
+            where T : class;
     }
 }

@@ -18,5 +18,12 @@ namespace Client.Common.Services
             var objectStorageHelper = new ObjectStorageHelper<T>(StorageType.Roaming);
             return await objectStorageHelper.LoadAsync();
         }
+
+        public async Task Delete<T>()
+            where T : class
+        {
+            var objectStorageHelper = new ObjectStorageHelper<T>(StorageType.Roaming);
+            await objectStorageHelper.DeleteAsync();
+        }
     }
 }
