@@ -129,7 +129,8 @@ namespace Subsonic8.Playback
 
         #endregion
 
-        public PlaybackViewModel(IEventAggregator eventAggregator, IShellViewModel shellViewModel, ISubsonicService subsonicService, INotificationService notificationService)
+        public PlaybackViewModel(IEventAggregator eventAggregator, IShellViewModel shellViewModel, 
+            ISubsonicService subsonicService, INotificationService notificationService)
         {
             _eventAggregator = eventAggregator;
             _notificationService = notificationService;

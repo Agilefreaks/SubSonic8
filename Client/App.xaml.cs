@@ -35,6 +35,7 @@ namespace Subsonic8
             _container.RegisterSingleton(typeof(IStorageService), "StorageService", typeof(StorageService));
             _container.RegisterSingleton(typeof(IShellViewModel), "ShellViewModel", typeof(ShellViewModel));
             _container.RegisterSingleton(typeof(IPlaybackViewModel), "PlaybackViewModel", typeof(PlaybackViewModel));
+            _container.RegisterHandler(typeof(PlaybackViewModel), "PlaybackViewModel", container => container.GetInstance(typeof(IPlaybackViewModel), "PlaybackViewModel"));
             _container.RegisterSingleton(typeof(IDefaultBottomBarViewModel), "DefaultBottomBarViewModel", typeof(DefaultBottomBarViewModel));
             _container.RegisterSingleton(typeof(INotificationService), "NotificationService", typeof(ToastsNotificationService));
 
@@ -43,9 +44,7 @@ namespace Subsonic8
 
         protected override object GetInstance(Type service, string key)
         {
-            var result = _container.GetInstance(service, key);
-
-            return result;
+            return _container.GetInstance(service, key);
         }
 
         protected override IEnumerable<object> GetAllInstances(Type service)
@@ -58,17 +57,11 @@ namespace Subsonic8
             _container.BuildUp(instance);
         }
 
-        protected override void PrepareViewFirst(Frame rootFrame)
-        {
-            base.PrepareViewFirst(rootFrame);
-            InitializeServices();
-        }
-
         protected override void OnLaunched(LaunchActivatedEventArgs args)
         {
             StartApplication();
         }
-    
+
         protected async override void OnSearchActivated(SearchActivatedEventArgs args)
         {
             var frame = Window.Current.Content as Frame;
@@ -84,23 +77,20 @@ namespace Subsonic8
         {
             DisplayRootView<ShellView>();
 
-            var shellView = (ShellView) RootFrame.Content;
+            var shellView = GetShellView();
+
             RegisterNavigationService(shellView.ShellFrame);
 
-            var navigationService = _container.GetInstance(typeof (INavigationService), null) as INavigationService;
-            navigationService.NavigateToViewModel<MainViewModel>();
+            BindShellViewModelToView(shellView);
 
+            LoadSettings();
 
-            RegisterPlaybackViewModel();
-
-            _shellViewModel = (IShellViewModel) _container.GetInstance(typeof (IShellViewModel), null);
-            ViewModelBinder.Bind(_shellViewModel, shellView, null);
+            ShowMainViewModel();
         }
 
-        private void RegisterPlaybackViewModel()
+        private ShellView GetShellView()
         {
-            var instance = _container.GetInstance(typeof(IPlaybackViewModel), "PlaybackViewModel");
-            _container.RegisterInstance(typeof(PlaybackViewModel), "PlaybackViewModel", instance);
+            return (ShellView)RootFrame.Content;
         }
 
         private void RegisterNavigationService(Frame shellFrame, bool treatViewAsLoaded = false)
@@ -108,19 +98,32 @@ namespace Subsonic8
             _container.RegisterInstance(typeof(INavigationService), "NavigationService", new CustomFrameAdapter(shellFrame, treatViewAsLoaded));
         }
 
-        private async void InitializeServices()
+        private void BindShellViewModelToView(ShellView shellView)
+        {
+            _shellViewModel = (IShellViewModel)_container.GetInstance(typeof(IShellViewModel), null);
+            ViewModelBinder.Bind(_shellViewModel, shellView, null);
+        }
+
+        private void ShowMainViewModel()
+        {
+            var navigationService = _container.GetInstance(typeof(INavigationService), null) as INavigationService;
+            navigationService.NavigateToViewModel<MainViewModel>();
+        }
+
+        private async void LoadSettings()
         {
             var subsonic8Configuration = await GetSubsonic8Configuration();
 
             var subsonicService = (ISubsonicService)GetInstance(typeof(ISubsonicService), null);
             subsonicService.Configuration = subsonic8Configuration.SubsonicServiceConfiguration;
+
             var notificationService = (INotificationService)GetInstance(typeof(INotificationService), null);
             notificationService.UseSound = subsonic8Configuration.ToastsUseSound;
         }
 
         private async Task<Subsonic8Configuration> GetSubsonic8Configuration()
         {
-            var storageService = GetInstance(typeof (IStorageService), null) as IStorageService ?? new StorageService();
+            var storageService = GetInstance(typeof(IStorageService), null) as IStorageService ?? new StorageService();
             var subsonic8Configuration = await storageService.Load<Subsonic8Configuration>() ?? new Subsonic8Configuration();
 #if DEBUG
             const string baseUrl = "http://cristibadila.dynalias.com:33770/music/";
