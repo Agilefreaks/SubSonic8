@@ -27,11 +27,7 @@ namespace Subsonic8.Main
             var getIndexResult = SubsonicService.GetRootIndex();
             await getIndexResult.Execute();
 
-            if (getIndexResult.Error != null)
-            {
-                await new MessageDialogResult(getIndexResult.Error.ToString(), "This is a sad day").Execute();
-            }
-            else
+            if (getIndexResult.Error == null)
             {
                 SetMenuItems(getIndexResult);
             }

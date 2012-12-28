@@ -1,8 +1,8 @@
-﻿using Subsonic8.Framework;
+﻿using Subsonic8.Framework.Services;
 
 namespace Client.Tests.Mocks
 {
-    public class MockNotificationManager : INotificationManager
+    public class MockNotificationService : INotificationService
     {
         public int ShowCallCount { get; set; }
 
@@ -10,5 +10,7 @@ namespace Client.Tests.Mocks
         {
             ShowCallCount++;
         }
+
+        public bool UseSound { get; set; }
     }
 }

@@ -16,11 +16,6 @@ namespace Client.Common.Results
             _title = title;
         }
 
-        public async Task Execute()
-        {
-            await Execute();
-        }
-
         protected override async Task ExecuteCore(ActionExecutionContext context = null)
         {
             var dialog = new MessageDialog(_content, _title);

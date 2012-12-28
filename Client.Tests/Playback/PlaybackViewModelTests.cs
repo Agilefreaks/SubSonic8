@@ -13,8 +13,6 @@ using Subsonic8.Messages;
 using Subsonic8.Playback;
 using Subsonic8.PlaylistItem;
 using Subsonic8.Shell;
-using Windows.UI.Xaml;
-using Action = System.Action;
 
 namespace Client.Tests.Playback
 {
@@ -28,7 +26,9 @@ namespace Client.Tests.Playback
         private MockNavigationService _navigationService;
         private IShellViewModel _shellViewModel;
         private MockPlayerControls _playerControls;
-        private MockNotificationManager _notificationManager;
+        private MockNotificationService _notificationService;
+        private MockStorageService _mockStorageService;
+        private MockWinRTWrappersService _mockWinRTWrappersService;
 
         [TestInitialize]
         public void TestInitialize()
@@ -37,13 +37,16 @@ namespace Client.Tests.Playback
             _subsonicService = new MockSubsonicService();
             _navigationService = new MockNavigationService();
             _playerControls = new MockPlayerControls();
-            _notificationManager = new MockNotificationManager();
-            _shellViewModel = new ShellViewModel(_eventAggregator, _subsonicService, _navigationService)
+            _notificationService = new MockNotificationService();
+            _mockStorageService = new MockStorageService();
+            _mockWinRTWrappersService = new MockWinRTWrappersService();
+            _shellViewModel = new ShellViewModel(_eventAggregator, _subsonicService, _navigationService, _notificationService,
+                _mockStorageService, _mockWinRTWrappersService)
                                   {
                                       PlayerControls = _playerControls
                                   };
 
-            Subject = new PlaybackViewModel(_eventAggregator, _shellViewModel, _subsonicService, _notificationManager)
+            Subject = new PlaybackViewModel(_eventAggregator, _shellViewModel, _subsonicService, _notificationService)
                           {
                               NavigationService = _navigationService,
                               SubsonicService = _subsonicService,
@@ -103,7 +106,7 @@ namespace Client.Tests.Playback
 
             Subject.Handle(new PlayNextMessage());
 
-            _notificationManager.ShowCallCount.Should().Be(1);
+            _notificationService.ShowCallCount.Should().Be(1);
         }
 
         [TestMethod]
@@ -447,21 +450,7 @@ namespace Client.Tests.Playback
         [TestMethod]
         public async Task ParameterWhenSetToTypeVideoShouldSetSourceOnShellViewModelToNullAndSourceOnPlaybackViewModelToNewUri()
         {
-            Subject.LoadModel = model =>
-            {
-                var tcr = new TaskCompletionSource<PlaylistItemViewModel>();
-                var playlistItemViewModel = new PlaylistItemViewModel
-                {
-                    Item = new Song
-                    {
-                        IsVideo = true
-                    },
-                    PlayingState = PlaylistItemState.NotPlaying,
-                    Uri = new Uri("http://something")
-                };
-                tcr.SetResult(playlistItemViewModel);
-                return tcr.Task;
-            };
+            MockLoadModel(true);
             await Task.Run(() =>
             {
                 _shellViewModel.Source = new Uri("http://this-should-become.null");
@@ -571,21 +560,7 @@ namespace Client.Tests.Playback
         {
             var called = false;
             Subject.Start = item => { called = true; };
-            Subject.LoadModel = model =>
-            {
-                var tcr = new TaskCompletionSource<PlaylistItemViewModel>();
-                var playlistItemViewModel = new PlaylistItemViewModel
-                {
-                    Item = new Song
-                    {
-                        IsVideo = false
-                    },
-                    PlayingState = PlaylistItemState.NotPlaying,
-                    Uri = new Uri("http://something")
-                };
-                tcr.SetResult(playlistItemViewModel);
-                return tcr.Task;
-            };
+            MockLoadModel();
 
             await Task.Run(() => Subject.Handle(new PlaylistMessage { Queue = new List<ISubsonicModel> { new Song { IsVideo = false } } }));
 
@@ -598,21 +573,7 @@ namespace Client.Tests.Playback
             var called = false;
             Subject.Source = new Uri("http://test");
             Subject.Start = item => { called = true; };
-            Subject.LoadModel = model =>
-            {
-                var tcr = new TaskCompletionSource<PlaylistItemViewModel>();
-                var playlistItemViewModel = new PlaylistItemViewModel
-                {
-                    Item = new Song
-                    {
-                        IsVideo = false
-                    },
-                    PlayingState = PlaylistItemState.NotPlaying,
-                    Uri = new Uri("http://something")
-                };
-                tcr.SetResult(playlistItemViewModel);
-                return tcr.Task;
-            };
+            MockLoadModel();
 
             await Task.Run(() => Subject.Handle(new PlaylistMessage { Queue = new List<ISubsonicModel> { new Song { IsVideo = false } } }));
 
@@ -625,25 +586,87 @@ namespace Client.Tests.Playback
             var called = false;
             Subject.ShellViewModel.Source = new Uri("http://test");
             Subject.Start = item => { called = true; };
-            Subject.LoadModel = model =>
-            {
-                var tcr = new TaskCompletionSource<PlaylistItemViewModel>();
-                var playlistItemViewModel = new PlaylistItemViewModel
-                {
-                    Item = new Song
-                    {
-                        IsVideo = false
-                    },
-                    PlayingState = PlaylistItemState.NotPlaying,
-                    Uri = new Uri("http://something")
-                };
-                tcr.SetResult(playlistItemViewModel);
-                return tcr.Task;
-            };
+            MockLoadModel();
 
             await Task.Run(() => Subject.Handle(new PlaylistMessage { Queue = new List<ISubsonicModel> { new Song { IsVideo = false } } }));
 
             called.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public async Task HandleWithPlaylistMessage_QueHasItemOfTypeAlbum_CallsSubsonicServiceGetAlbumAndAdsAllItsSongsToThePlaylist()
+        {
+            MockLoadModel();
+            var subsonicModels = new List<ISubsonicModel> { new Common.Models.Subsonic.Album { Id = 5 } };
+            var songs = new List<Song> { new Song(), new Song() };
+            var album = new Common.Models.Subsonic.Album { Songs = songs };
+            var mockGetAlbumResult = new MockGetAlbumResult { GetResultFunc = () => album };
+            var callCount = 0;
+            _subsonicService.GetAlbum = albumId =>
+                {
+                    callCount++;
+                    albumId.Should().Be(5);
+                    return mockGetAlbumResult;
+                };
+
+            await Task.Run(() => Subject.Handle(new PlaylistMessage { Queue = subsonicModels }));
+
+            callCount.Should().Be(1);
+            Subject.PlaylistItems.Count.Should().Be(2);
+        }
+
+        [TestMethod]
+        public async Task HandleWithPlaylistMessage_QueHasItemOfTypeArtist_CallsSubsonicServiceGetArtistAndAddsAllSongsFromAllAlbumsToThePlaylist()
+        {
+            MockLoadModel();
+            var addToPlaylistQue = new List<ISubsonicModel> { new ExpandedArtist { Id = 5 } };
+            var albums = new List<Common.Models.Subsonic.Album> { new Common.Models.Subsonic.Album(), new Common.Models.Subsonic.Album() };
+            var artist = new ExpandedArtist { Albums = albums };
+            var mockGetAlbumResult = new MockGetArtistResult { GetResultFunc = () => artist };
+            var callCount = 0;
+            _subsonicService.GetArtist = albumId =>
+                {
+                    callCount++;
+                    albumId.Should().Be(5);
+                    return mockGetAlbumResult;
+                };
+            var getAlbumCallCount = 0;
+            _subsonicService.GetAlbum = artistId =>
+                {
+                    getAlbumCallCount++;
+                    return new MockGetAlbumResult
+                        {
+                            GetResultFunc = () => new Common.Models.Subsonic.Album { Songs = new List<Song> { new Song() } }
+                        };
+                };
+
+            await Task.Run(() => Subject.Handle(new PlaylistMessage { Queue = addToPlaylistQue }));
+
+            callCount.Should().Be(1);
+            getAlbumCallCount.Should().Be(2);
+            Subject.PlaylistItems.Count.Should().Be(2);
+        }
+
+        [TestMethod]
+        public async Task HandleWithPlaylistMessage_QueHasItemOfTypeMusicDirectory_CallsSubsonicServiceGetMusicDirectorysAndAddsAllSongsToThePlaylist()
+        {
+            MockLoadModel();
+            var addToPlaylistQue = new List<ISubsonicModel> { new Common.Models.Subsonic.MusicDirectory { Id = 5 } };
+            var children = new List<MusicDirectoryChild> { new MusicDirectoryChild(), new MusicDirectoryChild() };
+            var musicDirectory = new Common.Models.Subsonic.MusicDirectory { Children = children };
+            var mockGetAlbumResult = new MockGetMusicDirectoryResult { GetResultFunc = () => musicDirectory };
+            var callCount = 0;
+            _subsonicService.GetMusicDirectory = directoryId =>
+                {
+                    callCount++;
+                    directoryId.Should().Be(5);
+                    return mockGetAlbumResult;
+                };
+
+            await Task.Run(() => Subject.Handle(new PlaylistMessage { Queue = addToPlaylistQue }));
+
+            callCount.Should().Be(1);
+            Subject.PlaylistItems.Count.Should().Be(2);
         }
 
         [TestMethod]
@@ -669,21 +692,7 @@ namespace Client.Tests.Playback
         [TestMethod]
         public async Task HandleWithPlayFileShouldSetSourceOnShellViewModel()
         {
-            Subject.LoadModel = model =>
-            {
-                var tcr = new TaskCompletionSource<PlaylistItemViewModel>();
-                var playlistItemViewModel = new PlaylistItemViewModel
-                {
-                    Item = new Song
-                    {
-                        IsVideo = false
-                    },
-                    PlayingState = PlaylistItemState.NotPlaying,
-                    Uri = new Uri("http://something")
-                };
-                tcr.SetResult(playlistItemViewModel);
-                return tcr.Task;
-            };
+            MockLoadModel();
 
             await Task.Run(() => Subject.Handle(new PlayFile { Model = new Song { IsVideo = false } }));
 
@@ -693,21 +702,7 @@ namespace Client.Tests.Playback
         [TestMethod]
         public async Task HandleWithPlayFileOfTypeSongShouldSetSourceOnShellViewModelToNewUriAndSourceOnPlaybackViewModelToNull()
         {
-            Subject.LoadModel = model =>
-            {
-                var tcr = new TaskCompletionSource<PlaylistItemViewModel>();
-                var playlistItemViewModel = new PlaylistItemViewModel
-                {
-                    Item = new Song
-                    {
-                        IsVideo = false
-                    },
-                    PlayingState = PlaylistItemState.NotPlaying,
-                    Uri = new Uri("http://something")
-                };
-                tcr.SetResult(playlistItemViewModel);
-                return tcr.Task;
-            };
+            MockLoadModel();
             Subject.Source = new Uri("http://this-should-become.null");
 
             await Task.Run(() => Subject.Handle(new PlayFile { Model = new Song { IsVideo = false } }));
@@ -719,23 +714,7 @@ namespace Client.Tests.Playback
         [TestMethod]
         public async Task HandleWithPlayfileShouldAddItemToPlaylist()
         {
-            ISubsonicModel item = null;
-            Subject.LoadModel = model =>
-            {
-                var tcr = new TaskCompletionSource<PlaylistItemViewModel>();
-                var playlistItemViewModel = new PlaylistItemViewModel
-                {
-                    Item = new Song
-                    {
-                        IsVideo = false
-                    },
-                    PlayingState = PlaylistItemState.NotPlaying,
-                    Uri = new Uri("http://something")
-                };
-                tcr.SetResult(playlistItemViewModel);
-                item = playlistItemViewModel.Item;
-                return tcr.Task;
-            };
+            var item = MockLoadModel();
 
             await Task.Run(() => Subject.Handle(new PlayFile { Model = new Song() }));
 
@@ -753,25 +732,26 @@ namespace Client.Tests.Playback
 
             called.Should().BeTrue();
         }
-    }
 
-    internal class MockPlayerControls : IPlayerControls
-    {
-        public event RoutedEventHandler PlayNextClicked;
-        public event RoutedEventHandler PlayPreviousClicked;
-
-        public Action PlayPause { get; private set; }
-
-        public int PlayPauseCallCount { get; set; }
-
-        public MockPlayerControls()
+        private ISubsonicModel MockLoadModel(bool isVideo = false)
         {
-            PlayPause = PlayPauseImpl;
-        }
+            var item = new Song
+                {
+                    IsVideo = isVideo
+                };
+            Subject.LoadModel = model =>
+                {
+                    var tcr = new TaskCompletionSource<PlaylistItemViewModel>();
+                    tcr.SetResult(new PlaylistItemViewModel
+                        {
+                            Item = item,
+                            PlayingState = PlaylistItemState.NotPlaying,
+                            Uri = new Uri("http://something")
+                        });
+                    return tcr.Task;
+                };
 
-        private void PlayPauseImpl()
-        {
-            PlayPauseCallCount++;
+            return item;
         }
     }
 }
