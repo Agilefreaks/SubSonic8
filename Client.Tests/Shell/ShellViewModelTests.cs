@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using Caliburn.Micro;
-using Client.Common.Results;
 using Client.Common.Services;
 using Client.Tests.Mocks;
 using FluentAssertions;
@@ -17,6 +16,9 @@ namespace Client.Tests.Shell
         private readonly MockEventAggregator _eventAggregator = new MockEventAggregator();
         private MockSubsonicService _mockSubsonicService;
         private MockNavigationService _mockNavigationService;
+        private MockNotificationService _mockNotificationService;
+        private MockStorageService _mockStorageService;
+        private MockWinRTWrappersService _mockWinRTWrappersService;
 
         [TestInitialize]
         public void TestInitialize()
@@ -24,7 +26,11 @@ namespace Client.Tests.Shell
             IoC.GetInstance = (type, s) => null;
             _mockSubsonicService = new MockSubsonicService();
             _mockNavigationService = new MockNavigationService();
-            Subject = new ShellViewModel(_eventAggregator, _mockSubsonicService, _mockNavigationService);
+            _mockNotificationService = new MockNotificationService();
+            _mockStorageService = new MockStorageService();
+            _mockWinRTWrappersService = new MockWinRTWrappersService();
+            Subject = new ShellViewModel(_eventAggregator, _mockSubsonicService, _mockNavigationService,
+                _mockNotificationService, _mockStorageService, _mockWinRTWrappersService);
         }
 
         [TestMethod]
@@ -78,24 +84,5 @@ namespace Client.Tests.Shell
 
             _eventAggregator.PublishCallCount.Should().Be(1);
         }
-
-        # region Mocks
-        internal class MockSearchResult : SearchResult
-        {
-            public bool ExecuteCalled { get; set; }
-
-            public MockSearchResult(ISubsonicServiceConfiguration configuration, string query) 
-                : base(configuration, query)
-            {
-                ExecuteCalled = false;
-            }
-
-            public override async Task Execute(ActionExecutionContext context = null)
-            {
-                await Task.Run(() => ExecuteCalled = true);
-            }
-        }
-
-        #endregion
     }
 }

@@ -36,5 +36,13 @@ namespace Client.Common.Models.Subsonic
         {
             return new Tuple<string, string>(Name, string.Format("{0} albums", AlbumCount));
         }
+
+        public override SubsonicModelTypeEnum Type
+        {
+            get
+            {
+                return SubsonicModelTypeEnum.Artist;
+            }
+        }
     }
 }

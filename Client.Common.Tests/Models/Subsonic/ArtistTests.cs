@@ -29,9 +29,9 @@ namespace Client.Common.Tests.Models.Subsonic
         }
 
         [TestMethod]
-        public void TypePropertyAlwaysReturnsNavigableTypeEnumAlbum()
+        public void TypePropertyAlwaysReturnsNavigableTypeEnumMusicDirectory()
         {
-            _subject.Type.Should().Be(SubsonicModelTypeEnum.Artist);
+            _subject.Type.Should().Be(SubsonicModelTypeEnum.MusicDirectory);
         }
     }
 }

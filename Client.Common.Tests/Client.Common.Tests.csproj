@@ -113,6 +113,7 @@
   <ItemGroup>
     <Compile Include="Models\Subsonic\AlbumTests.cs" />
     <Compile Include="Models\Subsonic\ArtistTests.cs" />
+    <Compile Include="Models\Subsonic\ExpandedArtistTests.cs" />
     <Compile Include="Models\Subsonic\MusicDirectoryChildTests.cs" />
     <Compile Include="Models\Subsonic\MusicDirectoryTests.cs" />
     <Compile Include="Models\Subsonic\SearchResultCollectionTests.cs" />

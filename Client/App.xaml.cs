@@ -3,14 +3,11 @@ using System.Collections.Generic;
 using Caliburn.Micro;
 using Client.Common.Services;
 using Subsonic8.BottomBar;
-using Subsonic8.Framework;
+using Subsonic8.Framework.Services;
 using Subsonic8.Main;
 using Subsonic8.Playback;
-using Subsonic8.Settings;
 using Subsonic8.Shell;
-using WinRtUtility;
 using Windows.ApplicationModel.Activation;
-using Windows.UI.ApplicationSettings;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -31,20 +28,19 @@ namespace Subsonic8
             _container = new WinRTContainer();
             _container.RegisterWinRTServices();
 
+            _container.RegisterSingleton(typeof(IWinRTWrappersService), "WinRTWrappersService", typeof(WinRTWrappersService));
             _container.RegisterSingleton(typeof(ISubsonicService), "SubsonicService", typeof(SubsonicService));
+            _container.RegisterSingleton(typeof(IStorageService), "StorageService", typeof(StorageService));
             _container.RegisterSingleton(typeof(IShellViewModel), "ShellViewModel", typeof(ShellViewModel));
             _container.RegisterSingleton(typeof(IPlaybackViewModel), "PlaybackViewModel", typeof(PlaybackViewModel));
+            _container.RegisterHandler(typeof(PlaybackViewModel), "PlaybackViewModel", container => container.GetInstance(typeof(IPlaybackViewModel), "PlaybackViewModel"));
             _container.RegisterSingleton(typeof(IDefaultBottomBarViewModel), "DefaultBottomBarViewModel", typeof(DefaultBottomBarViewModel));
-            _container.RegisterSingleton(typeof(INotificationManager), "NotificationManager", typeof(ToastsNotificationManager));
-
-            SettingsPane.GetForCurrentView().CommandsRequested += (sender, args) => args.AddSetting<SettingsViewModel>();
+            _container.RegisterSingleton(typeof(INotificationService), "NotificationService", typeof(ToastsNotificationService));
         }
 
         protected override object GetInstance(Type service, string key)
         {
-            var result = _container.GetInstance(service, key);
-
-            return result;
+            return _container.GetInstance(service, key);
         }
 
         protected override IEnumerable<object> GetAllInstances(Type service)
@@ -57,17 +53,11 @@ namespace Subsonic8
             _container.BuildUp(instance);
         }
 
-        protected override void PrepareViewFirst(Frame rootFrame)
-        {
-            base.PrepareViewFirst(rootFrame);
-            InitializeSubsonicService();
-        }
-
         protected override void OnLaunched(LaunchActivatedEventArgs args)
         {
             StartApplication();
         }
-    
+
         protected async override void OnSearchActivated(SearchActivatedEventArgs args)
         {
             var frame = Window.Current.Content as Frame;
@@ -83,23 +73,18 @@ namespace Subsonic8
         {
             DisplayRootView<ShellView>();
 
-            var shellView = (ShellView) RootFrame.Content;
+            var shellView = GetShellView();
+
             RegisterNavigationService(shellView.ShellFrame);
 
-            var navigationService = _container.GetInstance(typeof (INavigationService), null) as INavigationService;
-            navigationService.NavigateToViewModel<MainViewModel>();
+            BindShellViewModelToView(shellView);
 
-
-            RegisterPlaybackViewModel();
-
-            _shellViewModel = (IShellViewModel) _container.GetInstance(typeof (IShellViewModel), null);
-            ViewModelBinder.Bind(_shellViewModel, shellView, null);
+            ShowMainViewModel();
         }
 
-        private void RegisterPlaybackViewModel()
+        private ShellView GetShellView()
         {
-            var instance = _container.GetInstance(typeof(IPlaybackViewModel), "PlaybackViewModel");
-            _container.RegisterInstance(typeof(PlaybackViewModel), "PlaybackViewModel", instance);
+            return (ShellView)RootFrame.Content;
         }
 
         private void RegisterNavigationService(Frame shellFrame, bool treatViewAsLoaded = false)
@@ -107,24 +92,16 @@ namespace Subsonic8
             _container.RegisterInstance(typeof(INavigationService), "NavigationService", new CustomFrameAdapter(shellFrame, treatViewAsLoaded));
         }
 
-        private async void InitializeSubsonicService()
+        private void BindShellViewModelToView(ShellView shellView)
         {
-            var storageHelper = new ObjectStorageHelper<SubsonicServiceConfiguration>(StorageType.Roaming);
-            var subsonicServiceConfiguration = await storageHelper.LoadAsync();
+            _shellViewModel = (IShellViewModel)_container.GetInstance(typeof(IShellViewModel), null);
+            ViewModelBinder.Bind(_shellViewModel, shellView, null);
+        }
 
-#if DEBUG
-            const string baseUrl = "http://cristibadila.dynalias.com:33770/music/";
-            subsonicServiceConfiguration = new SubsonicServiceConfiguration
-            {
-                BaseUrl = baseUrl,
-                ServiceUrl = baseUrl + "rest/{0}?u={1}&p={2}&v=1.8.0&c=SubSonic8",
-                Username = "media",
-                Password = "media"
-            };
-#endif
-
-            var subsonicService = GetInstance(typeof(ISubsonicService), null) as ISubsonicService ?? new SubsonicService();
-            subsonicService.Configuration = subsonicServiceConfiguration;
+        private void ShowMainViewModel()
+        {
+            var navigationService = _container.GetInstance(typeof(INavigationService), null) as INavigationService;
+            navigationService.NavigateToViewModel<MainViewModel>();
         }
     }
 }

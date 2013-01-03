@@ -1,5 +1,5 @@
-﻿using System.IO;
-using System.Net.Http;
+﻿using System.Net.Http;
+using System.ServiceModel;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using Client.Common.Results;
@@ -39,14 +39,15 @@ namespace Client.Common.Tests.Results
         {
             _subject.Response = () =>
                                     {
-                                        var tcr = new TaskCompletionSource<Stream>();
-                                        tcr.SetException(new HttpRequestException());
+                                        var tcr = new TaskCompletionSource<HttpStreamResult>();
+                                        tcr.SetResult(new HttpStreamResult { Exception = new HttpRequestException() });
+
                                         return tcr.Task;
                                     };
-            
+
             await Task.Run(() => _subject.Execute(new ActionExecutionContext()));
 
-            _subject.Error.Should().BeOfType<HttpRequestException>();
+            _subject.Error.Should().BeOfType<CommunicationException>();
         }
 
         [TestMethod]

@@ -1,4 +1,4 @@
-﻿namespace Subsonic8.Framework
+﻿namespace Subsonic8.Framework.Services
 {
     public class NotificationOptions
     {

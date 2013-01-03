@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Threading.Tasks;
 using Client.Common.Services;
 
@@ -9,7 +8,7 @@ namespace Client.Common.Results
     {
         ISubsonicServiceConfiguration Configuration { get; }
 
-        Func<Task<Stream>> Response { get; set; }
+        Func<Task<HttpStreamResult>> Response { get; set; }
 
         T Result { get; }
 

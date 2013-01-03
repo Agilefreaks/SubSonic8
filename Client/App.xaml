@@ -12,6 +12,7 @@
                     Required by Visual Studio project and item templates
                  -->
                 <ResourceDictionary Source="Common/StandardStyles.xaml"/>
+                <ResourceDictionary Source="Common/LightStandardStyles.xaml"/>
                 <ResourceDictionary Source="Common/CustomStyles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
