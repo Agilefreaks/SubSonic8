@@ -7,7 +7,7 @@
     mc:Ignorable="d">
 
     <Page.BottomAppBar>
-        <AppBar IsSticky="True" IsOpen="{Binding Path=BottomBar.IsOpened}">
+        <AppBar IsSticky="True" IsOpen="{Binding Path=BottomBar.IsOpened, Mode=TwoWay}">
             <ContentControl x:Name="BottomBar" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>            
         </AppBar>
     </Page.BottomAppBar>

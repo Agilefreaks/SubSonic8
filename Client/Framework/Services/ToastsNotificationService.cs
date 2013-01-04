@@ -24,9 +24,12 @@ namespace Subsonic8.Framework.Services
             ((XmlElement)images[0]).SetAttribute("alt", "Cover Art");
 
             // Title and Subtitle
+            var title = string.IsNullOrEmpty(options.Title) ? "Unknown" : options.Title;
+            var subtitle = string.IsNullOrEmpty(options.Subtitle) ? "Unknown" : options.Subtitle;
+
             var texts = template.GetElementsByTagName("text");
-            texts[0].AppendChild(template.CreateTextNode(options.Title));
-            texts[1].AppendChild(template.CreateTextNode(options.Subtitle));
+            texts[0].AppendChild(template.CreateTextNode(title));
+            texts[1].AppendChild(template.CreateTextNode(subtitle));
 
             //Build audio
             var audioTag = template.CreateElement("audio");
