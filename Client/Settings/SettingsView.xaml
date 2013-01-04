@@ -28,5 +28,7 @@
                 </DataTemplate>
             </ToggleSwitch.HeaderTemplate>
         </ToggleSwitch>
+        
+        <Button x:Name="SaveChanges">Save</Button>
     </StackPanel>
 </UserControl>

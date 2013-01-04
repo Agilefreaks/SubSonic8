@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Caliburn.Micro;
 using Client.Common.Services;
 using Subsonic8.Framework.Services;
+using Subsonic8.Main;
 
 namespace Subsonic8.Settings
 {
@@ -14,8 +15,6 @@ namespace Subsonic8.Settings
         private readonly INotificationService _notificationService;
         private readonly IStorageService _storageService;
         private Subsonic8Configuration _configuration;
-        private IDisposable _propertyChangedObserver;
-        private bool _savingInProgress;
 
         public Subsonic8Configuration Configuration
         {
@@ -47,26 +46,23 @@ namespace Subsonic8.Settings
             _storageService = storageService;
         }
 
-        public async void SaveSettings()
+        public async Task SaveSettings()
         {
-            _savingInProgress = true;
-
             await _storageService.Save(Configuration);
 
             _subsonicService.Configuration = Configuration.SubsonicServiceConfiguration;
             _notificationService.UseSound = Configuration.ToastsUseSound;
-            _savingInProgress = false;
         }
 
         public async Task Populate()
         {
             Configuration = await _storageService.Load<Subsonic8Configuration>() ??
                             new Subsonic8Configuration { ToastsUseSound = false };
+        }
 
-            _propertyChangedObserver = Observable.FromEventPattern<PropertyChangedEventArgs>(_configuration, "PropertyChanged")
-                                                 .Buffer(TimeSpan.FromMilliseconds(400))
-                                                 .Where(eventPattern => eventPattern.Count > 0 && !_savingInProgress)
-                                                 .Subscribe(eventPattern => SaveSettings());
+        public async void SaveChanges()
+        {
+            await SaveSettings();
         }
 
         protected async override void OnActivate()
@@ -74,12 +70,6 @@ namespace Subsonic8.Settings
             base.OnActivate();
 
             await Populate();
-        }
-
-        protected override void OnDeactivate(bool close)
-        {
-            base.OnDeactivate(close);
-            _propertyChangedObserver.Dispose();
         }
     }
 }
