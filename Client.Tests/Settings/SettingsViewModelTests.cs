@@ -13,6 +13,7 @@ namespace Client.Tests.Settings
         private MockSubsonicService _mockSubsonicService;
         private MockStorageService _mockStorageService;
         private MockNotificationService _mockNotificationService;
+        private MockNavigationService _mockNavigationService;
 
         [TestInitialize]
         public void Setup()
@@ -20,7 +21,8 @@ namespace Client.Tests.Settings
             _mockSubsonicService = new MockSubsonicService();
             _mockStorageService = new MockStorageService();
             _mockNotificationService = new MockNotificationService();
-            _subject = new SettingsViewModel(_mockSubsonicService, _mockNotificationService, _mockStorageService);
+            _mockNavigationService = new MockNavigationService();
+            _subject = new SettingsViewModel(_mockSubsonicService, _mockNotificationService, _mockStorageService, _mockNavigationService);
         }
 
         [TestMethod]
@@ -63,16 +65,12 @@ namespace Client.Tests.Settings
         }
 
         [TestMethod]
-        public async Task ModifyingTheConfiguration_Always_CallsStorageServiceSaveWithTheCurrentConfigurationOnceEvery400Miliseconds()
+        public async Task SaveChanges_Always_CallsStorageServiceSave()
         {
-            _mockStorageService.LoadFunc = t => new Subsonic8Configuration();
             await _subject.Populate();
 
-            _subject.Configuration.SubsonicServiceConfiguration.Username = "test1";
-            _subject.Configuration.SubsonicServiceConfiguration.Username = "test2";
-            _subject.Configuration.SubsonicServiceConfiguration.Username = "test3";
+            _subject.SaveChanges();
 
-            await Task.Delay(500);
             _mockStorageService.SaveCallCount.Should().Be(1);
         }
 
@@ -81,7 +79,7 @@ namespace Client.Tests.Settings
         {
             await _subject.Populate();
 
-            _subject.SaveSettings();
+            await _subject.SaveSettings();
 
             _mockStorageService.SaveCallCount.Should().Be(1);
         }
@@ -93,7 +91,7 @@ namespace Client.Tests.Settings
             _mockStorageService.LoadFunc = t => configuration;
             await _subject.Populate();
 
-            _subject.SaveSettings();
+            await _subject.SaveSettings();
 
             _mockSubsonicService.Configuration.Should().Be(configuration.SubsonicServiceConfiguration);
         }
@@ -105,7 +103,7 @@ namespace Client.Tests.Settings
             _mockStorageService.LoadFunc = t => configuration;
             await _subject.Populate();
 
-            _subject.SaveSettings();
+            await _subject.SaveSettings();
 
             _mockNotificationService.UseSound.Should().BeTrue();
         }
