@@ -26,6 +26,6 @@
             </ToggleSwitch.HeaderTemplate>
         </ToggleSwitch>
 
-        <Button x:Name="SaveChanges" Style="{StaticResource LightButton}" Content="Save"/>
+        <Button x:Name="SaveChanges" Style="{StaticResource LightButton}" Width="100" Content="Save" HorizontalAlignment="Right"/>
     </StackPanel>
 </UserControl>
