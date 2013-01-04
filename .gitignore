@@ -40,3 +40,7 @@ _ReSharper*
 
 !.nuget/*.*
 TestResults/*.*
+
+# Windows store
+Client/Package.StoreAssociation.xml
+Client/Client_StoreKey.pfx
