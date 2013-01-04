@@ -76,6 +76,7 @@ namespace Subsonic8
             var shellView = GetShellView();
 
             RegisterNavigationService(shellView.ShellFrame);
+            InstantiateRequiredSingletons();
 
             BindShellViewModelToView(shellView);
 
@@ -90,6 +91,12 @@ namespace Subsonic8
         private void RegisterNavigationService(Frame shellFrame, bool treatViewAsLoaded = false)
         {
             _container.RegisterInstance(typeof(INavigationService), "NavigationService", new CustomFrameAdapter(shellFrame, treatViewAsLoaded));
+        }
+
+        private void InstantiateRequiredSingletons()
+        {
+            _container.GetInstance(typeof(IPlaybackViewModel), "PlaybackViewModel");
+            _container.GetInstance(typeof(IDefaultBottomBarViewModel), "DefaultBottomBarViewModel");
         }
 
         private void BindShellViewModelToView(ShellView shellView)

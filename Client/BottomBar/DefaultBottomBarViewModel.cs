@@ -17,6 +17,7 @@ namespace Subsonic8.BottomBar
         private bool _isOpened;
         private bool _isPlaying;
         private ObservableCollection<object> _selectedItems;
+        private bool _displayPlayControls;
 
         public ObservableCollection<object> SelectedItems
         {
@@ -63,6 +64,17 @@ namespace Subsonic8.BottomBar
             }
         }
 
+        public bool DisplayPlayControls
+        {
+            get { return _displayPlayControls; }
+            
+            set
+            {
+                _displayPlayControls = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
         public bool CanAddToPlaylist
         {
             get { return SelectedItems.Any() && SelectedItems.All(x => x.GetType() == typeof(MenuItemViewModel)); }
@@ -79,6 +91,7 @@ namespace Subsonic8.BottomBar
         {
             _navigationService = navigationService;
             _eventAggregator = eventAggregator;
+            _eventAggregator.Subscribe(this);
             SelectedItems = new ObservableCollection<object>();
             SelectedItems.CollectionChanged += OnSelectedItemsChanged;
             Navigate = () => _navigationService.NavigateToViewModel<PlaybackViewModel>();
@@ -126,6 +139,11 @@ namespace Subsonic8.BottomBar
         public void Stop()
         {
             _eventAggregator.Publish(new StopMessage());
+        }
+
+        public void Handle(ShowControlsMessage message)
+        {
+            DisplayPlayControls = message.Show;
         }
 
         private void ManageSelectedItemsHooks(INotifyCollectionChanged newCollection, INotifyCollectionChanged oldCollection)

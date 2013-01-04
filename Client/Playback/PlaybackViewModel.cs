@@ -29,6 +29,7 @@ namespace Subsonic8.Playback
         private ObservableCollection<PlaylistItemViewModel> _playlistItems;
         private int _currentTrackNo;
         private string _coverArt;
+        private bool _wasEmpty;
 
         #endregion
 
@@ -138,6 +139,7 @@ namespace Subsonic8.Playback
             SubsonicService = subsonicService;
             ShellViewModel = shellViewModel;
             State = PlaybackViewModelStateEnum.Audio;
+            _wasEmpty = true;
 
             UpdateDisplayName = () => DisplayName = "Playlist";
             Start = StartImpl;
@@ -145,6 +147,7 @@ namespace Subsonic8.Playback
 
             // playlist stuff that need refactoring
             PlaylistItems = new ObservableCollection<PlaylistItemViewModel>();
+            PlaylistItems.CollectionChanged += PlaylistChanged;
             _currentTrackNo--;
         }
 
@@ -376,6 +379,26 @@ namespace Subsonic8.Playback
         {
             _currentTrackNo = -1;
             Stop();
+        }
+
+        private void PlaylistChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            var totalElements = _playlistItems.Count;
+
+            var becameNotEmpty = (totalElements > 0 && _wasEmpty);
+            var becameEmpty = (totalElements == 0 && !_wasEmpty);
+
+            if (becameNotEmpty || becameEmpty)
+            {
+                var hasElements = _playlistItems.Any();
+                var showControlsMessage = new ShowControlsMessage
+                                              {
+                                                  Show = hasElements
+                                              };
+                _eventAggregator.Publish(showControlsMessage);
+                
+                _wasEmpty = !hasElements;
+            }
         }
 
         private async Task<PlaylistItemViewModel> LoadModelImpl(IId model)

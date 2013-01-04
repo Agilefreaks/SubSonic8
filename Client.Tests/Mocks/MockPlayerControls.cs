@@ -7,6 +7,7 @@ namespace Client.Tests.Mocks
     internal class MockPlayerControls : IPlayerControls
     {
         public event RoutedEventHandler PlayNextClicked;
+        
         public event RoutedEventHandler PlayPreviousClicked;
 
         public Action PlayPause { get; private set; }
