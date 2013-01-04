@@ -7,5 +7,7 @@ namespace Client.Common.Services
         string Password { get; set; }
 
         string BaseUrl { get; set; }
+
+        string EncodedCredentials();
     }
 }

@@ -27,9 +27,11 @@ namespace Subsonic8.Playback
         private PlaybackViewModelStateEnum _state;
         private Uri _source;
         private ObservableCollection<PlaylistItemViewModel> _playlistItems;
-        private int _currentTrackNo;
+        private int _currentTrackNumber;
         private string _coverArt;
         private bool _wasEmpty;
+        private bool _shuffleOn;
+        private readonly Random _randomNumberGenerator;
 
         #endregion
 
@@ -114,6 +116,21 @@ namespace Subsonic8.Playback
             }
         }
 
+        public bool ShuffleOn
+        {
+            get
+            {
+                return _shuffleOn;
+            }
+
+            private set
+            {
+                if (value.Equals(_shuffleOn)) return;
+                _shuffleOn = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
         public ObservableCollection<PlaylistItemViewModel> PlaylistItems
         {
             get { return _playlistItems; }
@@ -124,13 +141,15 @@ namespace Subsonic8.Playback
             }
         }
 
+        public PlaylistHistoryStack PlaylistHistory { get; private set; }
+
         public Action<PlaylistItemViewModel> Start { get; set; }
 
         public Func<IId, Task<PlaylistItemViewModel>> LoadModel { get; set; }
 
         #endregion
 
-        public PlaybackViewModel(IEventAggregator eventAggregator, IShellViewModel shellViewModel, 
+        public PlaybackViewModel(IEventAggregator eventAggregator, IShellViewModel shellViewModel,
             ISubsonicService subsonicService, INotificationService notificationService)
         {
             _eventAggregator = eventAggregator;
@@ -146,16 +165,18 @@ namespace Subsonic8.Playback
             LoadModel = LoadModelImpl;
 
             // playlist stuff that need refactoring
+            _randomNumberGenerator = new Random();
+            PlaylistHistory = new PlaylistHistoryStack();
             PlaylistItems = new ObservableCollection<PlaylistItemViewModel>();
             PlaylistItems.CollectionChanged += PlaylistChanged;
-            _currentTrackNo--;
+            _currentTrackNumber = -1;
         }
 
         public void StartPlayback(object e)
         {
             var pressedItem = (PlaylistItemViewModel)(((ItemClickEventArgs)e).ClickedItem);
             Start(pressedItem);
-            _currentTrackNo = PlaylistItems.IndexOf(pressedItem);
+            _currentTrackNumber = PlaylistItems.IndexOf(pressedItem);
         }
 
         public void StartImpl(PlaylistItemViewModel model)
@@ -201,12 +222,12 @@ namespace Subsonic8.Playback
         {
             if (PlaylistItems.Count > 0)
             {
-                if (_currentTrackNo == -1)
+                if (_currentTrackNumber == -1)
                 {
-                    _currentTrackNo++;
+                    _currentTrackNumber++;
                 }
 
-                Start(PlaylistItems[_currentTrackNo]);
+                Start(PlaylistItems[_currentTrackNumber]);
             }
         }
 
@@ -228,28 +249,24 @@ namespace Subsonic8.Playback
 
         public void Next()
         {
-            _currentTrackNo++;
-
-            if (_currentTrackNo < PlaylistItems.Count)
+            var previousTrackNumber = _currentTrackNumber;
+            _currentTrackNumber = GetNextTrackNumber();
+            if (_currentTrackNumber < PlaylistItems.Count)
             {
-                Start(PlaylistItems[_currentTrackNo]);
-            }
-            else
-            {
-                StopAndReset();
+                Start(PlaylistItems[_currentTrackNumber]);
+                if (previousTrackNumber != -1)
+                {
+                    PlaylistHistory.Push(previousTrackNumber);
+                }
             }
         }
 
         public void Previous()
         {
-            _currentTrackNo--;
-            if (_currentTrackNo > -1)
+            _currentTrackNumber = GetPreviousTrackNumber();
+            if (_currentTrackNumber > -1)
             {
-                Start(PlaylistItems[_currentTrackNo]);
-            }
-            else
-            {
-                StopAndReset();
+                Start(PlaylistItems[_currentTrackNumber]);
             }
         }
 
@@ -307,6 +324,11 @@ namespace Subsonic8.Playback
             Stop();
         }
 
+        public void Handle(ToggleShuffleMessage message)
+        {
+            ShuffleOn = !ShuffleOn;
+        }
+
         private async Task AddToPlaylist(ISubsonicModel item)
         {
             if (item.Type == SubsonicModelTypeEnum.Song || item.Type == SubsonicModelTypeEnum.Video)
@@ -335,6 +357,10 @@ namespace Subsonic8.Playback
                             var result = SubsonicService.GetMusicDirectory(item.Id);
                             await result.Execute();
                             children.AddRange(result.Result.Children);
+                        } break;
+                    case SubsonicModelTypeEnum.Index:
+                        {
+                            children.AddRange(((Client.Common.Models.Subsonic.IndexItem)item).Artists);
                         } break;
                 }
 
@@ -373,7 +399,7 @@ namespace Subsonic8.Playback
 
         private void StopAndReset()
         {
-            _currentTrackNo = -1;
+            _currentTrackNumber = -1;
             Stop();
         }
 
@@ -392,7 +418,7 @@ namespace Subsonic8.Playback
                                                   Show = hasElements
                                               };
                 _eventAggregator.Publish(showControlsMessage);
-                
+
                 _wasEmpty = !hasElements;
             }
         }
@@ -419,6 +445,16 @@ namespace Subsonic8.Playback
             }
 
             return playlistItem;
+        }
+
+        private int GetNextTrackNumber()
+        {
+            return ShuffleOn ? _randomNumberGenerator.Next(PlaylistItems.Count - 1) : _currentTrackNumber + 1;
+        }
+
+        private int GetPreviousTrackNumber()
+        {
+            return ShuffleOn ? PlaylistHistory.Count == 0 ? -1 : PlaylistHistory.Pop() : (_currentTrackNumber - 1);
         }
     }
 }
