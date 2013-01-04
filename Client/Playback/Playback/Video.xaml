@@ -5,8 +5,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mmppf="using:Microsoft.PlayerFramework" mc:Ignorable="d">
 
-    <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}" x:Name="LayoutRoot">
-        <mmppf:MediaPlayer x:Name="player" Source="{Binding Path=Source}" Width="Auto" Height="Auto" IsFullScreenVisible="False">
+    <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
+        <mmppf:MediaPlayer Source="{Binding Path=Source}" Width="Auto" Height="Auto" IsFullScreenVisible="False" MediaEnded="Player_OnMediaEnded">
         </mmppf:MediaPlayer>
     </Grid>
 </Page>
