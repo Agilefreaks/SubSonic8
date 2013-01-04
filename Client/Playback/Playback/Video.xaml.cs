@@ -1,4 +1,5 @@
-﻿using Windows.UI.Xaml;
+﻿using Microsoft.PlayerFramework;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Navigation;
 
 namespace Subsonic8.Playback.Playback
@@ -18,6 +19,12 @@ namespace Subsonic8.Playback.Playback
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+        }
+
+        private void Player_OnMediaEnded(object sender, MediaPlayerActionEventArgs e)
+        {
+            // TODO: Replace with something nicer | It may be bug in Windows.Interactivity
+            ((PlaybackViewModel)DataContext).Next();
         }
     }
 }
