@@ -44,3 +44,5 @@ TestResults/*.*
 # Windows store
 Client/Package.StoreAssociation.xml
 Client/Client_StoreKey.pfx
+Client/AppPackages/*.*
+

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
-  <Identity Name="Subsonic8.Subsonic8" Publisher="CN=94B5B002-CA0E-46CA-986B-7709DCF0A79B" Version="1.0.0.0" />
+  <Identity Name="Subsonic8.Subsonic8" Publisher="CN=94B5B002-CA0E-46CA-986B-7709DCF0A79B" Version="1.0.0.1" />
   <Properties>
     <DisplayName>Subsonic8</DisplayName>
     <PublisherDisplayName>Subsonic8</PublisherDisplayName>

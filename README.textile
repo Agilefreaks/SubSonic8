@@ -1,17 +1,20 @@
-h1. Subsonic8
+h1. Welcome to Subsonic8
 
 A simple client app for the popular "Subsonic":http://www.subsonic.org media server. Written for WinRT (latest and greates from Microsoft).
 
+h1. Note
+
 If you install the app and when switching away to another app the sound volume lowers automatically, and you are annoyed by this follow these steps:
-1)Windows key + x
-2)Control Panel
-3)Hardware and sound
-4)Sound
-5)Speakers
-6) Properties
-6) Advanced
-7) Disable the option "Allow applications to take exclusive control of this device"
-8) Restart the application and... it works ;)
+
+# Windows key + x
+# Control Panel
+# Hardware and sound
+# Sound
+# Speakers
+# Properties
+# Advanced
+# Disable the option "Allow applications to take exclusive control of this device"
+# Restart the application and... it works ;)
 
 h1. Contributing
 # Fork it.
@@ -20,3 +23,6 @@ h1. Contributing
 # Push to the branch (git push origin my_cool_feature)
 # Open a Pull Request
 # Enjoy a refreshing Diet Coke and wait (wille listening to a great song of course)
+
+h1. Contact
+You can contact us at office@agilefreaks.com or by phone at +40745857479
