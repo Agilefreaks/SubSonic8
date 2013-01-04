@@ -16,7 +16,7 @@ namespace Subsonic8.Controls
         }
 
         public static readonly DependencyProperty IsCheckedProperty =
-            DependencyProperty.Register("IsChecked", typeof(bool), typeof(AppBarToggleButton), new PropertyMetadata(false, (o, e) => (o as AppBarToggleButton).IsCheckedChanged()));
+            DependencyProperty.Register("IsChecked", typeof(bool), typeof(AppBarToggleButton), new PropertyMetadata(false, (o, e) => ((AppBarToggleButton)o).IsCheckedChanged()));
 
         public string CheckedContent
         {
