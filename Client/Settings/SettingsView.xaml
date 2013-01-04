@@ -7,10 +7,7 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-    <UserControl.Resources>
-    </UserControl.Resources>
-
-    <StackPanel>
+    <StackPanel HorizontalAlignment="Stretch">
         <TextBlock Text="Subsonic Url" Style="{StaticResource SettingsTextStyle}"/>
         <TextBox x:Name="Configuration_SubsonicServiceConfiguration_BaseUrl" Style="{StaticResource SettingsTextBoxStyle}"/>
 
@@ -28,7 +25,7 @@
                 </DataTemplate>
             </ToggleSwitch.HeaderTemplate>
         </ToggleSwitch>
-        
-        <Button x:Name="SaveChanges">Save</Button>
+
+        <Button x:Name="SaveChanges" Style="{StaticResource LightButton}" Content="Save"/>
     </StackPanel>
 </UserControl>
