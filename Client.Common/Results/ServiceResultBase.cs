@@ -25,7 +25,7 @@ namespace Client.Common.Results
         {
             get
             {
-                return string.Format(Configuration.RequestFormat(), ViewName, Configuration.Username, Configuration.Password);
+                return string.Format(Configuration.RequestFormat(), ViewName);
             }
         }
 
@@ -91,7 +91,9 @@ namespace Client.Common.Results
             var result = new HttpStreamResult();
             try
             {
-                var response = await Client.GetAsync(RequestUrl);
+                var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, RequestUrl);
+                httpRequestMessage.Headers.Add("Authorization", string.Format("Basic {0}", Configuration.EncodedCredentials()));
+                var response = await Client.SendAsync(httpRequestMessage);
                 result.Stream = await response.Content.ReadAsStreamAsync();
             }
             catch (Exception exception)

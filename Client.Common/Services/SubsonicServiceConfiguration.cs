@@ -48,5 +48,11 @@ namespace Client.Common.Services
                 NotifyOfPropertyChange();
             }
         }
+
+        public string EncodedCredentials()
+        {
+            byte[] bytes = System.Text.Encoding.UTF8.GetBytes(string.Format("{0}:{1}", Username, Password));
+            return System.Convert.ToBase64String(bytes);
+        }
     }
 }
