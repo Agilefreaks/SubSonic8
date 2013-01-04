@@ -21,7 +21,8 @@ namespace Client.Tests.Settings
             _mockSubsonicService = new MockSubsonicService();
             _mockStorageService = new MockStorageService();
             _mockNotificationService = new MockNotificationService();
-            _subject = new SettingsViewModel(_mockSubsonicService, _mockNotificationService, _mockStorageService);
+            _mockNavigationService = new MockNavigationService();
+            _subject = new SettingsViewModel(_mockSubsonicService, _mockNotificationService, _mockStorageService, _mockNavigationService);
         }
 
         [TestMethod]

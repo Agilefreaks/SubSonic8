@@ -14,6 +14,7 @@ namespace Subsonic8.Settings
         private readonly ISubsonicService _subsonicService;
         private readonly INotificationService _notificationService;
         private readonly IStorageService _storageService;
+        private readonly INavigationService _navigationService;
         private Subsonic8Configuration _configuration;
 
         public Subsonic8Configuration Configuration
@@ -39,11 +40,12 @@ namespace Subsonic8.Settings
         }
 
         public SettingsViewModel(ISubsonicService subsonicService, INotificationService notificationService,
-            IStorageService storageService)
+            IStorageService storageService, INavigationService navigationService)
         {
             _subsonicService = subsonicService;
             _notificationService = notificationService;
             _storageService = storageService;
+            _navigationService = navigationService;
         }
 
         public async Task SaveSettings()
@@ -63,6 +65,7 @@ namespace Subsonic8.Settings
         public async void SaveChanges()
         {
             await SaveSettings();
+            _navigationService.NavigateToViewModel<MainViewModel>();
         }
 
         protected async override void OnActivate()
