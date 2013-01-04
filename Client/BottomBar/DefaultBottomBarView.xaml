@@ -14,7 +14,7 @@
             <Button Style="{StaticResource PlayAllAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action PlayAll()]" Visibility="{Binding CanAddToPlaylist, Converter={StaticResource VisibilityConverter}}" />
             <Button Style="{StaticResource RemoveAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action RemoveFromPlaylist()]" Visibility="{Binding CanRemoveFromPlaylist, Converter={StaticResource VisibilityConverter}}" />
         </StackPanel>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Visibility="{Binding DisplayPlayControls, Converter={StaticResource VisibilityConverter}}">
             <ic:AppBarToggleButton Style="{StaticResource PlayAppBarButtonStyle}" CheckedStyle="{StaticResource PauseAppBarButtonStyle}" 
                                    cal:Message.Attach="[Event Click] = [Action PlayPause()]" AutoToggle="False" IsChecked="{Binding IsPlaying}"/>
             <Button Style="{StaticResource StopAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action Stop()]"/>

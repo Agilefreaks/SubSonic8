@@ -733,6 +733,27 @@ namespace Client.Tests.Playback
             called.Should().BeTrue();
         }
 
+        [TestMethod]
+        public void PlaylistItemsWhenChangedFromEmptyToNotEmptyCallsEventAggregatorPublishWithShowControlsMessage()
+        {
+            Subject.PlaylistItems.Add(new PlaylistItemViewModel());
+
+            _eventAggregator.PublishCallCount.Should().Be(1);
+            _eventAggregator.Messages.First().GetType().Should().Be(typeof(ShowControlsMessage));
+        }
+
+        [TestMethod]
+        public void PLaylistItemsWhenChangedFromNotEmptyToNotEmptyCallsEventAggregatorPublishWithShowControlsMessage()
+        {
+            Subject.PlaylistItems.Add(new PlaylistItemViewModel());
+            Subject.PlaylistItems.Add(new PlaylistItemViewModel());
+
+            Subject.PlaylistItems.Clear();
+
+            _eventAggregator.PublishCallCount.Should().Be(2);
+            _eventAggregator.Messages.ElementAt(1).GetType().Should().Be(typeof(ShowControlsMessage));
+        }
+
         private ISubsonicModel MockLoadModel(bool isVideo = false)
         {
             var item = new Song

@@ -172,5 +172,33 @@ namespace Client.Tests.DefaultBottomBar
 
             _subject.CanAddToPlaylist.Should().BeFalse();
         }
+
+        [TestMethod]
+        public void HandleWithShowControlsMessage_WhenShowIsFalse_SetsDisplayPlayControlsToFalse()
+        {
+            _subject.DisplayPlayControls = true;
+            var showControlsMessage = new ShowControlsMessage
+            {
+                Show = false
+            };
+
+            _subject.Handle(showControlsMessage);
+
+            _subject.DisplayPlayControls.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void HandleWithShowControlsMessage_WhenShowIsTrue_SetsDisplayPlayControlsToTrue()
+        {
+            _subject.DisplayPlayControls = false;
+            var showControlsMessage = new ShowControlsMessage
+            {
+                Show = true
+            };
+
+            _subject.Handle(showControlsMessage);
+
+            _subject.DisplayPlayControls.Should().BeTrue();
+        }
     }
 }
