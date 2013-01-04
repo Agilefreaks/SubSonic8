@@ -670,6 +670,28 @@ namespace Client.Tests.Playback
         }
 
         [TestMethod]
+        public async Task HandleWithPlaylistMessage_QueHasItemOfTypeIndexItem_CallsSubsonicServiceGetMusicDirectorysForEachChildArtist()
+        {
+            MockLoadModel();
+            var addToPlaylistQue = new List<ISubsonicModel> { new IndexItem { Id = 5, Artists = new List<Common.Models.Subsonic.Artist> { new Common.Models.Subsonic.Artist { Id = 3 } } } };
+            var children = new List<MusicDirectoryChild> { new MusicDirectoryChild(), new MusicDirectoryChild() };
+            var musicDirectory = new Common.Models.Subsonic.MusicDirectory { Children = children };
+            var mockGetMusicDirectoryResult = new MockGetMusicDirectoryResult { GetResultFunc = () => musicDirectory };
+            var callCount = 0;
+            _subsonicService.GetMusicDirectory = directoryId =>
+                {
+                    callCount++;
+                    directoryId.Should().Be(3);
+                    return mockGetMusicDirectoryResult;
+                };
+
+            await Task.Run(() => Subject.Handle(new PlaylistMessage { Queue = addToPlaylistQue }));
+
+            callCount.Should().Be(1);
+            Subject.PlaylistItems.Count.Should().Be(2);
+        }
+
+        [TestMethod]
         public async Task HandleWithPlaylistWhenClearCurrentIsSetToTrueSetsSourceOnShellViewModelToNull()
         {
             Subject.ShellViewModel.Source = new Uri("http://this-will-be.null");

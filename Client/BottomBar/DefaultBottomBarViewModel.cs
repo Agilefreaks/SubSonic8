@@ -55,10 +55,10 @@ namespace Subsonic8.BottomBar
             {
                 return _isPlaying;
             }
-            
+
             set
             {
-                _isPlaying = value; 
+                _isPlaying = value;
                 NotifyOfPropertyChange();
             }
         }

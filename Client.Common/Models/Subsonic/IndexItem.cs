@@ -19,7 +19,7 @@ namespace Client.Common.Models.Subsonic
 
         public override SubsonicModelTypeEnum Type
         {
-            get { return SubsonicModelTypeEnum.MusicDirectory; }
+            get { return SubsonicModelTypeEnum.Index; }
         }
     }
 }

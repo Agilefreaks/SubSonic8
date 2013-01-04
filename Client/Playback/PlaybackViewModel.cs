@@ -333,6 +333,10 @@ namespace Subsonic8.Playback
                             await result.Execute();
                             children.AddRange(result.Result.Children);
                         } break;
+                    case SubsonicModelTypeEnum.Index:
+                        {
+                            children.AddRange(((Client.Common.Models.Subsonic.IndexItem)item).Artists);
+                        } break;
                 }
 
                 foreach (var subsonicModel in children)

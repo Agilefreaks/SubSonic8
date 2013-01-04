@@ -6,6 +6,7 @@ namespace Client.Common.Models
         Album,
         Artist,
         Song,
-        Video
+        Video,
+        Index
     }
 }
