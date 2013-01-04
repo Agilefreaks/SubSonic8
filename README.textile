@@ -25,4 +25,5 @@ h1. Contributing
 # Enjoy a refreshing Diet Coke and wait (wille listening to a great song of course)
 
 h1. Contact
-You can contact us at office@agilefreaks.com or by phone at +40745857479
+
+You can contact us at "office@agilefreaks.com":office@agilefreaks.com or by phone at +40745857479
