@@ -1,14 +1,25 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using Subsonic8.BottomBar;
+using Subsonic8.Messages;
 
 namespace Client.Tests.Mocks
 {
     internal class MockDefaultBottomBarViewModel : IDefaultBottomBarViewModel
     {
+        public ObservableCollection<object> SelectedItems { get; set; }
+
         public bool IsOpened { get; set; }
 
         public bool IsPlaying { get; set; }
+
+        public Action Navigate { get; set; }
+
+        public bool DisplayPlayControls { get; set; }
+
+        public bool CanAddToPlaylist { get; private set; }
+
+        public bool CanRemoveFromPlaylist { get; private set; }
 
         public void NavigateToPlaylist()
         {
@@ -40,8 +51,6 @@ namespace Client.Tests.Mocks
             throw new System.NotImplementedException();
         }
 
-        public Action Navigate { get; set; }
-
         public void AddToPlaylist()
         {
 
@@ -57,9 +66,9 @@ namespace Client.Tests.Mocks
             
         }
 
-        public bool CanAddToPlaylist { get; private set; }
-        public bool CanRemoveFromPlaylist { get; private set; }
-
-        public ObservableCollection<object> SelectedItems { get; set; }
+        public void Handle(ShowControlsMessage message)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
