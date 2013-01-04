@@ -30,6 +30,8 @@ namespace Subsonic8.Playback
         private int _currentTrackNo;
         private string _coverArt;
         private bool _wasEmpty;
+        private bool _shuffleOn;
+        private readonly Random _randomNumberGenerator;
 
         #endregion
 
@@ -114,6 +116,21 @@ namespace Subsonic8.Playback
             }
         }
 
+        public bool ShuffleOn
+        {
+            get
+            {
+                return _shuffleOn;
+            }
+
+            private set
+            {
+                if (value.Equals(_shuffleOn)) return;
+                _shuffleOn = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
         public ObservableCollection<PlaylistItemViewModel> PlaylistItems
         {
             get { return _playlistItems; }
@@ -130,7 +147,7 @@ namespace Subsonic8.Playback
 
         #endregion
 
-        public PlaybackViewModel(IEventAggregator eventAggregator, IShellViewModel shellViewModel, 
+        public PlaybackViewModel(IEventAggregator eventAggregator, IShellViewModel shellViewModel,
             ISubsonicService subsonicService, INotificationService notificationService)
         {
             _eventAggregator = eventAggregator;
@@ -146,6 +163,7 @@ namespace Subsonic8.Playback
             LoadModel = LoadModelImpl;
 
             // playlist stuff that need refactoring
+            _randomNumberGenerator = new Random();
             PlaylistItems = new ObservableCollection<PlaylistItemViewModel>();
             PlaylistItems.CollectionChanged += PlaylistChanged;
             _currentTrackNo--;
@@ -228,8 +246,7 @@ namespace Subsonic8.Playback
 
         public void Next()
         {
-            _currentTrackNo++;
-
+            _currentTrackNo = GetNextTrackNumber();
             if (_currentTrackNo < PlaylistItems.Count)
             {
                 Start(PlaylistItems[_currentTrackNo]);
@@ -305,6 +322,11 @@ namespace Subsonic8.Playback
         public void Handle(StopMessage message)
         {
             Stop();
+        }
+
+        public void Handle(ToggleShuffleMessage message)
+        {
+            ShuffleOn = !ShuffleOn;
         }
 
         private async Task AddToPlaylist(ISubsonicModel item)
@@ -396,7 +418,7 @@ namespace Subsonic8.Playback
                                                   Show = hasElements
                                               };
                 _eventAggregator.Publish(showControlsMessage);
-                
+
                 _wasEmpty = !hasElements;
             }
         }
@@ -423,6 +445,11 @@ namespace Subsonic8.Playback
             }
 
             return playlistItem;
+        }
+
+        private int GetNextTrackNumber()
+        {
+            return ShuffleOn ? _randomNumberGenerator.Next(PlaylistItems.Count - 1) : _currentTrackNo + 1;
         }
     }
 }

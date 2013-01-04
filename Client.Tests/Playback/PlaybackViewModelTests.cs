@@ -75,7 +75,7 @@ namespace Client.Tests.Playback
         }
 
         [TestMethod]
-        public void NextShouldSetSourceOnShellViewModelToSecondElementInPlaylist()
+        public void NextShouldSetSourceOnShellViewModelToSecondElementInPlaylistIfShuffleOff()
         {
             var file1 = new PlaylistItemViewModel { Uri = new Uri("http://file1"), Item = new Song { IsVideo = false } };
             var file2 = new PlaylistItemViewModel { Uri = new Uri("http://file2"), Item = new Song { IsVideo = false } };
@@ -85,6 +85,18 @@ namespace Client.Tests.Playback
             Subject.Handle(new PlayNextMessage());
 
             _shellViewModel.Source.Should().Be(file2.Uri);
+        }
+
+        [TestMethod]
+        public void Next_ShuffleOnTrue_CallsWinRTWrapperServiceGetRandomNumberWithThePlaylistCountMinus1()
+        {
+            var playlist = GeneratePlaylist(100);
+            Subject.PlaylistItems = new ObservableCollection<PlaylistItemViewModel>(playlist);
+            Subject.Handle(new ToggleShuffleMessage());
+
+            Subject.Handle(new PlayNextMessage());
+
+            _shellViewModel.Source.Should().NotBe(playlist[0].Uri);
         }
 
         [TestMethod]
@@ -776,6 +788,31 @@ namespace Client.Tests.Playback
             _eventAggregator.Messages.ElementAt(1).GetType().Should().Be(typeof(ShowControlsMessage));
         }
 
+        [TestMethod]
+        public void Ctor_Always_SetsShuffleOnFalse()
+        {
+            Subject.ShuffleOn.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void HandleToggleShuffle_ShuffleOnFalse_SetsShuffleOnTrue()
+        {
+            Subject.Handle(new ToggleShuffleMessage());
+
+            Subject.ShuffleOn.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void HandleToggleShuffle_ShuffleOnTrue_SetsShuffleOnFalse()
+        {
+            //Set it to true
+            Subject.Handle(new ToggleShuffleMessage());
+
+            Subject.Handle(new ToggleShuffleMessage());
+
+            Subject.ShuffleOn.Should().BeFalse();
+        }
+
         private ISubsonicModel MockLoadModel(bool isVideo = false)
         {
             var item = new Song
@@ -795,6 +832,17 @@ namespace Client.Tests.Playback
                 };
 
             return item;
+        }
+
+        private List<PlaylistItemViewModel> GeneratePlaylist(int itemsCount = 2)
+        {
+            var playlistItemViewModels = new List<PlaylistItemViewModel>();
+            for (var i = 0; i < itemsCount; i++)
+            {
+                playlistItemViewModels.Add(new PlaylistItemViewModel { Uri = new Uri(string.Format("http://file{0}", i)), Item = new Song { IsVideo = false } });
+            }
+
+            return playlistItemViewModels;
         }
     }
 }

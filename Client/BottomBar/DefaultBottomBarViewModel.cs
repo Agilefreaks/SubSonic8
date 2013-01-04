@@ -67,7 +67,7 @@ namespace Subsonic8.BottomBar
         public bool DisplayPlayControls
         {
             get { return _displayPlayControls; }
-            
+
             set
             {
                 _displayPlayControls = value;
@@ -134,6 +134,11 @@ namespace Subsonic8.BottomBar
         public void PlayPause()
         {
             _eventAggregator.Publish(new PlayPauseMessage());
+        }
+
+        public void ToggleShuffle()
+        {
+            _eventAggregator.Publish(new ToggleShuffleMessage());
         }
 
         public void Stop()
