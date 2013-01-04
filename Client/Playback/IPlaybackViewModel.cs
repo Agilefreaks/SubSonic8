@@ -35,6 +35,8 @@ namespace Subsonic8.Playback
 
         bool ShuffleOn { get; }
 
+        PlaylistHistoryStack PlaylistHistory { get; }
+
         void Play();
 
         void Pause();
@@ -44,5 +46,7 @@ namespace Subsonic8.Playback
         void Next();
 
         void Previous();
+
+        void PlayPause();
     }
 }

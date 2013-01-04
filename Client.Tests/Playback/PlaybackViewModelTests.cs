@@ -80,23 +80,49 @@ namespace Client.Tests.Playback
             var file1 = new PlaylistItemViewModel { Uri = new Uri("http://file1"), Item = new Song { IsVideo = false } };
             var file2 = new PlaylistItemViewModel { Uri = new Uri("http://file2"), Item = new Song { IsVideo = false } };
             Subject.PlaylistItems = new ObservableCollection<PlaylistItemViewModel> { file1, file2 };
-            Subject.Handle(new PlayNextMessage());
+            Subject.Next();
 
-            Subject.Handle(new PlayNextMessage());
+            Subject.Next();
 
             _shellViewModel.Source.Should().Be(file2.Uri);
         }
 
         [TestMethod]
-        public void Next_ShuffleOnTrue_CallsWinRTWrapperServiceGetRandomNumberWithThePlaylistCountMinus1()
+        public void Next_ShuffleOnTrue_SetsARandomSongAsTheNewSource()
         {
             var playlist = GeneratePlaylist(100);
             Subject.PlaylistItems = new ObservableCollection<PlaylistItemViewModel>(playlist);
             Subject.Handle(new ToggleShuffleMessage());
 
-            Subject.Handle(new PlayNextMessage());
+            Subject.Next();
 
             _shellViewModel.Source.Should().NotBe(playlist[0].Uri);
+        }
+
+        [TestMethod]
+        public void Next_WasPlayingASong_PushesTheCurrentTrackIndexToTheTrackHistory()
+        {
+            var playlist = GeneratePlaylist(15);
+            Subject.PlaylistItems = new ObservableCollection<PlaylistItemViewModel>(playlist);
+
+            Subject.PlayPause();
+            Subject.Next();
+            Subject.Next();
+
+            Subject.PlaylistHistory.Count.Should().Be(2);
+            Subject.PlaylistHistory.Pop().Should().Be(1);
+            Subject.PlaylistHistory.Pop().Should().Be(0);
+        }
+
+        [TestMethod]
+        public void Next_WasNotPlayingASong_DoesNotPushTheCurrentTrackIndexToTheTrackHistory()
+        {
+            var playlist = GeneratePlaylist(15);
+            Subject.PlaylistItems = new ObservableCollection<PlaylistItemViewModel>(playlist);
+
+            Subject.Next();
+
+            Subject.PlaylistHistory.Count.Should().Be(0);
         }
 
         [TestMethod]
@@ -104,9 +130,9 @@ namespace Client.Tests.Playback
         {
             var uri = new Uri("http://test");
             Subject.PlaylistItems = new ObservableCollection<PlaylistItemViewModel> { new PlaylistItemViewModel { Uri = uri, Item = new Song { IsVideo = false } } };
-            Subject.Handle(new PlayNextMessage());
+            Subject.Next();
 
-            Subject.Handle(new PlayNextMessage());
+            Subject.Next();
 
             _shellViewModel.Source.Should().BeNull();
         }
@@ -116,7 +142,7 @@ namespace Client.Tests.Playback
         {
             Subject.PlaylistItems = new ObservableCollection<PlaylistItemViewModel> { new PlaylistItemViewModel { Item = new Song { IsVideo = false } } };
 
-            Subject.Handle(new PlayNextMessage());
+            Subject.Next();
 
             _notificationService.ShowCallCount.Should().Be(1);
         }
@@ -148,16 +174,6 @@ namespace Client.Tests.Playback
         }
 
         [TestMethod]
-        public void PreviousIfCurrentTrackIsFirstShouldSetShellViewModelSourceToNull()
-        {
-            Subject.PlaylistItems = new ObservableCollection<PlaylistItemViewModel> { new PlaylistItemViewModel { Uri = new Uri("http://test") } };
-
-            Subject.Previous();
-
-            _shellViewModel.Source.Should().BeNull();
-        }
-
-        [TestMethod]
         public void PreviousCallsStartIfThereAreElementsToPlay()
         {
             var called = false;
@@ -170,6 +186,47 @@ namespace Client.Tests.Playback
             Subject.Previous();
 
             called.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void Previous_ShuffleOnAndHistoryIsEmpty_DoesNotChangeTheCurrentTrack()
+        {
+            var playlist = GeneratePlaylist(15);
+            Subject.PlaylistItems = new ObservableCollection<PlaylistItemViewModel>(playlist);
+            Subject.Handle(new ToggleShuffleMessage());
+            Subject.Next();
+
+            Subject.Previous();
+
+            _shellViewModel.Source.Should().Be(playlist[0].Uri);
+        }
+
+        [TestMethod]
+        public void Previous_ShuffleOnAndHistoryIsNotEmpty_SetsTheSourceToThePreviousItem()
+        {
+            var playlist = GeneratePlaylist(15);
+            Subject.PlaylistItems = new ObservableCollection<PlaylistItemViewModel>(playlist);
+            Subject.Handle(new ToggleShuffleMessage());
+            Subject.Next();
+            var previousSource = _shellViewModel.Source;
+            Subject.Next();
+
+            Subject.Previous();
+
+            _shellViewModel.Source.Should().Be(previousSource);
+        }
+
+        [TestMethod]
+        public void Previous_ShuffleOff_SetsTheSourceToThePreviousItemInThePlaylist()
+        {
+            var playlist = GeneratePlaylist(15);
+            Subject.PlaylistItems = new ObservableCollection<PlaylistItemViewModel>(playlist);
+            Subject.Next();
+            Subject.Next();
+
+            Subject.Previous();
+
+            _shellViewModel.Source.Should().Be(playlist[0].Uri);
         }
 
         [TestMethod]

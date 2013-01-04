@@ -27,7 +27,7 @@ namespace Subsonic8.Playback
         private PlaybackViewModelStateEnum _state;
         private Uri _source;
         private ObservableCollection<PlaylistItemViewModel> _playlistItems;
-        private int _currentTrackNo;
+        private int _currentTrackNumber;
         private string _coverArt;
         private bool _wasEmpty;
         private bool _shuffleOn;
@@ -141,6 +141,8 @@ namespace Subsonic8.Playback
             }
         }
 
+        public PlaylistHistoryStack PlaylistHistory { get; private set; }
+
         public Action<PlaylistItemViewModel> Start { get; set; }
 
         public Func<IId, Task<PlaylistItemViewModel>> LoadModel { get; set; }
@@ -164,16 +166,17 @@ namespace Subsonic8.Playback
 
             // playlist stuff that need refactoring
             _randomNumberGenerator = new Random();
+            PlaylistHistory = new PlaylistHistoryStack();
             PlaylistItems = new ObservableCollection<PlaylistItemViewModel>();
             PlaylistItems.CollectionChanged += PlaylistChanged;
-            _currentTrackNo--;
+            _currentTrackNumber = -1;
         }
 
         public void StartPlayback(object e)
         {
             var pressedItem = (PlaylistItemViewModel)(((ItemClickEventArgs)e).ClickedItem);
             Start(pressedItem);
-            _currentTrackNo = PlaylistItems.IndexOf(pressedItem);
+            _currentTrackNumber = PlaylistItems.IndexOf(pressedItem);
         }
 
         public void StartImpl(PlaylistItemViewModel model)
@@ -219,12 +222,12 @@ namespace Subsonic8.Playback
         {
             if (PlaylistItems.Count > 0)
             {
-                if (_currentTrackNo == -1)
+                if (_currentTrackNumber == -1)
                 {
-                    _currentTrackNo++;
+                    _currentTrackNumber++;
                 }
 
-                Start(PlaylistItems[_currentTrackNo]);
+                Start(PlaylistItems[_currentTrackNumber]);
             }
         }
 
@@ -246,27 +249,24 @@ namespace Subsonic8.Playback
 
         public void Next()
         {
-            _currentTrackNo = GetNextTrackNumber();
-            if (_currentTrackNo < PlaylistItems.Count)
+            var previousTrackNumber = _currentTrackNumber;
+            _currentTrackNumber = GetNextTrackNumber();
+            if (_currentTrackNumber < PlaylistItems.Count)
             {
-                Start(PlaylistItems[_currentTrackNo]);
-            }
-            else
-            {
-                StopAndReset();
+                Start(PlaylistItems[_currentTrackNumber]);
+                if (previousTrackNumber != -1)
+                {
+                    PlaylistHistory.Push(previousTrackNumber);
+                }
             }
         }
 
         public void Previous()
         {
-            _currentTrackNo--;
-            if (_currentTrackNo > -1)
+            _currentTrackNumber = GetPreviousTrackNumber();
+            if (_currentTrackNumber > -1)
             {
-                Start(PlaylistItems[_currentTrackNo]);
-            }
-            else
-            {
-                StopAndReset();
+                Start(PlaylistItems[_currentTrackNumber]);
             }
         }
 
@@ -399,7 +399,7 @@ namespace Subsonic8.Playback
 
         private void StopAndReset()
         {
-            _currentTrackNo = -1;
+            _currentTrackNumber = -1;
             Stop();
         }
 
@@ -449,7 +449,12 @@ namespace Subsonic8.Playback
 
         private int GetNextTrackNumber()
         {
-            return ShuffleOn ? _randomNumberGenerator.Next(PlaylistItems.Count - 1) : _currentTrackNo + 1;
+            return ShuffleOn ? _randomNumberGenerator.Next(PlaylistItems.Count - 1) : _currentTrackNumber + 1;
+        }
+
+        private int GetPreviousTrackNumber()
+        {
+            return ShuffleOn ? PlaylistHistory.Count == 0 ? -1 : PlaylistHistory.Pop() : (_currentTrackNumber - 1);
         }
     }
 }

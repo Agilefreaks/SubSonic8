@@ -139,6 +139,7 @@
     <Compile Include="Messages\RemoveFromPlaylistMessage.cs" />
     <Compile Include="Messages\ShowControlsMessage.cs" />
     <Compile Include="Messages\ToggleShuffleMessage.cs" />
+    <Compile Include="Playback\PlaylistHistoryStack.cs" />
     <Compile Include="PlaylistItem\PlaylistItemState.cs" />
     <Compile Include="PlaylistItem\PlaylistItemView.xaml.cs">
       <DependentUpon>PlaylistItemView.xaml</DependentUpon>
