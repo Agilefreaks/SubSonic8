@@ -135,6 +135,7 @@
     <Compile Include="Framework\ViewModel\IDetailViewModel.cs" />
     <Compile Include="Framework\ViewModel\ItemViewModelBase.cs" />
     <Compile Include="Messages\RemoveFromPlaylistMessage.cs" />
+    <Compile Include="Messages\ShowControlsMessage.cs" />
     <Compile Include="PlaylistItem\PlaylistItemState.cs" />
     <Compile Include="PlaylistItem\PlaylistItemView.xaml.cs">
       <DependentUpon>PlaylistItemView.xaml</DependentUpon>
@@ -343,8 +344,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Caliburn.Micro.1.4\lib\win8\Caliburn.Micro.Extensions.dll</HintPath>
     </Reference>
-    <Reference Include="Callisto">
-      <HintPath>..\packages\Callisto.1.2.5\lib\winrt45\Callisto.dll</HintPath>
+    <Reference Include="Callisto, Version=1.2.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Callisto.1.2.6\lib\winrt45\Callisto.dll</HintPath>
     </Reference>
     <Reference Include="System.Reactive.Core">
       <HintPath>..\packages\Rx-Core.2.0.21114\lib\WinRT45\System.Reactive.Core.dll</HintPath>
