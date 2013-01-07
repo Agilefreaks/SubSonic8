@@ -200,5 +200,14 @@ namespace Client.Tests.DefaultBottomBar
 
             _subject.DisplayPlayControls.Should().BeTrue();
         }
+
+        [TestMethod]
+        public void ToggleShuffle_Always_PublishesANewToggleShuffleMessage()
+        {
+            _subject.ToggleShuffle();
+
+            _eventAggregator.PublishCallCount.Should().Be(1);
+            _eventAggregator.Messages[0].Should().BeOfType<ToggleShuffleMessage>();
+        }
     }
 }

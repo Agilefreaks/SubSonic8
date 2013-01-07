@@ -1,6 +1,4 @@
 ﻿using System;
-using Client.Common.Models;
-using Client.Common.Models.Subsonic;
 using Subsonic8.Framework.ViewModel;
 
 namespace Subsonic8.PlaylistItem
@@ -14,17 +12,24 @@ namespace Subsonic8.PlaylistItem
 
         public string Artist
         {
-            get { return _artist; }
+            get
+            {
+                return _artist;
+            }
+
             set
             {
                 _artist = value;
                 NotifyOfPropertyChange();
             }
         }
-        
+
         public int Duration
         {
-            get { return _duration; }
+            get
+            {
+                return _duration;
+            }
 
             set
             {
@@ -35,7 +40,10 @@ namespace Subsonic8.PlaylistItem
 
         public Uri Uri
         {
-            get { return _uri; }
+            get
+            {
+                return _uri;
+            }
 
             set
             {

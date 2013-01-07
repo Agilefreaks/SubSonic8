@@ -11,8 +11,8 @@ using Subsonic8.Shell;
 namespace Subsonic8.Playback
 {
     public interface IPlaybackViewModel : IHandle<PlaylistMessage>, IHandle<RemoveFromPlaylistMessage>,
-        IHandle<PlayFile>, IHandle<PlayNextMessage>, IHandle<PlayPreviousMessage>, 
-        IHandle<PlayPauseMessage>, IHandle<StopMessage>,
+        IHandle<PlayFile>, IHandle<PlayNextMessage>, IHandle<PlayPreviousMessage>,
+        IHandle<PlayPauseMessage>, IHandle<StopMessage>, IHandle<ToggleShuffleMessage>,
         IViewModel
     {
         IShellViewModel ShellViewModel { get; set; }
@@ -33,6 +33,10 @@ namespace Subsonic8.Playback
 
         Func<IId, Task<PlaylistItemViewModel>> LoadModel { get; set; }
 
+        bool ShuffleOn { get; }
+
+        PlaylistHistoryStack PlaylistHistory { get; }
+
         void Play();
 
         void Pause();
@@ -42,5 +46,7 @@ namespace Subsonic8.Playback
         void Next();
 
         void Previous();
+
+        void PlayPause();
     }
 }

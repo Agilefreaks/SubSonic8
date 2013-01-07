@@ -25,6 +25,20 @@
     <SolidColorBrush x:Key="LightToggleSwitchTrackDisabledBackgroundThemeBrush" Color="{StaticResource SystemColorButtonFaceColor}" />
     <SolidColorBrush x:Key="LightToggleSwitchTrackPointerOverBackgroundThemeBrush" Color="{StaticResource SystemColorButtonFaceColor}" />
     <SolidColorBrush x:Key="LightToggleSwitchTrackPressedBackgroundThemeBrush" Color="{StaticResource SystemColorButtonFaceColor}" />
+    <SolidColorBrush x:Key="LightButtonBackgroundThemeBrush" Color="#B3B6B6B6" />
+    <SolidColorBrush x:Key="LightButtonForegroundThemeBrush" Color="#FF000000" />
+    <SolidColorBrush x:Key="LightButtonBorderThemeBrush" Color="#33000000" />
+    <SolidColorBrush x:Key="LightButtonPointerOverBackgroundThemeBrush" Color="#D1CDCDCD" />
+    <SolidColorBrush x:Key="LightButtonPointerOverForegroundThemeBrush" Color="#FF000000" />
+    <SolidColorBrush x:Key="LightButtonPressedBackgroundThemeBrush" Color="#FF000000" />
+    <SolidColorBrush x:Key="LightButtonPressedForegroundThemeBrush" Color="#FFFFFFFF" />
+    <SolidColorBrush x:Key="LightButtonDisabledBackgroundThemeBrush" Color="#66CACACA" />
+    <SolidColorBrush x:Key="LightButtonDisabledBorderThemeBrush" Color="#1A000000" />
+    <SolidColorBrush x:Key="LightButtonDisabledForegroundThemeBrush" Color="#66000000" />
+    <SolidColorBrush x:Key="LightFocusVisualBlackStrokeThemeBrush" Color="Black" />
+    <SolidColorBrush x:Key="LightFocusVisualWhiteStrokeThemeBrush" Color="White" />
+    
+    <Thickness x:Key="LightButtonBorderThemeThickness">0</Thickness>
 
     <Style TargetType="ToggleSwitch" x:Name="LightToggleSwitch">
         <Setter Property="Foreground" Value="{StaticResource LightToggleSwitchForegroundThemeBrush}" />
@@ -326,6 +340,115 @@
                             </Grid>
                         </Grid>
                     </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="Button" x:Name="LightButton">
+        <Setter Property="Background" Value="{StaticResource LightButtonBackgroundThemeBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource LightButtonForegroundThemeBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource LightButtonBorderThemeBrush}" />
+        <Setter Property="BorderThickness" Value="{StaticResource LightButtonBorderThemeThickness}" />
+        <Setter Property="Padding" Value="12,4,12,4" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="FontFamily" Value="{StaticResource ContentControlThemeFontFamily}" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="FontSize" Value="{StaticResource ControlContentThemeFontSize}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="PointerOver">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Border"
+                                                                       Storyboard.TargetProperty="Background">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource LightButtonPointerOverBackgroundThemeBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter"
+                                                                       Storyboard.TargetProperty="Foreground">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource LightButtonPointerOverForegroundThemeBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Border"
+                                                                       Storyboard.TargetProperty="Background">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource LightButtonPressedBackgroundThemeBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter"
+                                                                       Storyboard.TargetProperty="Foreground">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource LightButtonPressedForegroundThemeBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Disabled">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Border"
+                                                                       Storyboard.TargetProperty="Background">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource LightButtonDisabledBackgroundThemeBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Border"
+                                                                       Storyboard.TargetProperty="BorderBrush">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource LightButtonDisabledBorderThemeBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter"
+                                                                       Storyboard.TargetProperty="Foreground">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource LightButtonDisabledForegroundThemeBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="FocusStates">
+                                <VisualState x:Name="Focused">
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="FocusVisualWhite"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="1"
+                                                         Duration="0" />
+                                        <DoubleAnimation Storyboard.TargetName="FocusVisualBlack"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="1"
+                                                         Duration="0" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Unfocused" />
+                                <VisualState x:Name="PointerFocused" />
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Border x:Name="Border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Margin="3">
+                            <ContentPresenter x:Name="ContentPresenter"
+                                              Content="{TemplateBinding Content}"
+                                              ContentTransitions="{TemplateBinding ContentTransitions}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              Margin="{TemplateBinding Padding}"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        </Border>
+                        <Rectangle x:Name="FocusVisualWhite"
+                                   IsHitTestVisible="False"
+                                   Stroke="{StaticResource LightFocusVisualWhiteStrokeThemeBrush}"
+                                   StrokeEndLineCap="Square"
+                                   StrokeDashArray="1,1"
+                                   Opacity="0"
+                                   StrokeDashOffset="1.5" />
+                        <Rectangle x:Name="FocusVisualBlack"
+                                   IsHitTestVisible="False"
+                                   Stroke="{StaticResource LightFocusVisualBlackStrokeThemeBrush}"
+                                   StrokeEndLineCap="Square"
+                                   StrokeDashArray="1,1"
+                                   Opacity="0"
+                                   StrokeDashOffset="0.5" />
+                    </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

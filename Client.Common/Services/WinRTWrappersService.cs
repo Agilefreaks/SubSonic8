@@ -11,8 +11,7 @@ namespace Client.Common.Services
             SearchPane.GetForCurrentView().QuerySubmitted += handler;
         }
 
-        public void RegisterSettingsRequestedHandler(
-            TypedEventHandler<SettingsPane, SettingsPaneCommandsRequestedEventArgs> handler)
+        public void RegisterSettingsRequestedHandler(TypedEventHandler<SettingsPane, SettingsPaneCommandsRequestedEventArgs> handler)
         {
             SettingsPane.GetForCurrentView().CommandsRequested += handler;
         }
