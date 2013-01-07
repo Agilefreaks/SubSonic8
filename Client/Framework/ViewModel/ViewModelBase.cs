@@ -86,16 +86,18 @@ namespace Subsonic8.Framework.ViewModel
             SubsonicService = IoC.Get<ISubsonicService>();
             NavigationService = IoC.Get<INavigationService>();
             UpdateDisplayName = () => DisplayName = "Subsonic8";
+            // ReSharper disable DoNotCallOverridableMethodsInConstructor
+            SetBottomBar();
+            // ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
 
         protected override void OnActivate()
         {
             base.OnActivate();
-            SetBottomBar(IoC.Get<IShellViewModel>());
             UpdateDisplayName();
         }
 
-        protected virtual void SetBottomBar(IShellViewModel shell)
+        protected virtual void SetBottomBar()
         {
             BottomBar = IoC.Get<IDefaultBottomBarViewModel>();
         }
