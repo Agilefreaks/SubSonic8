@@ -17,8 +17,8 @@ namespace Client.Tests.Framework.ViewModel
         public void OnActivateShouldSetDefaultBottomBar()
         {
             var defaultBottomBar = new MockDefaultBottomBarViewModel();
-            var mockShellViewMode = new MockShellViewModel();
-            IoC.GetInstance = (type, s) => type == typeof (IDefaultBottomBarViewModel) ? (object) defaultBottomBar : mockShellViewMode;
+            var mockShellViewModel = new MockShellViewModel();
+            IoC.GetInstance = (type, s) => type == typeof (IDefaultBottomBarViewModel) ? (object) defaultBottomBar : mockShellViewModel;
 
             ((IActivate)Subject).Activate();
 

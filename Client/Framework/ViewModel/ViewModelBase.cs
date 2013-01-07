@@ -99,7 +99,7 @@ namespace Subsonic8.Framework.ViewModel
 
         protected virtual void SetBottomBar()
         {
-            BottomBar = IoC.Get<IDefaultBottomBarViewModel>();
+            BottomBar = (IBottomBarViewModel)IoC.GetInstance(typeof(IDefaultBottomBarViewModel), "DefaultBottomBarViewModel");
         }
 
         private void SetShellBottomBar()
