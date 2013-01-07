@@ -45,6 +45,7 @@ namespace Client.Common.Results
 
             if (response.Exception != null)
             {
+                // TODO: Display Notification If Settings are not set
                 OnError(new CommunicationException("Could not connect to the server. Please check the values in the settings panel.\r\n", response.Exception));
             }
             else

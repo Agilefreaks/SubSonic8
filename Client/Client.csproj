@@ -142,6 +142,7 @@
     <Compile Include="Framework\Extensions\NavigationServiceExtensions.cs" />
     <Compile Include="Framework\ViewModel\IDetailViewModel.cs" />
     <Compile Include="Framework\ViewModel\ItemViewModelBase.cs" />
+    <Compile Include="Messages\NotificationMessage.cs" />
     <Compile Include="Messages\RemoveFromPlaylistMessage.cs" />
     <Compile Include="Messages\ShowControlsMessage.cs" />
     <Compile Include="Messages\ToggleShuffleMessage.cs" />

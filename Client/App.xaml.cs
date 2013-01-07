@@ -98,6 +98,7 @@ namespace Subsonic8
         {
             _container.GetInstance(typeof(IPlaybackViewModel), "PlaybackViewModel");
             _container.GetInstance(typeof(IDefaultBottomBarViewModel), "DefaultBottomBarViewModel");
+            _container.GetInstance(typeof(IDialogNotificationService), "DialogNotificationService");
         }
 
         private void BindShellViewModelToView(ShellView shellView)
