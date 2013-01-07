@@ -129,9 +129,15 @@
     <Compile Include="Converters\InvertedBooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\IntToTimeStringConverter.cs" />
     <Compile Include="Dialogs\DialogService.cs" />
+    <Compile Include="Framework\Services\DialogNotificationOptions.cs" />
+    <Compile Include="Framework\Services\DialogNotificationService.cs" />
+    <Compile Include="Framework\Services\IDialogNotificationService.cs" />
     <Compile Include="Framework\Services\INotificationService.cs" />
-    <Compile Include="Framework\Services\NotificationOptions.cs" />
+    <Compile Include="Framework\Services\IToastNotificationService.cs" />
+    <Compile Include="Framework\Services\PossibleAction.cs" />
+    <Compile Include="Framework\Services\ToastNotificationOptions.cs" />
     <Compile Include="Framework\Services\ToastsNotificationService.cs" />
+    <Compile Include="Framework\Services\UICommandAdapter.cs" />
     <Compile Include="Framework\ViewModel\DetailViewModelBase.cs" />
     <Compile Include="Framework\Extensions\NavigationServiceExtensions.cs" />
     <Compile Include="Framework\ViewModel\IDetailViewModel.cs" />

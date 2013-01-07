@@ -1,9 +1,7 @@
 ﻿namespace Subsonic8.Framework.Services
 {
-    public interface INotificationService
+    public interface INotificationService<in TOptions>
     {
-        void Show(NotificationOptions options);
-
-        bool UseSound { get; set; }
+        void Show(TOptions options);
     }
 }

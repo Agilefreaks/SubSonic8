@@ -1,6 +1,6 @@
 ﻿namespace Subsonic8.Framework.Services
 {
-    public class NotificationOptions
+    public class ToastNotificationOptions
     {
         private string _title;
         private string _subtitle;

@@ -35,7 +35,8 @@ namespace Subsonic8
             _container.RegisterSingleton(typeof(IPlaybackViewModel), "PlaybackViewModel", typeof(PlaybackViewModel));
             _container.RegisterHandler(typeof(PlaybackViewModel), "PlaybackViewModel", container => container.GetInstance(typeof(IPlaybackViewModel), "PlaybackViewModel"));
             _container.RegisterSingleton(typeof(IDefaultBottomBarViewModel), "DefaultBottomBarViewModel", typeof(DefaultBottomBarViewModel));
-            _container.RegisterSingleton(typeof(INotificationService), "NotificationService", typeof(ToastsNotificationService));
+            _container.RegisterSingleton(typeof(IToastNotificationService), "ToastNotificationService", typeof(ToastsNotificationService));
+            _container.RegisterSingleton(typeof(IDialogNotificationService), "DialogNotificationService", typeof(DialogNotificationService));
         }
 
         protected override object GetInstance(Type service, string key)

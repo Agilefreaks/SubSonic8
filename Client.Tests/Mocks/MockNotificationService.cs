@@ -2,11 +2,11 @@
 
 namespace Client.Tests.Mocks
 {
-    public class MockNotificationService : INotificationService
+    public class MockNotificationService : IToastNotificationService
     {
         public int ShowCallCount { get; set; }
 
-        public void Show(NotificationOptions options)
+        public void Show(ToastNotificationOptions options)
         {
             ShowCallCount++;
         }
