@@ -5,7 +5,7 @@ using Subsonic8.Messages;
 
 namespace Client.Tests.Mocks
 {
-    internal class MockDefaultBottomBarViewModel : IDefaultBottomBarViewModel
+    public class MockDefaultBottomBarViewModel : IDefaultBottomBarViewModel
     {
         public ObservableCollection<object> SelectedItems { get; set; }
 

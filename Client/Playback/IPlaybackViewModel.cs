@@ -7,6 +7,7 @@ using Subsonic8.Framework.ViewModel;
 using Subsonic8.Messages;
 using Subsonic8.PlaylistItem;
 using Subsonic8.Shell;
+using Action = System.Action;
 
 namespace Subsonic8.Playback
 {
@@ -29,7 +30,9 @@ namespace Subsonic8.Playback
 
         ObservableCollection<PlaylistItemViewModel> PlaylistItems { get; set; }
 
-        Action<PlaylistItemViewModel> Start { get; set; }
+        Action<PlaylistItemViewModel> StartAction { get; set; }
+
+        Action NextAction { get; set; }
 
         Func<IId, Task<PlaylistItemViewModel>> LoadModel { get; set; }
 

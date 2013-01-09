@@ -1,9 +1,12 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using Caliburn.Micro;
+using Client.Common.Services;
 using Client.Tests.Mocks;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using Subsonic8.BottomBar;
 using Subsonic8.Framework.ViewModel;
+using Subsonic8.Shell;
 
 namespace Client.Tests.Framework.ViewModel
 {
@@ -11,18 +14,28 @@ namespace Client.Tests.Framework.ViewModel
     public abstract class ViewModelBaseTests<TViewModel> : ClientTestBase
         where TViewModel : IViewModel
     {
+        protected MockDefaultBottomBarViewModel MockDefaultBottomBar;
+        protected MockShellViewModel MockShellViewModel;
+        protected MockSubsonicService MockSubsonicService;
+        protected MockNavigationService MockNavigationService;
+
         protected abstract TViewModel Subject { get; set; }
 
-        [TestMethod]
-        public void OnActivateShouldSetDefaultBottomBar()
+        [TestInitialize]
+        public void TestInitialize()
         {
-            var defaultBottomBar = new MockDefaultBottomBarViewModel();
-            var mockShellViewModel = new MockShellViewModel();
-            IoC.GetInstance = (type, s) => type == typeof (IDefaultBottomBarViewModel) ? (object) defaultBottomBar : mockShellViewModel;
+            MockDefaultBottomBar = new MockDefaultBottomBarViewModel();
+            MockShellViewModel = new MockShellViewModel();
+            MockSubsonicService = new MockSubsonicService();
+            MockNavigationService = new MockNavigationService();
+            IoC.GetInstance = (type, s) => ResolveType(type);
+            TestInitializeExtensions();
+        }
 
-            ((IActivate)Subject).Activate();
-
-            Subject.BottomBar.Should().Be(defaultBottomBar);
+        [TestMethod]
+        public void CtorShouldSetDefaultBottomBar()
+        {
+            Subject.BottomBar.Should().NotBeNull();
         }
 
         [TestMethod]
@@ -41,6 +54,33 @@ namespace Client.Tests.Framework.ViewModel
             ((IActivate)Subject).Activate();
 
             Subject.DisplayName.Should().Be("42");
+        }
+
+        protected virtual void TestInitializeExtensions()
+        {            
+        }
+
+        private object ResolveType(Type type)
+        {
+            var result = new object();
+            if (type == typeof(IDefaultBottomBarViewModel))
+            {
+                result = MockDefaultBottomBar;
+            }
+            else if (type == typeof(IShellViewModel))
+            {
+                result = MockShellViewModel;
+            }
+            else if (type == typeof(ISubsonicService))
+            {
+                result = MockSubsonicService;
+            }
+            else if (type == typeof(INavigationService))
+            {
+                result = MockNavigationService;
+            }
+
+            return result;
         }
     }
 }

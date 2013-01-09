@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Client.Common.Models.Subsonic;
 using Client.Tests.Framework.ViewModel;
-using Client.Tests.Mocks;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using Subsonic8.MusicDirectory;
@@ -12,13 +11,11 @@ namespace Client.Tests.MusicDirectory
     public class MusicDirectoryViewModelTests : DetailViewModelBaseTests<Common.Models.Subsonic.MusicDirectory, IMusicDirectoryViewModel>
     {
         protected override IMusicDirectoryViewModel Subject { get; set; }
- 
-        [TestInitialize]
-        public void TestInitialize()
+
+        protected override void TestInitializeExtensions()
         {
             Subject = new MusicDirectoryViewModel
                           {
-                              SubsonicService = new MockSubsonicService(),
                               UpdateDisplayName = () => Subject.DisplayName = ""
                           };
         }

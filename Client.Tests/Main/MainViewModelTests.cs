@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Caliburn.Micro;
 using Client.Common.Models.Subsonic;
 using Client.Common.Results;
 using Client.Tests.Framework.ViewModel;
@@ -13,26 +12,17 @@ namespace Client.Tests.Main
     [TestClass]
     public class MainViewModelTests : ViewModelBaseTests<IMainViewModel>
     {
-        private INavigationService _navigationService;
-        private MockSubsonicService _subsonicService;
         private MockGetRootResult _mockGetRootResult;
 
         protected override IMainViewModel Subject { get; set; }
 
-        [TestInitialize]
-        public void TestInitialize()
+        protected override void TestInitializeExtensions()
         {
-            _navigationService = new MockNavigationService();
             _mockGetRootResult = new MockGetRootResult();
-            _subsonicService = new MockSubsonicService
-                                   {
-                                       GetRootIndex = () => _mockGetRootResult
-                                   };
+            MockSubsonicService.GetRootIndex = () => _mockGetRootResult;
 
             Subject = new MainViewModel
                           {
-                              NavigationService = _navigationService,
-                              SubsonicService = _subsonicService,
                               UpdateDisplayName = () => Subject.DisplayName = ""
                           };
         }

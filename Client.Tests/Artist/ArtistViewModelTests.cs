@@ -1,6 +1,5 @@
 ﻿using Client.Common.Models.Subsonic;
 using Client.Tests.Framework.ViewModel;
-using Client.Tests.Mocks;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using Subsonic8.Artist;
 
@@ -11,12 +10,10 @@ namespace Client.Tests.Artist
     {
         protected override IArtistViewModel Subject { get; set; }
 
-        [TestInitialize]
-        public void TestInitialize()
+        protected override void TestInitializeExtensions()
         {
             Subject = new ArtistViewModel
                           {
-                              SubsonicService = new MockSubsonicService(),
                               UpdateDisplayName = () => Subject.DisplayName = ""
                           };
         }

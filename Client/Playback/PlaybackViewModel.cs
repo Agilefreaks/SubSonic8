@@ -13,6 +13,7 @@ using Subsonic8.Messages;
 using Subsonic8.PlaylistItem;
 using Subsonic8.Shell;
 using Windows.UI.Xaml.Controls;
+using Action = System.Action;
 
 namespace Subsonic8.Playback
 {
@@ -143,7 +144,9 @@ namespace Subsonic8.Playback
 
         public PlaylistHistoryStack PlaylistHistory { get; private set; }
 
-        public Action<PlaylistItemViewModel> Start { get; set; }
+        public Action<PlaylistItemViewModel> StartAction { get; set; }
+
+        public Action NextAction { get; set; }
 
         public Func<IId, Task<PlaylistItemViewModel>> LoadModel { get; set; }
 
@@ -161,7 +164,8 @@ namespace Subsonic8.Playback
             _wasEmpty = true;
 
             UpdateDisplayName = () => DisplayName = "Playlist";
-            Start = StartImpl;
+            StartAction = Start;
+            NextAction = Next;
             LoadModel = LoadModelImpl;
 
             // playlist stuff that need refactoring
@@ -175,11 +179,11 @@ namespace Subsonic8.Playback
         public void StartPlayback(object e)
         {
             var pressedItem = (PlaylistItemViewModel)(((ItemClickEventArgs)e).ClickedItem);
-            Start(pressedItem);
+            StartAction(pressedItem);
             _currentTrackNumber = PlaylistItems.IndexOf(pressedItem);
         }
 
-        public void StartImpl(PlaylistItemViewModel model)
+        public void Start(PlaylistItemViewModel model)
         {
             Stop();
             if (model.Item.Type == SubsonicModelTypeEnum.Song)
@@ -227,7 +231,7 @@ namespace Subsonic8.Playback
                     _currentTrackNumber++;
                 }
 
-                Start(PlaylistItems[_currentTrackNumber]);
+                StartAction(PlaylistItems[_currentTrackNumber]);
             }
         }
 
@@ -253,7 +257,7 @@ namespace Subsonic8.Playback
             _currentTrackNumber = GetNextTrackNumber();
             if (_currentTrackNumber < PlaylistItems.Count)
             {
-                Start(PlaylistItems[_currentTrackNumber]);
+                StartAction(PlaylistItems[_currentTrackNumber]);
                 if (previousTrackNumber != -1)
                 {
                     PlaylistHistory.Push(previousTrackNumber);
@@ -266,7 +270,7 @@ namespace Subsonic8.Playback
             _currentTrackNumber = GetPreviousTrackNumber();
             if (_currentTrackNumber > -1)
             {
-                Start(PlaylistItems[_currentTrackNumber]);
+                StartAction(PlaylistItems[_currentTrackNumber]);
             }
         }
 
@@ -285,7 +289,7 @@ namespace Subsonic8.Playback
 
             if (Source == null && ShellViewModel.Source == null && PlaylistItems.Any())
             {
-                Start(PlaylistItems.First());
+                NextAction();
             }
         }
 
@@ -301,7 +305,7 @@ namespace Subsonic8.Playback
         {
             var playlistItem = await LoadModel(message.Model);
             PlaylistItems.Add(playlistItem);
-            Start(playlistItem);
+            StartAction(playlistItem);
         }
 
         public void Handle(PlayNextMessage message)
@@ -395,12 +399,6 @@ namespace Subsonic8.Playback
         private void SetCoverArt(string coverArt)
         {
             CoverArt = SubsonicService.GetCoverArtForId(coverArt, ImageType.Original);
-        }
-
-        private void StopAndReset()
-        {
-            _currentTrackNumber = -1;
-            Stop();
         }
 
         private void PlaylistChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
