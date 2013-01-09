@@ -33,6 +33,7 @@ namespace Subsonic8.Playback
         private bool _wasEmpty;
         private bool _shuffleOn;
         private readonly Random _randomNumberGenerator;
+        private bool _playNextItem;
 
         #endregion
 
@@ -280,16 +281,12 @@ namespace Subsonic8.Playback
             {
                 Stop();
                 PlaylistItems.Clear();
+                _playNextItem = true;
             }
 
             foreach (var item in message.Queue)
             {
                 await AddToPlaylist(item);
-            }
-
-            if (Source == null && ShellViewModel.Source == null && PlaylistItems.Any())
-            {
-                NextAction();
             }
         }
 
@@ -338,6 +335,11 @@ namespace Subsonic8.Playback
             if (item.Type == SubsonicModelTypeEnum.Song || item.Type == SubsonicModelTypeEnum.Video)
             {
                 PlaylistItems.Add(await LoadModel(item));
+                if (_playNextItem)
+                {
+                    _playNextItem = false;
+                    NextAction();
+                }
             }
             else
             {
@@ -373,6 +375,11 @@ namespace Subsonic8.Playback
                     await AddToPlaylist(subsonicModel);
                 }
             }
+        }
+
+        private bool ShouldPlayFirstSong()
+        {
+            return Source == null && ShellViewModel.Source == null && PlaylistItems.Any();
         }
 
         private void PlayUri(Uri source)
