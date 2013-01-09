@@ -342,21 +342,25 @@ namespace Subsonic8.Playback
                 {
                     case SubsonicModelTypeEnum.Album:
                         {
-                            var result = SubsonicService.GetAlbum(item.Id);
-                            await result.Execute();
-                            children.AddRange(result.Result.Songs);
+                            await SubsonicService.GetAlbum(item.Id)
+                                                 .WithErrorHandler(this)
+                                                 .OnSuccess(result => children.AddRange(result.Songs))
+                                                 .Execute();
+
                         } break;
                     case SubsonicModelTypeEnum.Artist:
                         {
-                            var result = SubsonicService.GetArtist(item.Id);
-                            await result.Execute();
-                            children.AddRange(result.Result.Albums);
+                            await SubsonicService.GetArtist(item.Id)
+                                                 .WithErrorHandler(this)
+                                                 .OnSuccess(result => children.AddRange(result.Albums))
+                                                 .Execute();
                         } break;
                     case SubsonicModelTypeEnum.MusicDirectory:
                         {
-                            var result = SubsonicService.GetMusicDirectory(item.Id);
-                            await result.Execute();
-                            children.AddRange(result.Result.Children);
+                            await SubsonicService.GetMusicDirectory(item.Id)
+                                                 .WithErrorHandler(this)
+                                                 .OnSuccess(result => children.AddRange(result.Children))
+                                                 .Execute();
                         } break;
                     case SubsonicModelTypeEnum.Index:
                         {
@@ -397,12 +401,6 @@ namespace Subsonic8.Playback
             CoverArt = SubsonicService.GetCoverArtForId(coverArt, ImageType.Original);
         }
 
-        private void StopAndReset()
-        {
-            _currentTrackNumber = -1;
-            Stop();
-        }
-
         private void PlaylistChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             var totalElements = _playlistItems.Count;
@@ -428,20 +426,19 @@ namespace Subsonic8.Playback
             PlaylistItemViewModel playlistItem = null;
             if (model != null)
             {
-                var result = SubsonicService.GetSong(model.Id);
-                await result.Execute();
-                var item = result.Result;
-
-                playlistItem = new PlaylistItemViewModel
-                {
-                    Artist = item.Artist,
-                    Title = item.Title,
-                    Item = item,
-                    Uri = SubsonicService.GetUriForFileWithId(item.Id),
-                    CoverArtId = item.CoverArt,
-                    PlayingState = PlaylistItemState.NotPlaying,
-                    Duration = item.Duration
-                };
+                await
+                    SubsonicService.GetSong(model.Id)
+                                   .WithErrorHandler(this)
+                                   .OnSuccess(result => playlistItem = new PlaylistItemViewModel
+                                       {
+                                           Artist = result.Artist,
+                                           Title = result.Title,
+                                           Item = result,
+                                           Uri = SubsonicService.GetUriForFileWithId(result.Id),
+                                           CoverArtId = result.CoverArt,
+                                           PlayingState = PlaylistItemState.NotPlaying,
+                                           Duration = result.Duration
+                                       }).Execute();
             }
 
             return playlistItem;

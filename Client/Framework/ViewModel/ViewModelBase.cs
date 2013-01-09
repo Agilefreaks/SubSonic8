@@ -1,5 +1,7 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using Caliburn.Micro;
+using Client.Common.Results;
 using Client.Common.Services;
 using Subsonic8.BottomBar;
 using Subsonic8.Shell;
@@ -7,7 +9,7 @@ using Action = System.Action;
 
 namespace Subsonic8.Framework.ViewModel
 {
-    public abstract class ViewModelBase : Screen, IViewModel
+    public abstract class ViewModelBase : Screen, IViewModel, IErrorHandler
     {
         private INavigationService _navigationService;
         private ISubsonicService _subsonicService;
@@ -89,6 +91,11 @@ namespace Subsonic8.Framework.ViewModel
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
             SetBottomBar();
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
+        }
+
+        public async void HandleError(Exception error)
+        {
+            await new MessageDialogResult(error.ToString(), "Ooops...").Execute();
         }
 
         protected override void OnActivate()
