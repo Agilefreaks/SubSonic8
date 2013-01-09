@@ -12,8 +12,7 @@ namespace Client.Tests.Index
     {
         protected override IIndexViewModel Subject { get; set; }
 
-        [TestInitialize]
-        public void TestInitialize()
+        protected override void TestInitializeExtensions()
         {
             Subject = new IndexViewModel
                           {

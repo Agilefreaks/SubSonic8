@@ -9,7 +9,7 @@ using Windows.UI.Xaml;
 
 namespace Client.Tests.Mocks
 {
-    internal class MockShellViewModel : Screen, IShellViewModel
+    public class MockShellViewModel : Screen, IShellViewModel
     {
         public IBottomBarViewModel BottomBar { get; set; }
 
