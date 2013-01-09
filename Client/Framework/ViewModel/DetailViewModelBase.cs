@@ -85,9 +85,7 @@ namespace Subsonic8.Framework.ViewModel
 
         private async void LoadModel()
         {
-            var getModel = GetResult(Parameter.Id);
-            await getModel.Execute();
-            Item = getModel.Result;
+            await GetResult(Parameter.Id).WithErrorHandler(this).OnSuccess(result => Item = result).Execute();
         }
 
         private void PopulateMenuItems()

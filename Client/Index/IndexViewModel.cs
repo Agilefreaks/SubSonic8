@@ -48,12 +48,12 @@ namespace Subsonic8.Index
 
         public async void ArtistClick(ItemClickEventArgs eventArgs)
         {
-            var artist = (Client.Common.Models.Subsonic.Artist)((MenuItemViewModel) eventArgs.ClickedItem).Item;
-            var getMusicDirectoryResult = SubsonicService.GetMusicDirectory(artist.Id);
-            
-            await getMusicDirectoryResult.Execute();
+            var artist = (Client.Common.Models.Subsonic.Artist)((MenuItemViewModel)eventArgs.ClickedItem).Item;
 
-            NavigationService.NavigateToViewModel<MusicDirectoryViewModel>(getMusicDirectoryResult.Result);
+            await SubsonicService.GetMusicDirectory(artist.Id)
+                                 .WithErrorHandler(this)
+                                 .OnSuccess(result => NavigationService.NavigateToViewModel<MusicDirectoryViewModel>(result))
+                                 .Execute();
         }
 
         private void PopulateMenuItems()

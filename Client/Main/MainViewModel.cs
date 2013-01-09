@@ -1,4 +1,6 @@
-﻿using Caliburn.Micro;
+﻿using System.Collections.Generic;
+using Caliburn.Micro;
+using Client.Common.Models.Subsonic;
 using Client.Common.Results;
 using Subsonic8.Framework.ViewModel;
 using Subsonic8.Index;
@@ -7,7 +9,7 @@ using Windows.UI.Xaml.Controls;
 
 namespace Subsonic8.Main
 {
-    public class MainViewModel : ViewModelBase, IMainViewModel
+    public class MainViewModel : ViewModelBase, IMainViewModel, IResultHandler<IList<IndexItem>>
     {
         public BindableCollection<MenuItemViewModel> MenuItems { get; private set; }
 
@@ -24,18 +26,12 @@ namespace Subsonic8.Main
 
         public async void Populate()
         {
-            var getIndexResult = SubsonicService.GetRootIndex();
-            await getIndexResult.Execute();
-
-            if (getIndexResult.Error == null)
-            {
-                SetMenuItems(getIndexResult);
-            }
+            await SubsonicService.GetRootIndex().WithErrorHandler(this).OnSuccess(SetMenuItems).Execute();
         }
 
-        public void SetMenuItems(IGetRootResult getIndexResult)
+        public void SetMenuItems(IList<IndexItem> items)
         {
-            foreach (var index in getIndexResult.Result)
+            foreach (var index in items)
             {
                 MenuItems.Add(new MenuItemViewModel
                                   {
@@ -51,6 +47,11 @@ namespace Subsonic8.Main
         {
             base.OnInitialize();
             Populate();
+        }
+
+        public void HandleSuccess(IList<IndexItem> result)
+        {
+            SetMenuItems(result);
         }
     }
 }
