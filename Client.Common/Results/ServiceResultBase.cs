@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Net.Http;
+using System.ServiceModel;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Caliburn.Micro;
@@ -46,6 +47,8 @@ namespace Client.Common.Results
 
             if (response.Exception != null)
             {
+                OnError(new CommunicationException("Could not connect to the server. Please check the values in the settings panel.\r\n", response.Exception));
+                HandleError();
             }
             else
             {
@@ -71,6 +74,7 @@ namespace Client.Common.Results
             if (xDocument != null)
             {
                 HandleResponse(xDocument);
+                OnSuccess();
             }
         }
 
@@ -91,6 +95,10 @@ namespace Client.Common.Results
                         oldOnSuccess(result);
                         onSuccess(result);
                     };
+            }
+            else
+            {
+                _onSuccess = onSuccess;
             }
 
             return this;
@@ -126,6 +134,14 @@ namespace Client.Common.Results
             if (_errorHandler != null)
             {
                 _errorHandler.HandleError(Error);
+            }
+        }
+
+        private void OnSuccess()
+        {
+            if (_onSuccess != null)
+            {
+                _onSuccess(Result);
             }
         }
     }
