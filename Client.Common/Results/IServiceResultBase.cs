@@ -4,7 +4,7 @@ using Client.Common.Services;
 
 namespace Client.Common.Results
 {
-    public interface IServiceResultBase<out T> : IResultBase
+    public interface IServiceResultBase<T> : IResultBase
     {
         ISubsonicServiceConfiguration Configuration { get; }
 
@@ -15,5 +15,7 @@ namespace Client.Common.Results
         string ViewName { get; }
 
         string RequestUrl { get; }
+
+        ServiceResultBase<T> WithErrorHandler(IErrorHandler errorHandler);
     }
 }
