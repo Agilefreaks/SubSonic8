@@ -581,12 +581,12 @@ namespace Client.Tests.Playback
         }
 
         [TestMethod]
-        public async Task HandleWithPlaylistMessageShouldSetStatePropertyToPlayingOnlyOnOneItem()
+        public async Task HandleWithPlaylistMessage_ClearCurrentTrye_ShouldSetStatePropertyToPlayingOnlyOnOneItem()
         {
             await Task.Run(() => Subject.Handle(new PlaylistMessage
                                    {
-                                       Queue =
-                                           new List<ISubsonicModel> { new Song(), new Song(), new Song() }
+                                       Queue = new List<ISubsonicModel> { new Song(), new Song(), new Song() },
+                                       ClearCurrent = true
                                    }));
 
             Subject.PlaylistItems.Count(pi => pi.PlayingState == PlaylistItemState.Playing).Should().Be(1);
@@ -605,13 +605,17 @@ namespace Client.Tests.Playback
         }
 
         [TestMethod]
-        public async Task HandleWithPlaylistMessageWhenSourceOnPlaybackViewModelAndOnShellViewModelAreNullCallsNext()
+        public async Task HandleWithPlaylistMessage_ClearCurrentTrueAndSourceOnPlaybackViewModelAndOnShellViewModelAreNull_CallsNext()
         {
             var called = false;
             Subject.NextAction = () => { called = true; };
             MockLoadModel();
 
-            await Task.Run(() => Subject.Handle(new PlaylistMessage { Queue = new List<ISubsonicModel> { new Song { IsVideo = false } } }));
+            await Task.Run(() => Subject.Handle(new PlaylistMessage
+                {
+                    Queue = new List<ISubsonicModel> { new Song { IsVideo = false } },
+                    ClearCurrent = true
+                }));
 
             called.Should().BeTrue();
         }
