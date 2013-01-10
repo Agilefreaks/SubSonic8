@@ -80,14 +80,6 @@ namespace Client.Tests.DefaultBottomBar
         }
 
         [TestMethod]
-        public void AddAllCallsNavigationServiceNavigateToViewModel()
-        {
-            _subject.AddToPlaylist();
-
-            _navigationService.NavigateToViewModelCalls.Count.Should().Be(1);
-        }
-
-        [TestMethod]
         public void RemoveFromPlaylistCallsEventAggregatorPublish()
         {
             _subject.RemoveFromPlaylist();
