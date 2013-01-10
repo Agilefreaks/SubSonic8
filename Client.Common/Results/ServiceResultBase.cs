@@ -30,6 +30,8 @@ namespace Client.Common.Results
         }
 
         protected readonly HttpClient Client = new HttpClient();
+        private IErrorHandler _errorHandler;
+        private Action<T> _onSuccess;
 
         protected ServiceResultBase(ISubsonicServiceConfiguration configuration)
         {
@@ -46,6 +48,7 @@ namespace Client.Common.Results
             if (response.Exception != null)
             {
                 OnError(new CommunicationException("Could not connect to the server. Please check the values in the settings panel.\r\n", response.Exception));
+                HandleError();
             }
             else
             {
@@ -65,12 +68,40 @@ namespace Client.Common.Results
             catch (Exception exception)
             {
                 OnError(exception);
+                HandleError();
             }
 
             if (xDocument != null)
             {
                 HandleResponse(xDocument);
+                OnSuccess();
             }
+        }
+
+        public ServiceResultBase<T> WithErrorHandler(IErrorHandler errorHandler)
+        {
+            _errorHandler = errorHandler;
+
+            return this;
+        }
+
+        public ServiceResultBase<T> OnSuccess(Action<T> onSuccess)
+        {
+            if (_onSuccess != null)
+            {
+                var oldOnSuccess = _onSuccess;
+                _onSuccess = result =>
+                    {
+                        oldOnSuccess(result);
+                        onSuccess(result);
+                    };
+            }
+            else
+            {
+                _onSuccess = onSuccess;
+            }
+
+            return this;
         }
 
         protected abstract void HandleResponse(XDocument xDocument);
@@ -78,12 +109,6 @@ namespace Client.Common.Results
         protected override Task ExecuteCore(ActionExecutionContext context = null)
         {
             return null;
-        }
-
-        protected override async void OnError(Exception error)
-        {
-            base.OnError(error);
-            await new MessageDialogResult(error.ToString(), "Ooops...").Execute();
         }
 
         private async Task<HttpStreamResult> ResponseFunc()
@@ -102,6 +127,22 @@ namespace Client.Common.Results
             }
 
             return result;
+        }
+
+        private void HandleError()
+        {
+            if (_errorHandler != null)
+            {
+                _errorHandler.HandleError(Error);
+            }
+        }
+
+        private void OnSuccess()
+        {
+            if (_onSuccess != null)
+            {
+                _onSuccess(Result);
+            }
         }
     }
 }

@@ -119,14 +119,17 @@
     <Compile Include="Results\GetRootResult.cs" />
     <Compile Include="Results\GetSongResult.cs" />
     <Compile Include="Results\HttpStreamResult.cs" />
+    <Compile Include="Results\IErrorHandler.cs" />
     <Compile Include="Results\IGetAlbumResult.cs" />
     <Compile Include="Results\IGetArtistResult.cs" />
     <Compile Include="Results\IGetMusicDirectoryResult.cs" />
     <Compile Include="Results\IGetRootResult.cs" />
     <Compile Include="Results\IGetSongResult.cs" />
     <Compile Include="Results\IResultBase.cs" />
+    <Compile Include="Results\IResultHandler.cs" />
     <Compile Include="Results\ISearchResult.cs" />
     <Compile Include="Results\IServiceResultBase.cs" />
+    <Compile Include="Results\ISuccessHandler.cs" />
     <Compile Include="Results\ITaskResult.cs" />
     <Compile Include="Results\MessageDialogResult.cs" />
     <Compile Include="Results\ResultBase.cs" />

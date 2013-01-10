@@ -1,5 +1,6 @@
-﻿using Caliburn.Micro;
-using Client.Common.Results;
+﻿using System.Collections.Generic;
+using Caliburn.Micro;
+using Client.Common.Models.Subsonic;
 using Subsonic8.Framework.ViewModel;
 using Subsonic8.MenuItem;
 using Windows.UI.Xaml.Controls;
@@ -14,6 +15,6 @@ namespace Subsonic8.Main
 
         void Populate();
 
-        void SetMenuItems(IGetRootResult getIndexResult);
+        void SetMenuItems(IList<IndexItem> items);
     }
 }
