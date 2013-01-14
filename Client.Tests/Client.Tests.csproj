@@ -121,10 +121,11 @@
     <Compile Include="Framework\ViewModel\ItemViewModelBaseTests.cs" />
     <Compile Include="MenuItem\MenuItemViewModelBaseTests.cs" />
     <Compile Include="Mocks\MockDefaultBottomBarViewModel.cs" />
+    <Compile Include="Mocks\MockDialogNotificationService.cs" />
     <Compile Include="Mocks\MockGetAlbumResult.cs" />
     <Compile Include="Mocks\MockGetArtistResult.cs" />
     <Compile Include="Mocks\MockGetMusicDirectoryResult.cs" />
-    <Compile Include="Mocks\MockNotificationService.cs" />
+    <Compile Include="Mocks\MockToastNotificationService.cs" />
     <Compile Include="Mocks\MockSearchResult.cs" />
     <Compile Include="Mocks\MockShellViewModel.cs" />
     <Compile Include="Index\IndexViewModelTests.cs" />

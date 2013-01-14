@@ -1,16 +1,20 @@
 using System.Collections.ObjectModel;
 using Caliburn.Micro;
+using Client.Common.Results;
 using Client.Common.Services;
 using Subsonic8.BottomBar;
+using Subsonic8.Framework.Services;
 using Action = System.Action;
 
 namespace Subsonic8.Framework.ViewModel
 {
-    public interface IViewModel : IScreen
+    public interface IViewModel : IScreen, IErrorHandler
     {
         INavigationService NavigationService { get; set; }
 
         ISubsonicService SubsonicService { get; set; }
+
+        IDialogNotificationService NotificationService { get; set; }
 
         IBottomBarViewModel BottomBar { get; set; }
 

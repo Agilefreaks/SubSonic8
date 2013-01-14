@@ -1,6 +1,5 @@
 ﻿using System;
 using Caliburn.Micro;
-using Subsonic8.Messages;
 using Windows.UI.Popups;
 
 namespace Subsonic8.Framework.Services
@@ -25,11 +24,6 @@ namespace Subsonic8.Framework.Services
             }
 
             await dialog.ShowAsync();
-        }
-
-        public void Handle(NotificationMessage message)
-        {
-            Show(message);
         }
     }
 }
