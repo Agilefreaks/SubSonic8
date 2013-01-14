@@ -23,7 +23,7 @@ namespace Client.Tests.Mocks
         public string ViewName { get; private set; }
 
         public string RequestUrl { get; private set; }
-
+        
         public Task Execute(ActionExecutionContext context = null)
         {
             ExecuteCallCount++;
@@ -33,6 +33,16 @@ namespace Client.Tests.Mocks
 
             return taskCompletionSource.Task;
 
+        }
+
+        public IServiceResultBase<Common.Models.Subsonic.MusicDirectory> WithErrorHandler(IErrorHandler errorHandler)
+        {
+            return this;
+        }
+
+        public IServiceResultBase<Common.Models.Subsonic.MusicDirectory> OnSuccess(Action<Common.Models.Subsonic.MusicDirectory> onSuccess)
+        {
+            return this;
         }
     }
 }

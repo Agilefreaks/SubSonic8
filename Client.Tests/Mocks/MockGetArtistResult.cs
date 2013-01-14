@@ -24,6 +24,16 @@ namespace Client.Tests.Mocks
         public string ViewName { get; private set; }
 
         public string RequestUrl { get; private set; }
+        
+        IServiceResultBase<ExpandedArtist> IServiceResultBase<ExpandedArtist>.WithErrorHandler(IErrorHandler errorHandler)
+        {
+            return this;
+        }
+
+        public IServiceResultBase<ExpandedArtist> OnSuccess(Action<ExpandedArtist> onSuccess)
+        {
+            return this;
+        }
 
         public Task Execute(ActionExecutionContext context = null)
         {

@@ -49,5 +49,9 @@ namespace Client.Tests.Mocks
         {
             StopCallCount++;
         }
+
+        public void HandleError(Exception error)
+        {
+        }
     }
 }
