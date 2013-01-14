@@ -101,7 +101,6 @@ namespace Subsonic8.BottomBar
         {
             _eventAggregator.Publish(new PlaylistMessage { Queue = SelectedItems.Select(i => ((IMenuItemViewModel)i).Item).ToList() });
             SelectedItems.Clear();
-            Navigate();
         }
 
         public void PlayAll()

@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using Client.Common.Models.Subsonic;
+using Client.Common.Results;
 using Client.Common.Services;
 using Subsonic8.BottomBar;
 using Subsonic8.Framework.Services;
@@ -90,10 +91,10 @@ namespace Subsonic8.Shell
 
         public async Task PerformSubsonicSearch(string query)
         {
-            var searchResult = SubsonicService.Search(query);
-            await searchResult.Execute();
-
-            NavigateToSearhResult(searchResult.Result);
+            await SubsonicService.Search(query)
+                               .WithErrorHandler(this)
+                               .OnSuccess(result => NavigateToSearhResult(result))
+                               .Execute();
         }
 
         public void PlayNext(object sender, RoutedEventArgs routedEventArgs)
@@ -169,6 +170,11 @@ namespace Subsonic8.Shell
             };
 #endif
             return subsonic8Configuration;
+        }
+
+        public async void HandleError(Exception error)
+        {
+            await new MessageDialogResult(error.ToString(), "Ooops...").Execute();
         }
     }
 }

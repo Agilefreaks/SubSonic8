@@ -13,6 +13,7 @@ using Subsonic8.Messages;
 using Subsonic8.PlaylistItem;
 using Subsonic8.Shell;
 using Windows.UI.Xaml.Controls;
+using Action = System.Action;
 
 namespace Subsonic8.Playback
 {
@@ -32,6 +33,7 @@ namespace Subsonic8.Playback
         private bool _wasEmpty;
         private bool _shuffleOn;
         private readonly Random _randomNumberGenerator;
+        private bool _playNextItem;
 
         #endregion
 
@@ -143,7 +145,9 @@ namespace Subsonic8.Playback
 
         public PlaylistHistoryStack PlaylistHistory { get; private set; }
 
-        public Action<PlaylistItemViewModel> Start { get; set; }
+        public Action<PlaylistItemViewModel> StartAction { get; set; }
+
+        public Action NextAction { get; set; }
 
         public Func<IId, Task<PlaylistItemViewModel>> LoadModel { get; set; }
 
@@ -161,7 +165,8 @@ namespace Subsonic8.Playback
             _wasEmpty = true;
 
             UpdateDisplayName = () => DisplayName = "Playlist";
-            Start = StartImpl;
+            StartAction = Start;
+            NextAction = Next;
             LoadModel = LoadModelImpl;
 
             // playlist stuff that need refactoring
@@ -175,11 +180,11 @@ namespace Subsonic8.Playback
         public void StartPlayback(object e)
         {
             var pressedItem = (PlaylistItemViewModel)(((ItemClickEventArgs)e).ClickedItem);
-            Start(pressedItem);
+            StartAction(pressedItem);
             _currentTrackNumber = PlaylistItems.IndexOf(pressedItem);
         }
 
-        public void StartImpl(PlaylistItemViewModel model)
+        public void Start(PlaylistItemViewModel model)
         {
             Stop();
             if (model.Item.Type == SubsonicModelTypeEnum.Song)
@@ -227,7 +232,7 @@ namespace Subsonic8.Playback
                     _currentTrackNumber++;
                 }
 
-                Start(PlaylistItems[_currentTrackNumber]);
+                StartAction(PlaylistItems[_currentTrackNumber]);
             }
         }
 
@@ -253,7 +258,7 @@ namespace Subsonic8.Playback
             _currentTrackNumber = GetNextTrackNumber();
             if (_currentTrackNumber < PlaylistItems.Count)
             {
-                Start(PlaylistItems[_currentTrackNumber]);
+                StartAction(PlaylistItems[_currentTrackNumber]);
                 if (previousTrackNumber != -1)
                 {
                     PlaylistHistory.Push(previousTrackNumber);
@@ -266,7 +271,7 @@ namespace Subsonic8.Playback
             _currentTrackNumber = GetPreviousTrackNumber();
             if (_currentTrackNumber > -1)
             {
-                Start(PlaylistItems[_currentTrackNumber]);
+                StartAction(PlaylistItems[_currentTrackNumber]);
             }
         }
 
@@ -276,16 +281,12 @@ namespace Subsonic8.Playback
             {
                 Stop();
                 PlaylistItems.Clear();
+                _playNextItem = true;
             }
 
             foreach (var item in message.Queue)
             {
                 await AddToPlaylist(item);
-            }
-
-            if (Source == null && ShellViewModel.Source == null && PlaylistItems.Any())
-            {
-                Start(PlaylistItems.First());
             }
         }
 
@@ -301,7 +302,7 @@ namespace Subsonic8.Playback
         {
             var playlistItem = await LoadModel(message.Model);
             PlaylistItems.Add(playlistItem);
-            Start(playlistItem);
+            StartAction(playlistItem);
         }
 
         public void Handle(PlayNextMessage message)
@@ -334,6 +335,11 @@ namespace Subsonic8.Playback
             if (item.Type == SubsonicModelTypeEnum.Song || item.Type == SubsonicModelTypeEnum.Video)
             {
                 PlaylistItems.Add(await LoadModel(item));
+                if (_playNextItem)
+                {
+                    _playNextItem = false;
+                    NextAction();
+                }
             }
             else
             {
@@ -342,21 +348,25 @@ namespace Subsonic8.Playback
                 {
                     case SubsonicModelTypeEnum.Album:
                         {
-                            var result = SubsonicService.GetAlbum(item.Id);
-                            await result.Execute();
-                            children.AddRange(result.Result.Songs);
+                            await SubsonicService.GetAlbum(item.Id)
+                                                 .WithErrorHandler(this)
+                                                 .OnSuccess(result => children.AddRange(result.Songs))
+                                                 .Execute();
+
                         } break;
                     case SubsonicModelTypeEnum.Artist:
                         {
-                            var result = SubsonicService.GetArtist(item.Id);
-                            await result.Execute();
-                            children.AddRange(result.Result.Albums);
+                            await SubsonicService.GetArtist(item.Id)
+                                                 .WithErrorHandler(this)
+                                                 .OnSuccess(result => children.AddRange(result.Albums))
+                                                 .Execute();
                         } break;
                     case SubsonicModelTypeEnum.MusicDirectory:
                         {
-                            var result = SubsonicService.GetMusicDirectory(item.Id);
-                            await result.Execute();
-                            children.AddRange(result.Result.Children);
+                            await SubsonicService.GetMusicDirectory(item.Id)
+                                                 .WithErrorHandler(this)
+                                                 .OnSuccess(result => children.AddRange(result.Children))
+                                                 .Execute();
                         } break;
                     case SubsonicModelTypeEnum.Index:
                         {
@@ -369,6 +379,11 @@ namespace Subsonic8.Playback
                     await AddToPlaylist(subsonicModel);
                 }
             }
+        }
+
+        private bool ShouldPlayFirstSong()
+        {
+            return Source == null && ShellViewModel.Source == null && PlaylistItems.Any();
         }
 
         private void PlayUri(Uri source)
@@ -422,20 +437,19 @@ namespace Subsonic8.Playback
             PlaylistItemViewModel playlistItem = null;
             if (model != null)
             {
-                var result = SubsonicService.GetSong(model.Id);
-                await result.Execute();
-                var item = result.Result;
-
-                playlistItem = new PlaylistItemViewModel
-                {
-                    Artist = item.Artist,
-                    Title = item.Title,
-                    Item = item,
-                    Uri = SubsonicService.GetUriForFileWithId(item.Id),
-                    CoverArtId = item.CoverArt,
-                    PlayingState = PlaylistItemState.NotPlaying,
-                    Duration = item.Duration
-                };
+                await
+                    SubsonicService.GetSong(model.Id)
+                                   .WithErrorHandler(this)
+                                   .OnSuccess(result => playlistItem = new PlaylistItemViewModel
+                                       {
+                                           Artist = result.Artist,
+                                           Title = result.Title,
+                                           Item = result,
+                                           Uri = SubsonicService.GetUriForFileWithId(result.Id),
+                                           CoverArtId = result.CoverArt,
+                                           PlayingState = PlaylistItemState.NotPlaying,
+                                           Duration = result.Duration
+                                       }).Execute();
             }
 
             return playlistItem;
