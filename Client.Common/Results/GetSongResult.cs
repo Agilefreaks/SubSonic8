@@ -32,6 +32,7 @@ namespace Client.Common.Results
                 return string.Concat(base.RequestUrl, string.Format("&id={0}", Id));
             }
         }
+
         protected override void HandleResponse(XDocument xDocument)
         {
             var xmlSerializer = new XmlSerializer(typeof(Song), new[] { typeof(Song) });

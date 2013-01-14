@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Client.Common.Models.Subsonic;
-using Client.Common.Results;
 using Client.Tests.Framework.ViewModel;
 using Client.Tests.Mocks;
 using FluentAssertions;
@@ -36,12 +35,7 @@ namespace Client.Tests.Main
         [TestMethod]
         public void SetMenuItemsShouldAddMenuItems()
         {
-            var getRootResult = new GetRootResult(null)
-                                    {
-                                        Result = new List<IndexItem> { new IndexItem(), new IndexItem() },
-                                    };
-
-            Subject.SetMenuItems(getRootResult);
+            Subject.SetMenuItems(new List<IndexItem> { new IndexItem(), new IndexItem() });
 
             Subject.MenuItems.Should().HaveCount(2);
         }
