@@ -31,21 +31,37 @@
 
             <ContentControl cal:View.Context="{Binding State}" cal:View.Model="{Binding}" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="116,0,116,46"/>
 
-            <ListView Grid.Column="1"
-                    ItemsSource = "{Binding PlaylistItems}" ItemTemplate="{StaticResource PlaylistItemTemplate}"
-                    SelectionMode = "Multiple"
-                    framework:MultipleSelectBehavior.SelectedItems="{Binding SelectedItems, Mode=TwoWay}"
-                    CanDragItems = "True" CanReorderItems = "True" AllowDrop = "True"
-                    IsItemClickEnabled = "True"
-                    cal:Message.Attach = "[Event ItemClick] = [Action StartPlayback($eventArgs)]"
-                    Padding="116,0,116,46">
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                        <Button Style="{StaticResource ClearPlaylistAppBarButtonStyle}" x:Name="ClearPlaylist"/>
+                    </StackPanel>
+                </Grid>
+                <ListView Grid.Row="1"
+                        ItemsSource = "{Binding PlaylistItems}" ItemTemplate="{StaticResource PlaylistItemTemplate}"
+                        SelectionMode = "Multiple"
+                        framework:MultipleSelectBehavior.SelectedItems="{Binding SelectedItems, Mode=TwoWay}"
+                        CanDragItems = "True" CanReorderItems = "True" AllowDrop = "True"
+                        IsItemClickEnabled = "True"
+                        cal:Message.Attach = "[Event ItemClick] = [Action StartPlayback($eventArgs)]"
+                        Padding="116,0,116,46">
 
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="ListViewItem">
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                    </Style>
-                </ListView.ItemContainerStyle>
-            </ListView>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                </ListView>
+            </Grid>
         </Grid>
     </Grid>
 </Page>

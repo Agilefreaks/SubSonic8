@@ -398,13 +398,12 @@
             </Setter.Value>
         </Setter>
     </Style>
-
+    
     <Style x:Key="SettingsAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
         <Setter Property="AutomationProperties.AutomationId" Value="SettingsAppBarButton"/>
         <Setter Property="AutomationProperties.Name" Value="Settings"/>
         <Setter Property="Content" Value="&#xE115;"/>
     </Style>
-    
     <Style x:Key="AddAllAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
         <Setter Property="AutomationProperties.AutomationId" Value="AddAppBarButton"/>
         <Setter Property="AutomationProperties.Name" Value="Add to playlist"/>
@@ -469,6 +468,11 @@
         <Setter Property="AutomationProperties.AutomationId" Value="StopAppBarButton"/>
         <Setter Property="AutomationProperties.Name" Value="Stop"/>
         <Setter Property="Content" Value="&#xE15B;"/>
+    </Style>
+    <Style x:Key="ClearPlaylistAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
+        <Setter Property="AutomationProperties.AutomationId" Value="DeleteAppBarButton"/>
+        <Setter Property="AutomationProperties.Name" Value="Clear"/>
+        <Setter Property="Content" Value="&#xE106;"/>
     </Style>
     <!-- 
         Standard AppBarButton Styles for use with Button and ToggleButton

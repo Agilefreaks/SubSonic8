@@ -275,6 +275,11 @@ namespace Subsonic8.Playback
             }
         }
 
+        public void ClearPlaylist()
+        {
+            PlaylistItems.Clear();
+        }
+
         public async void Handle(PlaylistMessage message)
         {
             if (message.ClearCurrent)
