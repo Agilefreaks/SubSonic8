@@ -7,6 +7,7 @@ using Client.Tests.Mocks;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using Subsonic8.Main;
+
 namespace Client.Tests.Main
 {
     [TestClass]
@@ -37,11 +38,11 @@ namespace Client.Tests.Main
         public void SetMenuItemsShouldAddMenuItems()
         {
             var getRootResult = new GetRootResult(null)
-                                    {
-                                        Result = new List<IndexItem> { new IndexItem(), new IndexItem() },
-                                    };
+                              {
+                                  Result = new List<IndexItem> {new IndexItem(), new IndexItem()}
+                              };
 
-            Subject.SetMenuItems(getRootResult);
+            Subject.SetMenuItems(getRootResult.Result);
 
             Subject.MenuItems.Should().HaveCount(2);
         }
