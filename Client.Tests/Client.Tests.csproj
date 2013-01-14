@@ -125,6 +125,7 @@
     <Compile Include="Mocks\MockGetMusicDirectoryResult.cs" />
     <Compile Include="Mocks\MockNotificationService.cs" />
     <Compile Include="Mocks\MockSearchResult.cs" />
+    <Compile Include="Mocks\MockServiceResultBase.cs" />
     <Compile Include="Mocks\MockShellViewModel.cs" />
     <Compile Include="Index\IndexViewModelTests.cs" />
     <Compile Include="Main\MainViewModelTests.cs" />

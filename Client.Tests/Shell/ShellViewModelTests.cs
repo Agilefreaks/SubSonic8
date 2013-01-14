@@ -40,10 +40,10 @@ namespace Client.Tests.Shell
         }
 
         [TestMethod]
-        public async void PerformSubsonicSearchAlwaysCallsSubsonicServiceSearchAndReturnsTheResult()
+        public async Task PerformSubsonicSearch_Always_CallsSubsonicServiceSearchAndReturnsTheResult()
         {
             var callCount = 0;
-            var searchResult = new MockSearchResult(new SubsonicServiceConfiguration(), "test");
+            var searchResult = new MockSearchResult();
             Subject.NavigateToSearhResult = collection => { };
             _mockSubsonicService.Search = s =>
                                               {
@@ -61,7 +61,7 @@ namespace Client.Tests.Shell
         public async Task PerformSubsonicSearchAlwaysCallsNavigatesToSearchResult()
         {
             var called = false;
-            var searchResult = new MockSearchResult(new SubsonicServiceConfiguration(), "test");
+            var searchResult = new MockSearchResult();
             _mockSubsonicService.Search = s => searchResult;
             Subject.NavigateToSearhResult = collection => { called = true; };
 
