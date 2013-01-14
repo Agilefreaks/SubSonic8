@@ -78,14 +78,14 @@ namespace Client.Common.Results
             }
         }
 
-        public ServiceResultBase<T> WithErrorHandler(IErrorHandler errorHandler)
+        public IServiceResultBase<T> WithErrorHandler(IErrorHandler errorHandler)
         {
             _errorHandler = errorHandler;
 
             return this;
         }
 
-        public ServiceResultBase<T> OnSuccess(Action<T> onSuccess)
+        public IServiceResultBase<T> OnSuccess(Action<T> onSuccess)
         {
             if (_onSuccess != null)
             {
