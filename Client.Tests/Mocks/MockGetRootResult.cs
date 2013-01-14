@@ -31,6 +31,16 @@ namespace Client.Tests.Mocks
             Result = new List<IndexItem>();
         }
 
+        public IServiceResultBase<IList<IndexItem>> OnSuccess(Action<IList<IndexItem>> onSuccess)
+        {
+            return this;
+        }
+
+        public IServiceResultBase<IList<IndexItem>> WithErrorHandler(IErrorHandler errorHandler)
+        {
+            return this;
+        }
+
         public Task Execute(ActionExecutionContext context)
         {
             var tcr = new TaskCompletionSource<Stream>();
