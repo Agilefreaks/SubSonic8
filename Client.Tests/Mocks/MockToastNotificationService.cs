@@ -6,11 +6,11 @@ namespace Client.Tests.Mocks
     {
         public int ShowCallCount { get; set; }
 
+        public bool UseSound { get; set; }
+
         public void Show(ToastNotificationOptions options)
         {
             ShowCallCount++;
         }
-
-        public bool UseSound { get; set; }
     }
 }

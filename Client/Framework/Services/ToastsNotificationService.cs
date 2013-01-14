@@ -3,18 +3,18 @@ using Windows.UI.Notifications;
 
 namespace Subsonic8.Framework.Services
 {
-    public class ToastsNotificationService : INotificationService
+    public class ToastsNotificationService : IToastNotificationService
     {
-        public void Show(NotificationOptions options)
+        public bool UseSound { get; set; }
+
+        public void Show(ToastNotificationOptions options)
         {
             var toastXml = BuildToast(options);
             var toast = new ToastNotification(toastXml);
             ToastNotificationManager.CreateToastNotifier().Show(toast);
         }
 
-        public bool UseSound { get; set; }
-
-        private XmlDocument BuildToast(NotificationOptions options)
+        private XmlDocument BuildToast(ToastNotificationOptions options)
         {
             var template = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastImageAndText02);
 

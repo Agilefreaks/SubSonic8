@@ -129,13 +129,20 @@
     <Compile Include="Converters\InvertedBooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\IntToTimeStringConverter.cs" />
     <Compile Include="Dialogs\DialogService.cs" />
+    <Compile Include="Framework\Services\DialogNotificationOptions.cs" />
+    <Compile Include="Framework\Services\DialogNotificationService.cs" />
+    <Compile Include="Framework\Services\IDialogNotificationService.cs" />
     <Compile Include="Framework\Services\INotificationService.cs" />
-    <Compile Include="Framework\Services\NotificationOptions.cs" />
+    <Compile Include="Framework\Services\IToastNotificationService.cs" />
+    <Compile Include="Framework\Services\PossibleAction.cs" />
+    <Compile Include="Framework\Services\ToastNotificationOptions.cs" />
     <Compile Include="Framework\Services\ToastsNotificationService.cs" />
+    <Compile Include="Framework\Services\UICommandAdapter.cs" />
     <Compile Include="Framework\ViewModel\DetailViewModelBase.cs" />
     <Compile Include="Framework\Extensions\NavigationServiceExtensions.cs" />
     <Compile Include="Framework\ViewModel\IDetailViewModel.cs" />
     <Compile Include="Framework\ViewModel\ItemViewModelBase.cs" />
+    <Compile Include="Messages\NotificationMessage.cs" />
     <Compile Include="Messages\RemoveFromPlaylistMessage.cs" />
     <Compile Include="Messages\ShowControlsMessage.cs" />
     <Compile Include="Messages\ToggleShuffleMessage.cs" />
@@ -216,6 +223,11 @@
     <Compile Include="Messages\PlayFile.cs" />
     <Compile Include="Shell\IPlayerControls.cs" />
     <Compile Include="Search\SearchViewModel.cs" />
+    <Compile Include="Shell\ShellStrings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ShellStrings.resw</DependentUpon>
+    </Compile>
     <Compile Include="Shell\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
@@ -228,6 +240,10 @@
     <None Include="Client_StoreKey.pfx" />
     <None Include="Client_TemporaryKey.pfx" />
     <None Include="packages.config" />
+    <EmbeddedResource Include="Shell\ShellStrings.resw">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ShellStrings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\CoverArtPlaceholder.jpg" />

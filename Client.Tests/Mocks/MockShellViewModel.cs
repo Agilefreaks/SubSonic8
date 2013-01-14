@@ -4,6 +4,7 @@ using Caliburn.Micro;
 using Client.Common.Models.Subsonic;
 using Client.Common.Services;
 using Subsonic8.BottomBar;
+using Subsonic8.Framework.Services;
 using Subsonic8.Shell;
 using Windows.UI.Xaml;
 
@@ -16,6 +17,10 @@ namespace Client.Tests.Mocks
         public Uri Source { get; set; }
 
         public ISubsonicService SubsonicService { get; set; }
+
+        public IToastNotificationService NotificationService { get; set; }
+
+        public IDialogNotificationService DialogNotificationService { get; set; }
 
         public IPlayerControls PlayerControls { get; set; }
 

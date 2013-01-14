@@ -22,7 +22,7 @@ namespace Subsonic8.Playback
         #region Private Fields
 
         private readonly IEventAggregator _eventAggregator;
-        private readonly INotificationService _notificationService;
+        private readonly IToastNotificationService _notificationService;
         private IShellViewModel _shellViewModel;
         private ISubsonicModel _parameter;
         private PlaybackViewModelStateEnum _state;
@@ -154,7 +154,7 @@ namespace Subsonic8.Playback
         #endregion
 
         public PlaybackViewModel(IEventAggregator eventAggregator, IShellViewModel shellViewModel,
-            ISubsonicService subsonicService, INotificationService notificationService)
+            ISubsonicService subsonicService, IToastNotificationService notificationService)
         {
             _eventAggregator = eventAggregator;
             _notificationService = notificationService;
@@ -203,7 +203,7 @@ namespace Subsonic8.Playback
                 Source = SubsonicService.GetUriForVideoWithId(model.Item.Id);
             }
 
-            _notificationService.Show(new NotificationOptions
+            _notificationService.Show(new ToastNotificationOptions
                 {
                     ImageUrl = SubsonicService.GetCoverArtForId(model.CoverArtId),
                     Title = model.Title,

@@ -10,7 +10,7 @@ namespace Client.Tests.Framework.Services
         [TestMethod]
         public void TitleReturnsUnknownIfItIsSetToNull()
         {
-            var options = new NotificationOptions
+            var options = new ToastNotificationOptions
                               {
                                   Title = null
                               };
@@ -21,7 +21,7 @@ namespace Client.Tests.Framework.Services
         [TestMethod]
         public void TitleReturnsUnknownIfItIsSetToEmpty()
         {
-            var options = new NotificationOptions
+            var options = new ToastNotificationOptions
             {
                 Title = string.Empty
             };
@@ -33,7 +33,7 @@ namespace Client.Tests.Framework.Services
         public void TitleRerturnsValueSet()
         {
             const string title = "title";
-            var options = new NotificationOptions
+            var options = new ToastNotificationOptions
                               {
                                   Title = title
                               };
@@ -44,7 +44,7 @@ namespace Client.Tests.Framework.Services
         [TestMethod]
         public void SubtitleReturnsUnknownIfSetToNull()
         {
-            var options = new NotificationOptions
+            var options = new ToastNotificationOptions
             {
                 Subtitle = null
             };
@@ -55,7 +55,7 @@ namespace Client.Tests.Framework.Services
         [TestMethod]
         public void SubtitleReturnsUnknownIfSetToEmpty()
         {
-            var options = new NotificationOptions
+            var options = new ToastNotificationOptions
             {
                 Subtitle = string.Empty
             };
@@ -67,7 +67,7 @@ namespace Client.Tests.Framework.Services
         public void SubtitleRerturnsValueSet()
         {
             const string subtitle = "subtitle";
-            var options = new NotificationOptions
+            var options = new ToastNotificationOptions
             {
                 Subtitle = subtitle
             };

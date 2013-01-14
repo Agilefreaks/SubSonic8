@@ -62,7 +62,7 @@ namespace Client.Common.Tests.Services
         [TestMethod]
         public void GetCoverArtForIdWhenParameterIsNotNullOrEmptyReturnsUrlThatContainThumbnailSize()
         {
-            _subject.GetCoverArtForId("test").Should().Contain(string.Format("&size={0}", (int) ImageType.Thumbnail));
+            _subject.GetCoverArtForId("test").Should().Contain(string.Format("&size={0}", (int)ImageType.Thumbnail));
         }
 
         [TestMethod]
@@ -70,7 +70,37 @@ namespace Client.Common.Tests.Services
         {
             _subject.GetCoverArtForId("test", ImageType.Original)
                     .Should()
-                    .Contain(string.Format("&size={0}", (int) ImageType.Original));
+                    .Contain(string.Format("&size={0}", (int)ImageType.Original));
+        }
+
+        [TestMethod]
+        public void IsConfiguredWhenConfigurationIsNullReturnsFalse()
+        {
+            _subject.Configuration = null;
+
+            _subject.IsConfigured.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void IsConfiguredWhenConfigurationBaseUrlIsEmptyReturnsFalse()
+        {
+            _subject.Configuration = new SubsonicServiceConfiguration
+                                         {
+                                             BaseUrl = string.Empty
+                                         };
+
+            _subject.IsConfigured.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void IsConfiguredWhenConfigurationBaseUrlIsNotEmptyReturnsTrue()
+        {
+            _subject.Configuration = new SubsonicServiceConfiguration
+                                         {
+                                             BaseUrl = "http://test.com"
+                                         };
+
+            _subject.IsConfigured.Should().BeTrue();
         }
     }
 }

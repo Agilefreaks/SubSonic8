@@ -18,6 +18,8 @@ namespace Client.Common.Services
         Func<int, IGetSongResult> GetSong { get; set; }
 
         Func<string, ISearchResult> Search { get; set; }
+        
+        bool IsConfigured { get; }
 
         Uri GetUriForFileWithId(int id);
 

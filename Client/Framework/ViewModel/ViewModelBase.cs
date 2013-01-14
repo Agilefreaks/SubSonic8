@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using Caliburn.Micro;
-using Client.Common.Results;
 using Client.Common.Services;
 using Subsonic8.BottomBar;
+using Subsonic8.Framework.Services;
 using Subsonic8.Shell;
 using Action = System.Action;
 
 namespace Subsonic8.Framework.ViewModel
 {
-    public abstract class ViewModelBase : Screen, IViewModel, IErrorHandler
+    public abstract class ViewModelBase : Screen, IViewModel
     {
         private INavigationService _navigationService;
         private ISubsonicService _subsonicService;
@@ -43,6 +43,8 @@ namespace Subsonic8.Framework.ViewModel
                 NotifyOfPropertyChange();
             }
         }
+
+        public IDialogNotificationService NotificationService { get; set; }
 
         public IBottomBarViewModel BottomBar
         {
@@ -87,15 +89,19 @@ namespace Subsonic8.Framework.ViewModel
         {
             SubsonicService = IoC.Get<ISubsonicService>();
             NavigationService = IoC.Get<INavigationService>();
+            NotificationService = IoC.Get<IDialogNotificationService>();
             UpdateDisplayName = () => DisplayName = "Subsonic8";
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
             SetBottomBar();
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
 
-        public async void HandleError(Exception error)
+        public void HandleError(Exception error)
         {
-            await new MessageDialogResult(error.ToString(), "Ooops...").Execute();
+            NotificationService.Show(new DialogNotificationOptions
+                                         {
+                                             Message = error.ToString(),
+                                         });
         }
 
         protected override void OnActivate()

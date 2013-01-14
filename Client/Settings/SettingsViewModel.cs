@@ -1,6 +1,3 @@
-using System;
-using System.ComponentModel;
-using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using Client.Common.Services;
@@ -12,7 +9,7 @@ namespace Subsonic8.Settings
     public class SettingsViewModel : Screen
     {
         private readonly ISubsonicService _subsonicService;
-        private readonly INotificationService _notificationService;
+        private readonly IToastNotificationService _notificationService;
         private readonly IStorageService _storageService;
         private readonly INavigationService _navigationService;
         private Subsonic8Configuration _configuration;
@@ -39,7 +36,7 @@ namespace Subsonic8.Settings
             }
         }
 
-        public SettingsViewModel(ISubsonicService subsonicService, INotificationService notificationService,
+        public SettingsViewModel(ISubsonicService subsonicService, IToastNotificationService notificationService,
             IStorageService storageService, INavigationService navigationService)
         {
             _subsonicService = subsonicService;
