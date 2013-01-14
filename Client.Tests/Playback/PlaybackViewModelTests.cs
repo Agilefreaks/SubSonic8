@@ -844,6 +844,17 @@ namespace Client.Tests.Playback
             Subject.ShuffleOn.Should().BeFalse();
         }
 
+        [TestMethod]
+        public void ClearPlaylist_Always_ClearsAllItemsFromThePlaylist()
+        {
+            Subject.PlaylistItems.Add(new PlaylistItemViewModel());
+            Subject.PlaylistItems.Add(new PlaylistItemViewModel());
+
+            Subject.ClearPlaylist();
+
+            Subject.PlaylistItems.Count.Should().Be(0);
+        }
+
         private ISubsonicModel MockLoadModel(bool isVideo = false)
         {
             var item = new Song
