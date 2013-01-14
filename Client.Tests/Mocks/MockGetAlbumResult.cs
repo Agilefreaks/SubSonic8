@@ -29,6 +29,16 @@ namespace Client.Tests.Mocks
             GetResultFunc = () => new Common.Models.Subsonic.Album();
         }
 
+        public IServiceResultBase<Common.Models.Subsonic.Album> WithErrorHandler(IErrorHandler errorHandler)
+        {
+            return this;
+        }
+
+        public IServiceResultBase<Common.Models.Subsonic.Album> OnSuccess(Action<Common.Models.Subsonic.Album> onSuccess)
+        {
+            return this;
+        }
+
         public Task Execute(ActionExecutionContext context = null)
         {
             ExecuteCallCount++;
