@@ -39,25 +39,6 @@ namespace Client.Common.Results
             Response = ResponseFunc;
         }
 
-        public override async Task Execute(ActionExecutionContext context = null)
-        {
-            await new VisualStateResult("Loading").Execute();
-
-            var response = await Response();
-
-            if (response.Exception != null)
-            {
-                OnError(new CommunicationException("Could not connect to the server. Please check the values in the settings panel.\r\n", response.Exception));
-                HandleError();
-            }
-            else
-            {
-                HandleStreamResponse(response.Stream);
-            }
-
-            await new VisualStateResult("LoadingComplete").Execute();
-        }
-
         public virtual void HandleStreamResponse(Stream stream)
         {
             XDocument xDocument = null;
@@ -106,9 +87,23 @@ namespace Client.Common.Results
 
         protected abstract void HandleResponse(XDocument xDocument);
 
-        protected override Task ExecuteCore(ActionExecutionContext context = null)
+        protected override async Task ExecuteCore(ActionExecutionContext context = null)
         {
-            return null;
+            await new VisualStateResult("Loading").Execute();
+
+            var response = await Response();
+
+            if (response.Exception != null)
+            {
+                OnError(new CommunicationException("Could not connect to the server. Please check the values in the settings panel.\r\n", response.Exception));
+                HandleError();
+            }
+            else
+            {
+                HandleStreamResponse(response.Stream);
+            }
+
+            await new VisualStateResult("LoadingComplete").Execute();
         }
 
         private async Task<HttpStreamResult> ResponseFunc()
