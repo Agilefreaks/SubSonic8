@@ -223,6 +223,11 @@
     <Compile Include="Messages\PlayFile.cs" />
     <Compile Include="Shell\IPlayerControls.cs" />
     <Compile Include="Search\SearchViewModel.cs" />
+    <Compile Include="Shell\ShellStrings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ShellStrings.resw</DependentUpon>
+    </Compile>
     <Compile Include="Shell\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
@@ -235,6 +240,10 @@
     <None Include="Client_StoreKey.pfx" />
     <None Include="Client_TemporaryKey.pfx" />
     <None Include="packages.config" />
+    <EmbeddedResource Include="Shell\ShellStrings.resw">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ShellStrings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\CoverArtPlaceholder.jpg" />

@@ -18,11 +18,11 @@ namespace Client.Tests
             var mockSubsonicService = new MockSubsonicService();
             var mockNavigationService = new MockNavigationService();
             var mockNotificationService = new MockNotificationService();
+            var mockDialogNotificationService = new MockDialogNotificationService();
             var mockStorageService = new MockStorageService();
             var mockWinRTWrappersService = new MockWinRTWrappersService();
-
-            var shellViewModel = new ShellViewModel(mockEventAggregator, mockSubsonicService, mockNavigationService, 
-                mockNotificationService, mockStorageService, mockWinRTWrappersService);
+            var shellViewModel = new ShellViewModel(mockEventAggregator, mockSubsonicService, mockNavigationService,
+                mockNotificationService, mockDialogNotificationService, mockStorageService, mockWinRTWrappersService);
 
             IoC.GetInstance = (type, s) =>
                                   {

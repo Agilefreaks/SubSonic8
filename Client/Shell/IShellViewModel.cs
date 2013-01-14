@@ -4,6 +4,7 @@ using Caliburn.Micro;
 using Client.Common.Models.Subsonic;
 using Client.Common.Results;
 using Client.Common.Services;
+using Subsonic8.Framework.Services;
 using Windows.UI.Xaml;
 
 namespace Subsonic8.Shell
@@ -13,6 +14,10 @@ namespace Subsonic8.Shell
         Uri Source { get; set; }
 
         ISubsonicService SubsonicService { get; set; }
+
+        IToastNotificationService NotificationService { get; set; }
+
+        IDialogNotificationService DialogNotificationService { get; set; }
 
         IPlayerControls PlayerControls { get; set; }
 

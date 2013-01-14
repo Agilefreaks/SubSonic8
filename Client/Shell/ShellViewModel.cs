@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using Client.Common.Models.Subsonic;
@@ -10,6 +11,7 @@ using Subsonic8.Messages;
 using Subsonic8.Search;
 using Subsonic8.Settings;
 using Windows.ApplicationModel.Search;
+using Windows.UI.ApplicationSettings;
 using Windows.UI.Xaml;
 
 namespace Subsonic8.Shell
@@ -72,20 +74,24 @@ namespace Subsonic8.Shell
 
         public IToastNotificationService NotificationService { get; set; }
 
+        public IDialogNotificationService DialogNotificationService { get; set; }
+
         public IStorageService StorageService { get; set; }
 
         public IWinRTWrappersService WinRTWrappersService { get; set; }
 
         public ShellViewModel(IEventAggregator eventAggregator, ISubsonicService subsonicService, INavigationService navigationService,
-            IToastNotificationService notificationService, IStorageService storageService, IWinRTWrappersService winRTWrappersService)
+            IToastNotificationService notificationService, IDialogNotificationService dialogNotificationService, IStorageService storageService, IWinRTWrappersService winRTWrappersService)
         {
             _eventAggregator = eventAggregator;
             SubsonicService = subsonicService;
             NavigationService = navigationService;
             NotificationService = notificationService;
+            DialogNotificationService = dialogNotificationService;
             StorageService = storageService;
             WinRTWrappersService = winRTWrappersService;
             NavigateToSearhResult = NavigateToSearchResultCall;
+
             eventAggregator.Subscribe(this);
         }
 
@@ -129,6 +135,16 @@ namespace Subsonic8.Shell
             HookupPlayerControls((IPlayerControls)view);
 
             LoadSettings();
+
+            if (!SubsonicService.IsConfigured)
+            {
+                DialogNotificationService.Show(new DialogNotificationOptions
+                                                   {
+                                                       Message = ShellStrings.NotConfigured
+                                                   });
+                DialogService.ShowSettings<SettingsViewModel>();
+
+            }
         }
 
         private void HookupPlayerControls(IPlayerControls playerControls)
@@ -159,7 +175,7 @@ namespace Subsonic8.Shell
 
         private async Task<Subsonic8Configuration> GetSubsonic8Configuration()
         {
-            var subsonic8Configuration = await StorageService.Load<Subsonic8Configuration>() ??new Subsonic8Configuration();
+            var subsonic8Configuration = await StorageService.Load<Subsonic8Configuration>() ?? new Subsonic8Configuration();
 #if DEBUG
             const string baseUrl = "http://cristibadila.dynalias.com:33770/music/";
             subsonic8Configuration.SubsonicServiceConfiguration = new SubsonicServiceConfiguration

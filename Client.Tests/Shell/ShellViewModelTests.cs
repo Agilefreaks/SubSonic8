@@ -19,6 +19,7 @@ namespace Client.Tests.Shell
         private MockNotificationService _mockNotificationService;
         private MockStorageService _mockStorageService;
         private MockWinRTWrappersService _mockWinRTWrappersService;
+        private MockDialogNotificationService _mockDialogNotificationService;
 
         [TestInitialize]
         public void TestInitialize()
@@ -27,10 +28,11 @@ namespace Client.Tests.Shell
             _mockSubsonicService = new MockSubsonicService();
             _mockNavigationService = new MockNavigationService();
             _mockNotificationService = new MockNotificationService();
+            _mockDialogNotificationService = new MockDialogNotificationService();
             _mockStorageService = new MockStorageService();
             _mockWinRTWrappersService = new MockWinRTWrappersService();
             Subject = new ShellViewModel(_eventAggregator, _mockSubsonicService, _mockNavigationService,
-                _mockNotificationService, _mockStorageService, _mockWinRTWrappersService);
+                _mockNotificationService, _mockDialogNotificationService, _mockStorageService, _mockWinRTWrappersService);
         }
 
         [TestMethod]
