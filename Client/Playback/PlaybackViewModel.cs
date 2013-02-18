@@ -335,6 +335,13 @@ namespace Subsonic8.Playback
             ShuffleOn = !ShuffleOn;
         }
 
+        protected override void OnActivate()
+        {
+            base.OnActivate();
+
+            BottomBar.IsOpened = false;
+        }
+
         private async Task AddToPlaylist(ISubsonicModel item)
         {
             if (item.Type == SubsonicModelTypeEnum.Song || item.Type == SubsonicModelTypeEnum.Video)

@@ -855,6 +855,16 @@ namespace Client.Tests.Playback
             Subject.PlaylistItems.Count.Should().Be(0);
         }
 
+        [TestMethod]
+        public void OnActivate_Always_SetsBottomBarIsOpenToFalse()
+        {
+            Subject.BottomBar.IsOpened = true;
+
+            Subject.Activate();
+
+            Subject.BottomBar.IsOpened.Should().BeFalse();
+        }
+
         private ISubsonicModel MockLoadModel(bool isVideo = false)
         {
             var item = new Song
