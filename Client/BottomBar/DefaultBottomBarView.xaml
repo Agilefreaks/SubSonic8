@@ -3,10 +3,11 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:cal="using:Caliburn.Micro"
-    xmlns:ic="using:Subsonic8.Controls" mc:Ignorable="d">
+    xmlns:ic="using:Subsonic8.Controls" xmlns:converters="using:Subsonic8.Converters" mc:Ignorable="d">
 
     <Page.Resources>
         <cal:BooleanToVisibilityConverter x:Key="VisibilityConverter"/>
+        <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedVisibilityConverter"/>
     </Page.Resources>
     <Grid>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
@@ -22,7 +23,7 @@
             <Button Style="{StaticResource NextAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action PlayNext()]"/>
             <ic:AppBarToggleButton Style="{StaticResource ShuffleOffAppBarButtonStyle}" CheckedStyle="{StaticResource ShuffleOnAppBarButtonStyle}" 
                                    cal:Message.Attach="[Event Click] = [Action ToggleShuffle()]" AutoToggle="True"/>
-            <Button Style="{StaticResource ListAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action NavigateToPlaylist()]"/>
+            <Button Style="{StaticResource ListAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action NavigateToPlaylist()]" Visibility="{Binding IsOnPlaylist, Converter={StaticResource InvertedVisibilityConverter}}"/>
         </StackPanel>
     </Grid>
 </Page>

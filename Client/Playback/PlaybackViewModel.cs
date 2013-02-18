@@ -345,6 +345,7 @@ namespace Subsonic8.Playback
             State = PlaybackViewModelStateEnum.Empty;
             State = oldState;
             BottomBar.IsOpened = false;
+            BottomBar.IsOnPlaylist = true;
         }
 
         private async Task AddToPlaylist(ISubsonicModel item)
