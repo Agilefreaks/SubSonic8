@@ -247,12 +247,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\CoverArtPlaceholder.jpg" />
-    <Content Include="Assets\Logo.png" />
     <Content Include="Assets\SmallLogo.png" />
-    <Content Include="Assets\SplashScreen.png" />
     <Content Include="Assets\StoreLogo.png" />
+    <Content Include="Assets\Logo.png" />
     <Content Include="Assets\subsonic.png" />
-    <Content Include="Assets\subsonicSplash.png" />
+    <Content Include="Assets\WideLogo.png" />
     <None Include="Package.StoreAssociation.xml" />
   </ItemGroup>
   <ItemGroup>
