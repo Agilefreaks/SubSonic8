@@ -23,5 +23,13 @@ namespace Client.Common.Tests.Services
 
             _subject.EncodedCredentials().Should().Be("QWxhZGRpbjpvcGVuIHNlc2FtZQ==");
         }
+
+        [TestMethod]
+        public void BaseUrl_IfDoesNotHaveEndingSlash_WillAddEndingSlash()
+        {
+            _subject.BaseUrl = "http://localhost:4040";
+
+            _subject.BaseUrl.Should().Be("http://localhost:4040/");
+        }
     }
 }

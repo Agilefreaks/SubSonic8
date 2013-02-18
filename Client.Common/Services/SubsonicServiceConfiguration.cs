@@ -44,7 +44,7 @@ namespace Client.Common.Services
             set
             {
                 if (value == _baseUrl) return;
-                _baseUrl = value;
+                _baseUrl = AddEndingSlashIfNotExisting(value);
                 NotifyOfPropertyChange();
             }
         }
@@ -53,6 +53,17 @@ namespace Client.Common.Services
         {
             byte[] bytes = System.Text.Encoding.UTF8.GetBytes(string.Format("{0}:{1}", Username, Password));
             return System.Convert.ToBase64String(bytes);
+        }
+
+        private string AddEndingSlashIfNotExisting(string value)
+        {
+            var result = value;
+            if (!string.IsNullOrEmpty(value) && result.LastIndexOf("/", System.StringComparison.Ordinal) != result.Length - 1)
+            {
+                result = string.Format("{0}/", result);
+            }
+
+            return result;
         }
     }
 }
