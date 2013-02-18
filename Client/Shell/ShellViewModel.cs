@@ -179,12 +179,12 @@ namespace Subsonic8.Shell
         {
             var subsonic8Configuration = await StorageService.Load<Subsonic8Configuration>() ?? new Subsonic8Configuration();
 #if DEBUG
-            const string baseUrl = "http://cristibadila.dynalias.com:33770/music/";
+            const string baseUrl = "http://192.168.0.121:4040/";
             subsonic8Configuration.SubsonicServiceConfiguration = new SubsonicServiceConfiguration
             {
                 BaseUrl = baseUrl,
-                Username = "media",
-                Password = "media"
+                Username = "admin",
+                Password = "admin"
             };
 #endif
             return subsonic8Configuration;
