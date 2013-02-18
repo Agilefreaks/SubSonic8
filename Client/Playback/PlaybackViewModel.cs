@@ -91,8 +91,10 @@ namespace Subsonic8.Playback
 
             set
             {
+                if (_state == value) return;
+
                 _state = value;
-                NotifyOfPropertyChange();
+                NotifyOfPropertyChange(() => State);
             }
         }
 
@@ -161,7 +163,7 @@ namespace Subsonic8.Playback
             _eventAggregator.Subscribe(this);
             SubsonicService = subsonicService;
             ShellViewModel = shellViewModel;
-            State = PlaybackViewModelStateEnum.Audio;
+            State = PlaybackViewModelStateEnum.Empty;
             _wasEmpty = true;
 
             UpdateDisplayName = () => DisplayName = "Playlist";
@@ -182,6 +184,15 @@ namespace Subsonic8.Playback
             var pressedItem = (PlaylistItemViewModel)(((ItemClickEventArgs)e).ClickedItem);
             StartAction(pressedItem);
             _currentTrackNumber = PlaylistItems.IndexOf(pressedItem);
+        }
+
+        protected override void OnActivate()
+        {
+            base.OnActivate();
+
+            var oldState = _state;
+            State = PlaybackViewModelStateEnum.Empty;
+            State = oldState;
         }
 
         public void Start(PlaylistItemViewModel model)
