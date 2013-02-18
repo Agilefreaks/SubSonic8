@@ -41,6 +41,14 @@ namespace Client.Common.Services
             Items.Clear();            
         }
 
+        public void LoadPlaylist(PlaylistItemCollection playlistItemCollection)
+        {            
+            if (playlistItemCollection == null) return;
+            StopPlaybackAction();
+            Items.Clear();
+            Items.AddRange(playlistItemCollection);
+        }
+
         public PlaylistItem CurrentItem { get; private set; }
 
         public bool HasElements

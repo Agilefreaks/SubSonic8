@@ -19,5 +19,7 @@ namespace Client.Common.Services
         PlaylistItemCollection Items { get; }
 
         void Clear();
+
+        void LoadPlaylist(PlaylistItemCollection playlistItemCollection);
     }
 }

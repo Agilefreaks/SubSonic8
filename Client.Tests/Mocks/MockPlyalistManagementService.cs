@@ -29,6 +29,11 @@ namespace Client.Tests.Mocks
             ClearCallCount++;            
         }
 
+        public void LoadPlaylist(PlaylistItemCollection playlistItemCollection)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public void Handle(PlayNextMessage message)
         {
             throw new System.NotImplementedException();

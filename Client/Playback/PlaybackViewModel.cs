@@ -169,10 +169,23 @@ namespace Subsonic8.Playback
             _playlistManagementService.Clear();
         }
 
+        public async void LoadPlaylist()
+        {
+            var storageFile = await _winRTWrappersService.OpenStorageFile();
+            if (storageFile != null)
+            {
+                var playlistItemCollection = await _winRTWrappersService.LoadFromFile<PlaylistItemCollection>(storageFile, PlaylistItems);
+                _playlistManagementService.LoadPlaylist(playlistItemCollection);
+            }
+        }
+
         public async void SavePlaylist()
         {
             var storageFile = await _winRTWrappersService.GetNewStorageFile();
-            await _winRTWrappersService.SaveToFile(storageFile, PlaylistItems);
+            if (storageFile != null)
+            {
+                await _winRTWrappersService.SaveToFile(storageFile, PlaylistItems);
+            }
         }
 
         public void Handle(StartVideoPlaybackMessage message)

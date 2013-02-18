@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Client.Common.Models;
 using Client.Common.Services;
 using Windows.ApplicationModel.Search;
 using Windows.Foundation;
@@ -54,6 +55,16 @@ namespace Client.Tests.Mocks
             var taskCompletionSource = new TaskCompletionSource<int>();
             taskCompletionSource.SetResult(0);
             return taskCompletionSource.Task;
+        }
+
+        public Task<IStorageFile> OpenStorageFile()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<T> LoadFromFile<T>(IStorageFile storageFile, PlaylistItemCollection playlistItems) where T : new()
+        {
+            throw new NotImplementedException();
         }
     }
 }

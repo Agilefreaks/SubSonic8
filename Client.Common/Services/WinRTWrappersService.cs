@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using Client.Common.Models;
 using Windows.ApplicationModel.Search;
 using Windows.Foundation;
 using Windows.Storage;
@@ -32,6 +33,35 @@ namespace Client.Common.Services
             fileSavePicker.SettingsIdentifier = "PlaylistPicker";
 
             return await fileSavePicker.PickSaveFileAsync();
+        }
+
+        public async Task<IStorageFile> OpenStorageFile()
+        {
+            var fileOpenPicker = new FileOpenPicker();
+            fileOpenPicker.FileTypeFilter.Add(".spls");
+            fileOpenPicker.ViewMode = PickerViewMode.List;
+            return await fileOpenPicker.PickSingleFileAsync();
+        }
+
+        public async Task<T> LoadFromFile<T>(IStorageFile storageFile, PlaylistItemCollection playlistItems)
+            where T : new()
+        {
+            var randomAccessStream = await storageFile.OpenReadAsync();
+            var xmlSerializer = new XmlSerializer(typeof(T));
+            var result = new T();
+            try
+            {
+                result = (T)xmlSerializer.Deserialize(randomAccessStream.AsStreamForRead());
+            }
+            catch (Exception)
+            {
+            }
+            finally
+            {
+                randomAccessStream.Dispose();                
+            }
+
+            return result;
         }
 
         public async Task SaveToFile<T>(IStorageFile storageFile, T @object)

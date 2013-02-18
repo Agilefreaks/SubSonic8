@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Client.Common.Models;
 using Windows.ApplicationModel.Search;
 using Windows.Foundation;
 using Windows.Storage;
@@ -15,5 +16,10 @@ namespace Client.Common.Services
         Task<IStorageFile> GetNewStorageFile();
 
         Task SaveToFile<T>(IStorageFile storageFile, T @object);
+
+        Task<IStorageFile> OpenStorageFile();
+
+        Task<T> LoadFromFile<T>(IStorageFile storageFile, PlaylistItemCollection playlistItems)
+            where T : new();
     }
 }
