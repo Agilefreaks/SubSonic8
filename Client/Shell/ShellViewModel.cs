@@ -78,6 +78,11 @@ namespace Subsonic8.Shell
 
         public IWinRTWrappersService WinRTWrappersService { get; set; }
 
+        public override string DisplayName
+        {
+            get { return "Subsonic8"; }
+        }
+
         public ShellViewModel(IEventAggregator eventAggregator, ISubsonicService subsonicService, INavigationService navigationService,
             IToastNotificationService notificationService, IDialogNotificationService dialogNotificationService, IStorageService storageService, IWinRTWrappersService winRTWrappersService)
         {
@@ -141,7 +146,6 @@ namespace Subsonic8.Shell
                                                        Message = ShellStrings.NotConfigured
                                                    });
                 DialogService.ShowSettings<SettingsViewModel>();
-
             }
         }
 
