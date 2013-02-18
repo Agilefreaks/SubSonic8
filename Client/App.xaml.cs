@@ -2,10 +2,18 @@
 using System.Collections.Generic;
 using Caliburn.Micro;
 using Client.Common.Services;
+using Subsonic8.Album;
+using Subsonic8.Artist;
 using Subsonic8.BottomBar;
 using Subsonic8.Framework.Services;
+using Subsonic8.Index;
 using Subsonic8.Main;
+using Subsonic8.MenuItem;
+using Subsonic8.MusicDirectory;
 using Subsonic8.Playback;
+using Subsonic8.PlaylistItem;
+using Subsonic8.Search;
+using Subsonic8.Settings;
 using Subsonic8.Shell;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
@@ -37,16 +45,24 @@ namespace Subsonic8
             _container.RegisterSingleton(typeof(IDefaultBottomBarViewModel), "DefaultBottomBarViewModel", typeof(DefaultBottomBarViewModel));
             _container.RegisterSingleton(typeof(IToastNotificationService), "ToastNotificationService", typeof(ToastsNotificationService));
             _container.RegisterSingleton(typeof(IDialogNotificationService), "DialogNotificationService", typeof(DialogNotificationService));
+
+            _container
+                .PerRequest<MainViewModel>()
+                .PerRequest<AlbumViewModel>()
+                .PerRequest<ArtistViewModel>()
+                .PerRequest<IndexViewModel>()
+                .PerRequest<MenuItemViewModel>()
+                .PerRequest<MusicDirectoryViewModel>()
+                .PerRequest<PlaybackViewModel>()
+                .PerRequest<PlaylistItemViewModel>()
+                .PerRequest<SearchViewModel>()
+                .PerRequest<SettingsViewModel>()
+                .PerRequest<ShellViewModel>();
         }
 
         protected override object GetInstance(Type service, string key)
         {
             return _container.GetInstance(service, key);
-        }
-
-        protected override IEnumerable<object> GetAllInstances(Type service)
-        {
-            return _container.GetAllInstances(service);
         }
 
         protected override void BuildUp(object instance)

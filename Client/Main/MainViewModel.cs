@@ -2,11 +2,9 @@
 using Caliburn.Micro;
 using Client.Common.Models.Subsonic;
 using Client.Common.Results;
-using Subsonic8.Framework.Services;
 using Subsonic8.Framework.ViewModel;
 using Subsonic8.Index;
 using Subsonic8.MenuItem;
-using Windows.UI.ApplicationSettings;
 using Windows.UI.Xaml.Controls;
 
 namespace Subsonic8.Main
