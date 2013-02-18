@@ -12,6 +12,8 @@ namespace Subsonic8.BottomBar
 
         bool IsPlaying { get; set; }
 
+        bool IsOnPlaylist { get; set; }
+
         bool DisplayPlayControls { get; set; }
 
         void NavigateToPlaylist();

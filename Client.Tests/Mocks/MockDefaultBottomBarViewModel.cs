@@ -17,6 +17,8 @@ namespace Client.Tests.Mocks
 
         public bool DisplayPlayControls { get; set; }
 
+        public bool IsOnPlaylist { get; set; }
+
         public bool CanAddToPlaylist { get; private set; }
 
         public bool CanRemoveFromPlaylist { get; private set; }
