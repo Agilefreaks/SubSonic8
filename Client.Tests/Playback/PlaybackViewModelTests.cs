@@ -865,6 +865,15 @@ namespace Client.Tests.Playback
             Subject.BottomBar.IsOpened.Should().BeFalse();
         }
 
+        public override void OnActivateShouldSetBottomBarIsOnPlaylistToFalse()
+        {
+            Subject.BottomBar.IsOnPlaylist = false;
+
+            Subject.Activate();
+
+            Subject.BottomBar.IsOnPlaylist.Should().BeTrue();
+        }
+
         private ISubsonicModel MockLoadModel(bool isVideo = false)
         {
             var item = new Song

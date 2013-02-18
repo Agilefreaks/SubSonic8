@@ -16,6 +16,7 @@ namespace Subsonic8.BottomBar
         private readonly IEventAggregator _eventAggregator;
         private bool _isOpened;
         private bool _isPlaying;
+        private bool _isOnPlaylist;
         private ObservableCollection<object> _selectedItems;
         private bool _displayPlayControls;
 
@@ -60,6 +61,20 @@ namespace Subsonic8.BottomBar
             set
             {
                 _isPlaying = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
+        public bool IsOnPlaylist
+        {
+            get
+            {
+                return _isOnPlaylist;
+            }
+
+            set
+            {
+                _isOnPlaylist = value;
                 NotifyOfPropertyChange();
             }
         }

@@ -107,7 +107,9 @@ namespace Subsonic8.Framework.ViewModel
         protected override void OnActivate()
         {
             base.OnActivate();
+
             UpdateDisplayName();
+            BottomBar.IsOnPlaylist = false;
         }
 
         protected virtual void SetBottomBar()

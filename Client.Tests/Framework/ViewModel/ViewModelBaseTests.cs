@@ -71,6 +71,16 @@ namespace Client.Tests.Framework.ViewModel
             mockDialogNotificationService.Showed.Count.Should().Be(1);
         }
 
+        [TestMethod]
+        public virtual void OnActivateShouldSetBottomBarIsOnPlaylistToFalse()
+        {
+            Subject.BottomBar.IsOnPlaylist = true;
+
+            Subject.Activate();
+
+            Subject.BottomBar.IsOnPlaylist.Should().BeFalse();
+        }
+
         protected virtual void TestInitializeExtensions()
         {            
         }

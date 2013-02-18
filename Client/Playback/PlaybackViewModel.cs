@@ -186,15 +186,6 @@ namespace Subsonic8.Playback
             _currentTrackNumber = PlaylistItems.IndexOf(pressedItem);
         }
 
-        protected override void OnActivate()
-        {
-            base.OnActivate();
-
-            var oldState = _state;
-            State = PlaybackViewModelStateEnum.Empty;
-            State = oldState;
-        }
-
         public void Start(PlaylistItemViewModel model)
         {
             Stop();
@@ -349,8 +340,12 @@ namespace Subsonic8.Playback
         protected override void OnActivate()
         {
             base.OnActivate();
-
+            
+            var oldState = _state;
+            State = PlaybackViewModelStateEnum.Empty;
+            State = oldState;
             BottomBar.IsOpened = false;
+            BottomBar.IsOnPlaylist = true;
         }
 
         private async Task AddToPlaylist(ISubsonicModel item)
