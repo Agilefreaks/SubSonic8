@@ -1,13 +1,13 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
 using Caliburn.Micro;
+using Client.Common.EventAggregatorMessages;
 using Client.Tests.Mocks;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using Subsonic8.BottomBar;
 using Subsonic8.MenuItem;
 using Subsonic8.Messages;
-using Subsonic8.PlaylistItem;
 
 namespace Client.Tests.DefaultBottomBar
 {
@@ -92,17 +92,17 @@ namespace Client.Tests.DefaultBottomBar
         {
             _subject.RemoveFromPlaylist();
 
-            _eventAggregator.Messages.Last().GetType().Should().Be<RemoveFromPlaylistMessage>();
+            _eventAggregator.Messages.Last().GetType().Should().Be<RemoveItemsMessage>();
         }
 
         [TestMethod]
         public void RemoveFromPlaylistCallsEventAggregatorPublishWithQueueParameterSetToSelectedItems()
         {
-            _subject.SelectedItems = new ObservableCollection<object> { new PlaylistItemViewModel() };
+            _subject.SelectedItems = new ObservableCollection<object> { new Common.Models.PlaylistItem() };
 
             _subject.RemoveFromPlaylist();
 
-            ((RemoveFromPlaylistMessage)_eventAggregator.Messages.Last()).Queue.Should().HaveCount(1);
+            ((RemoveItemsMessage)_eventAggregator.Messages.Last()).Queue.Should().HaveCount(1);
         }
 
         [TestMethod]
@@ -140,7 +140,7 @@ namespace Client.Tests.DefaultBottomBar
         {
             _subject.SelectedItems.Add(new MenuItemViewModel());
             _subject.SelectedItems.Add(42);
-            _subject.SelectedItems.Add(new PlaylistItemViewModel());
+            _subject.SelectedItems.Add(new Common.Models.PlaylistItem());
 
             _subject.CanAddToPlaylist.Should().BeFalse();
         }
@@ -148,9 +148,9 @@ namespace Client.Tests.DefaultBottomBar
         [TestMethod]
         public void CanRemoveFromPlaylist_SelectedItemsAreOfTypePlaylistItemViewModel_ReturnsTrue()
         {
-            _subject.SelectedItems.Add(new PlaylistItemViewModel());
-            _subject.SelectedItems.Add(new PlaylistItemViewModel());
-            _subject.SelectedItems.Add(new PlaylistItemViewModel());
+            _subject.SelectedItems.Add(new Common.Models.PlaylistItem());
+            _subject.SelectedItems.Add(new Common.Models.PlaylistItem());
+            _subject.SelectedItems.Add(new Common.Models.PlaylistItem());
 
             _subject.CanRemoveFromPlaylist.Should().BeTrue();
         }
@@ -159,7 +159,7 @@ namespace Client.Tests.DefaultBottomBar
         public void CanAddToPlaylist_SelectedItemsAreNotAllOfTypePlaylisttemViewModel_ReturnsFalse()
         {
             _subject.SelectedItems.Add(42);
-            _subject.SelectedItems.Add(new PlaylistItemViewModel());
+            _subject.SelectedItems.Add(new Common.Models.PlaylistItem());
             _subject.SelectedItems.Add(new MenuItemViewModel());
 
             _subject.CanAddToPlaylist.Should().BeFalse();

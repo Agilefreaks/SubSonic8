@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Caliburn.Micro;
+using Client.Common.EventAggregatorMessages;
 using Client.Common.Models.Subsonic;
 using Client.Common.Results;
 using Client.Common.Services;
 using Subsonic8.BottomBar;
 using Subsonic8.Framework.Services;
-using Subsonic8.Messages;
 using Subsonic8.Search;
 using Subsonic8.Settings;
 using Windows.ApplicationModel.Search;
@@ -118,14 +118,35 @@ namespace Subsonic8.Shell
 
         public void PlayPause()
         {
-            if (_playerControls != null)
-                _playerControls.PlayPause();
+            _eventAggregator.Publish(new PlayPauseMessage());
         }
 
         public void Stop()
         {
+            _eventAggregator.Publish(new StopPlaybackMessage());
+        }
+
+        public void Handle(StartAudioPlaybackMessage message)
+        {
+            Source = message.Item.Uri;
+        }
+
+        public void Handle(StopAudioPlaybackMessage message)
+        {
             if (_playerControls != null)
                 Source = null;
+        }
+
+        public void Handle(ResumePlaybackMessage message)
+        {
+            if (_playerControls != null)
+                _playerControls.PlayPause();
+        }
+
+        public void Handle(PausePlaybackMessage message)
+        {
+            if (_playerControls != null)
+                _playerControls.PlayPause();
         }
 
         protected override void OnViewAttached(object view, object context)

@@ -111,6 +111,7 @@
     <SDKReference Include="TestPlatform, Version=11.0" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Mocks\MockEventAggregator.cs" />
     <Compile Include="Models\Subsonic\AlbumTests.cs" />
     <Compile Include="Models\Subsonic\ArtistTests.cs" />
     <Compile Include="Models\Subsonic\ExpandedArtistTests.cs" />
@@ -122,6 +123,7 @@
     <Compile Include="Results\GetMusicDirectoryResultTests.cs" />
     <Compile Include="Results\GetRootResultTests.cs" />
     <Compile Include="Results\GetSongResultTests.cs" />
+    <Compile Include="Services\PlaylistManagementServiceTests.cs" />
     <Compile Include="Services\SubsonicServiceConfigurationTests.cs" />
     <Compile Include="Services\SubsonicServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

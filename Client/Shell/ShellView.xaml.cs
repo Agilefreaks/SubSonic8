@@ -80,7 +80,7 @@ namespace Subsonic8.Shell
         }
 
         private void CallPlayPause()
-        {
+        {           
             MediaControlPlayPauseTogglePressed(null, null);
         }
 

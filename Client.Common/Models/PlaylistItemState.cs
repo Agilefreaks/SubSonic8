@@ -1,4 +1,4 @@
-﻿namespace Subsonic8.PlaylistItem
+﻿namespace Client.Common.Models
 {
     public enum PlaylistItemState
     {

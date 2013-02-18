@@ -6,12 +6,12 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:cal="using:Caliburn.Micro"
     xmlns:framework="using:Subsonic8.Framework"
-    xmlns:common="using:Subsonic8.Common"
+    xmlns:common="using:Subsonic8.Common" xmlns:playlistItem="using:Subsonic8.PlaylistItem"
     mc:Ignorable="d">
 
     <Page.Resources>
         <DataTemplate x:Key="PlaylistItemTemplate">
-            <ContentControl cal:View.Model="{Binding}" HorizontalContentAlignment="Stretch"/>
+            <playlistItem:PlaylistItemView cal:Bind.Model="{Binding}" HorizontalContentAlignment="Stretch"/>
         </DataTemplate>
     </Page.Resources>
 
@@ -44,6 +44,8 @@
                     </Grid.ColumnDefinitions>
                     <StackPanel Grid.Column="1" Orientation="Horizontal">
                         <Button Style="{StaticResource ClearPlaylistAppBarButtonStyle}" x:Name="ClearPlaylist"/>
+                        <Button Style="{StaticResource LoadPlaylistAppBarButtonStyle}" x:Name="LoadPlaylist"/>
+                        <Button Style="{StaticResource SaveAppBarButtonStyle}" x:Name="SavePlaylist"/>
                     </StackPanel>
                 </Grid>
                 <ListView Grid.Row="1"

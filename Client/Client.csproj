@@ -128,6 +128,7 @@
     <Compile Include="Controls\AppBarToggleButton.cs" />
     <Compile Include="Converters\InvertedBooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\IntToTimeStringConverter.cs" />
+    <Compile Include="Converters\PlayingStateToVisibilityConverter.cs" />
     <Compile Include="Dialogs\DialogService.cs" />
     <Compile Include="Framework\Services\DialogNotificationOptions.cs" />
     <Compile Include="Framework\Services\DialogNotificationService.cs" />
@@ -141,9 +142,10 @@
     <Compile Include="Framework\ViewModel\DetailViewModelBase.cs" />
     <Compile Include="Framework\Extensions\NavigationServiceExtensions.cs" />
     <Compile Include="Framework\ViewModel\IDetailViewModel.cs" />
+    <Compile Include="Framework\ViewModel\IPlaybackControlsViewModel.cs" />
     <Compile Include="Framework\ViewModel\ItemViewModelBase.cs" />
+    <Compile Include="Framework\ViewModel\PlaybackControlsViewModelBase.cs" />
     <Compile Include="Messages\NotificationMessage.cs" />
-    <Compile Include="Messages\RemoveFromPlaylistMessage.cs" />
     <Compile Include="Messages\ShowControlsMessage.cs" />
     <Compile Include="Messages\ToggleShuffleMessage.cs" />
     <Compile Include="Playback\Playback\Empty.xaml.cs">
@@ -186,10 +188,7 @@
     </Compile>
     <Compile Include="MenuItem\MenuItemViewModel.cs" />
     <Compile Include="Main\MainViewModel.cs" />
-    <Compile Include="Messages\PlayNextMessage.cs" />
     <Compile Include="Messages\PlaylistMessage.cs" />
-    <Compile Include="Messages\PlayPauseMessage.cs" />
-    <Compile Include="Messages\PlayPreviousMessage.cs" />
     <Compile Include="Messages\StopMessage.cs" />
     <Compile Include="MusicDirectory\IMusicDirectoryViewModel.cs" />
     <Compile Include="MusicDirectory\MusicDirectoryView.xaml.cs">
@@ -208,7 +207,6 @@
     <Compile Include="Playback\Playback\Video.xaml.cs">
       <DependentUpon>Video.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PlaylistItem\PlaylistItemViewModel.cs" />
     <Compile Include="Search\ISearchViewModel.cs" />
     <Compile Include="Framework\Extensions\SubsonicModelToMenuItemViewModelExtensions.cs" />
     <Compile Include="Framework\MultipleSelectBehavior.cs" />

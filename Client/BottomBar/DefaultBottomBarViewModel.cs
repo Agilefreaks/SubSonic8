@@ -1,11 +1,13 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
 using Caliburn.Micro;
+using Client.Common.EventAggregatorMessages;
+using Client.Common.Models;
 using Subsonic8.MenuItem;
 using Subsonic8.Messages;
 using Subsonic8.Playback;
-using Subsonic8.PlaylistItem;
 using Action = System.Action;
 
 namespace Subsonic8.BottomBar
@@ -35,6 +37,11 @@ namespace Subsonic8.BottomBar
                 UpdateIsOpened();
                 NotifyOfPropertyChange();
             }
+        }
+
+        private IEnumerable<ISubsonicModel> SelectedSubsonicItems
+        {
+            get { return SelectedItems.Cast<IMenuItemViewModel>().Select(vm => vm.Item); }
         }
 
         public bool IsOpened
@@ -97,7 +104,7 @@ namespace Subsonic8.BottomBar
 
         public bool CanRemoveFromPlaylist
         {
-            get { return SelectedItems.Any() && SelectedItems.All(x => x.GetType() == typeof(PlaylistItemViewModel)); }
+            get { return SelectedItems.Any() && SelectedItems.All(x => x.GetType() == typeof(Client.Common.Models.PlaylistItem)); }
         }
 
         public Action Navigate { get; set; }
@@ -114,7 +121,7 @@ namespace Subsonic8.BottomBar
 
         public void AddToPlaylist()
         {
-            _eventAggregator.Publish(new PlaylistMessage { Queue = SelectedItems.Select(i => ((IMenuItemViewModel)i).Item).ToList() });
+            _eventAggregator.Publish(new PlaylistMessage { Queue = SelectedSubsonicItems.ToList() });
             SelectedItems.Clear();
         }
 
@@ -127,7 +134,7 @@ namespace Subsonic8.BottomBar
 
         public void RemoveFromPlaylist()
         {
-            _eventAggregator.Publish(new RemoveFromPlaylistMessage { Queue = SelectedItems.Select(x => (PlaylistItemViewModel)x).ToList() });
+            _eventAggregator.Publish(new RemoveItemsMessage { Queue = SelectedItems.Select(x => (Client.Common.Models.PlaylistItem)x).ToList() });
         }
 
         public void NavigateToPlaylist()
