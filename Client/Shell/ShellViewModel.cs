@@ -162,9 +162,11 @@ namespace Subsonic8.Shell
 
             if (!SubsonicService.IsConfigured)
             {
+                var resMap = Windows.ApplicationModel.Resources.Core.ResourceManager.Current.MainResourceMap;
+                var message = resMap.GetValue("ShellStrings/NotConfigured").ValueAsString;
                 DialogNotificationService.Show(new DialogNotificationOptions
                                                    {
-                                                       Message = ShellStrings.NotConfigured
+                                                       Message = message
                                                    });
                 DialogService.ShowSettings<SettingsViewModel>();
             }

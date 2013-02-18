@@ -26,7 +26,10 @@ namespace Subsonic8.Main
 
         public async void Populate()
         {
-            await SubsonicService.GetRootIndex().WithErrorHandler(this).OnSuccess(SetMenuItems).Execute();
+            if (SubsonicService.IsConfigured)
+            {
+                await SubsonicService.GetRootIndex().WithErrorHandler(this).OnSuccess(SetMenuItems).Execute();
+            }
         }
 
         public void SetMenuItems(IList<IndexItem> items)
