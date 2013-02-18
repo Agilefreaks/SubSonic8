@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using Client.Common.Models.Subsonic;
@@ -11,7 +10,6 @@ using Subsonic8.Messages;
 using Subsonic8.Search;
 using Subsonic8.Settings;
 using Windows.ApplicationModel.Search;
-using Windows.UI.ApplicationSettings;
 using Windows.UI.Xaml;
 
 namespace Subsonic8.Shell
