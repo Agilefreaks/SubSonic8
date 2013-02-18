@@ -1,38 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 using Caliburn.Micro;
+using Client.Common;
+using Client.Common.EventAggregatorMessages;
 using Client.Common.Models;
+using Client.Common.Models.Subsonic;
 using Client.Common.Services;
 using Subsonic8.Framework.Services;
 using Subsonic8.Framework.ViewModel;
 using Subsonic8.Messages;
-using Subsonic8.PlaylistItem;
 using Subsonic8.Shell;
 using Windows.UI.Xaml.Controls;
-using Action = System.Action;
 
 namespace Subsonic8.Playback
 {
-    public class PlaybackViewModel : ViewModelBase, IPlaybackViewModel
+    public class PlaybackViewModel : PlaybackControlsViewModelBase, IPlaybackViewModel
     {
         #region Private Fields
 
         private readonly IEventAggregator _eventAggregator;
         private readonly IToastNotificationService _notificationService;
+        private readonly IWinRTWrappersService _winRTWrappersService;
+        private readonly IPlaylistManagementService _playlistManagementService;
         private IShellViewModel _shellViewModel;
         private ISubsonicModel _parameter;
         private PlaybackViewModelStateEnum _state;
         private Uri _source;
-        private ObservableCollection<PlaylistItemViewModel> _playlistItems;
-        private int _currentTrackNumber;
         private string _coverArt;
-        private bool _wasEmpty;
-        private bool _shuffleOn;
-        private readonly Random _randomNumberGenerator;
         private bool _playNextItem;
 
         #endregion
@@ -48,16 +45,21 @@ namespace Subsonic8.Playback
 
             set
             {
-                _shellViewModel = value; NotifyOfPropertyChange();
+                _shellViewModel = value;
+                NotifyOfPropertyChange();
             }
         }
 
         public ISubsonicModel Parameter
         {
-            get { return _parameter; }
+            get
+            {
+                return _parameter;
+            }
 
             set
             {
+                if (value == _parameter) return;                
                 _parameter = value;
                 if (_parameter != null)
                 {
@@ -68,7 +70,10 @@ namespace Subsonic8.Playback
 
         public Uri Source
         {
-            get { return _source; }
+            get
+            {
+                return _source;
+            }
 
             set
             {
@@ -87,7 +92,10 @@ namespace Subsonic8.Playback
 
         public PlaybackViewModelStateEnum State
         {
-            get { return _state; }
+            get
+            {
+                return _state;
+            }
 
             set
             {
@@ -98,10 +106,12 @@ namespace Subsonic8.Playback
 
         public bool IsPlaying
         {
-            get
-            {
-                return PlaylistItems.Any(pi => pi.PlayingState == PlaylistItemState.Playing);
-            }
+            get { return _playlistManagementService.IsPlaying; }
+        }
+
+        public bool ShuffleOn
+        {
+            get { return _playlistManagementService.ShuffleOn; }
         }
 
         public string CoverArt
@@ -118,232 +128,112 @@ namespace Subsonic8.Playback
             }
         }
 
-        public bool ShuffleOn
+        public PlaylistItemCollection PlaylistItems
         {
-            get
-            {
-                return _shuffleOn;
-            }
-
-            private set
-            {
-                if (value.Equals(_shuffleOn)) return;
-                _shuffleOn = value;
-                NotifyOfPropertyChange();
-            }
+            get { return _playlistManagementService.Items; }
         }
 
-        public ObservableCollection<PlaylistItemViewModel> PlaylistItems
-        {
-            get { return _playlistItems; }
-            set
-            {
-                _playlistItems = value;
-                NotifyOfPropertyChange();
-            }
-        }
-
-        public PlaylistHistoryStack PlaylistHistory { get; private set; }
-
-        public Action<PlaylistItemViewModel> StartAction { get; set; }
-
-        public Action NextAction { get; set; }
-
-        public Func<IId, Task<PlaylistItemViewModel>> LoadModel { get; set; }
+        public Func<IId, Task<Client.Common.Models.PlaylistItem>> LoadModel { get; set; }
 
         #endregion
 
         public PlaybackViewModel(IEventAggregator eventAggregator, IShellViewModel shellViewModel,
-            ISubsonicService subsonicService, IToastNotificationService notificationService)
+            IToastNotificationService notificationService, IWinRTWrappersService winRTWrappersService,
+            IPlaylistManagementService playlistManagementService)
+            :base(eventAggregator)
         {
             _eventAggregator = eventAggregator;
             _notificationService = notificationService;
+            _winRTWrappersService = winRTWrappersService;
             _eventAggregator.Subscribe(this);
-            SubsonicService = subsonicService;
+            _playlistManagementService = playlistManagementService;
+
             ShellViewModel = shellViewModel;
             State = PlaybackViewModelStateEnum.Audio;
-            _wasEmpty = true;
 
             UpdateDisplayName = () => DisplayName = "Playlist";
-            StartAction = Start;
-            NextAction = Next;
             LoadModel = LoadModelImpl;
 
-            // playlist stuff that need refactoring
-            _randomNumberGenerator = new Random();
-            PlaylistHistory = new PlaylistHistoryStack();
-            PlaylistItems = new ObservableCollection<PlaylistItemViewModel>();
-            PlaylistItems.CollectionChanged += PlaylistChanged;
-            _currentTrackNumber = -1;
+            HookPlaylistManagementService();
         }
 
         public void StartPlayback(object e)
         {
-            var pressedItem = (PlaylistItemViewModel)(((ItemClickEventArgs)e).ClickedItem);
-            StartAction(pressedItem);
-            _currentTrackNumber = PlaylistItems.IndexOf(pressedItem);
-        }
-
-        public void Start(PlaylistItemViewModel model)
-        {
-            Stop();
-            if (model.Item.Type == SubsonicModelTypeEnum.Song)
-            {
-                Source = null;
-                SetCoverArt(model.CoverArtId);
-                SetPlaying(model);
-                State = PlaybackViewModelStateEnum.Audio;
-                PlayUri(model.Uri);
-            }
-            else
-            {
-                ShellViewModel.Source = null;
-                State = PlaybackViewModelStateEnum.Video;
-                SetPlaying(model);
-                Source = SubsonicService.GetUriForVideoWithId(model.Item.Id);
-            }
-
-            _notificationService.Show(new ToastNotificationOptions
-                {
-                    ImageUrl = SubsonicService.GetCoverArtForId(model.CoverArtId),
-                    Title = model.Title,
-                    Subtitle = model.Artist
-                });
-        }
-
-        public void PlayPause()
-        {
-            if (IsPlaying)
-            {
-                Pause();
-            }
-            else
-            {
-                Play();
-            }
-        }
-
-        public void Play()
-        {
-            if (PlaylistItems.Count > 0)
-            {
-                if (_currentTrackNumber == -1)
-                {
-                    _currentTrackNumber++;
-                }
-
-                StartAction(PlaylistItems[_currentTrackNumber]);
-            }
-        }
-
-        public void Pause()
-        {
-            if (IsPlaying)
-            {
-                ShellViewModel.PlayPause();
-                SetPlaying(null);
-            }
-        }
-
-        public void Stop()
-        {
-            ShellViewModel.Stop();
-            Source = null;
-            SetPlaying(null);
-        }
-
-        public void Next()
-        {
-            var previousTrackNumber = _currentTrackNumber;
-            _currentTrackNumber = GetNextTrackNumber();
-            if (_currentTrackNumber < PlaylistItems.Count)
-            {
-                StartAction(PlaylistItems[_currentTrackNumber]);
-                if (previousTrackNumber != -1)
-                {
-                    PlaylistHistory.Push(previousTrackNumber);
-                }
-            }
-        }
-
-        public void Previous()
-        {
-            _currentTrackNumber = GetPreviousTrackNumber();
-            if (_currentTrackNumber > -1)
-            {
-                StartAction(PlaylistItems[_currentTrackNumber]);
-            }
+            var pressedItem = (Client.Common.Models.PlaylistItem)(((ItemClickEventArgs)e).ClickedItem);
+            var pressedItemIndex = PlaylistItems.IndexOf(pressedItem);
+            _eventAggregator.Publish(new PlayItemAtIndexMessage(pressedItemIndex));
         }
 
         public void ClearPlaylist()
         {
-            PlaylistItems.Clear();
+            _playlistManagementService.Clear();
+        }
+
+        public async void SavePlaylist()
+        {
+            var storageFile = await _winRTWrappersService.GetNewStorageFile();
+            await _winRTWrappersService.SaveToFile(storageFile, PlaylistItems);
+        }
+
+        public void Handle(StartVideoPlaybackMessage message)
+        {
+            State = PlaybackViewModelStateEnum.Video;
+            Source = message.Item.Uri;
+            ShowToast(message.Item);
+        }
+
+        public void Handle(StartAudioPlaybackMessage message)
+        {
+            CoverArt = message.Item.CoverArtUrl;
+            State = PlaybackViewModelStateEnum.Audio;
+            ShowToast(message.Item);
+        }
+
+        public void Handle(PlaylistStateChangedMessage message)
+        {
+            _eventAggregator.Publish(new ShowControlsMessage
+                {
+                    Show = message.HasElements
+                });
+        }
+
+        public void Handle(StopVideoPlaybackMessage message)
+        {
+            Source = null;
         }
 
         public async void Handle(PlaylistMessage message)
         {
             if (message.ClearCurrent)
             {
-                Stop();
-                PlaylistItems.Clear();
+                _eventAggregator.Publish(new StopPlaybackMessage());
+                _playlistManagementService.Clear();
                 _playNextItem = true;
             }
 
             foreach (var item in message.Queue)
             {
-                await AddToPlaylist(item);
-            }
-        }
-
-        public void Handle(RemoveFromPlaylistMessage message)
-        {
-            foreach (var item in message.Queue)
-            {
-                PlaylistItems.Remove(item);
+                await AddItemToPlaylist(item);
             }
         }
 
         public async void Handle(PlayFile message)
         {
             var playlistItem = await LoadModel(message.Model);
-            PlaylistItems.Add(playlistItem);
-            StartAction(playlistItem);
+            _eventAggregator.Publish(new AddItemsMessage { Queue = new List<Client.Common.Models.PlaylistItem>(new[] { playlistItem }) });
+            _eventAggregator.Publish(new PlayItemAtIndexMessage(PlaylistItems.Count - 1));
         }
 
-        public void Handle(PlayNextMessage message)
-        {
-            Next();
-        }
-
-        public void Handle(PlayPreviousMessage message)
-        {
-            Previous();
-        }
-
-        public void Handle(PlayPauseMessage message)
-        {
-            PlayPause();
-        }
-
-        public void Handle(StopMessage message)
-        {
-            Stop();
-        }
-
-        public void Handle(ToggleShuffleMessage message)
-        {
-            ShuffleOn = !ShuffleOn;
-        }
-
-        private async Task AddToPlaylist(ISubsonicModel item)
+        private async Task AddItemToPlaylist(ISubsonicModel item)
         {
             if (item.Type == SubsonicModelTypeEnum.Song || item.Type == SubsonicModelTypeEnum.Video)
             {
-                PlaylistItems.Add(await LoadModel(item));
+                var addItemsMessage = new AddItemsMessage { Queue = new List<Client.Common.Models.PlaylistItem>(new[] { await LoadModel(item) }) };
+                _eventAggregator.Publish(addItemsMessage);
                 if (_playNextItem)
                 {
                     _playNextItem = false;
-                    NextAction();
+                    _eventAggregator.Publish(new PlayNextMessage());
                 }
             }
             else
@@ -375,99 +265,69 @@ namespace Subsonic8.Playback
                         } break;
                     case SubsonicModelTypeEnum.Index:
                         {
-                            children.AddRange(((Client.Common.Models.Subsonic.IndexItem)item).Artists);
+                            children.AddRange(((IndexItem)item).Artists);
                         } break;
                 }
 
                 foreach (var subsonicModel in children)
                 {
-                    await AddToPlaylist(subsonicModel);
+                    await AddItemToPlaylist(subsonicModel);
                 }
             }
         }
 
-        private bool ShouldPlayFirstSong()
+        private async Task<Client.Common.Models.PlaylistItem> LoadModelImpl(IId model)
         {
-            return Source == null && ShellViewModel.Source == null && PlaylistItems.Any();
-        }
-
-        private void PlayUri(Uri source)
-        {
-            ShellViewModel.Source = source;
-        }
-
-        private void SetPlaying(PlaylistItemViewModel model)
-        {
-            foreach (var item in PlaylistItems.Where(pi => pi.PlayingState == PlaylistItemState.Playing))
-            {
-                item.PlayingState = PlaylistItemState.NotPlaying;
-            }
-
-            if (model != null)
-            {
-                model.PlayingState = PlaylistItemState.Playing;
-            }
-
-            BottomBar.IsPlaying = IsPlaying;
-            NotifyOfPropertyChange(() => IsPlaying);
-        }
-
-        private void SetCoverArt(string coverArt)
-        {
-            CoverArt = SubsonicService.GetCoverArtForId(coverArt, ImageType.Original);
-        }
-
-        private void PlaylistChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            var totalElements = _playlistItems.Count;
-
-            var becameNotEmpty = (totalElements > 0 && _wasEmpty);
-            var becameEmpty = (totalElements == 0 && !_wasEmpty);
-
-            if (becameNotEmpty || becameEmpty)
-            {
-                var hasElements = _playlistItems.Any();
-                var showControlsMessage = new ShowControlsMessage
-                                              {
-                                                  Show = hasElements
-                                              };
-                _eventAggregator.Publish(showControlsMessage);
-
-                _wasEmpty = !hasElements;
-            }
-        }
-
-        private async Task<PlaylistItemViewModel> LoadModelImpl(IId model)
-        {
-            PlaylistItemViewModel playlistItem = null;
+            Client.Common.Models.PlaylistItem playlistItem = null;
             if (model != null)
             {
                 await
                     SubsonicService.GetSong(model.Id)
                                    .WithErrorHandler(this)
-                                   .OnSuccess(result => playlistItem = new PlaylistItemViewModel
+                                   .OnSuccess(result => playlistItem = new Client.Common.Models.PlaylistItem
                                        {
                                            Artist = result.Artist,
                                            Title = result.Title,
-                                           Item = result,
                                            Uri = SubsonicService.GetUriForFileWithId(result.Id),
-                                           CoverArtId = result.CoverArt,
+                                           CoverArtUrl = SubsonicService.GetCoverArtForId(result.CoverArt),
                                            PlayingState = PlaylistItemState.NotPlaying,
-                                           Duration = result.Duration
+                                           Duration = result.Duration,
+                                           Type = result.Type == SubsonicModelTypeEnum.Video
+                                                   ? PlaylistItemTypeEnum.Video
+                                                   : PlaylistItemTypeEnum.Audio
                                        }).Execute();
             }
 
             return playlistItem;
         }
 
-        private int GetNextTrackNumber()
+        private void HookPlaylistManagementService()
         {
-            return ShuffleOn ? _randomNumberGenerator.Next(PlaylistItems.Count - 1) : _currentTrackNumber + 1;
+            _playlistManagementService.PropertyChanged += PlaylistManagementServiceOnPropertyChanged;
         }
 
-        private int GetPreviousTrackNumber()
+        private void PlaylistManagementServiceOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
-            return ShuffleOn ? PlaylistHistory.Count == 0 ? -1 : PlaylistHistory.Pop() : (_currentTrackNumber - 1);
+            if (propertyChangedEventArgs.PropertyName == _playlistManagementService.GetPropertyName(() => _playlistManagementService.ShuffleOn))
+            {
+                NotifyOfPropertyChange(() => ShuffleOn);
+            }
+
+            if (propertyChangedEventArgs.PropertyName == _playlistManagementService.GetPropertyName(() => _playlistManagementService.IsPlaying))
+            {
+                BottomBar.IsPlaying = _playlistManagementService.IsPlaying;
+                NotifyOfPropertyChange(() => IsPlaying);
+            }
+        }
+
+        private void ShowToast(Client.Common.Models.PlaylistItem model)
+        {
+            _notificationService.Show(new ToastNotificationOptions
+                {
+                    ImageUrl = model.CoverArtUrl,
+                    Title = model.Title,
+                    Subtitle = model.Artist
+                });
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Caliburn.Micro;
+using Client.Common.EventAggregatorMessages;
 using Client.Common.Models.Subsonic;
 using Client.Common.Results;
 using Client.Common.Services;
@@ -9,7 +10,8 @@ using Windows.UI.Xaml;
 
 namespace Subsonic8.Shell
 {
-    public interface IShellViewModel : IViewAware, IScreen, IBottomBarViewModelProvider, IErrorHandler
+    public interface IShellViewModel : IViewAware, IScreen, IBottomBarViewModelProvider, IErrorHandler, IHandle<StartAudioPlaybackMessage>, IHandle<StopAudioPlaybackMessage>,
+        IHandle<ResumePlaybackMessage>, IHandle<PausePlaybackMessage>
     {
         Uri Source { get; set; }
 

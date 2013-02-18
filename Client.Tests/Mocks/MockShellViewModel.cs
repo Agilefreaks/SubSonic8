@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Caliburn.Micro;
+using Client.Common.EventAggregatorMessages;
 using Client.Common.Models.Subsonic;
 using Client.Common.Services;
 using Subsonic8.BottomBar;
@@ -56,6 +57,26 @@ namespace Client.Tests.Mocks
         }
 
         public void HandleError(Exception error)
+        {
+        }
+
+        public void Handle(StartAudioPlaybackMessage message)
+        {
+        }
+
+        public void Handle(StopPlaybackMessage message)
+        {
+        }
+
+        public void Handle(ResumePlaybackMessage message)
+        {
+        }
+
+        public void Handle(StopAudioPlaybackMessage message)
+        {
+        }
+
+        public void Handle(PausePlaybackMessage message)
         {
         }
     }

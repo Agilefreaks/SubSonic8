@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Subsonic8.Playback
+namespace Client.Common.Models
 {
     public class PlaylistHistoryStack : Stack<int>
     {

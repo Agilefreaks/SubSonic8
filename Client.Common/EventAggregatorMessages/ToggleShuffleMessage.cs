@@ -1,4 +1,4 @@
-﻿namespace Subsonic8.Messages
+﻿namespace Client.Common.EventAggregatorMessages
 {
     public class ToggleShuffleMessage
     {

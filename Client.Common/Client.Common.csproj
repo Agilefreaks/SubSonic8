@@ -101,8 +101,22 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="EventAggregatorMessages\PausePlaybackMessage.cs" />
+    <Compile Include="EventAggregatorMessages\PlayItemAtIndexMessage.cs" />
+    <Compile Include="EventAggregatorMessages\PlayPauseMessage.cs" />
+    <Compile Include="EventAggregatorMessages\RemoveItemsMessage.cs" />
+    <Compile Include="EventAggregatorMessages\ResumePlaybackMessage.cs" />
+    <Compile Include="EventAggregatorMessages\StartAudioPlaybackMessage.cs" />
+    <Compile Include="EventAggregatorMessages\StartVideoPlaybackMessage.cs" />
+    <Compile Include="EventAggregatorMessages\StopPlaybackMessage.cs" />
+    <Compile Include="EventAggregatorMessages\ToggleShuffleMessage.cs" />
     <Compile Include="Models\IId.cs" />
     <Compile Include="Models\ISubsonicModel.cs" />
+    <Compile Include="Models\PlaylistHistoryStack.cs" />
+    <Compile Include="Models\PlaylistItem.cs" />
+    <Compile Include="Models\PlaylistItemCollection.cs" />
+    <Compile Include="Models\PlaylistItemState.cs" />
+    <Compile Include="Models\PlaylistItemTypeEnum.cs" />
     <Compile Include="Models\SubsonicModelTypeEnum.cs" />
     <Compile Include="Models\Subsonic\Album.cs" />
     <Compile Include="Models\Subsonic\Artist.cs" />
@@ -113,6 +127,7 @@
     <Compile Include="Models\Subsonic\SearchResultCollection.cs" />
     <Compile Include="Models\Subsonic\Song.cs" />
     <Compile Include="Models\Subsonic\SubsonicModelBase.cs" />
+    <Compile Include="ObjectExtensionMethods.cs" />
     <Compile Include="Results\GetAlbumResult.cs" />
     <Compile Include="Results\GetArtistsResult.cs" />
     <Compile Include="Results\GetMusicDirectoryResult.cs" />
@@ -137,12 +152,20 @@
     <Compile Include="Results\SearchResult.cs" />
     <Compile Include="Results\ServiceResultBase.cs" />
     <Compile Include="Results\VisualStateResult.cs" />
+    <Compile Include="EventAggregatorMessages\AddItemsMessage.cs" />
     <Compile Include="Services\CustomFrameAdapter.cs" />
     <Compile Include="Services\ImageType.cs" />
+    <Compile Include="Services\IPlaylistManagementService.cs" />
     <Compile Include="Services\IStorageService.cs" />
     <Compile Include="Services\ISubsonicService.cs" />
     <Compile Include="Services\ISubsonicServiceConfiguration.cs" />
     <Compile Include="Services\IWinRTWrappersService.cs" />
+    <Compile Include="Services\PlaylistManagementService.cs" />
+    <Compile Include="EventAggregatorMessages\PlaylistStateChangedMessage.cs" />
+    <Compile Include="EventAggregatorMessages\PlayPreviousMessage.cs" />
+    <Compile Include="EventAggregatorMessages\PlayNextMessage.cs" />
+    <Compile Include="EventAggregatorMessages\StopVideoPlaybackMessage.cs" />
+    <Compile Include="EventAggregatorMessages\StopAudioPlaybackMessage.cs" />
     <Compile Include="Services\StorageService.cs" />
     <Compile Include="Services\SubsonicService.cs" />
     <Compile Include="Services\SubsonicServiceConfiguration.cs" />

@@ -20,7 +20,7 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <Image Source="{Binding CoverArt}" Width="40" Height="40"/>
+            <Image Source="{Binding CoverArtUrl}" Width="40" Height="40"/>
 
             <Grid Grid.Column="1" HorizontalAlignment="Stretch" Margin="5,0,0,0">
                 <Grid.ColumnDefinitions>

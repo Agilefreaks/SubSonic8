@@ -32,6 +32,7 @@ namespace Subsonic8
             _container.RegisterSingleton(typeof(ISubsonicService), "SubsonicService", typeof(SubsonicService));
             _container.RegisterSingleton(typeof(IStorageService), "StorageService", typeof(StorageService));
             _container.RegisterSingleton(typeof(IShellViewModel), "ShellViewModel", typeof(ShellViewModel));
+            _container.RegisterSingleton(typeof(IPlaylistManagementService), "PlaylistManagementService", typeof(PlaylistManagementService));
             _container.RegisterSingleton(typeof(IPlaybackViewModel), "PlaybackViewModel", typeof(PlaybackViewModel));
             _container.RegisterHandler(typeof(PlaybackViewModel), "PlaybackViewModel", container => container.GetInstance(typeof(IPlaybackViewModel), "PlaybackViewModel"));
             _container.RegisterSingleton(typeof(IDefaultBottomBarViewModel), "DefaultBottomBarViewModel", typeof(DefaultBottomBarViewModel));
