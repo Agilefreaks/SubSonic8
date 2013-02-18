@@ -19,6 +19,8 @@ namespace Subsonic8.Playback
 {
     public class PlaybackViewModel : PlaybackControlsViewModelBase, IPlaybackViewModel
     {
+        public const string CoverArtPlaceholderLarge = @"/Assets/CoverArtPlaceholderLarge.jpg";
+
         #region Private Fields
 
         private readonly IEventAggregator _eventAggregator;
@@ -125,7 +127,9 @@ namespace Subsonic8.Playback
 
             set
             {
-                _coverArt = value;
+                _coverArt = value == Client.Common.Services.SubsonicService.CoverArtPlaceholder
+                                ? CoverArtPlaceholderLarge
+                                : value;
                 NotifyOfPropertyChange();
             }
         }

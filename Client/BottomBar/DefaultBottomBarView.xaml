@@ -15,17 +15,19 @@
             <Button Style="{StaticResource PlayAllAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action PlayAll()]" Visibility="{Binding CanAddToPlaylist, Converter={StaticResource VisibilityConverter}}" />
             <Button Style="{StaticResource RemoveAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action RemoveFromPlaylist()]" Visibility="{Binding CanRemoveFromPlaylist, Converter={StaticResource VisibilityConverter}}" />
         </StackPanel>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Visibility="{Binding DisplayPlayControls, Converter={StaticResource VisibilityConverter}}">
-            <Button Style="{StaticResource PreviousAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action PlayPrevious()]"/>
-            <ic:AppBarToggleButton Style="{StaticResource PlayAppBarButtonStyle}" CheckedStyle="{StaticResource PauseAppBarButtonStyle}" 
-                                   cal:Message.Attach="[Event Click] = [Action PlayPause()]" AutoToggle="False" IsChecked="{Binding IsPlaying}"/>
-            <Button Style="{StaticResource StopAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action Stop()]"/>
-            <Button Style="{StaticResource NextAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action PlayNext()]"/>
-            <ic:AppBarToggleButton Style="{StaticResource ShuffleOffAppBarButtonStyle}" CheckedStyle="{StaticResource ShuffleOnAppBarButtonStyle}" 
-                                   cal:Message.Attach="[Event Click] = [Action ToggleShuffle()]" AutoToggle="True"/>            
-        </StackPanel>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Style="{StaticResource ListAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action NavigateToPlaylist()]" Visibility="{Binding IsOnPlaylist, Converter={StaticResource InvertedVisibilityConverter}}"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Visibility="{Binding DisplayPlayControls, Converter={StaticResource VisibilityConverter}}">
+                <Button Style="{StaticResource PreviousAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action PlayPrevious()]"/>
+                <ic:AppBarToggleButton Style="{StaticResource PlayAppBarButtonStyle}" CheckedStyle="{StaticResource PauseAppBarButtonStyle}" 
+                                   cal:Message.Attach="[Event Click] = [Action PlayPause()]" AutoToggle="False" IsChecked="{Binding IsPlaying}"/>
+                <Button Style="{StaticResource StopAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action Stop()]"/>
+                <Button Style="{StaticResource NextAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action PlayNext()]"/>
+                <ic:AppBarToggleButton Style="{StaticResource ShuffleOffAppBarButtonStyle}" CheckedStyle="{StaticResource ShuffleOnAppBarButtonStyle}" 
+                                   cal:Message.Attach="[Event Click] = [Action ToggleShuffle()]" AutoToggle="True"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Style="{StaticResource ListAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action NavigateToPlaylist()]" Visibility="{Binding IsOnPlaylist, Converter={StaticResource InvertedVisibilityConverter}}"/>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Page>

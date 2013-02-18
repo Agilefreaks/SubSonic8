@@ -245,6 +245,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\CoverArtPlaceholder.jpg" />
+    <Content Include="Assets\CoverArtPlaceholderLarge.jpg" />
     <Content Include="Assets\SmallLogo.png" />
     <Content Include="Assets\StoreLogo.png" />
     <Content Include="Assets\Logo.png" />
