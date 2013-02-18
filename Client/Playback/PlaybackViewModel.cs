@@ -59,7 +59,7 @@ namespace Subsonic8.Playback
 
             set
             {
-                if (value == _parameter) return;                
+                if (value == _parameter) return;
                 _parameter = value;
                 if (_parameter != null)
                 {
@@ -142,7 +142,7 @@ namespace Subsonic8.Playback
         public PlaybackViewModel(IEventAggregator eventAggregator, IShellViewModel shellViewModel,
             IToastNotificationService notificationService, IWinRTWrappersService winRTWrappersService,
             IPlaylistManagementService playlistManagementService)
-            :base(eventAggregator)
+            : base(eventAggregator)
         {
             _eventAggregator = eventAggregator;
             _notificationService = notificationService;
@@ -239,19 +239,19 @@ namespace Subsonic8.Playback
             _eventAggregator.Publish(new PlayItemAtIndexMessage(PlaylistItems.Count - 1));
         }
 
-        private async Task AddItemToPlaylist(ISubsonicModel item)
-        {
-        }
-
         protected override void OnActivate()
         {
             base.OnActivate();
-            
+
             var oldState = _state;
             State = PlaybackViewModelStateEnum.Empty;
             State = oldState;
             BottomBar.IsOpened = false;
             BottomBar.IsOnPlaylist = true;
+        }
+
+        private async Task AddItemToPlaylist(ISubsonicModel item)
+        {
             if (item.Type == SubsonicModelTypeEnum.Song || item.Type == SubsonicModelTypeEnum.Video)
             {
                 var addItemsMessage = new AddItemsMessage { Queue = new List<Client.Common.Models.PlaylistItem>(new[] { await LoadModel(item) }) };

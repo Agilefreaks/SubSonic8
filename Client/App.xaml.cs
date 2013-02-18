@@ -10,7 +10,6 @@ using Subsonic8.Main;
 using Subsonic8.MenuItem;
 using Subsonic8.MusicDirectory;
 using Subsonic8.Playback;
-using Subsonic8.PlaylistItem;
 using Subsonic8.Search;
 using Subsonic8.Settings;
 using Subsonic8.Shell;
@@ -53,7 +52,6 @@ namespace Subsonic8
                 .PerRequest<IndexViewModel>()
                 .PerRequest<MenuItemViewModel>()
                 .PerRequest<MusicDirectoryViewModel>()
-                .PerRequest<PlaylistItemViewModel>()
                 .PerRequest<SearchViewModel>()
                 .PerRequest<SettingsViewModel>()
                 .PerRequest<ShellViewModel>();
