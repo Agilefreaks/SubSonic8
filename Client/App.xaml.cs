@@ -53,7 +53,6 @@ namespace Subsonic8
                 .PerRequest<IndexViewModel>()
                 .PerRequest<MenuItemViewModel>()
                 .PerRequest<MusicDirectoryViewModel>()
-                .PerRequest<PlaybackViewModel>()
                 .PerRequest<PlaylistItemViewModel>()
                 .PerRequest<SearchViewModel>()
                 .PerRequest<SettingsViewModel>()
