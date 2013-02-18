@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Caliburn.Micro;
 using Client.Common.Services;
 using Subsonic8.Album;

@@ -146,6 +146,9 @@
     <Compile Include="Messages\RemoveFromPlaylistMessage.cs" />
     <Compile Include="Messages\ShowControlsMessage.cs" />
     <Compile Include="Messages\ToggleShuffleMessage.cs" />
+    <Compile Include="Playback\Playback\Empty.xaml.cs">
+      <DependentUpon>Empty.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Playback\PlaylistHistoryStack.cs" />
     <Compile Include="PlaylistItem\PlaylistItemState.cs" />
     <Compile Include="PlaylistItem\PlaylistItemView.xaml.cs">
@@ -310,6 +313,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Playback\Playback\Audio.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Playback\Playback\Empty.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
