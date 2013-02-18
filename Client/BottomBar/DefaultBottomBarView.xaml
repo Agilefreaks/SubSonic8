@@ -22,7 +22,9 @@
             <Button Style="{StaticResource StopAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action Stop()]"/>
             <Button Style="{StaticResource NextAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action PlayNext()]"/>
             <ic:AppBarToggleButton Style="{StaticResource ShuffleOffAppBarButtonStyle}" CheckedStyle="{StaticResource ShuffleOnAppBarButtonStyle}" 
-                                   cal:Message.Attach="[Event Click] = [Action ToggleShuffle()]" AutoToggle="True"/>
+                                   cal:Message.Attach="[Event Click] = [Action ToggleShuffle()]" AutoToggle="True"/>            
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
             <Button Style="{StaticResource ListAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action NavigateToPlaylist()]" Visibility="{Binding IsOnPlaylist, Converter={StaticResource InvertedVisibilityConverter}}"/>
         </StackPanel>
     </Grid>
