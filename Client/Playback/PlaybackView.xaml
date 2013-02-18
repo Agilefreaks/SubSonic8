@@ -7,12 +7,14 @@
     xmlns:cal="using:Caliburn.Micro"
     xmlns:framework="using:Subsonic8.Framework"
     xmlns:common="using:Subsonic8.Common" xmlns:playlistItem="using:Subsonic8.PlaylistItem"
+    xmlns:playback="using:Subsonic8.Playback.Playback" xmlns:converters="using:Subsonic8.Converters"
     mc:Ignorable="d">
 
     <Page.Resources>
         <DataTemplate x:Key="PlaylistItemTemplate">
             <playlistItem:PlaylistItemView cal:Bind.Model="{Binding}" HorizontalContentAlignment="Stretch"/>
         </DataTemplate>
+        <converters:PlaybackStateToVisibilityConverter x:Name="PlaybackStateToVisibilityConverter"/>
     </Page.Resources>
 
     <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
@@ -29,7 +31,12 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <ContentControl cal:View.Context="{Binding State}" cal:View.Model="{Binding}" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="116,0,116,46"/>
+            <ContentControl HorizontalAlignment="Center" VerticalAlignment="Center" Padding="116,0,116,46">
+                <Grid>
+                    <playback:Audio cal:Bind.Model="{Binding}" Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='Audio'}"/>
+                    <playback:Video cal:Bind.Model="{Binding}" Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='Video'}"/>
+                </Grid>
+            </ContentControl>
 
             <Grid Grid.Column="1">
                 <Grid.RowDefinitions>

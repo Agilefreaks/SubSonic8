@@ -3,7 +3,6 @@
     public enum PlaybackViewModelStateEnum
     {
         Audio,
-        Video,
-        Empty
+        Video
     }
 }

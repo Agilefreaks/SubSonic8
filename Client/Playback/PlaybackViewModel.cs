@@ -101,8 +101,7 @@ namespace Subsonic8.Playback
 
             set
             {
-                if (_state == value) return;
-
+                if (value == _state) return;
                 _state = value;
                 NotifyOfPropertyChange(() => State);
             }
@@ -155,7 +154,6 @@ namespace Subsonic8.Playback
             _playlistManagementService = playlistManagementService;
 
             ShellViewModel = shellViewModel;
-            State = PlaybackViewModelStateEnum.Empty;
 
             UpdateDisplayName = () => DisplayName = "Playlist";
             LoadModel = LoadModelImpl;
@@ -246,10 +244,6 @@ namespace Subsonic8.Playback
         protected override void OnActivate()
         {
             base.OnActivate();
-
-            var oldState = _state;
-            State = PlaybackViewModelStateEnum.Empty;
-            State = oldState;
             BottomBar.IsOpened = false;
             BottomBar.IsOnPlaylist = true;
         }
