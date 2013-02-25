@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Xml.Serialization;
 using Caliburn.Micro;
+using Client.Common.Models.Subsonic;
+using Client.Common.Services;
 
 namespace Client.Common.Models
 {
@@ -119,6 +121,21 @@ namespace Client.Common.Models
                 _playingState = value;
                 NotifyOfPropertyChange();
             }
+        }
+
+        public void InitializeFromSong(Song result, ISubsonicService subsonicService)
+        {
+            Artist = result.Artist;
+            Title = result.Title;
+            Uri = result.Type == SubsonicModelTypeEnum.Video
+                      ? subsonicService.GetUriForVideoWithId(result.Id)
+                      : subsonicService.GetUriForFileWithId(result.Id);
+            CoverArtUrl = subsonicService.GetCoverArtForId(result.CoverArt);
+            PlayingState = PlaylistItemState.NotPlaying;
+            Duration = result.Duration;
+            Type = result.Type == SubsonicModelTypeEnum.Video
+                       ? PlaylistItemTypeEnum.Video
+                       : PlaylistItemTypeEnum.Audio;
         }
     }
 }

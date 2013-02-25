@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Client.Common.Models.Subsonic;
+using Client.Common.Services;
 using Client.Tests.Framework.ViewModel;
 using Client.Tests.Mocks;
 using FluentAssertions;
@@ -44,6 +45,8 @@ namespace Client.Tests.Main
         [TestMethod]
         public async Task PopulateShouldExecuteAGetRootResult()
         {
+            MockSubsonicService.Configuration = new SubsonicServiceConfiguration { BaseUrl = "http://test.com" };
+
             await Task.Run(() => Subject.Populate());
 
             _mockGetRootResult.ExecuteCallCount.Should().Be(1);

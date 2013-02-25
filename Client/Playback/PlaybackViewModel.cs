@@ -308,19 +308,16 @@ namespace Subsonic8.Playback
                 await
                     SubsonicService.GetSong(model.Id)
                                    .WithErrorHandler(this)
-                                   .OnSuccess(result => playlistItem = new Client.Common.Models.PlaylistItem
-                                       {
-                                           Artist = result.Artist,
-                                           Title = result.Title,
-                                           Uri = SubsonicService.GetUriForFileWithId(result.Id),
-                                           CoverArtUrl = SubsonicService.GetCoverArtForId(result.CoverArt),
-                                           PlayingState = PlaylistItemState.NotPlaying,
-                                           Duration = result.Duration,
-                                           Type = result.Type == SubsonicModelTypeEnum.Video
-                                                   ? PlaylistItemTypeEnum.Video
-                                                   : PlaylistItemTypeEnum.Audio
-                                       }).Execute();
+                                   .OnSuccess(result => playlistItem = CreatePlaylistItemFromSong(result)).Execute();
             }
+
+            return playlistItem;
+        }
+
+        private Client.Common.Models.PlaylistItem CreatePlaylistItemFromSong(Song result)
+        {
+            var playlistItem = new Client.Common.Models.PlaylistItem();
+            playlistItem.InitializeFromSong(result, SubsonicService);
 
             return playlistItem;
         }
