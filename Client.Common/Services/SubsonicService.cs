@@ -36,7 +36,7 @@ namespace Client.Common.Services
 
         public Func<string, ISearchResult> Search { get; set; }
 
-        public bool IsConfigured
+        public virtual bool IsConfigured
         {
             get { return Configuration != null && !string.IsNullOrEmpty(Configuration.BaseUrl); }
         }

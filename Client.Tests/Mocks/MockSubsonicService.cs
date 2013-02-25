@@ -5,12 +5,19 @@ namespace Client.Tests.Mocks
 {
     public class MockSubsonicService : SubsonicService
     {
+        private bool _isConfigured = false;
+
         public int GetUriForFileWithIdCallCount { get; set; }
 
         public int GetUriForVideoWithIdCallCount { get; set; }
 
         public int GetCoverArtForIdCallCount { get; set; }
-     
+
+        public override bool IsConfigured
+        {
+            get { return _isConfigured; }
+        }
+
         public override Uri GetUriForFileWithId(int id)
         {
             GetUriForFileWithIdCallCount++;
@@ -30,6 +37,11 @@ namespace Client.Tests.Mocks
             GetCoverArtForIdCallCount++;
 
             return string.Empty;
+        }
+
+        public void SetIsConfigured(bool value)
+        {
+            _isConfigured = value;
         }
     }
 }
