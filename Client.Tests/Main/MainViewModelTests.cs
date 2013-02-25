@@ -43,13 +43,15 @@ namespace Client.Tests.Main
         }
 
         [TestMethod]
-        public async Task PopulateShouldExecuteAGetRootResult()
+        public async Task PopulateWhenServiceIsConfiguredShouldExecuteAGetRootResult()
         {
-            MockSubsonicService.Configuration = new SubsonicServiceConfiguration { BaseUrl = "http://test.com" };
+            MockSubsonicService.SetIsConfigured(true);
+
 
             await Task.Run(() => Subject.Populate());
-
             _mockGetRootResult.ExecuteCallCount.Should().Be(1);
+
+            MockSubsonicService.SetIsConfigured(false);
         }
     }
 }
