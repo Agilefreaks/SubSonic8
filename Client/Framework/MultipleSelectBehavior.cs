@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
@@ -31,10 +32,11 @@ namespace Subsonic8.Framework
         {
             var observableCollection = eventArgs.NewValue as INotifyCollectionChanged;
             var gridView = (ListViewBase)dependencyObject;
+            DoInitialSync(eventArgs.NewValue as IList, gridView.Items, gridView.SelectedItems);
 
-            var sourceChangedHandler = SetupSourceCollectionChangedEventHandler(dependencyObject, observableCollection);
-            gridView.SelectionChanged += OnSelectionChanged;
-            SetupOnUnloadedHandler(dependencyObject, observableCollection, sourceChangedHandler);
+            var collectionChangedEventHandler = SetupCollectionChangedEventHandler(dependencyObject, observableCollection);
+            gridView.SelectionChanged += OnGridSelectionChanged;
+            SetupOnUnloadedHandler(dependencyObject, observableCollection, collectionChangedEventHandler);
         }
 
         #endregion
@@ -46,51 +48,60 @@ namespace Subsonic8.Framework
             unloadedEventHandler = (sender, args) =>
                                        {
                                            observableCollection.CollectionChanged -= sourceChangedHandler;
-                                           ((ListViewBase)sender).SelectionChanged -= OnSelectionChanged;
+                                           ((ListViewBase)sender).SelectionChanged -= OnGridSelectionChanged;
                                            ((ListViewBase)sender).Unloaded -= unloadedEventHandler;
                                        };
             ((ListViewBase)dependencyObject).Unloaded += unloadedEventHandler;
         }
 
-        private static NotifyCollectionChangedEventHandler SetupSourceCollectionChangedEventHandler(DependencyObject dependencyObject,
+        private static NotifyCollectionChangedEventHandler SetupCollectionChangedEventHandler(DependencyObject dependencyObject,
                                                                                           INotifyCollectionChanged observableCollection)
         {
-            NotifyCollectionChangedEventHandler sourceChangedHandler = (s, ev) =>
-                SelectedItemsChangedFromSource(dependencyObject, s as ObservableCollection<object>);
+            NotifyCollectionChangedEventHandler sourceChangedHandler =
+                (s, ev) => SelectedItemsCollectionChanged(dependencyObject, ev);
             observableCollection.CollectionChanged += sourceChangedHandler;
 
             return sourceChangedHandler;
         }
 
-        private static void SelectedItemsChangedFromSource(DependencyObject dependencyObject, IEnumerable<object> source)
+        private static void DoInitialSync(IList sourceList, ICollection<object> items, ICollection<object> selectedItems)
         {
-            var selectedItems = ((ListViewBase)dependencyObject).SelectedItems;
-            if (source != null)
+            var toRemove = sourceList.Cast<object>().Where(item => !items.Contains(item)).ToList();
+            foreach (var item in toRemove)
             {
-                var toRemove = selectedItems.Where(i => !source.Contains(i)).ToList();
-                foreach (var item in toRemove)
-                {
-                    selectedItems.Remove(item);
-                }
+                sourceList.Remove(item);
+            }
 
-                foreach (var item in source.Where(i => !selectedItems.Contains(i)))
-                {
-                    selectedItems.Add(item);
-                }
+            foreach (var item in sourceList)
+            {
+                selectedItems.Add(item);
             }
         }
 
-        private static void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private static void SelectedItemsCollectionChanged(DependencyObject dependencyObject, NotifyCollectionChangedEventArgs eventArgs)
         {
-            var selectedItems = GetSelectedItems((DependencyObject)sender);
-            foreach (var item in e.RemovedItems.Where(selectedItems.Contains))
+            var oldItems = eventArgs.OldItems ?? new List<object>();
+            var newItems = eventArgs.NewItems ?? new List<object>();
+            var gridSelectedItemsList = ((ListViewBase)dependencyObject).SelectedItems;
+            UpdateCollection(gridSelectedItemsList, oldItems, newItems);
+        }
+
+        private static void OnGridSelectionChanged(object sender, SelectionChangedEventArgs eventArgs)
+        {
+            var selectedItemsCollection = GetSelectedItems((DependencyObject)sender);
+            UpdateCollection(selectedItemsCollection, eventArgs.RemovedItems, eventArgs.AddedItems);
+        }
+
+        private static void UpdateCollection(ICollection<object> collection, IEnumerable toRemove, IEnumerable toAdd)
+        {
+            foreach (var item in toRemove)
             {
-                selectedItems.Remove(item);
+                collection.Remove(item);
             }
 
-            foreach (var item in e.AddedItems.Where(item => !selectedItems.Contains(item)))
+            foreach (var item in toAdd)
             {
-                selectedItems.Add(item);
+                collection.Add(item);
             }
         }
     }
