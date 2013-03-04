@@ -149,7 +149,7 @@ namespace Subsonic8.Shell
                 _playerControls.PlayPause();
         }
 
-        protected override void OnViewAttached(object view, object context)
+        protected override async void OnViewAttached(object view, object context)
         {
             base.OnViewAttached(view, context);
 
@@ -158,7 +158,7 @@ namespace Subsonic8.Shell
 
             HookupPlayerControls((IPlayerControls)view);
 
-            LoadSettings();
+            await LoadSettings();
 
             if (!SubsonicService.IsConfigured)
             {
@@ -189,7 +189,7 @@ namespace Subsonic8.Shell
             await PerformSubsonicSearch(args.QueryText);
         }
 
-        private async void LoadSettings()
+        private async Task LoadSettings()
         {
             var subsonic8Configuration = await GetSubsonic8Configuration();
 
@@ -201,15 +201,7 @@ namespace Subsonic8.Shell
         private async Task<Subsonic8Configuration> GetSubsonic8Configuration()
         {
             var subsonic8Configuration = await StorageService.Load<Subsonic8Configuration>() ?? new Subsonic8Configuration();
-#if DEBUG
-            const string baseUrl = "http://192.168.0.121:4040/";
-            subsonic8Configuration.SubsonicServiceConfiguration = new SubsonicServiceConfiguration
-            {
-                BaseUrl = baseUrl,
-                Username = "admin",
-                Password = "admin"
-            };
-#endif
+
             return subsonic8Configuration;
         }
 
