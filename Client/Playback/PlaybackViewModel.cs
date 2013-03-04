@@ -341,9 +341,9 @@ namespace Subsonic8.Playback
             }
         }
 
-        private void ShowToast(Client.Common.Models.PlaylistItem model)
+        private async void ShowToast(Client.Common.Models.PlaylistItem model)
         {
-            _notificationService.Show(new ToastNotificationOptions
+            await _notificationService.Show(new ToastNotificationOptions
                 {
                     ImageUrl = model.CoverArtUrl,
                     Title = model.Title,

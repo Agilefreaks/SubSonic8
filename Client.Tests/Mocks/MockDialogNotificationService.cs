@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Subsonic8.Framework.Services;
 
 namespace Client.Tests.Mocks
@@ -12,9 +14,18 @@ namespace Client.Tests.Mocks
             Showed = new List<DialogNotificationOptions>();
         }
 
-        public void Show(DialogNotificationOptions options)
+        public Task Show(DialogNotificationOptions options)
         {
             Showed.Add(options);
+
+            return new Task(() => { });
+        }
+
+        public Task Show(DialogNotificationOptions options, Action onDialogClosed)
+        {
+            Showed.Add(options);
+
+            return new Task(() => {});
         }
     }
 }

@@ -164,10 +164,10 @@ namespace Subsonic8.Shell
             {
                 var resMap = Windows.ApplicationModel.Resources.Core.ResourceManager.Current.MainResourceMap;
                 var message = resMap.GetValue("ShellStrings/NotConfigured").ValueAsString;
-                DialogNotificationService.Show(new DialogNotificationOptions
-                                                   {
-                                                       Message = message
-                                                   });
+                await DialogNotificationService.Show(new DialogNotificationOptions
+                    {
+                        Message = message
+                    });
                 DialogService.ShowSettings<SettingsViewModel>();
             }
         }

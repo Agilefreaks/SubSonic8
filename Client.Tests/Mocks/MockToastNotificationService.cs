@@ -1,4 +1,5 @@
-﻿using Subsonic8.Framework.Services;
+﻿using System.Threading.Tasks;
+using Subsonic8.Framework.Services;
 
 namespace Client.Tests.Mocks
 {
@@ -8,9 +9,11 @@ namespace Client.Tests.Mocks
 
         public bool UseSound { get; set; }
 
-        public void Show(ToastNotificationOptions options)
+        public Task Show(ToastNotificationOptions options)
         {
             ShowCallCount++;
+
+            return new Task(() => { });
         }
     }
 }

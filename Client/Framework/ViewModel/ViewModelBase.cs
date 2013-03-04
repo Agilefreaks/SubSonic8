@@ -96,12 +96,12 @@ namespace Subsonic8.Framework.ViewModel
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
 
-        public void HandleError(Exception error)
+        public async void HandleError(Exception error)
         {
-            NotificationService.Show(new DialogNotificationOptions
-                                         {
-                                             Message = error.ToString(),
-                                         });
+            await NotificationService.Show(new DialogNotificationOptions
+                {
+                    Message = error.ToString(),
+                });
         }
 
         protected override void OnActivate()

@@ -1,4 +1,5 @@
-﻿using Windows.Data.Xml.Dom;
+﻿using System.Threading.Tasks;
+using Windows.Data.Xml.Dom;
 using Windows.UI.Notifications;
 
 namespace Subsonic8.Framework.Services
@@ -7,11 +8,13 @@ namespace Subsonic8.Framework.Services
     {
         public bool UseSound { get; set; }
 
-        public void Show(ToastNotificationOptions options)
+        public Task Show(ToastNotificationOptions options)
         {
             var toastXml = BuildToast(options);
             var toast = new ToastNotification(toastXml);
-            ToastNotificationManager.CreateToastNotifier().Show(toast);
+            var toastNotifier = ToastNotificationManager.CreateToastNotifier();
+
+            return Task.Factory.StartNew(() => toastNotifier.Show(toast));
         }
 
         private XmlDocument BuildToast(ToastNotificationOptions options)
