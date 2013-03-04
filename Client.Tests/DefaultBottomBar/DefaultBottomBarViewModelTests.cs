@@ -201,5 +201,14 @@ namespace Client.Tests.DefaultBottomBar
             _eventAggregator.PublishCallCount.Should().Be(1);
             _eventAggregator.Messages[0].Should().BeOfType<ToggleShuffleMessage>();
         }
+
+        [TestMethod]
+        public void Stop_Always_SendsAStopPlaybackMessage()
+        {
+            _subject.Stop();
+
+            _eventAggregator.Messages.Count.Should().Be(1);
+            _eventAggregator.Messages[0].Should().BeOfType<StopPlaybackMessage>();
+        }
     }
 }

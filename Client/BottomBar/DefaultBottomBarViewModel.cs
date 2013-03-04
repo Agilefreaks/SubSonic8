@@ -164,7 +164,7 @@ namespace Subsonic8.BottomBar
 
         public void Stop()
         {
-            _eventAggregator.Publish(new StopMessage());
+            _eventAggregator.Publish(new StopPlaybackMessage());
         }
 
         public void Handle(ShowControlsMessage message)
