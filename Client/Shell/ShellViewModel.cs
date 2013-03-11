@@ -7,6 +7,7 @@ using Client.Common.Results;
 using Client.Common.Services;
 using Subsonic8.BottomBar;
 using Subsonic8.Framework.Services;
+using Subsonic8.Main;
 using Subsonic8.Search;
 using Subsonic8.Settings;
 using Windows.ApplicationModel.Search;
@@ -170,6 +171,8 @@ namespace Subsonic8.Shell
                     });
                 DialogService.ShowSettings<SettingsViewModel>();
             }
+
+            NavigationService.NavigateToViewModel<MainViewModel>();
         }
 
         private void HookupPlayerControls(IPlayerControls playerControls)

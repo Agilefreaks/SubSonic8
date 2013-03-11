@@ -93,8 +93,6 @@ namespace Subsonic8
             InstantiateRequiredSingletons();
 
             BindShellViewModelToView(shellView);
-
-            ShowMainViewModel();
         }
 
         private ShellView GetShellView()
@@ -118,12 +116,6 @@ namespace Subsonic8
         {
             _shellViewModel = (IShellViewModel)_container.GetInstance(typeof(IShellViewModel), null);
             ViewModelBinder.Bind(_shellViewModel, shellView, null);
-        }
-
-        private void ShowMainViewModel()
-        {
-            var navigationService = _container.GetInstance(typeof(INavigationService), null) as INavigationService;
-            navigationService.NavigateToViewModel<MainViewModel>();
         }
     }
 }
