@@ -55,21 +55,27 @@
                         <Button Style="{StaticResource SaveAppBarButtonStyle}" x:Name="SavePlaylist"/>
                     </StackPanel>
                 </Grid>
-                <ListView Grid.Row="1"
-                        ItemsSource = "{Binding PlaylistItems}" ItemTemplate="{StaticResource PlaylistItemTemplate}"
-                        SelectionMode = "Multiple"
-                        framework:MultipleSelectBehavior.SelectedItems="{Binding SelectedItems, Mode=TwoWay}"
-                        CanDragItems = "True" CanReorderItems = "True" AllowDrop = "True"
-                        IsItemClickEnabled = "True"
-                        cal:Message.Attach = "[Event ItemClick] = [Action StartPlayback($eventArgs)]"
-                        Padding="116,0,116,46">
-
-                    <ListView.ItemContainerStyle>
-                        <Style TargetType="ListViewItem">
-                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                        </Style>
-                    </ListView.ItemContainerStyle>
-                </ListView>
+                <ScrollViewer Grid.Row="1">
+                    <ListView
+                    ItemsSource = "{Binding PlaylistItems}" ItemTemplate="{StaticResource PlaylistItemTemplate}"
+                    SelectionMode = "Multiple"
+                    framework:MultipleSelectBehavior.SelectedItems="{Binding SelectedItems, Mode=TwoWay}"
+                    CanDragItems = "False" CanReorderItems = "False" AllowDrop = "False"
+                    IsItemClickEnabled = "True"
+                    cal:Message.Attach = "[Event ItemClick] = [Action StartPlayback($eventArgs)]"
+                    Padding="116,0,116,46" Grid.Row="1">
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                        <ListView.Template>
+                            <ControlTemplate>
+                                <ItemsPresenter/>
+                            </ControlTemplate>
+                        </ListView.Template>
+                    </ListView>
+                </ScrollViewer>
             </Grid>
         </Grid>
     </Grid>
