@@ -18,7 +18,7 @@ namespace Subsonic8.VideoPlayback
         private void MediaPlayer_OnMediaEnded(object sender, MediaPlayerActionEventArgs e)
         {
             // TODO: Replace with something nicer | It may be bug in Windows.Interactivity
-            ((FullScreenVideoPlaybackViewModel)DataContext).Next();
+            ((EmbededVideoPlaybackViewModel)DataContext).Next();
         }
 
         private void MediaPlayer_OnIsFullScreenChanged(object sender, RoutedPropertyChangedEventArgs<bool> e)
