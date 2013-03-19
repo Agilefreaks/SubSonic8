@@ -80,9 +80,9 @@ namespace Subsonic8.VideoPlayback
         public virtual void Handle(StartVideoPlaybackMessage message)
         {
             Item = message.Item;
-            Source = SubsonicService.GetUriForVideoStartingAt(message.Item.Uri, message.StartTime);
             StartTime = TimeSpan.FromSeconds(message.StartTime).Negate();
             EndTime = TimeSpan.FromSeconds(message.EndTime);
+            Source = SubsonicService.GetUriForVideoStartingAt(message.Item.Uri, message.StartTime);
         }
 
         public virtual void Handle(StopVideoPlaybackMessage message)
@@ -99,11 +99,22 @@ namespace Subsonic8.VideoPlayback
 
         public virtual StartVideoPlaybackMessage GetStartVideoPlaybackMessageWithCurrentPosition(MediaPlayer mediaPlayer)
         {
-            var startTime = EndTime - mediaPlayer.TimeRemaining;
+            TimeSpan startTime, endTime;
+            if (mediaPlayer.TimeRemaining != TimeSpan.Zero)
+            {
+                startTime = EndTime - mediaPlayer.TimeRemaining;
+                endTime = mediaPlayer.TimeRemaining;
+            }
+            else
+            {
+                startTime = mediaPlayer.StartTime;
+                endTime = mediaPlayer.EndTime;
+            }
+
             var videoPlaybackMessage = new StartVideoPlaybackMessage(Item)
             {
                 StartTime = startTime.TotalSeconds,
-                EndTime = mediaPlayer.TimeRemaining.TotalSeconds,
+                EndTime = endTime.TotalSeconds
             };
 
             return videoPlaybackMessage;
