@@ -215,7 +215,7 @@ namespace Client.Common.Services
             }
             else
             {
-                _eventAggregator.Publish(new StartVideoPlaybackMessage(CurrentItem));
+                _eventAggregator.Publish(new StartVideoPlaybackMessage(CurrentItem) { FullScreen = true });
             }
 
             CurrentItem.PlayingState = PlaylistItemState.Playing;

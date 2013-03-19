@@ -5,32 +5,32 @@ namespace Subsonic8.Framework.ViewModel
 {
     public abstract class PlaybackControlsViewModelBase : ViewModelBase, IPlaybackControlsViewModel
     {
-        private readonly IEventAggregator _eventAggregator;
+        protected readonly IEventAggregator EventAggregator;
 
         protected PlaybackControlsViewModelBase(IEventAggregator eventAggregator)
         {
-            _eventAggregator = eventAggregator;
-            _eventAggregator.Subscribe(this);
+            EventAggregator = eventAggregator;
+            EventAggregator.Subscribe(this);
         }
 
         public virtual void Next()
         {
-            _eventAggregator.Publish(new PlayNextMessage());
+            EventAggregator.Publish(new PlayNextMessage());
         }
 
         public virtual void Previous()
         {
-            _eventAggregator.Publish(new PlayPreviousMessage());
+            EventAggregator.Publish(new PlayPreviousMessage());
         }
 
         public virtual void PlayPause()
         {
-            _eventAggregator.Publish(new PlayPauseMessage());
+            EventAggregator.Publish(new PlayPauseMessage());
         }
 
         public virtual void Stop()
         {
-            _eventAggregator.Publish(new StopPlaybackMessage());
+            EventAggregator.Publish(new StopPlaybackMessage());
         }
     }
 }

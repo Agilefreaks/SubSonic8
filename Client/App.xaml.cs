@@ -13,6 +13,7 @@ using Subsonic8.Playback;
 using Subsonic8.Search;
 using Subsonic8.Settings;
 using Subsonic8.Shell;
+using Subsonic8.VideoPlayback;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -40,6 +41,8 @@ namespace Subsonic8
             _container.RegisterSingleton(typeof(IShellViewModel), "ShellViewModel", typeof(ShellViewModel));
             _container.RegisterSingleton(typeof(IPlaylistManagementService), "PlaylistManagementService", typeof(PlaylistManagementService));
             _container.RegisterSingleton(typeof(IPlaybackViewModel), "PlaybackViewModel", typeof(PlaybackViewModel));
+            _container.RegisterSingleton(typeof(IFullScreenVideoPlaybackViewModel), "FullScreenVideoPlaybackViewModel", typeof(FullScreenVideoPlaybackViewModel));
+            _container.RegisterSingleton(typeof(IEmbededVideoPlaybackViewModel), "EmbededVideoPlaybackViewModel", typeof(EmbededVideoPlaybackViewModel));
             _container.RegisterHandler(typeof(PlaybackViewModel), "PlaybackViewModel", container => container.GetInstance(typeof(IPlaybackViewModel), "PlaybackViewModel"));
             _container.RegisterSingleton(typeof(IDefaultBottomBarViewModel), "DefaultBottomBarViewModel", typeof(DefaultBottomBarViewModel));
             _container.RegisterSingleton(typeof(IToastNotificationService), "ToastNotificationService", typeof(ToastsNotificationService));
@@ -108,6 +111,7 @@ namespace Subsonic8
         private void InstantiateRequiredSingletons()
         {
             _container.GetInstance(typeof(IPlaybackViewModel), "PlaybackViewModel");
+            _container.GetInstance(typeof(IFullScreenVideoPlaybackViewModel), "FullScreenVideoPlaybackViewModel");
             _container.GetInstance(typeof(IDefaultBottomBarViewModel), "DefaultBottomBarViewModel");
             _container.GetInstance(typeof(IDialogNotificationService), "DialogNotificationService");
         }

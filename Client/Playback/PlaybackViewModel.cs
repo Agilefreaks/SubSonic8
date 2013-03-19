@@ -9,10 +9,12 @@ using Client.Common.EventAggregatorMessages;
 using Client.Common.Models;
 using Client.Common.Models.Subsonic;
 using Client.Common.Services;
+using Subsonic8.Framework.Extensions;
 using Subsonic8.Framework.Services;
 using Subsonic8.Framework.ViewModel;
 using Subsonic8.Messages;
 using Subsonic8.Shell;
+using Subsonic8.VideoPlayback;
 using Windows.UI.Xaml.Controls;
 
 namespace Subsonic8.Playback
@@ -23,16 +25,17 @@ namespace Subsonic8.Playback
 
         #region Private Fields
 
-        private readonly IEventAggregator _eventAggregator;
         private readonly IToastNotificationService _notificationService;
         private readonly IWinRTWrappersService _winRTWrappersService;
         private readonly IPlaylistManagementService _playlistManagementService;
         private IShellViewModel _shellViewModel;
-        private ISubsonicModel _parameter;
         private PlaybackViewModelStateEnum _state;
         private Uri _source;
         private string _coverArt;
         private bool _playNextItem;
+        private TimeSpan _endTime;
+        private TimeSpan _startTime;
+        private IEmbededVideoPlaybackViewModel _embededVideoPlaybackViewModel;
 
         #endregion
 
@@ -54,19 +57,10 @@ namespace Subsonic8.Playback
 
         public ISubsonicModel Parameter
         {
-            get
-            {
-                return _parameter;
-            }
-
             set
             {
-                if (value == _parameter) return;
-                _parameter = value;
-                if (_parameter != null)
-                {
-                    Handle(new PlayFile { Model = _parameter });
-                }
+                if (value == null) return;
+                Handle(new PlayFile { Model = value });
             }
         }
 
@@ -133,6 +127,36 @@ namespace Subsonic8.Playback
             }
         }
 
+        public TimeSpan EndTime
+        {
+            get
+            {
+                return _endTime;
+            }
+
+            set
+            {
+                if (value.Equals(_endTime)) return;
+                _endTime = value;
+                NotifyOfPropertyChange(() => EndTime);
+            }
+        }
+
+        public TimeSpan StartTime
+        {
+            get
+            {
+                return _startTime;
+            }
+
+            set
+            {
+                if (value.Equals(_startTime)) return;
+                _startTime = value;
+                NotifyOfPropertyChange(() => StartTime);
+            }
+        }
+
         public PlaylistItemCollection PlaylistItems
         {
             get { return _playlistManagementService.Items; }
@@ -140,18 +164,40 @@ namespace Subsonic8.Playback
 
         public Func<IId, Task<Client.Common.Models.PlaylistItem>> LoadModel { get; set; }
 
+        public IToastNotificationService ToastNotificationService
+        {
+            get { return _notificationService; }
+        }
+
         #endregion
+
+        public IEmbededVideoPlaybackViewModel EmbededVideoPlaybackViewModel
+        {
+            get
+            {
+                return _embededVideoPlaybackViewModel;
+            }
+
+            set
+            {
+                if (Equals(value, _embededVideoPlaybackViewModel)) return;
+                _embededVideoPlaybackViewModel = value;
+                NotifyOfPropertyChange(() => EmbededVideoPlaybackViewModel);
+            }
+        }
+
+        protected bool IsRunningVideoInFullScreen { get; set; }
 
         public PlaybackViewModel(IEventAggregator eventAggregator, IShellViewModel shellViewModel,
             IToastNotificationService notificationService, IWinRTWrappersService winRTWrappersService,
-            IPlaylistManagementService playlistManagementService)
+            IPlaylistManagementService playlistManagementService, IEmbededVideoPlaybackViewModel embededEmbededVideoPlaybackViewModel)
             : base(eventAggregator)
         {
-            _eventAggregator = eventAggregator;
             _notificationService = notificationService;
             _winRTWrappersService = winRTWrappersService;
-            _eventAggregator.Subscribe(this);
+            EventAggregator.Subscribe(this);
             _playlistManagementService = playlistManagementService;
+            _embededVideoPlaybackViewModel = embededEmbededVideoPlaybackViewModel;
 
             ShellViewModel = shellViewModel;
 
@@ -165,7 +211,7 @@ namespace Subsonic8.Playback
         {
             var pressedItem = (Client.Common.Models.PlaylistItem)(((ItemClickEventArgs)e).ClickedItem);
             var pressedItemIndex = PlaylistItems.IndexOf(pressedItem);
-            _eventAggregator.Publish(new PlayItemAtIndexMessage(pressedItemIndex));
+            EventAggregator.Publish(new PlayItemAtIndexMessage(pressedItemIndex));
         }
 
         public void ClearPlaylist()
@@ -194,36 +240,39 @@ namespace Subsonic8.Playback
 
         public void Handle(StartVideoPlaybackMessage message)
         {
-            State = PlaybackViewModelStateEnum.Video;
-            Source = message.Item.Uri;
-            ShowToast(message.Item);
+            if (!message.FullScreen)
+            {
+                State = PlaybackViewModelStateEnum.Video;
+                if (!IsActive)
+                {
+                    NavigationService.NavigateToViewModel<PlaybackViewModel>();
+                }
+            }
+
+            this.ShowToast(message.Item);
         }
 
         public void Handle(StartAudioPlaybackMessage message)
         {
             CoverArt = message.Item.CoverArtUrl;
             State = PlaybackViewModelStateEnum.Audio;
-            ShowToast(message.Item);
+
+            this.ShowToast(message.Item);
         }
 
         public void Handle(PlaylistStateChangedMessage message)
         {
-            _eventAggregator.Publish(new ShowControlsMessage
+            EventAggregator.Publish(new ShowControlsMessage
                 {
                     Show = message.HasElements
                 });
-        }
-
-        public void Handle(StopVideoPlaybackMessage message)
-        {
-            Source = null;
         }
 
         public async void Handle(PlaylistMessage message)
         {
             if (message.ClearCurrent)
             {
-                _eventAggregator.Publish(new StopPlaybackMessage());
+                EventAggregator.Publish(new StopPlaybackMessage());
                 _playlistManagementService.Clear();
                 _playNextItem = true;
             }
@@ -237,8 +286,8 @@ namespace Subsonic8.Playback
         public async void Handle(PlayFile message)
         {
             var playlistItem = await LoadModel(message.Model);
-            _eventAggregator.Publish(new AddItemsMessage { Queue = new List<Client.Common.Models.PlaylistItem>(new[] { playlistItem }) });
-            _eventAggregator.Publish(new PlayItemAtIndexMessage(PlaylistItems.Count - 1));
+            EventAggregator.Publish(new AddItemsMessage { Queue = new List<Client.Common.Models.PlaylistItem>(new[] { playlistItem }) });
+            EventAggregator.Publish(new PlayItemAtIndexMessage(PlaylistItems.Count - 1));
         }
 
         protected override void OnActivate()
@@ -246,6 +295,7 @@ namespace Subsonic8.Playback
             base.OnActivate();
             BottomBar.IsOpened = false;
             BottomBar.IsOnPlaylist = true;
+            IsRunningVideoInFullScreen = false;
         }
 
         private async Task AddItemToPlaylist(ISubsonicModel item)
@@ -253,11 +303,11 @@ namespace Subsonic8.Playback
             if (item.Type == SubsonicModelTypeEnum.Song || item.Type == SubsonicModelTypeEnum.Video)
             {
                 var addItemsMessage = new AddItemsMessage { Queue = new List<Client.Common.Models.PlaylistItem>(new[] { await LoadModel(item) }) };
-                _eventAggregator.Publish(addItemsMessage);
+                EventAggregator.Publish(addItemsMessage);
                 if (_playNextItem)
                 {
                     _playNextItem = false;
-                    _eventAggregator.Publish(new PlayNextMessage());
+                    EventAggregator.Publish(new PlayNextMessage());
                 }
             }
             else
@@ -339,16 +389,6 @@ namespace Subsonic8.Playback
                 BottomBar.IsPlaying = _playlistManagementService.IsPlaying;
                 NotifyOfPropertyChange(() => IsPlaying);
             }
-        }
-
-        private async void ShowToast(Client.Common.Models.PlaylistItem model)
-        {
-            await _notificationService.Show(new ToastNotificationOptions
-                {
-                    ImageUrl = model.CoverArtUrl,
-                    Title = model.Title,
-                    Subtitle = model.Artist
-                });
         }
     }
 }
