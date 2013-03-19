@@ -131,6 +131,8 @@
     <Compile Include="Converters\PlaybackStateToVisibilityConverter.cs" />
     <Compile Include="Converters\PlayingStateToVisibilityConverter.cs" />
     <Compile Include="Dialogs\DialogService.cs" />
+    <Compile Include="Framework\Extensions\ToastNotificationExtensions.cs" />
+    <Compile Include="Framework\Interfaces\IToastNotificationCapable.cs" />
     <Compile Include="Framework\Services\DialogNotificationOptions.cs" />
     <Compile Include="Framework\Services\DialogNotificationService.cs" />
     <Compile Include="Framework\Services\IDialogNotificationService.cs" />
@@ -223,11 +225,11 @@
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Shell\ShellViewModel.cs" />
-    <Compile Include="VideoPlayback\IVideoPlaybackViewModel.cs" />
-    <Compile Include="VideoPlayback\VideoPlaybackView.xaml.cs">
-      <DependentUpon>VideoPlaybackView.xaml</DependentUpon>
+    <Compile Include="VideoPlayback\IFullScreenVideoPlaybackViewModel.cs" />
+    <Compile Include="VideoPlayback\FullScreenVideoPlaybackView.xaml.cs">
+      <DependentUpon>FullScreenVideoPlaybackView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="VideoPlayback\VIdeoPlaybackViewModel.cs" />
+    <Compile Include="VideoPlayback\FullScreenVideoPlaybackViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -343,7 +345,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="VideoPlayback\VideoPlaybackView.xaml">
+    <Page Include="VideoPlayback\FullScreenVideoPlaybackView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

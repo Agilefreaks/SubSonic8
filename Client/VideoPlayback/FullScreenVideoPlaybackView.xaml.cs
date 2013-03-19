@@ -8,9 +8,9 @@ namespace Subsonic8.VideoPlayback
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class VideoPlaybackView
+    public sealed partial class FullScreenVideoPlaybackView
     {
-        public VideoPlaybackView()
+        public FullScreenVideoPlaybackView()
         {
             InitializeComponent();
         }
@@ -18,13 +18,13 @@ namespace Subsonic8.VideoPlayback
         private void MediaPlayer_OnMediaEnded(object sender, MediaPlayerActionEventArgs e)
         {
             // TODO: Replace with something nicer | It may be bug in Windows.Interactivity
-            ((VideoPlaybackViewModel)DataContext).GoBack();
+            ((FullScreenVideoPlaybackViewModel)DataContext).Next();
         }
 
         private void MediaPlayer_OnIsFullScreenChanged(object sender, RoutedPropertyChangedEventArgs<bool> e)
         {
             // TODO: Replace with something nicer | It may be bug in Windows.Interactivity
-            ((VideoPlaybackViewModel)DataContext).GoBack();
+            ((FullScreenVideoPlaybackViewModel)DataContext).GoToPlaybackViewModelItem(MediaPlayer);
         }
     }
 }

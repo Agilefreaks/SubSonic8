@@ -41,7 +41,7 @@ namespace Subsonic8
             _container.RegisterSingleton(typeof(IShellViewModel), "ShellViewModel", typeof(ShellViewModel));
             _container.RegisterSingleton(typeof(IPlaylistManagementService), "PlaylistManagementService", typeof(PlaylistManagementService));
             _container.RegisterSingleton(typeof(IPlaybackViewModel), "PlaybackViewModel", typeof(PlaybackViewModel));
-            _container.RegisterSingleton(typeof(IVideoPlaybackViewModel), "VideoPlaybackViewModel", typeof(VideoPlaybackViewModel));
+            _container.RegisterSingleton(typeof(IFullScreenVideoPlaybackViewModel), "FullScreenVideoPlaybackViewModel", typeof(FullScreenVideoPlaybackViewModel));
             _container.RegisterHandler(typeof(PlaybackViewModel), "PlaybackViewModel", container => container.GetInstance(typeof(IPlaybackViewModel), "PlaybackViewModel"));
             _container.RegisterSingleton(typeof(IDefaultBottomBarViewModel), "DefaultBottomBarViewModel", typeof(DefaultBottomBarViewModel));
             _container.RegisterSingleton(typeof(IToastNotificationService), "ToastNotificationService", typeof(ToastsNotificationService));
@@ -110,6 +110,7 @@ namespace Subsonic8
         private void InstantiateRequiredSingletons()
         {
             _container.GetInstance(typeof(IPlaybackViewModel), "PlaybackViewModel");
+            _container.GetInstance(typeof(IFullScreenVideoPlaybackViewModel), "FullScreenVideoPlaybackViewModel");
             _container.GetInstance(typeof(IDefaultBottomBarViewModel), "DefaultBottomBarViewModel");
             _container.GetInstance(typeof(IDialogNotificationService), "DialogNotificationService");
         }
