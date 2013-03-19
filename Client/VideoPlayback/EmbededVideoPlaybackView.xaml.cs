@@ -8,9 +8,9 @@ namespace Subsonic8.VideoPlayback
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class FullScreenVideoPlaybackView
+    public sealed partial class EmbededVideoPlaybackView
     {
-        public FullScreenVideoPlaybackView()
+        public EmbededVideoPlaybackView()
         {
             InitializeComponent();
         }
@@ -24,7 +24,7 @@ namespace Subsonic8.VideoPlayback
         private void MediaPlayer_OnIsFullScreenChanged(object sender, RoutedPropertyChangedEventArgs<bool> e)
         {
             // TODO: Replace with something nicer | It may be bug in Windows.Interactivity
-            ((FullScreenVideoPlaybackViewModel)DataContext).FullScreenChanged(MediaPlayer);
+            ((EmbededVideoPlaybackViewModel)DataContext).FullScreenChanged(MediaPlayer);
         }
     }
 }

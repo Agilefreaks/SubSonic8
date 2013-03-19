@@ -11,12 +11,12 @@ using Subsonic8.Shell;
 namespace Subsonic8.Playback
 {
     public interface IPlaybackViewModel : IHandle<PlaylistMessage>, IHandle<PlaylistStateChangedMessage>,
-        IHandle<PlayFile>, IHandle<StartVideoPlaybackMessage>, IHandle<StartAudioPlaybackMessage>, IHandle<StopVideoPlaybackMessage>, 
+        IHandle<PlayFile>, IHandle<StartVideoPlaybackMessage>, IHandle<StartAudioPlaybackMessage>,
         IViewModel, IToastNotificationCapable
     {
         IShellViewModel ShellViewModel { get; set; }
 
-        ISubsonicModel Parameter { get; set; }
+        ISubsonicModel Parameter { set; }
 
         Uri Source { get; set; }
 

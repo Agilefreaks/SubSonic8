@@ -3,11 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:mmppf="using:Microsoft.PlayerFramework" mc:Ignorable="d">
+    mc:Ignorable="d">
 
-    <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
-        <mmppf:MediaPlayer Source="{Binding Path=Source}" Width="Auto" Height="Auto" IsFullScreenVisible="True" EndTime="{Binding Path=EndTime}" StartTime="{Binding Path=StartTime}"
-                           MediaEnded="MediaPlayer_OnMediaEnded" IsFullScreenChanged="MediaPlayer_OnIsFullScreenChanged" x:Name="MediaPlayer">
-        </mmppf:MediaPlayer>
-    </Grid>
+    <ContentControl HorizontalContentAlignment="Stretch" x:Name="EmbededVideoPlaybackViewModel" VerticalContentAlignment="Stretch"/>
 </Page>

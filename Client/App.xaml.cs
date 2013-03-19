@@ -42,6 +42,7 @@ namespace Subsonic8
             _container.RegisterSingleton(typeof(IPlaylistManagementService), "PlaylistManagementService", typeof(PlaylistManagementService));
             _container.RegisterSingleton(typeof(IPlaybackViewModel), "PlaybackViewModel", typeof(PlaybackViewModel));
             _container.RegisterSingleton(typeof(IFullScreenVideoPlaybackViewModel), "FullScreenVideoPlaybackViewModel", typeof(FullScreenVideoPlaybackViewModel));
+            _container.RegisterSingleton(typeof(IEmbededVideoPlaybackViewModel), "EmbededVideoPlaybackViewModel", typeof(EmbededVideoPlaybackViewModel));
             _container.RegisterHandler(typeof(PlaybackViewModel), "PlaybackViewModel", container => container.GetInstance(typeof(IPlaybackViewModel), "PlaybackViewModel"));
             _container.RegisterSingleton(typeof(IDefaultBottomBarViewModel), "DefaultBottomBarViewModel", typeof(DefaultBottomBarViewModel));
             _container.RegisterSingleton(typeof(IToastNotificationService), "ToastNotificationService", typeof(ToastsNotificationService));

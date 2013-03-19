@@ -23,6 +23,7 @@ namespace Client.Tests.Playback
         private MockNotificationService _mockNotificationService;
         private MockWinRTWrappersService _mockWinRTWrappersService;
         private MockPlyalistManagementService _mockPlaylistManagementService;
+        private MockEmbededVideoPlaybackViewModel _mockEmbededVideoPlaybackViewModel;
 
         protected override void TestInitializeExtensions()
         {
@@ -32,8 +33,9 @@ namespace Client.Tests.Playback
 
             _mockWinRTWrappersService = new MockWinRTWrappersService();
             _mockPlaylistManagementService = new MockPlyalistManagementService();
+            _mockEmbededVideoPlaybackViewModel = new MockEmbededVideoPlaybackViewModel();
             Subject = new PlaybackViewModel(_mockEventAggregator, MockShellViewModel, _mockNotificationService, _mockWinRTWrappersService,
-                _mockPlaylistManagementService)
+                _mockPlaylistManagementService, _mockEmbededVideoPlaybackViewModel)
                           {
                               NavigationService = MockNavigationService,
                               SubsonicService = MockSubsonicService,
@@ -57,27 +59,18 @@ namespace Client.Tests.Playback
         [TestMethod]
         public void HandleStartVideoPlayback_Alawys_CallsNotificationManagerShow()
         {
-            Subject.Handle(new StartVideoPlaybackMessage(new PlaylistItem()));
+            Subject.Handle(new StartVideoPlaybackMessage(new PlaylistItem()) { FullScreen = true });
 
             _mockNotificationService.ShowCallCount.Should().Be(1);
         }
 
         [TestMethod]
-        public void HandleStartVideoPlayback_Alawys_SetsStateToVideo()
+        public void HandleStartVideoPlayback_MessageIsNotForFullScreen_SetsStateToVideo()
         {
-            Subject.Handle(new StartVideoPlaybackMessage(new PlaylistItem()));
+            Subject.Activate();
+            Subject.Handle(new StartVideoPlaybackMessage(new PlaylistItem()) { FullScreen = false });
 
             Subject.State.Should().Be(PlaybackViewModelStateEnum.Video);
-        }
-
-        [TestMethod]
-        public void HandleStartVideoPlayback_Alawys_SetsSourceToItemUrl()
-        {
-            var uri = new Uri("http://google.com");
-
-            Subject.Handle(new StartVideoPlaybackMessage(new PlaylistItem { Uri = uri }));
-
-            Subject.Source.Should().Be(uri);
         }
 
         [TestMethod]
@@ -122,16 +115,6 @@ namespace Client.Tests.Playback
         }
 
         [TestMethod]
-        public void Handle_WithStopVideoMessage_SetsSourceToNill()
-        {
-            Subject.Handle(new StartVideoPlaybackMessage(new PlaylistItem { Uri = new Uri("http://www.google.com") }));
-
-            Subject.Handle(new StopVideoPlaybackMessage());
-
-            Subject.Source.Should().BeNull();
-        }
-
-        [TestMethod]
         public void IsPlayingReturnsPlaylistManagementServiceIsPlaying()
         {
             _mockPlaylistManagementService.IsPlaying = true;
@@ -150,20 +133,20 @@ namespace Client.Tests.Playback
         [TestMethod]
         public async Task ParameterWhenSetShouldAddAnItemToThePlaylistWithItsInfo()
         {
-            var mockLoadModel = MockLoadModel(true);
+            MockLoadModel();
             await Task.Run(() =>
                 {
                     Subject.Parameter = new Song { IsVideo = true };
                 });
 
             _mockEventAggregator.Messages.Any(
-                m => m.GetType() == typeof(AddItemsMessage) && ItemMatches(((AddItemsMessage)m).Queue[0], mockLoadModel)).Should().BeTrue();
+                m => m.GetType() == typeof(AddItemsMessage) && ItemMatches(((AddItemsMessage)m).Queue[0])).Should().BeTrue();
         }
 
         [TestMethod]
         public async Task ParameterWhenSetShouldStartPlayingTheLastAddedItem()
         {
-            MockLoadModel(true);
+            MockLoadModel();
             _mockPlaylistManagementService.Items = new PlaylistItemCollection { new PlaylistItem() };
             await Task.Run(() =>
                 {
@@ -320,13 +303,13 @@ namespace Client.Tests.Playback
         [TestMethod]
         public async Task HandleWithPlayFileOfTypeSongShouldPublishAAddItemMessage()
         {
-            var mockLoadModel = MockLoadModel();
+            MockLoadModel();
 
             await Task.Run(() => Subject.Handle(new PlayFile { Model = new Song { IsVideo = false } }));
 
             _mockEventAggregator.Messages.Any(
                 m =>
-                m.GetType() == typeof(AddItemsMessage) && ItemMatches(((AddItemsMessage)m).Queue[0], mockLoadModel))
+                m.GetType() == typeof(AddItemsMessage) && ItemMatches(((AddItemsMessage)m).Queue[0]))
                                 .Should().BeTrue();
         }
 
@@ -377,14 +360,8 @@ namespace Client.Tests.Playback
             Subject.BottomBar.IsOnPlaylist.Should().BeTrue();
         }
 
-        private ISubsonicModel MockLoadModel(bool isVideo = false)
+        private void MockLoadModel()
         {
-            var item = new Song
-                {
-                    IsVideo = isVideo,
-                    Artist = "test-artist",
-                    Album = "test-album"
-                };
             Subject.LoadModel = model =>
                 {
                     var tcr = new TaskCompletionSource<PlaylistItem>();
@@ -396,11 +373,9 @@ namespace Client.Tests.Playback
                         });
                     return tcr.Task;
                 };
-
-            return item;
         }
 
-        private static bool ItemMatches(PlaylistItem itemToCheck, ISubsonicModel original)
+        private static bool ItemMatches(PlaylistItem itemToCheck)
         {
             return itemToCheck.Uri.ToString() == "http://test-uri/";
         }
