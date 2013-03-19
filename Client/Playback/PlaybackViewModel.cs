@@ -9,10 +9,12 @@ using Client.Common.EventAggregatorMessages;
 using Client.Common.Models;
 using Client.Common.Models.Subsonic;
 using Client.Common.Services;
+using Microsoft.PlayerFramework;
 using Subsonic8.Framework.Services;
 using Subsonic8.Framework.ViewModel;
 using Subsonic8.Messages;
 using Subsonic8.Shell;
+using Subsonic8.VideoPlayback;
 using Windows.UI.Xaml.Controls;
 
 namespace Subsonic8.Playback
@@ -27,12 +29,14 @@ namespace Subsonic8.Playback
         private readonly IToastNotificationService _notificationService;
         private readonly IWinRTWrappersService _winRTWrappersService;
         private readonly IPlaylistManagementService _playlistManagementService;
+        private readonly IVideoPlaybackViewModel _videoPlaybackViewModel;
         private IShellViewModel _shellViewModel;
         private ISubsonicModel _parameter;
         private PlaybackViewModelStateEnum _state;
         private Uri _source;
         private string _coverArt;
         private bool _playNextItem;
+        private TimeSpan _endTime;
 
         #endregion
 
@@ -133,6 +137,21 @@ namespace Subsonic8.Playback
             }
         }
 
+        public TimeSpan EndTime
+        {
+            get
+            {
+                return _endTime;
+            }
+
+            set
+            {
+                if (value.Equals(_endTime)) return;
+                _endTime = value;
+                NotifyOfPropertyChange(() => EndTime);
+            }
+        }
+
         public PlaylistItemCollection PlaylistItems
         {
             get { return _playlistManagementService.Items; }
@@ -144,7 +163,7 @@ namespace Subsonic8.Playback
 
         public PlaybackViewModel(IEventAggregator eventAggregator, IShellViewModel shellViewModel,
             IToastNotificationService notificationService, IWinRTWrappersService winRTWrappersService,
-            IPlaylistManagementService playlistManagementService)
+            IPlaylistManagementService playlistManagementService, IVideoPlaybackViewModel videoPlaybackViewModel)
             : base(eventAggregator)
         {
             _eventAggregator = eventAggregator;
@@ -152,6 +171,7 @@ namespace Subsonic8.Playback
             _winRTWrappersService = winRTWrappersService;
             _eventAggregator.Subscribe(this);
             _playlistManagementService = playlistManagementService;
+            _videoPlaybackViewModel = videoPlaybackViewModel;
 
             ShellViewModel = shellViewModel;
 
@@ -196,6 +216,7 @@ namespace Subsonic8.Playback
         {
             State = PlaybackViewModelStateEnum.Video;
             Source = message.Item.Uri;
+            EndTime = TimeSpan.FromSeconds(message.Item.Duration);
             ShowToast(message.Item);
         }
 
@@ -239,6 +260,20 @@ namespace Subsonic8.Playback
             var playlistItem = await LoadModel(message.Model);
             _eventAggregator.Publish(new AddItemsMessage { Queue = new List<Client.Common.Models.PlaylistItem>(new[] { playlistItem }) });
             _eventAggregator.Publish(new PlayItemAtIndexMessage(PlaylistItems.Count - 1));
+        }
+
+        public void IsFullScreenChanged(MediaPlayer mediaPlayer)
+        {
+            mediaPlayer.Pause();
+            var startTime = mediaPlayer.EndTime - mediaPlayer.TimeRemaining;
+            var videoPlaybackInfo = new VideoPlaybackInfo
+                {
+                    Source = SubsonicService.GetUriForVideoStartingAt(Source, startTime.TotalSeconds),
+                    StartTime = startTime.Negate(),
+                    EndTime = mediaPlayer.TimeRemaining
+                };
+
+            NavigationService.NavigateToViewModel<VideoPlaybackViewModel>(videoPlaybackInfo);
         }
 
         protected override void OnActivate()

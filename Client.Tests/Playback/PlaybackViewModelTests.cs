@@ -11,6 +11,7 @@ using FluentAssertions;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using Subsonic8.Messages;
 using Subsonic8.Playback;
+using Subsonic8.VideoPlayback;
 
 namespace Client.Tests.Playback
 {
@@ -23,6 +24,7 @@ namespace Client.Tests.Playback
         private MockNotificationService _mockNotificationService;
         private MockWinRTWrappersService _mockWinRTWrappersService;
         private MockPlyalistManagementService _mockPlaylistManagementService;
+        private VideoPlaybackViewModel _videoPlaybackViewModel;
 
         protected override void TestInitializeExtensions()
         {
@@ -32,7 +34,9 @@ namespace Client.Tests.Playback
 
             _mockWinRTWrappersService = new MockWinRTWrappersService();
             _mockPlaylistManagementService = new MockPlyalistManagementService();
-            Subject = new PlaybackViewModel(_mockEventAggregator, MockShellViewModel, _mockNotificationService, _mockWinRTWrappersService, _mockPlaylistManagementService)
+            _videoPlaybackViewModel = new VideoPlaybackViewModel();
+            Subject = new PlaybackViewModel(_mockEventAggregator, MockShellViewModel, _mockNotificationService, _mockWinRTWrappersService, 
+                _mockPlaylistManagementService, _videoPlaybackViewModel)
                           {
                               NavigationService = MockNavigationService,
                               SubsonicService = MockSubsonicService,
@@ -403,6 +407,5 @@ namespace Client.Tests.Playback
         {
             return itemToCheck.Uri.ToString() == "http://test-uri/";
         }
-
     }
 }

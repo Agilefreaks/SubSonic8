@@ -1,11 +1,16 @@
 ﻿using Microsoft.PlayerFramework;
 using Windows.UI.Xaml;
 
-namespace Subsonic8.Playback.Playback
+// The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
+
+namespace Subsonic8.VideoPlayback
 {
-    public sealed partial class Video
+    /// <summary>
+    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// </summary>
+    public sealed partial class VideoPlaybackView
     {
-        public Video()
+        public VideoPlaybackView()
         {
             InitializeComponent();
         }
@@ -13,13 +18,13 @@ namespace Subsonic8.Playback.Playback
         private void MediaPlayer_OnMediaEnded(object sender, MediaPlayerActionEventArgs e)
         {
             // TODO: Replace with something nicer | It may be bug in Windows.Interactivity
-            ((PlaybackViewModel)DataContext).Next();
+            ((VideoPlaybackViewModel)DataContext).GoBack();
         }
 
         private void MediaPlayer_OnIsFullScreenChanged(object sender, RoutedPropertyChangedEventArgs<bool> e)
         {
             // TODO: Replace with something nicer | It may be bug in Windows.Interactivity
-            ((PlaybackViewModel)DataContext).IsFullScreenChanged(MediaPlayer);
+            ((VideoPlaybackViewModel)DataContext).GoBack();
         }
     }
 }

@@ -148,6 +148,7 @@
     <Compile Include="Framework\ViewModel\PlaybackControlsViewModelBase.cs" />
     <Compile Include="Messages\NotificationMessage.cs" />
     <Compile Include="Messages\ShowControlsMessage.cs" />
+    <Compile Include="Framework\ViewModel\VideoPlaybackInfo.cs" />
     <Compile Include="PlaylistItem\PlaylistItemView.xaml.cs">
       <DependentUpon>PlaylistItemView.xaml</DependentUpon>
     </Compile>
@@ -222,6 +223,11 @@
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Shell\ShellViewModel.cs" />
+    <Compile Include="VideoPlayback\IVideoPlaybackViewModel.cs" />
+    <Compile Include="VideoPlayback\VideoPlaybackView.xaml.cs">
+      <DependentUpon>VideoPlaybackView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="VideoPlayback\VIdeoPlaybackViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -334,6 +340,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Shell\ShellView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="VideoPlayback\VideoPlaybackView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

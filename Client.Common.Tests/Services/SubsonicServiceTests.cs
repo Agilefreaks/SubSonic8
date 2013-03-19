@@ -1,4 +1,5 @@
-﻿using Client.Common.Results;
+﻿using System;
+using Client.Common.Results;
 using Client.Common.Services;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
@@ -101,6 +102,28 @@ namespace Client.Common.Tests.Services
                                          };
 
             _subject.IsConfigured.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void GetUriForVideoStartingAt_Always_ReturnsTheOriginalUriModifiedToHaveTheGivenTimeOffsetParameter()
+        {
+            var input = new Uri("http://google.com/stream/stream.ts?id=30437&hls=true&timeOffset=0&duration=10&maxBitRate=50");
+
+            var uriForVideoStartingAt = _subject.GetUriForVideoStartingAt(input, 100);
+
+            var expectedUri = new Uri("http://google.com/stream/stream.ts?id=30437&hls=true&timeOffset=100&duration=10&maxBitRate=50");
+            uriForVideoStartingAt.Should().Be(expectedUri);
+        }        
+        
+        [TestMethod]
+        public void GetUriForVideoStartingAt_Always_ReturnsTheOriginalUriModifiedToHaveTheGivenTimeOffsetParameterRoundedToTheClosestSmallerInteger()
+        {
+            var input = new Uri("http://google.com/stream/stream.ts?id=30437&hls=true&timeOffset=0&duration=10&maxBitRate=50");
+
+            var uriForVideoStartingAt = _subject.GetUriForVideoStartingAt(input, 100.7963545);
+
+            var expectedUri = new Uri("http://google.com/stream/stream.ts?id=30437&hls=true&timeOffset=100&duration=10&maxBitRate=50");
+            uriForVideoStartingAt.Should().Be(expectedUri);
         }
     }
 }
