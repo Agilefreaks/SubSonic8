@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using Caliburn.Micro;
 using Client.Common.Results;
 
@@ -56,9 +57,26 @@ namespace Client.Common.Services
             return new Uri(string.Format(_configuration.RequestFormatWithUsernameAndPassword(), "stream.view", _configuration.Username, _configuration.Password) + string.Format("&id={0}", id));
         }
 
-        public virtual Uri GetUriForVideoWithId(int id)
+        public virtual Uri GetUriForVideoWithId(int id, int timeOffset = 0)
         {
-            return new Uri(string.Format("{0}stream/stream.ts?id={1}&hls=true&timeOffset=0", _configuration.BaseUrl, id));
+            var maxBitRate = 0;
+            var uriString = string.Format("{0}stream/stream.ts?id={1}&hls=true&timeOffset={2}", _configuration.BaseUrl, id, timeOffset);
+            if (maxBitRate > 0)
+            {
+                uriString += string.Format("&maxBitRate={0}", maxBitRate);
+            }
+
+            return new Uri(uriString);
+        }
+
+        public Uri GetUriForVideoStartingAt(Uri source, double totalSeconds)
+        {
+            var uriString = source.ToString();
+            var regex = new Regex("(.*)(?<TIMEOFFSET>&timeOffset=)([0-9]{1,})(.*)");
+
+            var regeExFormat = string.Format("$1${{TIMEOFFSET}}{0}$3", Math.Floor(totalSeconds));
+
+            return new Uri(regex.Replace(uriString, regeExFormat));
         }
 
         public string GetCoverArtForId(string coverArt)
@@ -74,7 +92,7 @@ namespace Client.Common.Services
                 result =
                     string.Format(_configuration.RequestFormatWithUsernameAndPassword(), "getCoverArt.view", _configuration.Username,
                                   _configuration.Password) + string.Format("&id={0}", coverArt) +
-                    string.Format("&size={0}", (int) imageType);
+                    string.Format("&size={0}", (int)imageType);
             }
             else
             {

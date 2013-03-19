@@ -31,11 +31,6 @@ namespace Client.Tests.Mocks
             NavigateToViewModelCalls = new Dictionary<Type, object>();
         }
 
-        public void NavigateToViewModel<TViewModel>(object parameter)
-        {
-            NavigateToViewModelCalls.Add(typeof(TViewModel), parameter);
-        }
-
         public bool Navigate(Type sourcePageType)
         {
             NavigateToViewModelCalls.Add(sourcePageType, null);

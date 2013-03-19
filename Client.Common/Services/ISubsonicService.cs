@@ -23,7 +23,9 @@ namespace Client.Common.Services
 
         Uri GetUriForFileWithId(int id);
 
-        Uri GetUriForVideoWithId(int id);
+        Uri GetUriForVideoWithId(int id, int timeOffset = 0);
+
+        Uri GetUriForVideoStartingAt(Uri source, double totalSeconds);
 
         string GetCoverArtForId(string coverArt);
 

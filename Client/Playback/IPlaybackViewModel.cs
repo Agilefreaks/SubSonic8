@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Caliburn.Micro;
 using Client.Common.EventAggregatorMessages;
 using Client.Common.Models;
+using Subsonic8.Framework.Interfaces;
 using Subsonic8.Framework.ViewModel;
 using Subsonic8.Messages;
 using Subsonic8.Shell;
@@ -10,11 +11,12 @@ using Subsonic8.Shell;
 namespace Subsonic8.Playback
 {
     public interface IPlaybackViewModel : IHandle<PlaylistMessage>, IHandle<PlaylistStateChangedMessage>,
-    IHandle<PlayFile>, IHandle<StartVideoPlaybackMessage>, IHandle<StartAudioPlaybackMessage>, IHandle<StopVideoPlaybackMessage>, IViewModel
+        IHandle<PlayFile>, IHandle<StartVideoPlaybackMessage>, IHandle<StartAudioPlaybackMessage>,
+        IViewModel, IToastNotificationCapable
     {
         IShellViewModel ShellViewModel { get; set; }
 
-        ISubsonicModel Parameter { get; set; }
+        ISubsonicModel Parameter { set; }
 
         Uri Source { get; set; }
 
@@ -27,6 +29,8 @@ namespace Subsonic8.Playback
         bool ShuffleOn { get; }
 
         bool IsPlaying { get; }
+
+        TimeSpan EndTime { get; set; }
 
         void ClearPlaylist();
 

@@ -122,9 +122,11 @@
     <Compile Include="MenuItem\MenuItemViewModelBaseTests.cs" />
     <Compile Include="Mocks\MockDefaultBottomBarViewModel.cs" />
     <Compile Include="Mocks\MockDialogNotificationService.cs" />
+    <Compile Include="Mocks\MockEmbededVideoPlaybackViewModel.cs" />
     <Compile Include="Mocks\MockGetAlbumResult.cs" />
     <Compile Include="Mocks\MockGetArtistResult.cs" />
     <Compile Include="Mocks\MockGetMusicDirectoryResult.cs" />
+    <Compile Include="Mocks\MockPlaybackViewModel.cs" />
     <Compile Include="Mocks\MockToastNotificationService.cs" />
     <Compile Include="Mocks\MockSearchResult.cs" />
     <Compile Include="Mocks\MockServiceResultBase.cs" />
@@ -198,9 +200,7 @@
       <Name>Client</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="PlaylistItem\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '11.0' ">
     <VisualStudioVersion>11.0</VisualStudioVersion>
   </PropertyGroup>

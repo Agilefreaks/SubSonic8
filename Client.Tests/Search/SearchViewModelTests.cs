@@ -15,25 +15,20 @@ namespace Client.Tests.Search
     public class SearchViewModelTests : ViewModelBaseTests<ISearchViewModel>
     {
         private MockEventAggregator _eventAggregator;
-        private MockNavigationService _navigationService;
-        private MockSubsonicService _subsonicService;
 
         protected override ISearchViewModel Subject { get; set; }
 
-        [TestInitialize]
-        public void TestInitialize()
+        protected override void TestInitializeExtensions()
         {
             _eventAggregator = new MockEventAggregator();
-            _navigationService = new MockNavigationService();
-            _subsonicService = new MockSubsonicService();
 
-            var bottomBarViewModel = new DefaultBottomBarViewModel(_navigationService, _eventAggregator);
+            var bottomBarViewModel = new DefaultBottomBarViewModel(MockNavigationService, _eventAggregator);
             Subject = new SearchViewModel
-                           {
-                               BottomBar = bottomBarViewModel,
-                               SubsonicService = _subsonicService,
-                               Parameter = new SearchResultCollection { Query = "I search high and low" }
-                           };
+                {
+                    BottomBar = bottomBarViewModel,
+                    SubsonicService = MockSubsonicService,
+                    Parameter = new SearchResultCollection {Query = "I search high and low"}
+                };
         }
 
         [TestMethod]
@@ -139,7 +134,7 @@ namespace Client.Tests.Search
 
             Subject.PopulateMenuItems();
 
-            (_subsonicService.GetCoverArtForIdCallCount > 0).Should().BeTrue();
+            (MockSubsonicService.GetCoverArtForIdCallCount > 0).Should().BeTrue();
         }
 
         [TestMethod]

@@ -343,6 +343,17 @@ namespace Client.Common.Tests.Services
         }
 
         [TestMethod]
+        public void StartPlayback_ItemAtGivenIndexIsVideo_SendsStartVideoPlaybackMessageWithFullScreenTrue()
+        {
+            _subject.Items.Add(new PlaylistItem { Type = PlaylistItemTypeEnum.Video });
+
+            _subject.StartPlayback(0);
+
+            _mockEventAggregator.Messages.Any(m => m.GetType() == typeof (StartVideoPlaybackMessage) && ((StartVideoPlaybackMessage) m).FullScreen)
+                                .Should().BeTrue();
+        }
+
+        [TestMethod]
         public void StartPlayback_Always_SetsPlayingStateOnCurrentItemToPlaying()
         {
             _subject.Items.Add(new PlaylistItem { Type = PlaylistItemTypeEnum.Video });
