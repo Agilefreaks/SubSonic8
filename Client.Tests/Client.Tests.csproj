@@ -174,13 +174,17 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Caliburn.Micro, Version=1.4.1.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Caliburn.Micro, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Caliburn.Micro.1.4.1\lib\win8\Caliburn.Micro.dll</HintPath>
+      <HintPath>..\packages\Caliburn.Micro.1.5.0\lib\win8\Caliburn.Micro.dll</HintPath>
     </Reference>
-    <Reference Include="Caliburn.Micro.Extensions, Version=1.4.1.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Caliburn.Micro.Extensions, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Caliburn.Micro.1.4.1\lib\win8\Caliburn.Micro.Extensions.dll</HintPath>
+      <HintPath>..\packages\Caliburn.Micro.1.5.0\lib\win8\Caliburn.Micro.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Callisto, Version=1.2.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Callisto.1.2.6\lib\winrt45\Callisto.dll</HintPath>
     </Reference>
     <Reference Include="FluentAssertions, Version=2.0.1.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
