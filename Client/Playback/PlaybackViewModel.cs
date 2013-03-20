@@ -9,6 +9,7 @@ using Client.Common.EventAggregatorMessages;
 using Client.Common.Models;
 using Client.Common.Models.Subsonic;
 using Client.Common.Services;
+using MugenInjection.Attributes;
 using Subsonic8.Framework.Extensions;
 using Subsonic8.Framework.Services;
 using Subsonic8.Framework.ViewModel;
@@ -188,10 +189,9 @@ namespace Subsonic8.Playback
 
         protected bool IsRunningVideoInFullScreen { get; set; }
 
-        public PlaybackViewModel(IEventAggregator eventAggregator, IShellViewModel shellViewModel,
+        public PlaybackViewModel(IShellViewModel shellViewModel,
             IToastNotificationService notificationService, IWinRTWrappersService winRTWrappersService,
             IPlaylistManagementService playlistManagementService, IEmbededVideoPlaybackViewModel embededEmbededVideoPlaybackViewModel)
-            : base(eventAggregator)
         {
             _notificationService = notificationService;
             _winRTWrappersService = winRTWrappersService;

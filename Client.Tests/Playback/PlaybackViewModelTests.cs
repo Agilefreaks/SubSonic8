@@ -34,7 +34,7 @@ namespace Client.Tests.Playback
             _mockWinRTWrappersService = new MockWinRTWrappersService();
             _mockPlaylistManagementService = new MockPlyalistManagementService();
             _mockEmbededVideoPlaybackViewModel = new MockEmbededVideoPlaybackViewModel();
-            Subject = new PlaybackViewModel(_mockEventAggregator, MockShellViewModel, _mockNotificationService, _mockWinRTWrappersService,
+            Subject = new PlaybackViewModel(MockShellViewModel, _mockNotificationService, _mockWinRTWrappersService,
                 _mockPlaylistManagementService, _mockEmbededVideoPlaybackViewModel)
                           {
                               NavigationService = MockNavigationService,

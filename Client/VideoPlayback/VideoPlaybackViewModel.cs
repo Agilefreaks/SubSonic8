@@ -1,5 +1,4 @@
 ﻿using System;
-using Caliburn.Micro;
 using Client.Common.EventAggregatorMessages;
 using Microsoft.PlayerFramework;
 using Subsonic8.Framework.Services;
@@ -71,8 +70,7 @@ namespace Subsonic8.VideoPlayback
 
         protected Client.Common.Models.PlaylistItem Item { get; set; }
 
-        public VideoPlaybackViewModel(IEventAggregator eventAggregator, IToastNotificationService notificationService)
-            : base(eventAggregator)
+        public VideoPlaybackViewModel(IToastNotificationService notificationService)
         {
             _notificationService = notificationService;
         }
