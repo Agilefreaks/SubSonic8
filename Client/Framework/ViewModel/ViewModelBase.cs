@@ -2,9 +2,9 @@
 using System.Collections.ObjectModel;
 using Caliburn.Micro;
 using Client.Common.Services;
+using MugenInjection.Attributes;
 using Subsonic8.BottomBar;
 using Subsonic8.Framework.Services;
-using Subsonic8.Shell;
 using Action = System.Action;
 
 namespace Subsonic8.Framework.ViewModel
@@ -13,8 +13,9 @@ namespace Subsonic8.Framework.ViewModel
     {
         private INavigationService _navigationService;
         private ISubsonicService _subsonicService;
-        private IBottomBarViewModel _bottomBar;
+        private IDefaultBottomBarViewModel _bottomBar;
 
+        [Inject]
         public INavigationService NavigationService
         {
             get
@@ -30,6 +31,7 @@ namespace Subsonic8.Framework.ViewModel
             }
         }
 
+        [Inject]
         public ISubsonicService SubsonicService
         {
             get
@@ -44,9 +46,14 @@ namespace Subsonic8.Framework.ViewModel
             }
         }
 
+        [Inject]
         public IDialogNotificationService NotificationService { get; set; }
 
-        public IBottomBarViewModel BottomBar
+        [Inject]
+        public IEventAggregator EventAggregator { get; set; }
+
+        [Inject]
+        public IDefaultBottomBarViewModel BottomBar
         {
             get
             {
@@ -57,8 +64,6 @@ namespace Subsonic8.Framework.ViewModel
             {
                 _bottomBar = value;
                 NotifyOfPropertyChange();
-                NotifyOfPropertyChange(() => SelectedItems);
-                SetShellBottomBar();
             }
         }
 
@@ -87,13 +92,7 @@ namespace Subsonic8.Framework.ViewModel
 
         protected ViewModelBase()
         {
-            SubsonicService = IoC.Get<ISubsonicService>();
-            NavigationService = IoC.Get<INavigationService>();
-            NotificationService = IoC.Get<IDialogNotificationService>();
             UpdateDisplayName = () => DisplayName = "Subsonic8";
-            // ReSharper disable DoNotCallOverridableMethodsInConstructor
-            SetBottomBar();
-            // ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
 
         public async void HandleError(Exception error)
@@ -109,17 +108,13 @@ namespace Subsonic8.Framework.ViewModel
             base.OnActivate();
 
             UpdateDisplayName();
+            SetShellBottomBar();
             BottomBar.IsOnPlaylist = false;
-        }
-
-        protected virtual void SetBottomBar()
-        {
-            BottomBar = (IBottomBarViewModel)IoC.GetInstance(typeof(IDefaultBottomBarViewModel), "DefaultBottomBarViewModel");
         }
 
         private void SetShellBottomBar()
         {
-            IoC.Get<IShellViewModel>().BottomBar = BottomBar;
+            EventAggregator.Publish(new ChangeBottomBarMessage { BottomBarViewModel = BottomBar });
         }
     }
 }

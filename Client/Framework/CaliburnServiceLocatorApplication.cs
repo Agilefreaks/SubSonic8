@@ -4,8 +4,6 @@ using Caliburn.Micro;
 using Microsoft.Practices.ServiceLocation;
 using MugenInjection;
 using MugenInjection.Interface;
-using MugenInjection.Interface.Behaviors;
-using MugenInjection.Interface.Components;
 
 namespace Subsonic8.Framework
 {
@@ -15,9 +13,6 @@ namespace Subsonic8.Framework
 
         public CaliburnServiceLocatorApplication()
         {
-            Kernel.Components.Get<IBehaviorManagerComponent>()
-                .Add<IResolveUnregisteredTypeBehavior>(new MugenUnregesiteredTypeResolver());
-
             var locator = new MugenServiceLocator(Kernel);
             ServiceLocator.SetLocatorProvider(() => locator);
 

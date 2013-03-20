@@ -4,7 +4,7 @@ using Windows.UI.Notifications;
 
 namespace Subsonic8.Framework.Services
 {
-    public class ToastsNotificationService : IToastNotificationService
+    public class ToastNotificationService : IToastNotificationService
     {
         public bool UseSound { get; set; }
 

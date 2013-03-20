@@ -16,7 +16,7 @@ namespace Subsonic8.Framework.ViewModel
 
         IDialogNotificationService NotificationService { get; set; }
 
-        IBottomBarViewModel BottomBar { get; set; }
+        IDefaultBottomBarViewModel BottomBar { get; set; }
 
         ObservableCollection<object> SelectedItems { get; }
 

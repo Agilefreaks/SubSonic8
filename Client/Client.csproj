@@ -118,10 +118,12 @@
     </Compile>
     <Compile Include="Artist\ArtistViewModel.cs" />
     <Compile Include="Artist\IArtistViewModel.cs" />
+    <Compile Include="BottomBar\ChangeBottomBarMessage.cs" />
     <Compile Include="BottomBar\DefaultBottomBarView.xaml.cs">
       <DependentUpon>DefaultBottomBarView.xaml</DependentUpon>
     </Compile>
     <Compile Include="BottomBar\DefaultBottomBarViewModel.cs" />
+    <Compile Include="ClientModule.cs" />
     <Compile Include="Common\PageHeader.xaml.cs">
       <DependentUpon>PageHeader.xaml</DependentUpon>
     </Compile>
@@ -135,7 +137,6 @@
     <Compile Include="Framework\Extensions\ToastNotificationExtensions.cs" />
     <Compile Include="Framework\Interfaces\IToastNotificationCapable.cs" />
     <Compile Include="Framework\MugenServiceLocator.cs" />
-    <Compile Include="Framework\MugenUnregesiteredTypeResolver.cs" />
     <Compile Include="Framework\Services\DialogNotificationOptions.cs" />
     <Compile Include="Framework\Services\DialogNotificationService.cs" />
     <Compile Include="Framework\Services\IDialogNotificationService.cs" />
@@ -143,7 +144,7 @@
     <Compile Include="Framework\Services\IToastNotificationService.cs" />
     <Compile Include="Framework\Services\PossibleAction.cs" />
     <Compile Include="Framework\Services\ToastNotificationOptions.cs" />
-    <Compile Include="Framework\Services\ToastsNotificationService.cs" />
+    <Compile Include="Framework\Services\ToastNotificationService.cs" />
     <Compile Include="Framework\Services\UICommandAdapter.cs" />
     <Compile Include="Framework\SuspensionManager.cs" />
     <Compile Include="Framework\SuspensionManagerException.cs" />

@@ -5,13 +5,14 @@ using Client.Common.EventAggregatorMessages;
 using Client.Common.Models.Subsonic;
 using Client.Common.Results;
 using Client.Common.Services;
+using Subsonic8.BottomBar;
 using Subsonic8.Framework.Services;
 using Windows.UI.Xaml;
 
 namespace Subsonic8.Shell
 {
     public interface IShellViewModel : IViewAware, IScreen, IBottomBarViewModelProvider, IErrorHandler, IHandle<StartAudioPlaybackMessage>, IHandle<StopAudioPlaybackMessage>,
-        IHandle<ResumePlaybackMessage>, IHandle<PausePlaybackMessage>
+        IHandle<ResumePlaybackMessage>, IHandle<PausePlaybackMessage>, IHandle<ChangeBottomBarMessage>
     {
         Uri Source { get; set; }
 

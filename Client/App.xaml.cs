@@ -1,7 +1,7 @@
 ﻿using Caliburn.Micro;
+using Client.Common;
 using Client.Common.Services;
 using Subsonic8.BottomBar;
-using Subsonic8.Framework;
 using Subsonic8.Framework.Services;
 using Subsonic8.Playback;
 using Subsonic8.Shell;
@@ -25,17 +25,8 @@ namespace Subsonic8
         protected override void Configure()
         {
             Kernel.Bind<IEventAggregator>().To<EventAggregator>().InSingletonScope();
-            Kernel.Bind<IWinRTWrappersService>().To<WinRTWrappersService>().InSingletonScope();
-            Kernel.Bind<ISubsonicService>().To<SubsonicService>().InSingletonScope();
-            Kernel.Bind<IStorageService>().To<StorageService>().InSingletonScope();
-            Kernel.Bind<IShellViewModel>().To<ShellViewModel>().InSingletonScope();
-            Kernel.Bind<IPlaylistManagementService>().To<PlaylistManagementService>().InSingletonScope();
-            Kernel.Bind<IPlaybackViewModel, PlaybackViewModel>().To<PlaybackViewModel>().InSingletonScope();
-            Kernel.Bind<IFullScreenVideoPlaybackViewModel>().To<FullScreenVideoPlaybackViewModel>().InSingletonScope();
-            Kernel.Bind<IEmbededVideoPlaybackViewModel>().To<EmbededVideoPlaybackViewModel>().InSingletonScope();
-            Kernel.Bind<IDefaultBottomBarViewModel>().To<DefaultBottomBarViewModel>().InSingletonScope();
-            Kernel.Bind<IToastNotificationService>().To<ToastsNotificationService>().InSingletonScope();
-            Kernel.Bind<IDialogNotificationService>().To<DialogNotificationService>().InSingletonScope();
+            Kernel.Load<CommonModule>();
+            Kernel.Load<ClientModule>();
         }
 
         protected override void OnLaunched(LaunchActivatedEventArgs args)

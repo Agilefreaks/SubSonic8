@@ -79,5 +79,9 @@ namespace Client.Tests.Mocks
         public void Handle(PausePlaybackMessage message)
         {
         }
+
+        public void Handle(ChangeBottomBarMessage message)
+        {
+        }
     }
 }
