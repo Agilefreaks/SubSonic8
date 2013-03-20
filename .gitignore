@@ -45,3 +45,7 @@ TestResults/*.*
 Client/Client_StoreKey.pfx
 Client/AppPackages/*.*
 
+Client/Package.StoreAssociation.xml
+Client/Subsonic8Key.pfx
+Client/Package.StoreAssociation.xml
+Client/Package.appxmanifest
