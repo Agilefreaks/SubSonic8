@@ -20,7 +20,9 @@ namespace Subsonic8
     public sealed partial class App
     {
         private IShellViewModel _shellViewModel;
+        private ApplicationExecutionState _previousExecutionState;
         private ISubsonicService _subsonicService;
+        private CustomFrameAdapter _navigationService;
         private IToastNotificationService _toastNotificationService;
         private IStorageService _storageService;
 
@@ -38,6 +40,7 @@ namespace Subsonic8
 
         protected override void OnLaunched(LaunchActivatedEventArgs args)
         {
+            _previousExecutionState = ApplicationExecutionState.Terminated;
             StartApplication();
         }
 
@@ -52,7 +55,14 @@ namespace Subsonic8
             await _shellViewModel.PerformSubsonicSearch(args.QueryText);
         }
 
-        private void StartApplication()
+        protected override async void OnSuspending(object sender, Windows.ApplicationModel.SuspendingEventArgs e)
+        {
+            var deferral = e.SuspendingOperation.GetDeferral();
+            await SuspensionManager.SaveAsync();
+            deferral.Complete();
+        }
+
+        private async void StartApplication()
         {
             DisplayRootView<ShellView>();
 
@@ -67,6 +77,8 @@ namespace Subsonic8
             BindShellViewModelToView(shellView);
 
             await LoadSettings();
+
+            await RestoreLastViewOrGoToMain(shellView);
         }
 
         private ShellView GetShellView()
@@ -76,7 +88,9 @@ namespace Subsonic8
 
         private void RegisterNavigationService(Frame shellFrame, bool treatViewAsLoaded = false)
         {
-            Kernel.Bind<INavigationService>().ToConstant(new CustomFrameAdapter(shellFrame, treatViewAsLoaded));
+            _navigationService = new CustomFrameAdapter(shellFrame, treatViewAsLoaded);
+            Kernel.Bind<INavigationService>().ToConstant(_navigationService);
+        }
 
         private void LoadServices()
         {
@@ -87,10 +101,10 @@ namespace Subsonic8
 
         private void InstantiateRequiredSingletons()
         {
+            //resolved so that they can start listening for events
             Kernel.Get<IPlaybackViewModel>();
             Kernel.Get<IFullScreenVideoPlaybackViewModel>();
             Kernel.Get<IDefaultBottomBarViewModel>();
-            Kernel.Get<IDialogNotificationService>();
         }
 
         private void BindShellViewModelToView(ShellView shellView)
@@ -100,6 +114,20 @@ namespace Subsonic8
             ViewModelBinder.Bind(_shellViewModel, shellView, null);
         }
 
+        private async Task RestoreLastViewOrGoToMain(ShellView shellView)
+        {
+            if (_previousExecutionState == ApplicationExecutionState.Terminated)
+            {
+                await SuspensionManager.RestoreAsync();
+            }
+
+            SuspensionManager.RegisterFrame(shellView.ShellFrame, "MainFrame");
+
+            if (shellView.ShellFrame.Content == null)
+            {
+                _navigationService.NavigateToViewModel<MainViewModel>();
+            }
+        }
 
         private async Task LoadSettings()
         {
