@@ -7,6 +7,6 @@
     mc:Ignorable="d">
 
     <ContentControl HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
-        <videoPlayback:EmbededVideoPlaybackView cal:Bind.Model="EmbededVideoPlaybackViewModel" />
+        <videoPlayback:EmbededVideoPlaybackView cal:Bind.Model="{Binding Path=EmbededVideoPlaybackViewModel}" />
     </ContentControl>
 </Page>
