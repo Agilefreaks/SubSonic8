@@ -10,5 +10,7 @@ namespace Subsonic8.Shell
         event RoutedEventHandler PlayPreviousClicked;
 
         Action PlayPause { get; }
+
+        Action Stop { get; }
     }
 }

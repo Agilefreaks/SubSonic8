@@ -10,10 +10,12 @@ namespace Subsonic8.Shell
     public sealed partial class ShellView : IPlayerControls
     {
         public event RoutedEventHandler PlayNextClicked;
-        
+
         public event RoutedEventHandler PlayPreviousClicked;
 
         public Action PlayPause { get; private set; }
+
+        public Action Stop { get; private set; }
 
         public Frame ShellFrame
         {
@@ -29,6 +31,7 @@ namespace Subsonic8.Shell
         private void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
         {
             PlayPause = CallPlayPause;
+            Stop = CallStop;
             MediaControl.PlayPressed += MediaControlPlayPressed;
             MediaControl.PausePressed += MediaControlPausePressed;
             MediaControl.PlayPauseTogglePressed += MediaControlPlayPauseTogglePressed;
@@ -47,16 +50,18 @@ namespace Subsonic8.Shell
         {
             await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal,
                                       () =>
+                                      {
+                                          switch (mediaElement.CurrentState)
                                           {
-                                              if (mediaElement.CurrentState == MediaElementState.Paused)
-                                              {
+                                              case MediaElementState.Stopped:
+                                              case MediaElementState.Paused:
                                                   mediaElement.Play();
-                                              }
-                                              else
-                                              {
+                                                  break;
+                                              default:
                                                   mediaElement.Pause();
-                                              }
-                                          });
+                                                  break;
+                                          }
+                                      });
         }
 
         private async void MediaControlPausePressed(object sender, object e)
@@ -71,7 +76,7 @@ namespace Subsonic8.Shell
 
         public void PlayNextTrackPressed(object sender, object e)
         {
-            PlayNextClicked(mediaElement, (RoutedEventArgs) e);
+            PlayNextClicked(mediaElement, (RoutedEventArgs)e);
         }
 
         public void PlayPreviousTrackPressed(object sender, object e)
@@ -80,8 +85,13 @@ namespace Subsonic8.Shell
         }
 
         private void CallPlayPause()
-        {           
+        {
             MediaControlPlayPauseTogglePressed(null, null);
+        }
+
+        private void CallStop()
+        {
+            mediaElement.Stop();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)

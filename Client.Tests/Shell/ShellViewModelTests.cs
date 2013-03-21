@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Caliburn.Micro;
-using Client.Common.Services;
+using Client.Common.EventAggregatorMessages;
 using Client.Tests.Mocks;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
@@ -20,6 +20,7 @@ namespace Client.Tests.Shell
         private MockStorageService _mockStorageService;
         private MockWinRTWrappersService _mockWinRTWrappersService;
         private MockDialogNotificationService _mockDialogNotificationService;
+        private MockPlayerControls _mockPlayerControls;
 
         [TestInitialize]
         public void TestInitialize()
@@ -31,8 +32,12 @@ namespace Client.Tests.Shell
             _mockDialogNotificationService = new MockDialogNotificationService();
             _mockStorageService = new MockStorageService();
             _mockWinRTWrappersService = new MockWinRTWrappersService();
+            _mockPlayerControls = new MockPlayerControls();
             Subject = new ShellViewModel(_eventAggregator, _mockSubsonicService, _mockNavigationService,
-                _mockToastNotificationService, _mockDialogNotificationService, _mockStorageService, _mockWinRTWrappersService);
+                _mockToastNotificationService, _mockDialogNotificationService, _mockStorageService, _mockWinRTWrappersService)
+                {
+                    PlayerControls = _mockPlayerControls
+                };
         }
 
         [TestMethod]
@@ -85,6 +90,14 @@ namespace Client.Tests.Shell
             Subject.PlayPrevious(null, null);
 
             _eventAggregator.PublishCallCount.Should().Be(1);
+        }
+
+        [TestMethod]
+        public void Handle_WithStopAudioPlaybackMessage_CallsPlayerControlsStop()
+        {
+            Subject.Handle(new StopAudioPlaybackMessage());
+
+            _mockPlayerControls.StopCallCount.Should().Be(1);
         }
     }
 }

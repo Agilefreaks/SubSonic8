@@ -62,6 +62,10 @@ namespace Subsonic8.Shell
             {
                 _playerControls = value;
                 NotifyOfPropertyChange();
+                if (_playerControls != null)
+                {
+                    HookupPlayerControls();
+                }
             }
         }
 
@@ -135,7 +139,7 @@ namespace Subsonic8.Shell
         public void Handle(StopAudioPlaybackMessage message)
         {
             if (_playerControls != null)
-                Source = null;
+                _playerControls.Stop();
         }
 
         public void Handle(ResumePlaybackMessage message)
@@ -162,7 +166,7 @@ namespace Subsonic8.Shell
             WinRTWrappersService.RegisterSearchQueryHandler(OnQuerySubmitted);
             WinRTWrappersService.RegisterSettingsRequestedHandler((sender, args) => args.AddSetting<SettingsViewModel>());
 
-            HookupPlayerControls((IPlayerControls)view);
+            PlayerControls = (IPlayerControls)view;
 
             await LoadSettings();
 
@@ -180,9 +184,8 @@ namespace Subsonic8.Shell
             NavigationService.NavigateToViewModel<MainViewModel>();
         }
 
-        private void HookupPlayerControls(IPlayerControls playerControls)
+        private void HookupPlayerControls()
         {
-            _playerControls = playerControls;
             _playerControls.PlayNextClicked += PlayNext;
             _playerControls.PlayPreviousClicked += PlayPrevious;
         }
