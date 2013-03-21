@@ -8,17 +8,9 @@ using Subsonic8.MusicDirectory;
 namespace Client.Tests.MusicDirectory
 {
     [TestClass]
-    public class MusicDirectoryViewModelTests : DetailViewModelBaseTests<Common.Models.Subsonic.MusicDirectory, IMusicDirectoryViewModel>
+    public class MusicDirectoryViewModelTests : DetailViewModelBaseTests<Common.Models.Subsonic.MusicDirectory, MusicDirectoryViewModel>
     {
-        protected override IMusicDirectoryViewModel Subject { get; set; }
-
-        protected override void TestInitializeExtensions()
-        {
-            Subject = new MusicDirectoryViewModel
-                          {
-                              UpdateDisplayName = () => Subject.DisplayName = ""
-                          };
-        }
+        protected override MusicDirectoryViewModel Subject { get; set; }
 
         [TestMethod]
         public void CtorShouldSetMenuItems()

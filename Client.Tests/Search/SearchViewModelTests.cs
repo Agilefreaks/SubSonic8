@@ -12,23 +12,19 @@ using Subsonic8.Search;
 namespace Client.Tests.Search
 {
     [TestClass]
-    public class SearchViewModelTests : ViewModelBaseTests<ISearchViewModel>
+    public class SearchViewModelTests : ViewModelBaseTests<SearchViewModel>
     {
         private MockEventAggregator _eventAggregator;
 
-        protected override ISearchViewModel Subject { get; set; }
+        protected override SearchViewModel Subject { get; set; }
 
         protected override void TestInitializeExtensions()
         {
             _eventAggregator = new MockEventAggregator();
 
             var bottomBarViewModel = new DefaultBottomBarViewModel(MockNavigationService, _eventAggregator);
-            Subject = new SearchViewModel
-                {
-                    BottomBar = bottomBarViewModel,
-                    SubsonicService = MockSubsonicService,
-                    Parameter = new SearchResultCollection {Query = "I search high and low"}
-                };
+            Subject.BottomBar = bottomBarViewModel;
+            Subject.Parameter = new SearchResultCollection {Query = "I search high and low"};
         }
 
         [TestMethod]

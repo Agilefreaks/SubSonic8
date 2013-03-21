@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Caliburn.Micro;
 using Client.Common.EventAggregatorMessages;
 using Client.Common.Models;
 using Client.Common.Models.Subsonic;
@@ -15,45 +16,51 @@ using Subsonic8.Playback;
 namespace Client.Tests.Playback
 {
     [TestClass]
-    public class PlaybackViewModelTests : ViewModelBaseTests<IPlaybackViewModel>
+    public class PlaybackViewModelTests : ViewModelBaseTests<PlaybackViewModel>
     {
-        protected override IPlaybackViewModel Subject { get; set; }
+        protected override PlaybackViewModel Subject { get; set; }
 
-        private MockEventAggregator _mockEventAggregator;
-        private MockNotificationService _mockNotificationService;
         private MockWinRTWrappersService _mockWinRTWrappersService;
         private MockPlyalistManagementService _mockPlaylistManagementService;
         private MockEmbededVideoPlaybackViewModel _mockEmbededVideoPlaybackViewModel;
+        private MockToastNotificationService _mockToastNotificationService;
 
         protected override void TestInitializeExtensions()
         {
-            _mockEventAggregator = new MockEventAggregator();
-            _mockNotificationService = new MockNotificationService();
-            MockShellViewModel.SubsonicService = MockSubsonicService;
-
+            _mockToastNotificationService = new MockToastNotificationService();
             _mockWinRTWrappersService = new MockWinRTWrappersService();
             _mockPlaylistManagementService = new MockPlyalistManagementService();
             _mockEmbededVideoPlaybackViewModel = new MockEmbededVideoPlaybackViewModel();
-            Subject = new PlaybackViewModel(MockShellViewModel, _mockNotificationService, _mockWinRTWrappersService,
-                _mockPlaylistManagementService, _mockEmbededVideoPlaybackViewModel)
-                          {
-                              NavigationService = MockNavigationService,
-                              SubsonicService = MockSubsonicService,
-                              LoadModel = model =>
-                                              {
-                                                  var tcr = new TaskCompletionSource<PlaylistItem>();
-                                                  tcr.SetResult(new PlaylistItem());
-                                                  return tcr.Task;
-                                              }
-                          };
+            Subject.WinRTWrappersService = _mockWinRTWrappersService;
+            Subject.PlaylistManagementService = _mockPlaylistManagementService;
+            Subject.EmbededVideoPlaybackViewModel = _mockEmbededVideoPlaybackViewModel;
+            Subject.ToastNotificationService = _mockToastNotificationService;
+            Subject.LoadModel = model =>
+                {
+                    var tcr = new TaskCompletionSource<PlaylistItem>();
+                    tcr.SetResult(new PlaylistItem());
+                    return tcr.Task;
+                };
         }
 
         [TestMethod]
-        public void OnActivateShouldSetDisplayNameToPlaylist()
+        public void OnActivate_Always_SetsBottomBarIsOpenToFalse()
         {
-            Subject.Activate();
+            Subject.BottomBar.IsOpened = true;
 
-            Subject.DisplayName.Should().Be("Playlist");
+            ((IActivate)Subject).Activate();
+
+            Subject.BottomBar.IsOpened.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public override void OnActivateShouldSetBottomBarIsOnPlaylistToFalse()
+        {
+            Subject.BottomBar.IsOnPlaylist = false;
+
+            ((IActivate)Subject).Activate();
+
+            Subject.BottomBar.IsOnPlaylist.Should().BeTrue();
         }
 
         [TestMethod]
@@ -61,13 +68,13 @@ namespace Client.Tests.Playback
         {
             Subject.Handle(new StartVideoPlaybackMessage(new PlaylistItem()) { FullScreen = true });
 
-            _mockNotificationService.ShowCallCount.Should().Be(1);
+            _mockToastNotificationService.ShowCallCount.Should().Be(1);
         }
 
         [TestMethod]
         public void HandleStartVideoPlayback_MessageIsNotForFullScreen_SetsStateToVideo()
         {
-            Subject.Activate();
+            ((IActivate)Subject).Activate();
             Subject.Handle(new StartVideoPlaybackMessage(new PlaylistItem()) { FullScreen = false });
 
             Subject.State.Should().Be(PlaybackViewModelStateEnum.Video);
@@ -78,7 +85,7 @@ namespace Client.Tests.Playback
         {
             Subject.Handle(new StartAudioPlaybackMessage(new PlaylistItem()));
 
-            _mockNotificationService.ShowCallCount.Should().Be(1);
+            _mockToastNotificationService.ShowCallCount.Should().Be(1);
         }
 
         [TestMethod]
@@ -110,7 +117,7 @@ namespace Client.Tests.Playback
         {
             Subject.Handle(new PlaylistStateChangedMessage(true));
 
-            _mockEventAggregator.Messages.Any(
+            MockEventAggregator.Messages.Any(
                 m => m.GetType() == typeof(ShowControlsMessage) && ((ShowControlsMessage)m).Show).Should().BeTrue();
         }
 
@@ -139,7 +146,7 @@ namespace Client.Tests.Playback
                     Subject.Parameter = new Song { IsVideo = true };
                 });
 
-            _mockEventAggregator.Messages.Any(
+            MockEventAggregator.Messages.Any(
                 m => m.GetType() == typeof(AddItemsMessage) && ItemMatches(((AddItemsMessage)m).Queue[0])).Should().BeTrue();
         }
 
@@ -153,7 +160,7 @@ namespace Client.Tests.Playback
                     Subject.Parameter = new Song { IsVideo = true };
                 });
 
-            _mockEventAggregator.Messages.Any(
+            MockEventAggregator.Messages.Any(
                 m => m.GetType() == typeof(PlayItemAtIndexMessage) && ((PlayItemAtIndexMessage)m).Index == 0).Should().BeTrue();
         }
 
@@ -170,8 +177,8 @@ namespace Client.Tests.Playback
                                                            }
                                        }));
 
-            _mockEventAggregator.Messages.Count.Should().Be(2);
-            _mockEventAggregator.Messages.All(m => m.GetType() == typeof(AddItemsMessage)).Should().BeTrue();
+            MockEventAggregator.Messages.Count.Should().Be(2);
+            MockEventAggregator.Messages.All(m => m.GetType() == typeof(AddItemsMessage)).Should().BeTrue();
         }
 
         [TestMethod]
@@ -183,7 +190,7 @@ namespace Client.Tests.Playback
                                        ClearCurrent = true
                                    }));
 
-            _mockEventAggregator.Messages.Single(m => m.GetType() == typeof(PlayNextMessage)).Should().NotBeNull();
+            MockEventAggregator.Messages.Single(m => m.GetType() == typeof(PlayNextMessage)).Should().NotBeNull();
         }
 
         [TestMethod]
@@ -213,8 +220,8 @@ namespace Client.Tests.Playback
             await Task.Run(() => Subject.Handle(new PlaylistMessage { Queue = subsonicModels }));
 
             callCount.Should().Be(1);
-            _mockEventAggregator.Messages.All(m => m.GetType() == typeof(AddItemsMessage)).Should().BeTrue();
-            _mockEventAggregator.Messages.Count.Should().Be(2);
+            MockEventAggregator.Messages.All(m => m.GetType() == typeof(AddItemsMessage)).Should().BeTrue();
+            MockEventAggregator.Messages.Count.Should().Be(2);
         }
 
         [TestMethod]
@@ -250,8 +257,8 @@ namespace Client.Tests.Playback
 
             callCount.Should().Be(1);
             getAlbumCallCount.Should().Be(2);
-            _mockEventAggregator.Messages.All(m => m.GetType() == typeof(AddItemsMessage)).Should().BeTrue();
-            _mockEventAggregator.Messages.Count.Should().Be(2);
+            MockEventAggregator.Messages.All(m => m.GetType() == typeof(AddItemsMessage)).Should().BeTrue();
+            MockEventAggregator.Messages.Count.Should().Be(2);
         }
 
         [TestMethod]
@@ -273,8 +280,8 @@ namespace Client.Tests.Playback
             await Task.Run(() => Subject.Handle(new PlaylistMessage { Queue = addToPlaylistQue }));
 
             callCount.Should().Be(1);
-            _mockEventAggregator.Messages.All(m => m.GetType() == typeof(AddItemsMessage)).Should().BeTrue();
-            _mockEventAggregator.Messages.Count.Should().Be(2);
+            MockEventAggregator.Messages.All(m => m.GetType() == typeof(AddItemsMessage)).Should().BeTrue();
+            MockEventAggregator.Messages.Count.Should().Be(2);
         }
 
         [TestMethod]
@@ -296,8 +303,8 @@ namespace Client.Tests.Playback
             await Task.Run(() => Subject.Handle(new PlaylistMessage { Queue = addToPlaylistQue }));
 
             callCount.Should().Be(1);
-            _mockEventAggregator.Messages.All(m => m.GetType() == typeof(AddItemsMessage)).Should().BeTrue();
-            _mockEventAggregator.Messages.Count.Should().Be(2);
+            MockEventAggregator.Messages.All(m => m.GetType() == typeof(AddItemsMessage)).Should().BeTrue();
+            MockEventAggregator.Messages.Count.Should().Be(2);
         }
 
         [TestMethod]
@@ -307,7 +314,7 @@ namespace Client.Tests.Playback
 
             await Task.Run(() => Subject.Handle(new PlayFile { Model = new Song { IsVideo = false } }));
 
-            _mockEventAggregator.Messages.Any(
+            MockEventAggregator.Messages.Any(
                 m =>
                 m.GetType() == typeof(AddItemsMessage) && ItemMatches(((AddItemsMessage)m).Queue[0]))
                                 .Should().BeTrue();
@@ -321,7 +328,7 @@ namespace Client.Tests.Playback
 
             await Task.Run(() => Subject.Handle(new PlayFile { Model = new Song { IsVideo = false } }));
 
-            _mockEventAggregator.Messages.Any(
+            MockEventAggregator.Messages.Any(
                 m => m.GetType() == typeof(PlayItemAtIndexMessage) && ((PlayItemAtIndexMessage)m).Index == 0).Should().BeTrue();
         }
 
@@ -339,25 +346,6 @@ namespace Client.Tests.Playback
             Subject.SavePlaylist();
 
             _mockWinRTWrappersService.GetNewStorageFileCallCount.Should().Be(1);
-        }
-
-        [TestMethod]
-        public void OnActivate_Always_SetsBottomBarIsOpenToFalse()
-        {
-            Subject.BottomBar.IsOpened = true;
-
-            Subject.Activate();
-
-            Subject.BottomBar.IsOpened.Should().BeFalse();
-        }
-
-        public override void OnActivateShouldSetBottomBarIsOnPlaylistToFalse()
-        {
-            Subject.BottomBar.IsOnPlaylist = false;
-
-            Subject.Activate();
-
-            Subject.BottomBar.IsOnPlaylist.Should().BeTrue();
         }
 
         private void MockLoadModel()

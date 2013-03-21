@@ -4,8 +4,9 @@ namespace Subsonic8.Framework.ViewModel
 {
     public abstract class PlaybackControlsViewModelBase : ViewModelBase, IPlaybackControlsViewModel
     {
-        protected PlaybackControlsViewModelBase()
+        protected override void OnEventAggregatorSet()
         {
+            base.OnEventAggregatorSet();
             EventAggregator.Subscribe(this);
         }
 

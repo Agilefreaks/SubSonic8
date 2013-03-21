@@ -6,16 +6,8 @@ using Subsonic8.Artist;
 namespace Client.Tests.Artist
 {
     [TestClass]
-    public class ArtistViewModelTests : DetailViewModelBaseTests<ExpandedArtist, IArtistViewModel>
+    public class ArtistViewModelTests : DetailViewModelBaseTests<ExpandedArtist, ArtistViewModel>
     {
-        protected override IArtistViewModel Subject { get; set; }
-
-        protected override void TestInitializeExtensions()
-        {
-            Subject = new ArtistViewModel
-                          {
-                              UpdateDisplayName = () => Subject.DisplayName = ""
-                          };
-        }
+        protected override ArtistViewModel Subject { get; set; }
     }
 }

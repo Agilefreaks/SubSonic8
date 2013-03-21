@@ -8,17 +8,9 @@ using Subsonic8.Index;
 namespace Client.Tests.Index
 {
     [TestClass]
-    public class IndexViewModelTests : ViewModelBaseTests<IIndexViewModel>
+    public class IndexViewModelTests : ViewModelBaseTests<IndexViewModel>
     {
-        protected override IIndexViewModel Subject { get; set; }
-
-        protected override void TestInitializeExtensions()
-        {
-            Subject = new IndexViewModel
-                          {
-                              UpdateDisplayName = () => Subject.DisplayName = ""
-                          };
-        }
+        protected override IndexViewModel Subject { get; set; }
 
         [TestMethod]
         public void CtorShouldSetMenuItems()

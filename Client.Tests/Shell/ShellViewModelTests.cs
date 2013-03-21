@@ -16,7 +16,7 @@ namespace Client.Tests.Shell
         private readonly MockEventAggregator _eventAggregator = new MockEventAggregator();
         private MockSubsonicService _mockSubsonicService;
         private MockNavigationService _mockNavigationService;
-        private MockNotificationService _mockNotificationService;
+        private MockToastNotificationService _mockToastNotificationService;
         private MockStorageService _mockStorageService;
         private MockWinRTWrappersService _mockWinRTWrappersService;
         private MockDialogNotificationService _mockDialogNotificationService;
@@ -27,12 +27,12 @@ namespace Client.Tests.Shell
             IoC.GetInstance = (type, s) => null;
             _mockSubsonicService = new MockSubsonicService();
             _mockNavigationService = new MockNavigationService();
-            _mockNotificationService = new MockNotificationService();
+            _mockToastNotificationService = new MockToastNotificationService();
             _mockDialogNotificationService = new MockDialogNotificationService();
             _mockStorageService = new MockStorageService();
             _mockWinRTWrappersService = new MockWinRTWrappersService();
             Subject = new ShellViewModel(_eventAggregator, _mockSubsonicService, _mockNavigationService,
-                _mockNotificationService, _mockDialogNotificationService, _mockStorageService, _mockWinRTWrappersService);
+                _mockToastNotificationService, _mockDialogNotificationService, _mockStorageService, _mockWinRTWrappersService);
         }
 
         [TestMethod]

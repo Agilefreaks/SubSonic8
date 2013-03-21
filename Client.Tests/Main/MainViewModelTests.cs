@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Client.Common.Models.Subsonic;
-using Client.Common.Services;
 using Client.Tests.Framework.ViewModel;
 using Client.Tests.Mocks;
 using FluentAssertions;
@@ -11,21 +10,16 @@ using Subsonic8.Main;
 namespace Client.Tests.Main
 {
     [TestClass]
-    public class MainViewModelTests : ViewModelBaseTests<IMainViewModel>
+    public class MainViewModelTests : ViewModelBaseTests<MainViewModel>
     {
         private MockGetRootResult _mockGetRootResult;
 
-        protected override IMainViewModel Subject { get; set; }
+        protected override MainViewModel Subject { get; set; }
 
         protected override void TestInitializeExtensions()
         {
             _mockGetRootResult = new MockGetRootResult();
             MockSubsonicService.GetRootIndex = () => _mockGetRootResult;
-
-            Subject = new MainViewModel
-                          {
-                              UpdateDisplayName = () => Subject.DisplayName = ""
-                          };
         }
 
         [TestMethod]
@@ -46,7 +40,6 @@ namespace Client.Tests.Main
         public async Task PopulateWhenServiceIsConfiguredShouldExecuteAGetRootResult()
         {
             MockSubsonicService.SetIsConfigured(true);
-
 
             await Task.Run(() => Subject.Populate());
             _mockGetRootResult.ExecuteCallCount.Should().Be(1);

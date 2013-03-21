@@ -10,6 +10,8 @@ namespace Subsonic8.Framework.ViewModel
 {
     public interface IViewModel : IScreen, IErrorHandler
     {
+        IEventAggregator EventAggregator { get; set; }
+
         INavigationService NavigationService { get; set; }
 
         ISubsonicService SubsonicService { get; set; }

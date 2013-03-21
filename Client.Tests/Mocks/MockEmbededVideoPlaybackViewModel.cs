@@ -55,6 +55,7 @@ namespace Client.Tests.Mocks
             throw new NotImplementedException();
         }
 
+        public IEventAggregator EventAggregator { get; set; }
         public INavigationService NavigationService { get; set; }
         public ISubsonicService SubsonicService { get; set; }
         public IDialogNotificationService NotificationService { get; set; }

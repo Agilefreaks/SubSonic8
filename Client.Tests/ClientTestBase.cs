@@ -17,7 +17,7 @@ namespace Client.Tests
             var mockEventAggregator = new MockEventAggregator();
             var mockSubsonicService = new MockSubsonicService();
             var mockNavigationService = new MockNavigationService();
-            var mockNotificationService = new MockNotificationService();
+            var mockNotificationService = new MockToastNotificationService();
             var mockDialogNotificationService = new MockDialogNotificationService();
             var mockStorageService = new MockStorageService();
             var mockWinRTWrappersService = new MockWinRTWrappersService();

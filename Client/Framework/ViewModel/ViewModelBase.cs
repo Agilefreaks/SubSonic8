@@ -14,6 +14,7 @@ namespace Subsonic8.Framework.ViewModel
         private INavigationService _navigationService;
         private ISubsonicService _subsonicService;
         private IDefaultBottomBarViewModel _bottomBar;
+        private IEventAggregator _eventAggregator;
 
         [Inject]
         public INavigationService NavigationService
@@ -50,7 +51,19 @@ namespace Subsonic8.Framework.ViewModel
         public IDialogNotificationService NotificationService { get; set; }
 
         [Inject]
-        public IEventAggregator EventAggregator { get; set; }
+        public IEventAggregator EventAggregator
+        {
+            get
+            {
+                return _eventAggregator;
+            }
+
+            set
+            {
+                _eventAggregator = value;
+                OnEventAggregatorSet();
+            }
+        }
 
         [Inject]
         public IDefaultBottomBarViewModel BottomBar
@@ -101,6 +114,10 @@ namespace Subsonic8.Framework.ViewModel
                 {
                     Message = error.ToString(),
                 });
+        }
+
+        protected virtual void OnEventAggregatorSet()
+        {
         }
 
         protected override void OnActivate()
