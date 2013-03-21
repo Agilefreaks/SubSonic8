@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Client.Common.Models;
-using Client.Common.Models.Subsonic;
 using Client.Common.Results;
 using Client.Common.Services;
 using MugenInjection.Attributes;
@@ -26,14 +25,10 @@ namespace Subsonic8.MusicDirectory
 
         public void LoadState(string parameter, Dictionary<string, object> statePageState)
         {
-            Parameter = (GenericSubsonicModel) statePageState["Parameter"];
         }
 
         public void SaveState(Dictionary<string, object> statePageState, List<Type> knownTypes)
         {
-            knownTypes.Add(typeof(GenericSubsonicModel));
-            var genericSubsonicModel = new GenericSubsonicModel(Parameter);
-            statePageState.Add("Parameter", genericSubsonicModel);
         }
     }
 }
