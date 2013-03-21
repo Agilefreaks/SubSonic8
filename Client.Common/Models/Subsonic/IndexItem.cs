@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Xml.Serialization;
 
 namespace Client.Common.Models.Subsonic
@@ -20,6 +21,11 @@ namespace Client.Common.Models.Subsonic
         public override SubsonicModelTypeEnum Type
         {
             get { return SubsonicModelTypeEnum.Index; }
+        }
+
+        public override Tuple<string, string> GetDescription()
+        {
+            return new Tuple<string, string>(Name, string.Format("{0} artists", Artists.Count));
         }
     }
 }
