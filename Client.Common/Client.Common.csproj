@@ -127,6 +127,7 @@
     <Compile Include="Models\Subsonic\MusicDirectory.cs" />
     <Compile Include="Models\Subsonic\MusicDirectoryChild.cs" />
     <Compile Include="Models\Subsonic\SearchResultCollection.cs" />
+    <Compile Include="Models\Subsonic\SerializableModelBase.cs" />
     <Compile Include="Models\Subsonic\Song.cs" />
     <Compile Include="Models\Subsonic\SubsonicModelBase.cs" />
     <Compile Include="MugenExtensions\Convetion.cs" />
