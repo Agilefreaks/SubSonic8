@@ -20,7 +20,6 @@ namespace Client.Tests.Mocks
         }
 
         public Task Save<T>(T data)
-            where T : class
         {
             SaveCallCount++;
 
@@ -31,22 +30,41 @@ namespace Client.Tests.Mocks
         }
 
         public Task<T> Load<T>()
-            where T : class
         {
             LoadCallCount++;
 
             var taskCompletionSource = new TaskCompletionSource<T>();
-            taskCompletionSource.SetResult(LoadFunc(typeof(T)) as T);
+            taskCompletionSource.SetResult((T)LoadFunc(typeof(T)));
 
             return taskCompletionSource.Task;
         }
 
-        public Task Delete<T>() where T : class
+        public Task Delete<T>()
         {
             DeleteCallCount++;
 
             var taskCompletionSource = new TaskCompletionSource<int>();
             taskCompletionSource.SetResult(0);
+
+            return taskCompletionSource.Task;
+        }
+
+        public Task Save<T>(T data, string handle)
+        {
+            SaveCallCount++;
+
+            var taskCompletionSource = new TaskCompletionSource<int>();
+            taskCompletionSource.SetResult(0);
+
+            return taskCompletionSource.Task;
+        }
+
+        public Task<T> Load<T>(string handle)
+        {
+            LoadCallCount++;
+
+            var taskCompletionSource = new TaskCompletionSource<T>();
+            taskCompletionSource.SetResult((T)LoadFunc(typeof(T)));
 
             return taskCompletionSource.Task;
         }
