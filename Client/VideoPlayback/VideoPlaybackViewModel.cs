@@ -117,11 +117,5 @@ namespace Subsonic8.VideoPlayback
 
             return videoPlaybackMessage;
         }
-
-        protected override void OnEventAggregatorSet()
-        {
-            base.OnEventAggregatorSet();
-            EventAggregator.Subscribe(this);
-        }
     }
 }

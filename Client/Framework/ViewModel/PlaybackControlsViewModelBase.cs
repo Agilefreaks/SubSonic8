@@ -4,12 +4,6 @@ namespace Subsonic8.Framework.ViewModel
 {
     public abstract class PlaybackControlsViewModelBase : ViewModelBase, IPlaybackControlsViewModel
     {
-        protected override void OnEventAggregatorSet()
-        {
-            base.OnEventAggregatorSet();
-            EventAggregator.Subscribe(this);
-        }
-
         public virtual void Next()
         {
             EventAggregator.Publish(new PlayNextMessage());
@@ -28,6 +22,12 @@ namespace Subsonic8.Framework.ViewModel
         public virtual void Stop()
         {
             EventAggregator.Publish(new StopPlaybackMessage());
+        }
+
+        protected override void OnEventAggregatorSet()
+        {
+            base.OnEventAggregatorSet();
+            EventAggregator.Subscribe(this);
         }
     }
 }

@@ -275,12 +275,6 @@ namespace Subsonic8.Playback
             EventAggregator.Publish(new PlayItemAtIndexMessage(PlaylistItems.Count - 1));
         }
 
-        protected override void OnEventAggregatorSet()
-        {
-            base.OnEventAggregatorSet();
-            EventAggregator.Subscribe(this);
-        }
-
         protected override void OnActivate()
         {
             base.OnActivate();
