@@ -118,12 +118,18 @@ namespace Subsonic8
         {
             if (_previousExecutionState == ApplicationExecutionState.Terminated)
             {
-                await SuspensionManager.RestoreAsync();
+                try
+                {
+                    await SuspensionManager.RestoreAsync();
+                }
+                catch (SuspensionManagerException)
+                {
+                }
             }
 
             SuspensionManager.RegisterFrame(shellView.ShellFrame, "MainFrame");
 
-            if (shellView.ShellFrame.Content == null)
+            if (shellView.ShellFrame.SourcePageType == null)
             {
                 _navigationService.NavigateToViewModel<MainViewModel>();
             }
