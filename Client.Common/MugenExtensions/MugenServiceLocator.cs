@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Practices.ServiceLocation;
 using MugenInjection;
 
-namespace Subsonic8.Framework
+namespace Client.Common.MugenExtensions
 {
     public class MugenServiceLocator : IServiceLocator
     {
