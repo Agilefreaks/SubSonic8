@@ -28,7 +28,7 @@ namespace Subsonic8.Main
 
         public async void Populate()
         {
-            if (SubsonicService.IsConfigured)
+            if (SubsonicService.HasValidSubsonicUrl)
             {
                 await SubsonicService.GetRootIndex().WithErrorHandler(this).OnSuccess(SetMenuItems).Execute();
             }

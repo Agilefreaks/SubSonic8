@@ -75,33 +75,33 @@ namespace Client.Common.Tests.Services
         }
 
         [TestMethod]
-        public void IsConfiguredWhenConfigurationIsNullReturnsFalse()
+        public void HasValidSubsonicUrlWhenConfigurationIsNullReturnsFalse()
         {
             _subject.Configuration = null;
 
-            _subject.IsConfigured.Should().BeFalse();
+            _subject.HasValidSubsonicUrl.Should().BeFalse();
         }
 
         [TestMethod]
-        public void IsConfiguredWhenConfigurationBaseUrlIsEmptyReturnsFalse()
+        public void HasValidSubsonicUrlWhenConfigurationBaseUrlIsEmptyReturnsFalse()
         {
             _subject.Configuration = new SubsonicServiceConfiguration
                                          {
                                              BaseUrl = string.Empty
                                          };
 
-            _subject.IsConfigured.Should().BeFalse();
+            _subject.HasValidSubsonicUrl.Should().BeFalse();
         }
 
         [TestMethod]
-        public void IsConfiguredWhenConfigurationBaseUrlIsNotEmptyReturnsTrue()
+        public void HasValidSubsonicUrlWhenConfigurationBaseUrlIsNotEmptyReturnsTrue()
         {
             _subject.Configuration = new SubsonicServiceConfiguration
                                          {
                                              BaseUrl = "http://test.com"
                                          };
 
-            _subject.IsConfigured.Should().BeTrue();
+            _subject.HasValidSubsonicUrl.Should().BeTrue();
         }
 
         [TestMethod]

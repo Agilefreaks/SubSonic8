@@ -19,7 +19,7 @@ namespace Client.Common.Services
 
         Func<string, ISearchResult> Search { get; set; }
         
-        bool IsConfigured { get; }
+        bool HasValidSubsonicUrl { get; }
 
         Uri GetUriForFileWithId(int id);
 

@@ -170,7 +170,7 @@ namespace Subsonic8.Shell
 
             await LoadSettings();
 
-            if (!SubsonicService.IsConfigured)
+            if (!SubsonicService.HasValidSubsonicUrl)
             {
                 var resMap = Windows.ApplicationModel.Resources.Core.ResourceManager.Current.MainResourceMap;
                 var message = resMap.GetValue("ShellStrings/NotConfigured").ValueAsString;

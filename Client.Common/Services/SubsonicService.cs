@@ -37,7 +37,7 @@ namespace Client.Common.Services
 
         public Func<string, ISearchResult> Search { get; set; }
 
-        public virtual bool IsConfigured
+        public virtual bool HasValidSubsonicUrl
         {
             get { return Configuration != null && !string.IsNullOrEmpty(Configuration.BaseUrl); }
         }

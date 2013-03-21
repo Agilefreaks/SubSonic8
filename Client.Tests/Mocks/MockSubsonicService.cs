@@ -5,7 +5,7 @@ namespace Client.Tests.Mocks
 {
     public class MockSubsonicService : SubsonicService
     {
-        private bool _isConfigured = false;
+        private bool _hasValidSubsonicUrl = false;
 
         public int GetUriForFileWithIdCallCount { get; set; }
 
@@ -13,9 +13,9 @@ namespace Client.Tests.Mocks
 
         public int GetCoverArtForIdCallCount { get; set; }
 
-        public override bool IsConfigured
+        public override bool HasValidSubsonicUrl
         {
-            get { return _isConfigured; }
+            get { return _hasValidSubsonicUrl; }
         }
 
         public override Uri GetUriForFileWithId(int id)
@@ -41,7 +41,7 @@ namespace Client.Tests.Mocks
 
         public void SetIsConfigured(bool value)
         {
-            _isConfigured = value;
+            _hasValidSubsonicUrl = value;
         }
     }
 }
