@@ -1,7 +1,6 @@
 ﻿using Caliburn.Micro;
 using Client.Common.Models;
 using Client.Common.Services;
-using MugenInjection.Attributes;
 
 namespace Subsonic8.Framework.ViewModel
 {
@@ -10,10 +9,16 @@ namespace Subsonic8.Framework.ViewModel
         private string _title;
         private string _coverArt;
         private string _coverArtUrl;
-        private ISubsonicModel _item; 
+        private ISubsonicModel _item;
+        private ISubsonicService _subsonicService;
 
-        [Inject]
-        public ISubsonicService SubsonicService { get; set; }
+        public ISubsonicService SubsonicService 
+        {
+            get
+            {
+                return _subsonicService ?? (_subsonicService = IoC.Get<ISubsonicService>());
+            }
+        }
 
         public string Title
         {
