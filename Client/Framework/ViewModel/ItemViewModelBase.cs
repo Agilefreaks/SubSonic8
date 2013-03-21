@@ -9,9 +9,16 @@ namespace Subsonic8.Framework.ViewModel
         private string _title;
         private string _coverArt;
         private string _coverArtUrl;
-        private ISubsonicModel _item; 
+        private ISubsonicModel _item;
+        private ISubsonicService _subsonicService;
 
-        public ISubsonicService SubsonicService { get; set; }
+        public ISubsonicService SubsonicService 
+        {
+            get
+            {
+                return _subsonicService ?? (_subsonicService = IoC.Get<ISubsonicService>());
+            }
+        }
 
         public string Title
         {
@@ -62,11 +69,6 @@ namespace Subsonic8.Framework.ViewModel
                 _item = value;
                 NotifyOfPropertyChange();
             }
-        }
-
-        public ItemViewModelBase()
-        {
-            SubsonicService = IoC.Get<ISubsonicService>();
         }
     }
 }

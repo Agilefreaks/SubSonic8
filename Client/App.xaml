@@ -1,8 +1,8 @@
-﻿<caliburn:CaliburnApplication
+﻿<framework:CaliburnServiceLocatorApplication
     x:Class="Subsonic8.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:caliburn="using:Caliburn.Micro">
+    xmlns:framework="using:Subsonic8.Framework">
 
     <Application.Resources>
         <ResourceDictionary>
@@ -21,4 +21,4 @@
             <SolidColorBrush x:Name="MetroBlueBrush" Color="{StaticResource MetroBlue}"/>
         </ResourceDictionary>
     </Application.Resources>
-</caliburn:CaliburnApplication>
+</framework:CaliburnServiceLocatorApplication>

@@ -1,18 +1,9 @@
-﻿using Caliburn.Micro;
-using Client.Common.EventAggregatorMessages;
+﻿using Client.Common.EventAggregatorMessages;
 
 namespace Subsonic8.Framework.ViewModel
 {
     public abstract class PlaybackControlsViewModelBase : ViewModelBase, IPlaybackControlsViewModel
     {
-        protected readonly IEventAggregator EventAggregator;
-
-        protected PlaybackControlsViewModelBase(IEventAggregator eventAggregator)
-        {
-            EventAggregator = eventAggregator;
-            EventAggregator.Subscribe(this);
-        }
-
         public virtual void Next()
         {
             EventAggregator.Publish(new PlayNextMessage());
@@ -31,6 +22,12 @@ namespace Subsonic8.Framework.ViewModel
         public virtual void Stop()
         {
             EventAggregator.Publish(new StopPlaybackMessage());
+        }
+
+        protected override void OnEventAggregatorSet()
+        {
+            base.OnEventAggregatorSet();
+            EventAggregator.Subscribe(this);
         }
     }
 }

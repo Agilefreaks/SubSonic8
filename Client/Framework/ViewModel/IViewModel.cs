@@ -10,13 +10,15 @@ namespace Subsonic8.Framework.ViewModel
 {
     public interface IViewModel : IScreen, IErrorHandler
     {
+        IEventAggregator EventAggregator { get; set; }
+
         INavigationService NavigationService { get; set; }
 
         ISubsonicService SubsonicService { get; set; }
 
         IDialogNotificationService NotificationService { get; set; }
 
-        IBottomBarViewModel BottomBar { get; set; }
+        IDefaultBottomBarViewModel BottomBar { get; set; }
 
         ObservableCollection<object> SelectedItems { get; }
 

@@ -1,3 +1,5 @@
+using Caliburn.Micro;
+using Client.Common.Services;
 using Client.Tests.Mocks;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
@@ -15,10 +17,11 @@ namespace Client.Tests.Framework.ViewModel
         public void CoverArtShouldCallSubsonicServiceGetCoverArtForId()
         {
             var subsonicService = new MockSubsonicService();
-            Subject.SubsonicService = subsonicService;
+            IoC.GetInstance = (type, s) => type == typeof(ISubsonicService) ? subsonicService : null;
 
             var coverArt = Subject.CoverArt;
 
+            coverArt.Should().Be(string.Empty);
             subsonicService.GetCoverArtForIdCallCount.Should().Be(1);
         }
     }

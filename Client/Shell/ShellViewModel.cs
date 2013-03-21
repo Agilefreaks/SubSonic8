@@ -150,6 +150,11 @@ namespace Subsonic8.Shell
                 _playerControls.PlayPause();
         }
 
+        public void Handle(ChangeBottomBarMessage message)
+        {
+            BottomBar = message.BottomBarViewModel;
+        }
+
         protected override async void OnViewAttached(object view, object context)
         {
             base.OnViewAttached(view, context);

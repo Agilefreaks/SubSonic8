@@ -16,8 +16,8 @@ namespace Subsonic8.VideoPlayback
             }
         }
 
-        public FullScreenVideoPlaybackViewModel(IEventAggregator eventAggregator, IToastNotificationService notificationService)
-            : base(eventAggregator, notificationService)
+        public FullScreenVideoPlaybackViewModel(IToastNotificationService notificationService)
+            : base(notificationService)
         {
         }
 

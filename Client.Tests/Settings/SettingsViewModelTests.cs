@@ -12,7 +12,7 @@ namespace Client.Tests.Settings
         SettingsViewModel _subject;
         private MockSubsonicService _mockSubsonicService;
         private MockStorageService _mockStorageService;
-        private MockNotificationService _mockNotificationService;
+        private MockToastNotificationService _mockToastNotificationService;
         private MockNavigationService _mockNavigationService;
 
         [TestInitialize]
@@ -20,9 +20,9 @@ namespace Client.Tests.Settings
         {
             _mockSubsonicService = new MockSubsonicService();
             _mockStorageService = new MockStorageService();
-            _mockNotificationService = new MockNotificationService();
+            _mockToastNotificationService = new MockToastNotificationService();
             _mockNavigationService = new MockNavigationService();
-            _subject = new SettingsViewModel(_mockSubsonicService, _mockNotificationService, _mockStorageService, _mockNavigationService);
+            _subject = new SettingsViewModel(_mockSubsonicService, _mockToastNotificationService, _mockStorageService, _mockNavigationService);
         }
 
         [TestMethod]
@@ -105,7 +105,7 @@ namespace Client.Tests.Settings
 
             await _subject.SaveSettings();
 
-            _mockNotificationService.UseSound.Should().BeTrue();
+            _mockToastNotificationService.UseSound.Should().BeTrue();
         }
     }
 }
