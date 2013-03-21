@@ -136,7 +136,6 @@
     <Compile Include="Framework\CaliburnServiceLocatorApplication.cs" />
     <Compile Include="Framework\Extensions\ToastNotificationExtensions.cs" />
     <Compile Include="Framework\Interfaces\IToastNotificationCapable.cs" />
-    <Compile Include="Framework\MugenServiceLocator.cs" />
     <Compile Include="Framework\Services\DialogNotificationOptions.cs" />
     <Compile Include="Framework\Services\DialogNotificationService.cs" />
     <Compile Include="Framework\Services\IDialogNotificationService.cs" />

@@ -7,7 +7,6 @@ using Client.Common.Results;
 using Client.Common.Services;
 using Subsonic8.BottomBar;
 using Subsonic8.Framework.Services;
-using Subsonic8.Main;
 using Subsonic8.Search;
 using Subsonic8.Settings;
 using Windows.ApplicationModel.Search;
@@ -159,7 +158,7 @@ namespace Subsonic8.Shell
             BottomBar = message.BottomBarViewModel;
         }
 
-        protected override async void OnViewAttached(object view, object context)
+        protected override void OnViewAttached(object view, object context)
         {
             base.OnViewAttached(view, context);
 
@@ -167,21 +166,6 @@ namespace Subsonic8.Shell
             WinRTWrappersService.RegisterSettingsRequestedHandler((sender, args) => args.AddSetting<SettingsViewModel>());
 
             PlayerControls = (IPlayerControls)view;
-
-            await LoadSettings();
-
-            if (!SubsonicService.HasValidSubsonicUrl)
-            {
-                var resMap = Windows.ApplicationModel.Resources.Core.ResourceManager.Current.MainResourceMap;
-                var message = resMap.GetValue("ShellStrings/NotConfigured").ValueAsString;
-                await DialogNotificationService.Show(new DialogNotificationOptions
-                    {
-                        Message = message
-                    });
-                DialogService.ShowSettings<SettingsViewModel>();
-            }
-
-            NavigationService.NavigateToViewModel<MainViewModel>();
         }
 
         private void HookupPlayerControls()
@@ -198,22 +182,6 @@ namespace Subsonic8.Shell
         private async void OnQuerySubmitted(SearchPane sender, SearchPaneQuerySubmittedEventArgs args)
         {
             await PerformSubsonicSearch(args.QueryText);
-        }
-
-        private async Task LoadSettings()
-        {
-            var subsonic8Configuration = await GetSubsonic8Configuration();
-
-            SubsonicService.Configuration = subsonic8Configuration.SubsonicServiceConfiguration;
-
-            NotificationService.UseSound = subsonic8Configuration.ToastsUseSound;
-        }
-
-        private async Task<Subsonic8Configuration> GetSubsonic8Configuration()
-        {
-            var subsonic8Configuration = await StorageService.Load<Subsonic8Configuration>() ?? new Subsonic8Configuration();
-
-            return subsonic8Configuration;
         }
 
         public async void HandleError(Exception error)

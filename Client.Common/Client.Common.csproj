@@ -131,6 +131,7 @@
     <Compile Include="MugenExtensions\Convetion.cs" />
     <Compile Include="MugenExtensions\MugenModuleWithAutoDiscoveryBase.cs" />
     <Compile Include="MugenExtensions\InterfaceToImplementationBaseConvention.cs" />
+    <Compile Include="MugenExtensions\MugenServiceLocator.cs" />
     <Compile Include="MugenExtensions\ServiceConvention.cs" />
     <Compile Include="MugenExtensions\ViewModelConvention.cs" />
     <Compile Include="ObjectExtensionMethods.cs" />
@@ -190,6 +191,9 @@
     </Reference>
     <Reference Include="Callisto">
       <HintPath>..\packages\Callisto.1.2.6\lib\winrt45\Callisto.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation">
+      <HintPath>..\Lib\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
     <Reference Include="MugenInjection.Core">
       <HintPath>..\packages\MugenInjection.3.5.1\lib\netcore45\MugenInjection.Core.dll</HintPath>
