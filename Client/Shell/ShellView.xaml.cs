@@ -38,7 +38,6 @@ namespace Subsonic8.Shell
             MediaControl.StopPressed += MediaControlStopPressed;
             MediaControl.NextTrackPressed += PlayNextTrackPressed;
             MediaControl.PreviousTrackPressed += PlayPreviousTrackPressed;
-
         }
 
         private async void MediaControlPlayPressed(object sender, object e)

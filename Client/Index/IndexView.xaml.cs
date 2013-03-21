@@ -2,5 +2,9 @@
 {
     public partial class IndexView
     {
+        public IndexView()
+        {
+            InitializeComponent();
+        }
     }
 }

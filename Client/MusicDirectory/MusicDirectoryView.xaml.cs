@@ -2,5 +2,9 @@
 {
     public partial class MusicDirectoryView
     {
+        public MusicDirectoryView()
+        {
+            InitializeComponent();
+        }
     }
 }

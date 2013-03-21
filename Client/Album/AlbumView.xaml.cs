@@ -2,5 +2,9 @@
 {
     public partial class AlbumView
     {
+        public AlbumView()
+        {
+            InitializeComponent();
+        }
     }
 }
