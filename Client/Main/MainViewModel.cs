@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using Client.Common.Models.Subsonic;
-using Client.Common.Results;
 using Subsonic8.Framework.Extensions;
 using Subsonic8.Framework.Services;
 using Subsonic8.Framework.ViewModel;
@@ -14,7 +13,7 @@ using Windows.UI.Xaml.Controls;
 
 namespace Subsonic8.Main
 {
-    public class MainViewModel : ViewModelBase, IMainViewModel, IResultHandler<IList<IndexItem>>
+    public class MainViewModel : ViewModelBase, IMainViewModel
     {
         public BindableCollection<MenuItemViewModel> MenuItems { get; private set; }
 
@@ -67,6 +66,5 @@ namespace Subsonic8.Main
                 Message = message
             });
         }
-
     }
 }

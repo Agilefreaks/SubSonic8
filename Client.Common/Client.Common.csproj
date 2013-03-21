@@ -122,6 +122,7 @@
     <Compile Include="Models\Subsonic\Album.cs" />
     <Compile Include="Models\Subsonic\Artist.cs" />
     <Compile Include="Models\Subsonic\ExpandedArtist.cs" />
+    <Compile Include="Models\Subsonic\GenericModel.cs" />
     <Compile Include="Models\Subsonic\IndexItem.cs" />
     <Compile Include="Models\Subsonic\MusicDirectory.cs" />
     <Compile Include="Models\Subsonic\MusicDirectoryChild.cs" />

@@ -136,6 +136,8 @@
     <Compile Include="Framework\AppPage.cs" />
     <Compile Include="Framework\CaliburnServiceLocatorApplication.cs" />
     <Compile Include="Framework\Extensions\ToastNotificationExtensions.cs" />
+    <Compile Include="Framework\Interfaces\ISettingsHelper.cs" />
+    <Compile Include="Framework\SettingsHelper.cs" />
     <Compile Include="Framework\ViewModel\IHaveState.cs" />
     <Compile Include="Framework\Interfaces\IToastNotificationCapable.cs" />
     <Compile Include="Framework\ViewModel\ScreenWithStateBase.cs" />
