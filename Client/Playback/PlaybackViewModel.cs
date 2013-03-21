@@ -9,11 +9,11 @@ using Client.Common.EventAggregatorMessages;
 using Client.Common.Models;
 using Client.Common.Models.Subsonic;
 using Client.Common.Services;
+using MugenInjection.Attributes;
 using Subsonic8.Framework.Extensions;
 using Subsonic8.Framework.Services;
 using Subsonic8.Framework.ViewModel;
 using Subsonic8.Messages;
-using Subsonic8.Shell;
 using Subsonic8.VideoPlayback;
 using Windows.UI.Xaml.Controls;
 
@@ -25,10 +25,7 @@ namespace Subsonic8.Playback
 
         #region Private Fields
 
-        private readonly IToastNotificationService _notificationService;
-        private readonly IWinRTWrappersService _winRTWrappersService;
-        private readonly IPlaylistManagementService _playlistManagementService;
-        private IShellViewModel _shellViewModel;
+        private IPlaylistManagementService _playlistManagementService;
         private PlaybackViewModelStateEnum _state;
         private Uri _source;
         private string _coverArt;
@@ -40,20 +37,6 @@ namespace Subsonic8.Playback
         #endregion
 
         #region Public Properties
-
-        public IShellViewModel ShellViewModel
-        {
-            get
-            {
-                return _shellViewModel;
-            }
-
-            set
-            {
-                _shellViewModel = value;
-                NotifyOfPropertyChange();
-            }
-        }
 
         public ISubsonicModel Parameter
         {
@@ -164,13 +147,10 @@ namespace Subsonic8.Playback
 
         public Func<IId, Task<Client.Common.Models.PlaylistItem>> LoadModel { get; set; }
 
-        public IToastNotificationService ToastNotificationService
-        {
-            get { return _notificationService; }
-        }
+        [Inject]
+        public IToastNotificationService ToastNotificationService { get; set; }
 
-        #endregion
-
+        [Inject]
         public IEmbededVideoPlaybackViewModel EmbededVideoPlaybackViewModel
         {
             get
@@ -186,25 +166,30 @@ namespace Subsonic8.Playback
             }
         }
 
-        protected bool IsRunningVideoInFullScreen { get; set; }
+        [Inject]
+        public IWinRTWrappersService WinRTWrappersService { get; set; }
 
-        public PlaybackViewModel(IEventAggregator eventAggregator, IShellViewModel shellViewModel,
-            IToastNotificationService notificationService, IWinRTWrappersService winRTWrappersService,
-            IPlaylistManagementService playlistManagementService, IEmbededVideoPlaybackViewModel embededEmbededVideoPlaybackViewModel)
-            : base(eventAggregator)
+        [Inject]
+        public IPlaylistManagementService PlaylistManagementService
         {
-            _notificationService = notificationService;
-            _winRTWrappersService = winRTWrappersService;
-            EventAggregator.Subscribe(this);
-            _playlistManagementService = playlistManagementService;
-            _embededVideoPlaybackViewModel = embededEmbededVideoPlaybackViewModel;
+            get
+            {
+                return _playlistManagementService;
+            }
 
-            ShellViewModel = shellViewModel;
+            set
+            {
+                _playlistManagementService = value;
+                HookPlaylistManagementService();
+            }
+        }
 
+        #endregion
+
+        public PlaybackViewModel()
+        {
             UpdateDisplayName = () => DisplayName = "Playlist";
             LoadModel = LoadModelImpl;
-
-            HookPlaylistManagementService();
         }
 
         public void StartPlayback(object e)
@@ -221,20 +206,20 @@ namespace Subsonic8.Playback
 
         public async void LoadPlaylist()
         {
-            var storageFile = await _winRTWrappersService.OpenStorageFile();
+            var storageFile = await WinRTWrappersService.OpenStorageFile();
             if (storageFile != null)
             {
-                var playlistItemCollection = await _winRTWrappersService.LoadFromFile<PlaylistItemCollection>(storageFile, PlaylistItems);
+                var playlistItemCollection = await WinRTWrappersService.LoadFromFile<PlaylistItemCollection>(storageFile, PlaylistItems);
                 _playlistManagementService.LoadPlaylist(playlistItemCollection);
             }
         }
 
         public async void SavePlaylist()
         {
-            var storageFile = await _winRTWrappersService.GetNewStorageFile();
+            var storageFile = await WinRTWrappersService.GetNewStorageFile();
             if (storageFile != null)
             {
-                await _winRTWrappersService.SaveToFile(storageFile, PlaylistItems);
+                await WinRTWrappersService.SaveToFile(storageFile, PlaylistItems);
             }
         }
 
@@ -293,9 +278,7 @@ namespace Subsonic8.Playback
         protected override void OnActivate()
         {
             base.OnActivate();
-            BottomBar.IsOpened = false;
-            BottomBar.IsOnPlaylist = true;
-            IsRunningVideoInFullScreen = false;
+            SetupBottomBar();
         }
 
         private async Task AddItemToPlaylist(ISubsonicModel item)
@@ -364,6 +347,12 @@ namespace Subsonic8.Playback
             return playlistItem;
         }
 
+        private void SetupBottomBar()
+        {
+            BottomBar.IsOpened = false;
+            BottomBar.IsOnPlaylist = true;
+        }
+
         private Client.Common.Models.PlaylistItem CreatePlaylistItemFromSong(Song result)
         {
             var playlistItem = new Client.Common.Models.PlaylistItem();
@@ -374,7 +363,7 @@ namespace Subsonic8.Playback
 
         private void HookPlaylistManagementService()
         {
-            _playlistManagementService.PropertyChanged += PlaylistManagementServiceOnPropertyChanged;
+            PlaylistManagementService.PropertyChanged += PlaylistManagementServiceOnPropertyChanged;
         }
 
         private void PlaylistManagementServiceOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)

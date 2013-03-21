@@ -1,5 +1,4 @@
-﻿using Caliburn.Micro;
-using Client.Common.EventAggregatorMessages;
+﻿using Client.Common.EventAggregatorMessages;
 using Microsoft.PlayerFramework;
 using Subsonic8.Framework.Services;
 
@@ -7,8 +6,8 @@ namespace Subsonic8.VideoPlayback
 {
     public class EmbededVideoPlaybackViewModel : VideoPlaybackViewModel, IEmbededVideoPlaybackViewModel
     {
-        public EmbededVideoPlaybackViewModel(IEventAggregator eventAggregator, IToastNotificationService notificationService)
-            : base(eventAggregator, notificationService)
+        public EmbededVideoPlaybackViewModel(IToastNotificationService notificationService)
+            : base(notificationService)
         {
         }
 

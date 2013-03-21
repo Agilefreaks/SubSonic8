@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Caliburn.Micro;
 using Client.Common.Models.Subsonic;
 using Client.Common.Results;
+using Subsonic8.Framework.Extensions;
 using Subsonic8.Framework.ViewModel;
 using Subsonic8.Index;
 using Subsonic8.MenuItem;
@@ -34,16 +36,7 @@ namespace Subsonic8.Main
 
         public void SetMenuItems(IList<IndexItem> items)
         {
-            foreach (var index in items)
-            {
-                MenuItems.Add(new MenuItemViewModel
-                                  {
-                                      Title = index.Name,
-                                      Subtitle = string.Format("{0} artists", index.Artists.Count),
-                                      CoverArtId = index.CoverArt,
-                                      Item = index
-                                  });
-            }
+            MenuItems.AddRange(items.Select(s => s.AsMenuItemViewModel()));
         }
 
         protected override void OnInitialize()

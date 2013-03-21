@@ -3,7 +3,7 @@ using Subsonic8.Framework.Services;
 
 namespace Client.Tests.Mocks
 {
-    public class MockNotificationService : IToastNotificationService
+    public class MockToastNotificationService : IToastNotificationService
     {
         public int ShowCallCount { get; set; }
 

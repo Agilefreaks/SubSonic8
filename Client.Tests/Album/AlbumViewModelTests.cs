@@ -8,17 +8,9 @@ using Subsonic8.Album;
 namespace Client.Tests.Album
 {
     [TestClass]
-    public class AlbumViewModelTests : DetailViewModelBaseTests<Common.Models.Subsonic.Album, IAlbumViewModel>
+    public class AlbumViewModelTests : DetailViewModelBaseTests<Common.Models.Subsonic.Album, AlbumViewModel>
     {
-        protected override IAlbumViewModel Subject { get; set; }
-
-        protected override void TestInitializeExtensions()
-        {
-            Subject = new AlbumViewModel
-                {
-                    UpdateDisplayName = () => Subject.DisplayName = string.Empty
-                };
-        }
+        protected override AlbumViewModel Subject { get; set; }
 
         [TestMethod]
         public void CtroShouldInstantiateMenuItems()

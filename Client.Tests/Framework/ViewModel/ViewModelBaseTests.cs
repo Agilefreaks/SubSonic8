@@ -1,25 +1,21 @@
 ﻿using System;
 using Caliburn.Micro;
-using Client.Common.Services;
 using Client.Tests.Mocks;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
-using Subsonic8.BottomBar;
-using Subsonic8.Framework.Services;
 using Subsonic8.Framework.ViewModel;
-using Subsonic8.Shell;
 
 namespace Client.Tests.Framework.ViewModel
 {
     [TestClass]
     public abstract class ViewModelBaseTests<TViewModel> : ClientTestBase
-        where TViewModel : IViewModel
+        where TViewModel : IViewModel, new()
     {
         protected MockDefaultBottomBarViewModel MockDefaultBottomBar;
-        protected MockShellViewModel MockShellViewModel;
         protected MockSubsonicService MockSubsonicService;
         protected MockNavigationService MockNavigationService;
         protected MockDialogNotificationService MockDialogNotificationService;
+        protected MockEventAggregator MockEventAggregator;
 
         protected abstract TViewModel Subject { get; set; }
 
@@ -27,11 +23,19 @@ namespace Client.Tests.Framework.ViewModel
         public void TestInitialize()
         {
             MockDefaultBottomBar = new MockDefaultBottomBarViewModel();
-            MockShellViewModel = new MockShellViewModel();
             MockSubsonicService = new MockSubsonicService();
             MockNavigationService = new MockNavigationService();
             MockDialogNotificationService = new MockDialogNotificationService();
-            IoC.GetInstance = (type, s) => ResolveType(type);
+            MockEventAggregator = new MockEventAggregator();
+            Subject = new TViewModel
+                {
+                    EventAggregator = MockEventAggregator,
+                    BottomBar = MockDefaultBottomBar,
+                    SubsonicService = MockSubsonicService,
+                    NavigationService = MockNavigationService,
+                    NotificationService = MockDialogNotificationService,
+                    UpdateDisplayName = () => Subject.DisplayName = ""
+                };
             TestInitializeExtensions();
         }
 
@@ -83,33 +87,6 @@ namespace Client.Tests.Framework.ViewModel
 
         protected virtual void TestInitializeExtensions()
         {            
-        }
-
-        private object ResolveType(Type type)
-        {
-            var result = new object();
-            if (type == typeof(IDefaultBottomBarViewModel))
-            {
-                result = MockDefaultBottomBar;
-            }
-            else if (type == typeof(IShellViewModel))
-            {
-                result = MockShellViewModel;
-            }
-            else if (type == typeof(ISubsonicService))
-            {
-                result = MockSubsonicService;
-            }
-            else if (type == typeof(INavigationService))
-            {
-                result = MockNavigationService;
-            } 
-            else if (type == typeof (IDialogNotificationService))
-            {
-                result = MockDialogNotificationService;
-            }
-
-            return result;
         }
     }
 }

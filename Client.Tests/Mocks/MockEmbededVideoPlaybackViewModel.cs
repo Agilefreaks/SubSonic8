@@ -55,10 +55,11 @@ namespace Client.Tests.Mocks
             throw new NotImplementedException();
         }
 
+        public IEventAggregator EventAggregator { get; set; }
         public INavigationService NavigationService { get; set; }
         public ISubsonicService SubsonicService { get; set; }
         public IDialogNotificationService NotificationService { get; set; }
-        public IBottomBarViewModel BottomBar { get; set; }
+        public IDefaultBottomBarViewModel BottomBar { get; set; }
         public ObservableCollection<object> SelectedItems { get; private set; }
         public bool CanGoBack { get; private set; }
         public void GoBack()

@@ -10,7 +10,6 @@ using Subsonic8.BottomBar;
 using Subsonic8.Framework.Services;
 using Subsonic8.Messages;
 using Subsonic8.Playback;
-using Subsonic8.Shell;
 using Action = System.Action;
 
 namespace Client.Tests.Mocks
@@ -89,10 +88,11 @@ namespace Client.Tests.Mocks
             throw new NotImplementedException();
         }
 
+        public IEventAggregator EventAggregator { get; set; }
         public INavigationService NavigationService { get; set; }
         public ISubsonicService SubsonicService { get; set; }
         public IDialogNotificationService NotificationService { get; set; }
-        public IBottomBarViewModel BottomBar { get; set; }
+        public IDefaultBottomBarViewModel BottomBar { get; set; }
         public ObservableCollection<object> SelectedItems { get; private set; }
         public bool CanGoBack { get; private set; }
         public void GoBack()
@@ -101,7 +101,6 @@ namespace Client.Tests.Mocks
         }
 
         public Action UpdateDisplayName { get; set; }
-        public IShellViewModel ShellViewModel { get; set; }
         public ISubsonicModel Parameter { get; set; }
         public Uri Source { get; set; }
         public PlaybackViewModelStateEnum State { get; private set; }
