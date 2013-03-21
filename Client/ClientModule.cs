@@ -1,4 +1,5 @@
-﻿using Client.Common.MugenExtensions;
+﻿using System;
+using Client.Common.MugenExtensions;
 using Subsonic8.BottomBar;
 using Subsonic8.Playback;
 using Subsonic8.Shell;
@@ -18,11 +19,11 @@ namespace Subsonic8
 
             Singletons.AddRange(new[]
                 {
-                    typeof (IShellViewModel),
-                    typeof (IPlaybackViewModel),
-                    typeof (IFullScreenVideoPlaybackViewModel),
-                    typeof (IEmbededVideoPlaybackViewModel),
-                    typeof (IDefaultBottomBarViewModel)
+                    new Tuple<Type[], Type>(new[] { typeof(IShellViewModel), typeof(ShellViewModel) }, typeof(ShellViewModel)),
+                    new Tuple<Type[], Type>(new[] { typeof(IPlaybackViewModel), typeof(PlaybackViewModel) }, typeof(PlaybackViewModel)),
+                    new Tuple<Type[], Type>(new[] { typeof(IFullScreenVideoPlaybackViewModel), typeof(FullScreenVideoPlaybackViewModel) }, typeof(FullScreenVideoPlaybackViewModel)), 
+                    new Tuple<Type[], Type>(new[] { typeof(IEmbededVideoPlaybackViewModel) }, typeof(EmbededVideoPlaybackViewModel)), 
+                    new Tuple<Type[], Type>(new[] { typeof(IDefaultBottomBarViewModel) }, typeof(DefaultBottomBarViewModel))
                 });
         }
     }

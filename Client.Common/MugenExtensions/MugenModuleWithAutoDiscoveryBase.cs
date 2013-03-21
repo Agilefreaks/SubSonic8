@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using MugenInjection;
 using MugenInjection.Core;
 
 namespace Client.Common.MugenExtensions
@@ -9,18 +10,18 @@ namespace Client.Common.MugenExtensions
     public abstract class MugenModuleWithAutoDiscoveryBase : InjectorModule
     {
         protected readonly List<MugenConvetion> Convetions = new List<MugenConvetion>();
-        protected readonly List<Type> Singletons = new List<Type>();
+        protected readonly List<Tuple<Type[], Type>> Singletons = new List<Tuple<Type[], Type>>();
 
         public override void Load()
         {
             PrepareForLoad();
-            var types = GetType().GetTypeInfo().Assembly.GetTypes().Except(Singletons);
+            var singletonTypes = Singletons.SelectMany(singleton => singleton.Item1);
+            var types = GetType().GetTypeInfo().Assembly.GetTypes().Except(singletonTypes);
             ApplyConventions(types);
 
-            var serviceConvention = new ServiceConvention(Injector);
             foreach (var singleton in Singletons)
             {
-                serviceConvention.CreateBinding(singleton);
+                Injector.Bind(singleton.Item1).To(singleton.Item2).InSingletonScope();
             }
         }
 
