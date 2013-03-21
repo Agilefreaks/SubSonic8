@@ -9,9 +9,15 @@ namespace Client.Common.Services
     {
         private readonly bool _treatViewAsLoaded;
 
-        public CustomFrameAdapter(Frame frame, bool treatViewAsLoaded = false) : base(frame, treatViewAsLoaded)
+        public CustomFrameAdapter(Frame frame, bool treatViewAsLoaded = false)
+            : base(frame, treatViewAsLoaded)
         {
             _treatViewAsLoaded = treatViewAsLoaded;
+        }
+
+        public void DoNavigated(object sender, NavigationEventArgs eventArgs)
+        {
+            base.OnNavigated(sender, eventArgs);
         }
 
         protected override void OnNavigated(object sender, NavigationEventArgs e)
