@@ -3,7 +3,6 @@ using Caliburn.Micro;
 using Client.Common;
 using Client.Common.Services;
 using Subsonic8.BottomBar;
-using Subsonic8.Framework;
 using Subsonic8.Framework.Services;
 using Subsonic8.Main;
 using Subsonic8.Playback;
@@ -23,6 +22,7 @@ namespace Subsonic8
         private ISubsonicService _subsonicService;
         private IToastNotificationService _toastNotificationService;
         private IStorageService _storageService;
+        private CustomFrameAdapter _navigationService;
 
         public App()
         {
@@ -52,7 +52,7 @@ namespace Subsonic8
             await _shellViewModel.PerformSubsonicSearch(args.QueryText);
         }
 
-        private void StartApplication()
+        private async void StartApplication()
         {
             DisplayRootView<ShellView>();
 
@@ -67,6 +67,8 @@ namespace Subsonic8
             BindShellViewModelToView(shellView);
 
             await LoadSettings();
+
+            _navigationService.NavigateToViewModel<MainViewModel>();
         }
 
         private ShellView GetShellView()
@@ -76,7 +78,9 @@ namespace Subsonic8
 
         private void RegisterNavigationService(Frame shellFrame, bool treatViewAsLoaded = false)
         {
-            Kernel.Bind<INavigationService>().ToConstant(new CustomFrameAdapter(shellFrame, treatViewAsLoaded));
+            _navigationService = new CustomFrameAdapter(shellFrame, treatViewAsLoaded);
+            Kernel.Bind<INavigationService>().ToConstant(_navigationService);
+        }
 
         private void LoadServices()
         {
@@ -99,7 +103,6 @@ namespace Subsonic8
 
             ViewModelBinder.Bind(_shellViewModel, shellView, null);
         }
-
 
         private async Task LoadSettings()
         {
