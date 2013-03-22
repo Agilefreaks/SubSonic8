@@ -21,7 +21,7 @@ namespace Client.Tests.Index
         [TestMethod]
         public void ParameterSetShouldPopulateMenuItems()
         {
-            Subject.Parameter = new IndexItem { Artists = new List<Common.Models.Subsonic.Artist> { new Common.Models.Subsonic.Artist(), new Common.Models.Subsonic.Artist() } };
+            Subject.Parameter = new IndexItem { Artists = new List<Common.Models.Subsonic.Artist> { new Common.Models.Subsonic.Artist(), new Common.Models.Subsonic.Artist() } }.Serialize();
 
             Subject.MenuItems.Should().HaveCount(2);
         }
