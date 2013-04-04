@@ -11,6 +11,8 @@ namespace Client.Tests.Mocks
 
         public string CoverArt { get; set; }
 
+        public string Name { get; private set; }
+
         public Tuple<string, string> GetDescription()
         {
             return new Tuple<string, string>("testName", "testDescription");

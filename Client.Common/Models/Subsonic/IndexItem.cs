@@ -16,10 +16,6 @@ namespace Client.Common.Models.Subsonic
             return Deserialize(data, TypesOfChildren);
         }
 
-        [XmlAttribute("name")]
-        [DataMember]
-        public string Name { get; set; }
-
         [XmlElement(ElementName = "artist", Namespace = "http://subsonic.org/restapi")]
         [DataMember]
         public List<Artist> Artists { get; set; }

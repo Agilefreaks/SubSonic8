@@ -13,6 +13,10 @@ namespace Client.Common.Models.Subsonic
 
         public abstract SubsonicModelTypeEnum Type { get; }
 
+        [XmlAttribute("name")]
+        [DataMember]
+        public string Name { get; set; }
+
         [XmlAttribute("coverArt")]
         [DataMember]
         public virtual string CoverArt { get; set; }
