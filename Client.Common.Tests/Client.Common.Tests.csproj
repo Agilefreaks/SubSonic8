@@ -122,6 +122,7 @@
     <Compile Include="Models\Subsonic\SearchResultCollectionTests.cs" />
     <Compile Include="Models\Subsonic\SongTests.cs" />
     <Compile Include="Results\GetAlbumResultTests.cs" />
+    <Compile Include="Results\GetIndexResultTests.cs" />
     <Compile Include="Results\GetMusicDirectoryResultTests.cs" />
     <Compile Include="Results\GetRootResultTests.cs" />
     <Compile Include="Results\GetSongResultTests.cs" />

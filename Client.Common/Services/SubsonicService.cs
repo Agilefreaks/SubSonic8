@@ -35,6 +35,8 @@ namespace Client.Common.Services
 
         public Func<int, IGetSongResult> GetSong { get; set; }
 
+        public Func<int, IGetIndexResult> GetIndex { set; get; }
+
         public Func<string, ISearchResult> Search { get; set; }
 
         public virtual bool HasValidSubsonicUrl
@@ -49,6 +51,7 @@ namespace Client.Common.Services
             GetAlbum = GetAlbumImpl;
             GetArtist = GetArtistImpl;
             GetSong = GetSongImpl;
+            GetIndex = GetIndexImpl;
             Search = SearchImpl;
         }
 
@@ -106,7 +109,7 @@ namespace Client.Common.Services
             return new SearchResult(_configuration, query);
         }
 
-        private IGetRootResult GetRootIndexImpl()
+        private IGetRootResult GetMusicFoldersImpl()
         {
             return new GetRootResult(_configuration);
         }
@@ -124,6 +127,11 @@ namespace Client.Common.Services
         private IGetAlbumResult GetAlbumImpl(int id)
         {
             return new GetAlbumResult(_configuration, id);
+        }
+
+        private IGetIndexResult GetIndexImpl(int musicFolderId)
+        {
+            return new GetIndexResult(_configuration, musicFolderId);
         }
 
         private IGetSongResult GetSongImpl(int id)

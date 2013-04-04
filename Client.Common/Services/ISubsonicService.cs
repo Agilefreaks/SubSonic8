@@ -19,6 +19,8 @@ namespace Client.Common.Services
 
         Func<string, ISearchResult> Search { get; set; }
 
+        Func<int, IGetIndexResult> GetIndex { get; set; }
+
         bool HasValidSubsonicUrl { get; }
 
         Uri GetUriForFileWithId(int id);
