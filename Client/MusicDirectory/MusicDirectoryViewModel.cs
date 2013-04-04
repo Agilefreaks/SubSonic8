@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Client.Common.Models;
 using Client.Common.Results;
 using Client.Common.Services;
@@ -21,14 +20,6 @@ namespace Subsonic8.MusicDirectory
         protected override IEnumerable<ISubsonicModel> GetItemsToDisplay()
         {
             return Item.Children;
-        }
-
-        public void LoadState(string parameter, Dictionary<string, object> statePageState)
-        {
-        }
-
-        public void SaveState(Dictionary<string, object> statePageState, List<Type> knownTypes)
-        {
         }
     }
 }
