@@ -74,9 +74,9 @@ namespace Subsonic8.Framework.ViewModel
 
         public void ChildClick(ItemClickEventArgs eventArgs)
         {
-            var navigableEntity = ((MenuItemViewModel)eventArgs.ClickedItem).Item;
+            var subsonicModel = ((MenuItemViewModel)eventArgs.ClickedItem).Item;
 
-            NavigationService.NavigateByEntityType(navigableEntity);
+            NavigationService.NavigateByModelType(subsonicModel);
         }
 
         protected abstract IServiceResultBase<T> GetResult(int id);

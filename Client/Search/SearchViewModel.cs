@@ -111,7 +111,7 @@ namespace Subsonic8.Search
         {
             var navigableEntity = ((MenuItemViewModel)eventArgs.ClickedItem).Item;
 
-            NavigationService.NavigateByEntityType(navigableEntity);
+            NavigationService.NavigateByModelType(navigableEntity);
         }
 
         private void RemoveCoverArt(IEnumerable<MenuItemViewModel> menuItemViewModels)

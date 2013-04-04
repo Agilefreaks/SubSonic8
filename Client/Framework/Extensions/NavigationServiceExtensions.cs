@@ -9,7 +9,7 @@ namespace Subsonic8.Framework.Extensions
 {
     public static class NavigationServiceExtensions
     {
-        public static void NavigateByEntityType<T>(this T navigationService, ISubsonicModel subsonicModel)
+        public static void NavigateByModelType<T>(this T navigationService, ISubsonicModel subsonicModel)
             where T : INavigationService
         {
             switch (subsonicModel.Type)
