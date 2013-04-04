@@ -25,7 +25,8 @@ namespace Subsonic8.Main
         public void IndexClick(ItemClickEventArgs eventArgs)
         {
             var item = ((MenuItemViewModel)eventArgs.ClickedItem).Item;
-            NavigationService.NavigateToViewModel<IndexViewModel>(item);
+
+            NavigationService.NavigateToViewModel<IndexViewModel>(item.Id);
         }
 
         public async void Populate()
@@ -66,6 +67,5 @@ namespace Subsonic8.Main
                 Message = message
             });
         }
-
     }
 }

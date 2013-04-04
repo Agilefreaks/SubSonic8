@@ -6,9 +6,6 @@ namespace Client.Common.Models.Subsonic
     [XmlRoot(ElementName = "musicFolder", Namespace = "http://subsonic.org/restapi")]
     public class MusicFolder : SubsonicModelBase
     {
-        [XmlAttribute("name")]
-        public string Name { get; set; }
-
         public override SubsonicModelTypeEnum Type
         {
             get { return SubsonicModelTypeEnum.Folder; }

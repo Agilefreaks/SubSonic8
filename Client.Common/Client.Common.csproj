@@ -127,6 +127,7 @@
     <Compile Include="Models\Subsonic\MusicDirectoryChild.cs" />
     <Compile Include="Models\Subsonic\MusicFolder.cs" />
     <Compile Include="Models\Subsonic\SearchResultCollection.cs" />
+    <Compile Include="Models\Subsonic\SerializableModelBase.cs" />
     <Compile Include="Models\Subsonic\Song.cs" />
     <Compile Include="Models\Subsonic\SubsonicModelBase.cs" />
     <Compile Include="MugenExtensions\Convetion.cs" />
@@ -164,6 +165,7 @@
     <Compile Include="Results\VisualStateResult.cs" />
     <Compile Include="EventAggregatorMessages\AddItemsMessage.cs" />
     <Compile Include="Services\CustomFrameAdapter.cs" />
+    <Compile Include="Services\ICustomFrameAdapter.cs" />
     <Compile Include="Services\ImageType.cs" />
     <Compile Include="Services\IPlaylistManagementService.cs" />
     <Compile Include="Services\IStorageService.cs" />

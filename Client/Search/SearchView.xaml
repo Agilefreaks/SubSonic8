@@ -1,10 +1,11 @@
-﻿<Page
+﻿<framework:AppPage
     x:Class="Subsonic8.Search.SearchView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    xmlns:cal="using:Caliburn.Micro" xmlns:Common="using:Subsonic8.Common" mc:Ignorable="d">
+    xmlns:cal="using:Caliburn.Micro" xmlns:Common="using:Subsonic8.Common" xmlns:framework="using:Subsonic8.Framework"
+    mc:Ignorable="d">
     
     <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
@@ -16,4 +17,4 @@
         
         <ContentControl Grid.Row="1" cal:View.Context="{Binding State}" cal:View.Model="{Binding}"/>
     </Grid>
-</Page>
+</framework:AppPage>

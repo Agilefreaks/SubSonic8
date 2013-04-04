@@ -8,7 +8,7 @@ namespace Subsonic8.Search
 {
     public interface ISearchViewModel : IViewModel
     {
-        SearchResultCollection Parameter { get; set; }
+        string Parameter { get; set; }
 
         List<IGrouping<string, MenuItemViewModel>> MenuItems { get; }
 
@@ -16,7 +16,7 @@ namespace Subsonic8.Search
 
         SearchResultState State { get; set; }
 
-        void PopulateMenuItems();
+        void PopulateMenuItems(SearchResultCollection result);
 
         void PopulateArtists(List<ExpandedArtist> artists);
 

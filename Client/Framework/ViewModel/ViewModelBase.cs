@@ -11,13 +11,13 @@ namespace Subsonic8.Framework.ViewModel
 {
     public abstract class ViewModelBase : Screen, IViewModel
     {
-        private INavigationService _navigationService;
+        private ICustomFrameAdapter _navigationService;
         private ISubsonicService _subsonicService;
         private IDefaultBottomBarViewModel _bottomBar;
         private IEventAggregator _eventAggregator;
 
         [Inject]
-        public INavigationService NavigationService
+        public ICustomFrameAdapter NavigationService
         {
             get
             {

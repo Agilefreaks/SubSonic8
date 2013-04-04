@@ -17,7 +17,7 @@ namespace Subsonic8.Artist
 
         protected override IServiceResultBase<ExpandedArtist> GetResult(int id)
         {
-            return SubsonicService.GetArtist(Parameter.Id);
+            return SubsonicService.GetArtist(id);
         }
 
         protected override IEnumerable<ISubsonicModel> GetItemsToDisplay()

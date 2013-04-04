@@ -138,12 +138,12 @@ namespace Client.Tests.Playback
         }
 
         [TestMethod]
-        public async Task ParameterWhenSetShouldAddAnItemToThePlaylistWithItsInfo()
+        public async Task ParameterWhenSetShouldAddAnItemToThePlaylist()
         {
             MockLoadModel();
             await Task.Run(() =>
                 {
-                    Subject.Parameter = new Song { IsVideo = true };
+                    Subject.Parameter = 1;
                 });
 
             MockEventAggregator.Messages.Any(
@@ -157,7 +157,7 @@ namespace Client.Tests.Playback
             _mockPlaylistManagementService.Items = new PlaylistItemCollection { new PlaylistItem() };
             await Task.Run(() =>
                 {
-                    Subject.Parameter = new Song { IsVideo = true };
+                    Subject.Parameter = 2;
                 });
 
             MockEventAggregator.Messages.Any(

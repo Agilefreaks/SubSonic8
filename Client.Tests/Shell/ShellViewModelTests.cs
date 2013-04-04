@@ -1,9 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
 using Caliburn.Micro;
 using Client.Common.EventAggregatorMessages;
+using Client.Common.Models.Subsonic;
 using Client.Tests.Mocks;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+using Subsonic8.Search;
 using Subsonic8.Shell;
 
 namespace Client.Tests.Shell
@@ -47,37 +49,6 @@ namespace Client.Tests.Shell
         }
 
         [TestMethod]
-        public async Task PerformSubsonicSearch_Always_CallsSubsonicServiceSearchAndReturnsTheResult()
-        {
-            var callCount = 0;
-            var searchResult = new MockSearchResult();
-            Subject.NavigateToSearhResult = collection => { };
-            _mockSubsonicService.Search = s =>
-                                              {
-                                                  Assert.AreEqual("test", s);
-                                                  callCount++;
-                                                  return searchResult;
-                                              };
-
-            await Subject.PerformSubsonicSearch("test");
-
-            Assert.AreEqual(1, callCount);
-        }
-
-        [TestMethod]
-        public async Task PerformSubsonicSearchAlwaysCallsNavigatesToSearchResult()
-        {
-            var called = false;
-            var searchResult = new MockSearchResult();
-            _mockSubsonicService.Search = s => searchResult;
-            Subject.NavigateToSearhResult = collection => { called = true; };
-
-            await Subject.PerformSubsonicSearch("test");
-
-            Assert.IsTrue(called);
-        }
-
-        [TestMethod]
         public void PlayNextShouldCallPublishOnEventAggregator()
         {
             Subject.PlayNext(null, null);
@@ -98,6 +69,16 @@ namespace Client.Tests.Shell
             Subject.Handle(new StopAudioPlaybackMessage());
 
             _mockPlayerControls.StopCallCount.Should().Be(1);
+        }
+
+        [TestMethod]
+        public void Handle_PerformSearh_Calls_NavigateToSearchResult()
+        {
+            Subject.SendSearchQueryMessage("test");
+
+            _mockNavigationService.NavigateToViewModelCalls.Count.Should().Be(1);
+            _mockNavigationService.NavigateToViewModelCalls.First().Key.Should().Be(typeof(SearchViewModel));
+            _mockNavigationService.NavigateToViewModelCalls.First().Value.Should().BeOfType<string>();
         }
     }
 }
