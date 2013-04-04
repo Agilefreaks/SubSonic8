@@ -1,9 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Caliburn.Micro;
 using Client.Common.Models.Subsonic;
 using Subsonic8.Framework.Extensions;
 using Subsonic8.Framework.ViewModel;
 using Subsonic8.MenuItem;
+using Subsonic8.Messages;
 using Windows.UI.Xaml.Controls;
 
 namespace Subsonic8.Search
@@ -114,12 +117,26 @@ namespace Subsonic8.Search
             NavigationService.NavigateByModelType(navigableEntity);
         }
 
+        public async void Handle(PerformSearch message)
+        {
+            await SubsonicService.Search(message.QueryText)
+                                 .WithErrorHandler(this)
+                                 .OnSuccess(result => NavigationService.NavigateToViewModel<SearchViewModel>(result))
+                                 .Execute();
+        }
+
         private void RemoveCoverArt(IEnumerable<MenuItemViewModel> menuItemViewModels)
         {
             foreach (var menuItemViewModel in menuItemViewModels)
             {
                 menuItemViewModel.CoverArtId = string.Empty;
             }
+        }
+
+        protected override void OnEventAggregatorSet()
+        {
+            base.OnEventAggregatorSet();
+            EventAggregator.Subscribe(this);
         }
     }
 }

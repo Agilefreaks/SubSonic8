@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Client.Common.Models.Subsonic;
 using Client.Tests.Framework.ViewModel;
 using Client.Tests.Mocks;
@@ -7,6 +8,7 @@ using FluentAssertions;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using Subsonic8.BottomBar;
 using Subsonic8.MenuItem;
+using Subsonic8.Messages;
 using Subsonic8.Search;
 
 namespace Client.Tests.Search
@@ -24,7 +26,7 @@ namespace Client.Tests.Search
 
             var bottomBarViewModel = new DefaultBottomBarViewModel(MockNavigationService, _eventAggregator);
             Subject.BottomBar = bottomBarViewModel;
-            Subject.Parameter = new SearchResultCollection {Query = "I search high and low"};
+            Subject.Parameter = new SearchResultCollection { Query = "I search high and low" };
         }
 
         [TestMethod]
@@ -143,6 +145,34 @@ namespace Client.Tests.Search
                                                 });
 
             Subject.MenuItems.Should().Contain(i => i.Any(x => x.Type == type));
+        }
+
+        [TestMethod]
+        public async Task Handle_PerformSearch_Always_PerformsASubsonicSearch()
+        {
+            var callCount = 0;
+            var searchResult = new MockSearchResult();
+            MockSubsonicService.Search = s =>
+                {
+                    Assert.AreEqual("test", s);
+                    callCount++;
+                    return searchResult;
+                };
+
+            await Task.Run(() => Subject.Handle(new PerformSearch("test")));
+
+            Assert.AreEqual(1, callCount);
+        }
+
+        [TestMethod]
+        public async Task Handle_PerformSearh_Calls_NavigateToSearchResult()
+        {
+            var searchResult = new MockSearchResult();
+            MockSubsonicService.Search = s => searchResult;
+
+            await Task.Run(() => Subject.Handle(new PerformSearch("test")));
+
+            MockNavigationService.NavigateToViewModelCalls.Count.Should().Be(1);
         }
     }
 }

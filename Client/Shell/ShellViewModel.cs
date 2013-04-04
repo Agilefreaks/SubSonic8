@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using Caliburn.Micro;
 using Client.Common.EventAggregatorMessages;
 using Client.Common.Models.Subsonic;
@@ -7,9 +6,8 @@ using Client.Common.Results;
 using Client.Common.Services;
 using Subsonic8.BottomBar;
 using Subsonic8.Framework.Services;
-using Subsonic8.Search;
+using Subsonic8.Messages;
 using Subsonic8.Settings;
-using Windows.ApplicationModel.Search;
 using Windows.UI.Xaml;
 
 namespace Subsonic8.Shell
@@ -97,17 +95,8 @@ namespace Subsonic8.Shell
             DialogNotificationService = dialogNotificationService;
             StorageService = storageService;
             WinRTWrappersService = winRTWrappersService;
-            NavigateToSearhResult = NavigateToSearchResultCall;
 
             eventAggregator.Subscribe(this);
-        }
-
-        public async Task PerformSubsonicSearch(string query)
-        {
-            await SubsonicService.Search(query)
-                               .WithErrorHandler(this)
-                               .OnSuccess(result => NavigateToSearhResult(result))
-                               .Execute();
         }
 
         public void PlayNext(object sender, RoutedEventArgs routedEventArgs)
@@ -158,11 +147,16 @@ namespace Subsonic8.Shell
             BottomBar = message.BottomBarViewModel;
         }
 
+        public void SendSearchQueryMessage(string query)
+        {
+            _eventAggregator.Publish(new PerformSearch(query));
+        }
+
         protected override void OnViewAttached(object view, object context)
         {
             base.OnViewAttached(view, context);
 
-            WinRTWrappersService.RegisterSearchQueryHandler(OnQuerySubmitted);
+            WinRTWrappersService.RegisterSearchQueryHandler((sender, args) => SendSearchQueryMessage(args.QueryText));
             WinRTWrappersService.RegisterSettingsRequestedHandler((sender, args) => args.AddSetting<SettingsViewModel>());
 
             PlayerControls = (IPlayerControls)view;
@@ -172,16 +166,6 @@ namespace Subsonic8.Shell
         {
             _playerControls.PlayNextClicked += PlayNext;
             _playerControls.PlayPreviousClicked += PlayPrevious;
-        }
-
-        private void NavigateToSearchResultCall(SearchResultCollection searchResultCollection)
-        {
-            NavigationService.NavigateToViewModel<SearchViewModel>(searchResultCollection);
-        }
-
-        private async void OnQuerySubmitted(SearchPane sender, SearchPaneQuerySubmittedEventArgs args)
-        {
-            await PerformSubsonicSearch(args.QueryText);
         }
 
         public async void HandleError(Exception error)

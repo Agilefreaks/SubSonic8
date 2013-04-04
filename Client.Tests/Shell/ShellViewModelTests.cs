@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Client.Common.EventAggregatorMessages;
 using Client.Tests.Mocks;
 using FluentAssertions;
@@ -44,37 +43,6 @@ namespace Client.Tests.Shell
         public void CtorShouldSubscribeToEventAggregator()
         {
             _eventAggregator.Subscriber.Should().Be(Subject);
-        }
-
-        [TestMethod]
-        public async Task PerformSubsonicSearch_Always_CallsSubsonicServiceSearchAndReturnsTheResult()
-        {
-            var callCount = 0;
-            var searchResult = new MockSearchResult();
-            Subject.NavigateToSearhResult = collection => { };
-            _mockSubsonicService.Search = s =>
-                                              {
-                                                  Assert.AreEqual("test", s);
-                                                  callCount++;
-                                                  return searchResult;
-                                              };
-
-            await Subject.PerformSubsonicSearch("test");
-
-            Assert.AreEqual(1, callCount);
-        }
-
-        [TestMethod]
-        public async Task PerformSubsonicSearchAlwaysCallsNavigatesToSearchResult()
-        {
-            var called = false;
-            var searchResult = new MockSearchResult();
-            _mockSubsonicService.Search = s => searchResult;
-            Subject.NavigateToSearhResult = collection => { called = true; };
-
-            await Subject.PerformSubsonicSearch("test");
-
-            Assert.IsTrue(called);
         }
 
         [TestMethod]

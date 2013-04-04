@@ -230,6 +230,7 @@
     <Compile Include="Messages\PlayFile.cs" />
     <Compile Include="Shell\IPlayerControls.cs" />
     <Compile Include="Search\SearchViewModel.cs" />
+    <Compile Include="Messages\PerformSearch.cs" />
     <Compile Include="Shell\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>

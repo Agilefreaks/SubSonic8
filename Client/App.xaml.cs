@@ -6,6 +6,7 @@ using Subsonic8.Framework;
 using Subsonic8.Framework.Interfaces;
 using Subsonic8.Main;
 using Subsonic8.Playback;
+using Subsonic8.Search;
 using Subsonic8.Shell;
 using Subsonic8.VideoPlayback;
 using Windows.ApplicationModel.Activation;
@@ -39,7 +40,7 @@ namespace Subsonic8
             StartApplication();
         }
 
-        protected async override void OnSearchActivated(SearchActivatedEventArgs args)
+        protected override void OnSearchActivated(SearchActivatedEventArgs args)
         {
             var frame = Window.Current.Content as Frame;
             if (frame == null)
@@ -47,7 +48,7 @@ namespace Subsonic8
                 StartApplication();
             }
 
-            await _shellViewModel.PerformSubsonicSearch(args.QueryText);
+            _shellViewModel.SendSearchQueryMessage(args.QueryText);
         }
 
         protected override async void OnSuspending(object sender, Windows.ApplicationModel.SuspendingEventArgs e)
@@ -90,6 +91,7 @@ namespace Subsonic8
             //resolved so that they can start listening for events
             Kernel.Get<IPlaybackViewModel>();
             Kernel.Get<IFullScreenVideoPlaybackViewModel>();
+            Kernel.Get<ISearchViewModel>();
         }
 
         private void BindShellViewModelToView(ShellView shellView)
