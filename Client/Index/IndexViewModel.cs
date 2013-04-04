@@ -20,15 +20,6 @@ namespace Subsonic8.Index
             MenuItems = new BindableCollection<MenuItemViewModel>();
         }
 
-        public async void ArtistClick(ItemClickEventArgs eventArgs)
-        {
-            var artist = (Client.Common.Models.Subsonic.Artist)((MenuItemViewModel)eventArgs.ClickedItem).Item;
-
-            await SubsonicService.GetMusicDirectory(artist.Id)
-                                 .WithErrorHandler(this)
-                                 .OnSuccess(result => NavigationService.NavigateToViewModel<MusicDirectoryViewModel>(result))
-                                 .Execute();
-        }
 
         protected override async void LoadModel()
         {
