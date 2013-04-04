@@ -25,9 +25,8 @@ namespace Subsonic8.Main
         public void IndexClick(ItemClickEventArgs eventArgs)
         {
             var item = ((MenuItemViewModel)eventArgs.ClickedItem).Item;
-            var data = ((IndexItem)item).Serialize();
 
-            NavigationService.NavigateToViewModel<IndexViewModel>(data);
+            NavigationService.NavigateToViewModel<IndexViewModel>(item.Id);
         }
 
         public async void Populate()

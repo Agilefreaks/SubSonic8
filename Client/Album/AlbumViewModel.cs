@@ -9,7 +9,7 @@ namespace Subsonic8.Album
     {
         protected override IServiceResultBase<Client.Common.Models.Subsonic.Album> GetResult(int id)
         {
-            return SubsonicService.GetAlbum(Parameter.Id);
+            return SubsonicService.GetAlbum(id);
         }
 
         protected override IEnumerable<ISubsonicModel> GetItemsToDisplay()

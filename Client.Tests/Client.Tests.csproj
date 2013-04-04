@@ -126,6 +126,7 @@
     <Compile Include="Mocks\MockGetAlbumResult.cs" />
     <Compile Include="Mocks\MockGetArtistResult.cs" />
     <Compile Include="Mocks\MockGetMusicDirectoryResult.cs" />
+    <Compile Include="Mocks\MockGetSongResult.cs" />
     <Compile Include="Mocks\MockPlaybackViewModel.cs" />
     <Compile Include="Mocks\MockToastNotificationService.cs" />
     <Compile Include="Mocks\MockSearchResult.cs" />

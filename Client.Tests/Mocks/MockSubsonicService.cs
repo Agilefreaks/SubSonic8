@@ -5,7 +5,7 @@ namespace Client.Tests.Mocks
 {
     public class MockSubsonicService : SubsonicService
     {
-        private bool _hasValidSubsonicUrl = false;
+        private bool _hasValidSubsonicUrl;
 
         public int GetUriForFileWithIdCallCount { get; set; }
 
@@ -42,6 +42,11 @@ namespace Client.Tests.Mocks
         public void SetHasValidSubsonicUrl(bool value)
         {
             _hasValidSubsonicUrl = value;
+        }
+
+        public MockSubsonicService()
+        {
+            GetSong = id => new MockGetSongResult(id);
         }
     }
 }

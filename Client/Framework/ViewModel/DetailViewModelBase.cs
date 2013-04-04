@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Caliburn.Micro;
 using Client.Common.Models;
 using Client.Common.Results;
@@ -13,10 +14,10 @@ namespace Subsonic8.Framework.ViewModel
         where T : class, ISubsonicModel
     {
         private BindableCollection<MenuItemViewModel> _menuItems;
-        private ISubsonicModel _parameter;
+        private object _parameter;
         private T _item;
 
-        public ISubsonicModel Parameter
+        public object Parameter
         {
             get
             {
@@ -84,8 +85,17 @@ namespace Subsonic8.Framework.ViewModel
 
         protected async virtual void LoadModel()
         {
-            await GetResult(Parameter.Id).WithErrorHandler(this).OnSuccess(result => Item = result).Execute();
+            if (!(Parameter is int)) return;
+
+            var id = (int)Parameter;
+            await GetResult(id).WithErrorHandler(this).OnSuccess(result => Item = result).Execute();
+            await AfterLoadModel(id);
             UpdateDisplayName();
+        }
+
+        protected virtual Task AfterLoadModel(int id)
+        {
+            return new Task(() => { });
         }
 
         private void PopulateMenuItems()

@@ -7,7 +7,7 @@ namespace Subsonic8.Framework.ViewModel
     public interface IDetailViewModel<T> : IViewModel
         where T : ISubsonicModel
     {
-        ISubsonicModel Parameter { get; set; }
+        object Parameter { get; set; }
 
         T Item { get; set; }
 

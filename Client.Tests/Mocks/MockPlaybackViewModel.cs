@@ -101,7 +101,7 @@ namespace Client.Tests.Mocks
         }
 
         public Action UpdateDisplayName { get; set; }
-        public ISubsonicModel Parameter { get; set; }
+        public int Parameter { get; set; }
         public Uri Source { get; set; }
         public PlaybackViewModelStateEnum State { get; private set; }
         public string CoverArt { get; set; }
