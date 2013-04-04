@@ -95,7 +95,9 @@ namespace Subsonic8.Framework.ViewModel
 
         protected virtual Task AfterLoadModel(int id)
         {
-            return new Task(() => { });
+            var taskCompletionSource = new TaskCompletionSource<int>();
+            taskCompletionSource.SetResult(0);
+            return taskCompletionSource.Task;
         }
 
         private void PopulateMenuItems()
