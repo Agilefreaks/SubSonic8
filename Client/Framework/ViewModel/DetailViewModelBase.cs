@@ -10,7 +10,7 @@ using Windows.UI.Xaml.Controls;
 namespace Subsonic8.Framework.ViewModel
 {
     public abstract class DetailViewModelBase<T> : ViewModelBase, IDetailViewModel<T>
-        where T : ISubsonicModel
+        where T : class, ISubsonicModel
     {
         private BindableCollection<MenuItemViewModel> _menuItems;
         private ISubsonicModel _parameter;
@@ -26,12 +26,11 @@ namespace Subsonic8.Framework.ViewModel
             set
             {
                 if (Equals(value, _parameter)) return;
-                
+
                 _parameter = value;
                 NotifyOfPropertyChange();
-               
+
                 LoadModel();
-                UpdateDisplayName();
             }
         }
 
@@ -69,7 +68,7 @@ namespace Subsonic8.Framework.ViewModel
         protected DetailViewModelBase()
         {
             MenuItems = new BindableCollection<MenuItemViewModel>();
-            UpdateDisplayName = () => DisplayName = _parameter.GetDescription().Item1;
+            UpdateDisplayName = () => DisplayName = Item == null ? string.Empty : Item.Name;
         }
 
         public void ChildClick(ItemClickEventArgs eventArgs)
@@ -86,6 +85,7 @@ namespace Subsonic8.Framework.ViewModel
         protected async virtual void LoadModel()
         {
             await GetResult(Parameter.Id).WithErrorHandler(this).OnSuccess(result => Item = result).Execute();
+            UpdateDisplayName();
         }
 
         private void PopulateMenuItems()
