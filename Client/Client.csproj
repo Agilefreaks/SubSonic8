@@ -170,6 +170,9 @@
       <DependentUpon>Playing.xaml</DependentUpon>
     </Compile>
     <Compile Include="Search\SearchResultState.cs" />
+    <Compile Include="Search\Search\Busy.xaml.cs">
+      <DependentUpon>Busy.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Search\Search\NoResultsFound.xaml.cs">
       <DependentUpon>NoResultsFound.xaml</DependentUpon>
     </Compile>
@@ -230,7 +233,6 @@
     <Compile Include="Messages\PlayFile.cs" />
     <Compile Include="Shell\IPlayerControls.cs" />
     <Compile Include="Search\SearchViewModel.cs" />
-    <Compile Include="Messages\PerformSearch.cs" />
     <Compile Include="Shell\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
@@ -343,6 +345,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Search\SearchView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Search\Search\Busy.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

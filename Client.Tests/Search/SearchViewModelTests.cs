@@ -8,7 +8,6 @@ using FluentAssertions;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using Subsonic8.BottomBar;
 using Subsonic8.MenuItem;
-using Subsonic8.Messages;
 using Subsonic8.Search;
 
 namespace Client.Tests.Search
@@ -26,7 +25,6 @@ namespace Client.Tests.Search
 
             var bottomBarViewModel = new DefaultBottomBarViewModel(MockNavigationService, _eventAggregator);
             Subject.BottomBar = bottomBarViewModel;
-            Subject.Parameter = new SearchResultCollection { Query = "I search high and low" };
         }
 
         [TestMethod]
@@ -36,67 +34,42 @@ namespace Client.Tests.Search
         }
 
         [TestMethod]
-        public void ParameterAlbumsContainsOneAlbumWillAddToMenuItemsOneEntry()
+        public async Task PerformSearch_Always_PerformsASubsonicSearch()
         {
-            Subject.Parameter = new SearchResultCollection
-                                     {
-                                         Artists = new List<ExpandedArtist>
-                                                       {
-                                                           new ExpandedArtist()
-                                                       }
-                                     };
+            var callCount = 0;
+            var searchResult = new MockSearchResult();
+            MockSubsonicService.Search = s =>
+                {
+                    Assert.AreEqual("test", s);
+                    callCount++;
+                    return searchResult;
+                };
 
-            Subject.MenuItems.Should().HaveCount(1);
+            await Task.Run(() => Subject.PerformSearch("test"));
+
+            Assert.AreEqual(1, callCount);
         }
 
         [TestMethod]
-        public void ParameterArtistsContainsOneArtistWillAddToMenuItemsOneEntry()
+        public async Task PerformSearch_WhenSearchHasResults_SetsStateToResultsFound()
         {
-            Subject.Parameter = new SearchResultCollection
-                                     {
-                                         Albums = new List<Common.Models.Subsonic.Album>
-                                                      {
-                                                          new Common.Models.Subsonic.Album()
-                                                      },
-                                     };
+            var searchResultCollection = new SearchResultCollection { Songs = new List<Song> { new Song() } };
+            var searchResult = new MockSearchResult { GetResultFunc = () => searchResultCollection };
+            MockSubsonicService.Search = s => searchResult;
 
-            Subject.MenuItems.Should().HaveCount(1);
-        }
-
-        [TestMethod]
-        public void ParameterSongsContainsOneSongWillAddToMenuItemsOneEntry()
-        {
-            Subject.Parameter = new SearchResultCollection
-                                     {
-                                         Songs = new List<Song>
-                                                     {
-                                                         new Song()
-                                                     },
-                                     };
-
-            Subject.MenuItems.Should().HaveCount(1);
-        }
-
-        [TestMethod]
-        public void ParameterWhenNullWillResultInMenuItemsWillContainNoEntry()
-        {
-            Subject.Parameter = null;
-
-            Subject.MenuItems.Should().HaveCount(0);
-        }
-
-        [TestMethod]
-        public void Parameter_WhenSetWithNotEmptySearchCollectionResult_SetsStateToResultsFound()
-        {
-            Subject.Parameter = new SearchResultCollection { Songs = new List<Song> { new Song() } };
+            await Task.Run(() => Subject.PerformSearch("test"));
 
             Subject.State.Should().Be(SearchResultState.ResultsFound);
         }
 
         [TestMethod]
-        public void Parameter_WhenSetWithEmptySearchCollectionResult_SetsStateToNoResultsFound()
+        public async Task PerformSearch_WhenSearchHasNoResults_SetsStateToNoResultsFound()
         {
-            Subject.Parameter = new SearchResultCollection();
+            var searchResultCollection = new SearchResultCollection();
+            var searchResult = new MockSearchResult { GetResultFunc = () => searchResultCollection };
+            MockSubsonicService.Search = s => searchResult;
+
+            await Task.Run(() => Subject.PerformSearch("test"));
 
             Subject.State.Should().Be(SearchResultState.NoResultsFound);
         }
@@ -128,11 +101,67 @@ namespace Client.Tests.Search
         [TestMethod]
         public void PopulateMenuItemsShouldCallSubsonicServiceGetCoverArtForId()
         {
-            Subject.Parameter = new SearchResultCollection { Albums = new List<Common.Models.Subsonic.Album> { new Common.Models.Subsonic.Album() } };
+            var searchResult = new SearchResultCollection { Albums = new List<Common.Models.Subsonic.Album> { new Common.Models.Subsonic.Album() } };
 
-            Subject.PopulateMenuItems();
+            Subject.PopulateMenuItems(searchResult);
 
             (MockSubsonicService.GetCoverArtForIdCallCount > 0).Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void PopulateMenuItems_AlbumsContainsOneAlbumWillAddToMenuItemsOneEntry()
+        {
+            var searchResult = new SearchResultCollection
+                {
+                    Artists = new List<ExpandedArtist>
+                        {
+                            new ExpandedArtist()
+                        }
+                };
+
+            Subject.PopulateMenuItems(searchResult);
+
+            Subject.MenuItems.Should().HaveCount(1);
+        }
+
+        [TestMethod]
+        public void PopulateMenuItems_ArtistsContainsOneArtistWillAddToMenuItemsOneEntry()
+        {
+            var searchResult = new SearchResultCollection
+                {
+                    Albums = new List<Common.Models.Subsonic.Album>
+                        {
+                            new Common.Models.Subsonic.Album()
+                        },
+                };
+
+            Subject.PopulateMenuItems(searchResult);
+
+            Subject.MenuItems.Should().HaveCount(1);
+        }
+
+        [TestMethod]
+        public void PopulateMenuItems_SongsContainsOneSongWillAddToMenuItemsOneEntry()
+        {
+            var searchResult = new SearchResultCollection
+                                     {
+                                         Songs = new List<Song>
+                                                     {
+                                                         new Song()
+                                                     },
+                                     };
+
+            Subject.PopulateMenuItems(searchResult);
+
+            Subject.MenuItems.Should().HaveCount(1);
+        }
+
+        [TestMethod]
+        public void PopulateMenuItems_WhenNullWillResultInMenuItemsWillContainNoEntry()
+        {
+            Subject.Parameter = null;
+
+            Subject.MenuItems.Should().HaveCount(0);
         }
 
         [TestMethod]
@@ -145,33 +174,6 @@ namespace Client.Tests.Search
                                                 });
 
             Subject.MenuItems.Should().Contain(i => i.Any(x => x.Type == type));
-        }
-
-        [TestMethod]
-        public async Task Handle_PerformSearch_Always_PerformsASubsonicSearch()
-        {
-            var callCount = 0;
-            var searchResult = new MockSearchResult();
-            MockSubsonicService.Search = s =>
-                {
-                    Assert.AreEqual("test", s);
-                    callCount++;
-                    return searchResult;
-                };
-
-            await Task.Run(() => Subject.Handle(new PerformSearch("test")));
-
-            Assert.AreEqual(1, callCount);
-        }
-
-        [TestMethod]
-        public async Task Handle_PerformSearh_Calls_NavigateToSearchResult()
-        {
-            await Task.Run(() => Subject.Handle(new PerformSearch("test")));
-
-            MockNavigationService.NavigateToViewModelCalls.Count.Should().Be(1);
-            MockNavigationService.NavigateToViewModelCalls.First().Key.Should().Be(typeof(SearchViewModel));
-            MockNavigationService.NavigateToViewModelCalls.First().Value.Should().BeOfType<SearchResultCollection>();
         }
     }
 }

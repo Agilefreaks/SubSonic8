@@ -1,23 +1,20 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Caliburn.Micro;
 using Client.Common.Models.Subsonic;
 using Subsonic8.Framework.Extensions;
 using Subsonic8.Framework.ViewModel;
 using Subsonic8.MenuItem;
-using Subsonic8.Messages;
 using Windows.UI.Xaml.Controls;
 
 namespace Subsonic8.Search
 {
     public class SearchViewModel : ViewModelBase, ISearchViewModel
     {
-        private SearchResultCollection _parameter;
+        private string _parameter;
         private List<MenuItemViewModel> _menuItemViewModels;
         private SearchResultState _state;
 
-        public SearchResultCollection Parameter
+        public string Parameter
         {
             get
             {
@@ -28,11 +25,9 @@ namespace Subsonic8.Search
             {
                 if (Equals(value, _parameter)) return;
                 _parameter = value;
-
                 NotifyOfPropertyChange();
                 UpdateDisplayName();
-                PopulateMenuItems();
-                State = _menuItemViewModels.Any() ? SearchResultState.ResultsFound : SearchResultState.NoResultsFound;
+                PerformSearch(Parameter);
             }
         }
 
@@ -50,7 +45,11 @@ namespace Subsonic8.Search
 
         public List<MenuItemViewModel> MenuItemViewModels
         {
-            get { return _menuItemViewModels; }
+            get
+            {
+                return _menuItemViewModels;
+            }
+
             private set
             {
                 _menuItemViewModels = value;
@@ -60,7 +59,10 @@ namespace Subsonic8.Search
 
         public SearchResultState State
         {
-            get { return _state; }
+            get
+            {
+                return _state;
+            }
 
             set
             {
@@ -73,16 +75,18 @@ namespace Subsonic8.Search
         {
             MenuItemViewModels = new List<MenuItemViewModel>();
             State = SearchResultState.NoResultsFound;
-            UpdateDisplayName = () => DisplayName = string.Format("Searched for: \"{0}\"", Parameter != null ? Parameter.Query : string.Empty);
+            UpdateDisplayName = () => DisplayName = string.Format("Searched for: \"{0}\"", Parameter ?? string.Empty);
         }
 
-        public void PopulateMenuItems()
+        public void PopulateMenuItems(SearchResultCollection result)
         {
-            if (Parameter == null) return;
+            MenuItemViewModels.Clear();
 
-            PopulateArtists(Parameter.Artists);
-            PopulateAlbums(Parameter.Albums);
-            PopulateSongs(Parameter.Songs);
+            if (result == null) return;
+
+            PopulateArtists(result.Artists);
+            PopulateAlbums(result.Albums);
+            PopulateSongs(result.Songs);
 
             foreach (var subsonicModel in _menuItemViewModels.Select(x => x.Item))
             {
@@ -117,12 +121,23 @@ namespace Subsonic8.Search
             NavigationService.NavigateByModelType(navigableEntity);
         }
 
-        public async void Handle(PerformSearch message)
+        public async void PerformSearch(string parameter)
         {
-            await SubsonicService.Search(message.QueryText)
+            State = SearchResultState.Busy;
+            await SubsonicService.Search(parameter)
                                  .WithErrorHandler(this)
-                                 .OnSuccess(result => NavigationService.NavigateToViewModel<SearchViewModel>(result))
+                                 .OnSuccess(PopulateMenuItems)
                                  .Execute();
+
+            State = MenuItemViewModels.Any() ? SearchResultState.ResultsFound : SearchResultState.NoResultsFound;
+        }
+
+        protected SearchResultCollection Results { get; set; }
+
+        protected override void OnEventAggregatorSet()
+        {
+            base.OnEventAggregatorSet();
+            EventAggregator.Subscribe(this);
         }
 
         private void RemoveCoverArt(IEnumerable<MenuItemViewModel> menuItemViewModels)
@@ -131,12 +146,6 @@ namespace Subsonic8.Search
             {
                 menuItemViewModel.CoverArtId = string.Empty;
             }
-        }
-
-        protected override void OnEventAggregatorSet()
-        {
-            base.OnEventAggregatorSet();
-            EventAggregator.Subscribe(this);
         }
     }
 }

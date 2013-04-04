@@ -1,8 +1,11 @@
-﻿using Caliburn.Micro;
+﻿using System.Linq;
+using Caliburn.Micro;
 using Client.Common.EventAggregatorMessages;
+using Client.Common.Models.Subsonic;
 using Client.Tests.Mocks;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+using Subsonic8.Search;
 using Subsonic8.Shell;
 
 namespace Client.Tests.Shell
@@ -66,6 +69,16 @@ namespace Client.Tests.Shell
             Subject.Handle(new StopAudioPlaybackMessage());
 
             _mockPlayerControls.StopCallCount.Should().Be(1);
+        }
+
+        [TestMethod]
+        public void Handle_PerformSearh_Calls_NavigateToSearchResult()
+        {
+            Subject.SendSearchQueryMessage("test");
+
+            _mockNavigationService.NavigateToViewModelCalls.Count.Should().Be(1);
+            _mockNavigationService.NavigateToViewModelCalls.First().Key.Should().Be(typeof(SearchViewModel));
+            _mockNavigationService.NavigateToViewModelCalls.First().Value.Should().BeOfType<string>();
         }
     }
 }

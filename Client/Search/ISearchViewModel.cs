@@ -1,16 +1,14 @@
 using System.Collections.Generic;
 using System.Linq;
-using Caliburn.Micro;
 using Client.Common.Models.Subsonic;
 using Subsonic8.Framework.ViewModel;
 using Subsonic8.MenuItem;
-using Subsonic8.Messages;
 
 namespace Subsonic8.Search
 {
-    public interface ISearchViewModel : IViewModel, IHandle<PerformSearch>
+    public interface ISearchViewModel : IViewModel
     {
-        SearchResultCollection Parameter { get; set; }
+        string Parameter { get; set; }
 
         List<IGrouping<string, MenuItemViewModel>> MenuItems { get; }
 
@@ -18,7 +16,7 @@ namespace Subsonic8.Search
 
         SearchResultState State { get; set; }
 
-        void PopulateMenuItems();
+        void PopulateMenuItems(SearchResultCollection result);
 
         void PopulateArtists(List<ExpandedArtist> artists);
 

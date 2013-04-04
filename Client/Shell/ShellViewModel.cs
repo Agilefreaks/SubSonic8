@@ -6,7 +6,7 @@ using Client.Common.Results;
 using Client.Common.Services;
 using Subsonic8.BottomBar;
 using Subsonic8.Framework.Services;
-using Subsonic8.Messages;
+using Subsonic8.Search;
 using Subsonic8.Settings;
 using Windows.UI.Xaml;
 
@@ -149,7 +149,7 @@ namespace Subsonic8.Shell
 
         public void SendSearchQueryMessage(string query)
         {
-            _eventAggregator.Publish(new PerformSearch(query));
+            NavigationService.NavigateToViewModel<SearchViewModel>(query);
         }
 
         protected override void OnViewAttached(object view, object context)
