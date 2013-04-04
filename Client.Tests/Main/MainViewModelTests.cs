@@ -19,7 +19,7 @@ namespace Client.Tests.Main
         protected override void TestInitializeExtensions()
         {
             _mockGetRootResult = new MockGetRootResult();
-            MockSubsonicService.GetRootIndex = () => _mockGetRootResult;
+            MockSubsonicService.GetMusicFolders = () => _mockGetRootResult;
         }
 
         [TestMethod]
@@ -31,7 +31,7 @@ namespace Client.Tests.Main
         [TestMethod]
         public void SetMenuItemsShouldAddMenuItems()
         {
-            Subject.SetMenuItems(new List<IndexItem> { new IndexItem(), new IndexItem() });
+            Subject.SetMenuItems(new List<MusicFolder> { new MusicFolder(), new MusicFolder() });
 
             Subject.MenuItems.Should().HaveCount(2);
         }
