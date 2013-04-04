@@ -6,6 +6,7 @@ using Caliburn.Micro;
 using Client.Common.EventAggregatorMessages;
 using Client.Common.Models;
 using Client.Common.Services;
+using Subsonic8.Main;
 using Subsonic8.MenuItem;
 using Subsonic8.Messages;
 using Subsonic8.Playback;
@@ -141,6 +142,11 @@ namespace Subsonic8.BottomBar
         public void NavigateToPlaylist()
         {
             _navigationService.NavigateToViewModel<PlaybackViewModel>();
+        }
+
+        public void NavigateToRoot()
+        {
+            _navigationService.NavigateToViewModel<MainViewModel>();
         }
 
         public void PlayPrevious()

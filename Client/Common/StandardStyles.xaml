@@ -484,7 +484,13 @@
         <Setter Property="AutomationProperties.Name" Value="Save"/>
         <Setter Property="Content" Value="&#xE105;"/>
     </Style>
-    
+
+    <Style x:Key="HomeAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
+        <Setter Property="AutomationProperties.AutomationId" Value="HomeAppBarButton"/>
+        <Setter Property="AutomationProperties.Name" Value="Home"/>
+        <Setter Property="Content" Value="&#xE10F;"/>
+    </Style>
+
     <!-- 
         Standard AppBarButton Styles for use with Button and ToggleButton
     
@@ -535,11 +541,7 @@
         <Setter Property="AutomationProperties.Name" Value="Undo"/>
         <Setter Property="Content" Value="&#xE10E;"/>
     </Style>
-    <Style x:Key="HomeAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
-        <Setter Property="AutomationProperties.AutomationId" Value="HomeAppBarButton"/>
-        <Setter Property="AutomationProperties.Name" Value="Home"/>
-        <Setter Property="Content" Value="&#xE10F;"/>
-    </Style>
+
     <Style x:Key="OutAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
         <Setter Property="AutomationProperties.AutomationId" Value="OutAppBarButton"/>
         <Setter Property="AutomationProperties.Name" Value="Out"/>

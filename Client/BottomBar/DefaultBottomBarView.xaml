@@ -27,6 +27,7 @@
             </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                 <Button Style="{StaticResource ListAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action NavigateToPlaylist()]" Visibility="{Binding IsOnPlaylist, Converter={StaticResource InvertedVisibilityConverter}}"/>
+                <Button Style="{StaticResource HomeAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action NavigateToRoot()]"/>
             </StackPanel>
         </StackPanel>
     </Grid>
