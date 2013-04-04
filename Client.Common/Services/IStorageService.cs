@@ -4,13 +4,14 @@ namespace Client.Common.Services
 {
     public interface IStorageService
     {
-        Task Save<T>(T data)
-            where T : class;
+        Task Save<T>(T data);
 
-        Task<T> Load<T>()
-            where T : class;
+        Task<T> Load<T>();
 
-        Task Delete<T>()
-            where T : class;
+        Task Delete<T>();
+
+        Task Save<T>(T data, string handle);
+
+        Task<T> Load<T>(string handle);
     }
 }

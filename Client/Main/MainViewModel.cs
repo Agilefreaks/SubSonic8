@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using Client.Common.Models.Subsonic;
-using Client.Common.Results;
 using Subsonic8.Framework.Extensions;
 using Subsonic8.Framework.Services;
 using Subsonic8.Framework.ViewModel;
@@ -14,7 +13,7 @@ using Windows.UI.Xaml.Controls;
 
 namespace Subsonic8.Main
 {
-    public class MainViewModel : ViewModelBase, IMainViewModel, IResultHandler<IList<IndexItem>>
+    public class MainViewModel : ViewModelBase, IMainViewModel
     {
         public BindableCollection<MenuItemViewModel> MenuItems { get; private set; }
 
@@ -26,7 +25,9 @@ namespace Subsonic8.Main
         public void IndexClick(ItemClickEventArgs eventArgs)
         {
             var item = ((MenuItemViewModel)eventArgs.ClickedItem).Item;
-            NavigationService.NavigateToViewModel<IndexViewModel>(item);
+            var data = ((IndexItem)item).Serialize();
+
+            NavigationService.NavigateToViewModel<IndexViewModel>(data);
         }
 
         public async void Populate()
@@ -67,6 +68,5 @@ namespace Subsonic8.Main
                 Message = message
             });
         }
-
     }
 }

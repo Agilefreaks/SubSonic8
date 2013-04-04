@@ -39,7 +39,7 @@ namespace Client.Tests.Mocks
             return string.Empty;
         }
 
-        public void SetIsConfigured(bool value)
+        public void SetHasValidSubsonicUrl(bool value)
         {
             _hasValidSubsonicUrl = value;
         }

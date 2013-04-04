@@ -10,9 +10,9 @@ namespace Subsonic8.Index
     public class IndexViewModel : ViewModelBase, IIndexViewModel
     {
         private BindableCollection<MenuItemViewModel> _menuItems;
-        private IndexItem _parameter;
+        private string _parameter;
 
-        public IndexItem Parameter
+        public string Parameter
         {
             get
             {
@@ -22,7 +22,11 @@ namespace Subsonic8.Index
             set
             {
                 _parameter = value;
-                PopulateMenuItems();
+                var indexItem = IndexItem.Deserialize(value);
+                if (indexItem != null)
+                {
+                    PopulateMenuItems(indexItem);
+                }
             }
         }
 
@@ -56,9 +60,9 @@ namespace Subsonic8.Index
                                  .Execute();
         }
 
-        private void PopulateMenuItems()
+        private void PopulateMenuItems(IndexItem indexItem)
         {
-            foreach (var artist in Parameter.Artists)
+            foreach (var artist in indexItem.Artists)
             {
                 MenuItems.Add(new MenuItemViewModel { Title = artist.Name, Item = artist });
             }

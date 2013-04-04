@@ -39,12 +39,25 @@ namespace Client.Tests.Main
         [TestMethod]
         public async Task PopulateWhenServiceIsConfiguredShouldExecuteAGetRootResult()
         {
-            MockSubsonicService.SetIsConfigured(true);
+            MockSubsonicService.SetHasValidSubsonicUrl(true);
 
             await Task.Run(() => Subject.Populate());
             _mockGetRootResult.ExecuteCallCount.Should().Be(1);
 
-            MockSubsonicService.SetIsConfigured(false);
+            MockSubsonicService.SetHasValidSubsonicUrl(false);
+        }
+
+        [TestMethod]
+        public async Task Populate_WhenServiceIsNotConfigured_ShouldShowANotification()
+        {
+            MockSubsonicService.SetHasValidSubsonicUrl(false);
+
+            await Task.Run(() => Subject.Populate());
+
+            MockDialogNotificationService.Showed.Count.Should().Be(1);
+            const string expectedMessage =
+                "You did not set up your connection. Please fill in you server address, username and password to start browsing.";
+            MockDialogNotificationService.Showed[0].Message.Should().Be(expectedMessage);
         }
     }
 }

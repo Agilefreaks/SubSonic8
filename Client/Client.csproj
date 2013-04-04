@@ -133,9 +133,14 @@
     <Compile Include="Converters\PlaybackStateToVisibilityConverter.cs" />
     <Compile Include="Converters\PlayingStateToVisibilityConverter.cs" />
     <Compile Include="Dialogs\DialogService.cs" />
+    <Compile Include="Framework\AppPage.cs" />
     <Compile Include="Framework\CaliburnServiceLocatorApplication.cs" />
     <Compile Include="Framework\Extensions\ToastNotificationExtensions.cs" />
+    <Compile Include="Framework\Interfaces\ISettingsHelper.cs" />
+    <Compile Include="Framework\SettingsHelper.cs" />
+    <Compile Include="Framework\ViewModel\IHaveState.cs" />
     <Compile Include="Framework\Interfaces\IToastNotificationCapable.cs" />
+    <Compile Include="Framework\ViewModel\ScreenWithStateBase.cs" />
     <Compile Include="Framework\Services\DialogNotificationOptions.cs" />
     <Compile Include="Framework\Services\DialogNotificationService.cs" />
     <Compile Include="Framework\Services\IDialogNotificationService.cs" />
