@@ -19,25 +19,9 @@ namespace Subsonic8.Index
             MenuItems = new BindableCollection<MenuItemViewModel>();
         }
 
-        public async void ArtistClick(ItemClickEventArgs eventArgs)
-        {
-            var artist = (Client.Common.Models.Subsonic.Artist)((MenuItemViewModel)eventArgs.ClickedItem).Item;
-
-            await SubsonicService.GetMusicDirectory(artist.Id)
-                                 .WithErrorHandler(this)
-                                 .OnSuccess(result => NavigationService.NavigateToViewModel<MusicDirectoryViewModel>(result))
-                                 .Execute();
-        }
-
-        protected override async void LoadModel()
-        {
-            base.LoadModel();
-            await SubsonicService.GetMusicFolders().WithErrorHandler(this).OnSuccess(SetIndexName).Execute();
-        }
-
         protected override IServiceResultBase<IndexItem> GetResult(int id)
         {
-            return SubsonicService.GetIndex(Parameter.Id);
+            return SubsonicService.GetIndex(id);
         }
 
         protected override IEnumerable<ISubsonicModel> GetItemsToDisplay()
@@ -45,10 +29,15 @@ namespace Subsonic8.Index
             return Item.Artists;
         }
 
-        private void SetIndexName(IList<MusicFolder> musicFolders)
+        protected override async Task AfterLoadModel(int id)
         {
             var result = SubsonicService.GetMusicFolders();
-            var rootFolder = result.Result.First(f => f.Id == Parameter.Id);
+            await result.WithErrorHandler(this).OnSuccess(r => SetIndexName(r, id)).Execute();
+        }
+
+        private void SetIndexName(IEnumerable<MusicFolder> musicFolders, int id)
+        {
+            var rootFolder = musicFolders.First(f => f.Id == id);
             Item.Name = rootFolder != null ? rootFolder.Name : "Unknown";
         }
     }

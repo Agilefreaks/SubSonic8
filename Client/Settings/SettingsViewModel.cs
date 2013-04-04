@@ -11,7 +11,7 @@ namespace Subsonic8.Settings
         private readonly ISubsonicService _subsonicService;
         private readonly IToastNotificationService _notificationService;
         private readonly IStorageService _storageService;
-        private readonly INavigationService _navigationService;
+        private readonly ICustomFrameAdapter _navigationService;
         private Subsonic8Configuration _configuration;
 
         public Subsonic8Configuration Configuration
@@ -37,7 +37,7 @@ namespace Subsonic8.Settings
         }
 
         public SettingsViewModel(ISubsonicService subsonicService, IToastNotificationService notificationService,
-            IStorageService storageService, INavigationService navigationService)
+            IStorageService storageService, ICustomFrameAdapter navigationService)
         {
             _subsonicService = subsonicService;
             _notificationService = notificationService;

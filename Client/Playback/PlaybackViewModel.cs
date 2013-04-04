@@ -38,13 +38,9 @@ namespace Subsonic8.Playback
 
         #region Public Properties
 
-        public ISubsonicModel Parameter
+        public int Parameter
         {
-            set
-            {
-                if (value == null) return;
-                Handle(new PlayFile { Model = value });
-            }
+            set { LoadSongById(value); }
         }
 
         public Uri Source
@@ -338,10 +334,9 @@ namespace Subsonic8.Playback
             Client.Common.Models.PlaylistItem playlistItem = null;
             if (model != null)
             {
-                await
-                    SubsonicService.GetSong(model.Id)
-                                   .WithErrorHandler(this)
-                                   .OnSuccess(result => playlistItem = CreatePlaylistItemFromSong(result)).Execute();
+                await SubsonicService.GetSong(model.Id)
+                                     .WithErrorHandler(this)
+                                     .OnSuccess(result => playlistItem = CreatePlaylistItemFromSong(result)).Execute();
             }
 
             return playlistItem;
@@ -378,6 +373,14 @@ namespace Subsonic8.Playback
                 BottomBar.IsPlaying = _playlistManagementService.IsPlaying;
                 NotifyOfPropertyChange(() => IsPlaying);
             }
+        }
+
+        private async void LoadSongById(int songId)
+        {
+            await SubsonicService.GetSong(songId)
+                                 .WithErrorHandler(this)
+                                 .OnSuccess(song => Handle(new PlayFile { Model = song }))
+                                 .Execute();
         }
     }
 }

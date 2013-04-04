@@ -133,8 +133,12 @@
     <Compile Include="Converters\PlaybackStateToVisibilityConverter.cs" />
     <Compile Include="Converters\PlayingStateToVisibilityConverter.cs" />
     <Compile Include="Dialogs\DialogService.cs" />
+    <Compile Include="Framework\AppPage.cs" />
     <Compile Include="Framework\CaliburnServiceLocatorApplication.cs" />
     <Compile Include="Framework\Extensions\ToastNotificationExtensions.cs" />
+    <Compile Include="Framework\Interfaces\ISettingsHelper.cs" />
+    <Compile Include="Framework\SettingsHelper.cs" />
+    <Compile Include="Framework\ViewModel\IHaveState.cs" />
     <Compile Include="Framework\Interfaces\IToastNotificationCapable.cs" />
     <Compile Include="Framework\Services\DialogNotificationOptions.cs" />
     <Compile Include="Framework\Services\DialogNotificationService.cs" />
@@ -153,6 +157,7 @@
     <Compile Include="Framework\ViewModel\IPlaybackControlsViewModel.cs" />
     <Compile Include="Framework\ViewModel\ItemViewModelBase.cs" />
     <Compile Include="Framework\ViewModel\PlaybackControlsViewModelBase.cs" />
+    <Compile Include="Framework\ViewModel\ScreenWithStateBase.cs" />
     <Compile Include="Messages\NotificationMessage.cs" />
     <Compile Include="Messages\ShowControlsMessage.cs" />
     <Compile Include="PlaylistItem\PlaylistItemView.xaml.cs">
@@ -165,6 +170,9 @@
       <DependentUpon>Playing.xaml</DependentUpon>
     </Compile>
     <Compile Include="Search\SearchResultState.cs" />
+    <Compile Include="Search\Search\Busy.xaml.cs">
+      <DependentUpon>Busy.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Search\Search\NoResultsFound.xaml.cs">
       <DependentUpon>NoResultsFound.xaml</DependentUpon>
     </Compile>
@@ -337,6 +345,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Search\SearchView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Search\Search\Busy.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

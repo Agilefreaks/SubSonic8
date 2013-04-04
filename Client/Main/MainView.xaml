@@ -1,4 +1,4 @@
-﻿<Page
+﻿<framework:AppPage
     x:Class="Subsonic8.Main.MainView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -19,4 +19,4 @@
                   framework:MultipleSelectBehavior.SelectedItems="{Binding SelectedItems, Mode=TwoWay}"
                   IsItemClickEnabled="True" caliburn:Message.Attach="[Event ItemClick] = [IndexClick($eventArgs)]" />
     </Grid>
-</Page>
+</framework:AppPage>

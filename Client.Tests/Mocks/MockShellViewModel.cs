@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Threading.Tasks;
 using Caliburn.Micro;
 using Client.Common.EventAggregatorMessages;
-using Client.Common.Models.Subsonic;
 using Client.Common.Services;
 using Subsonic8.BottomBar;
 using Subsonic8.Framework.Services;
@@ -29,13 +27,6 @@ namespace Client.Tests.Mocks
 
         public int StopCallCount { get; set; }
 
-        public Action<SearchResultCollection> NavigateToSearhResult { get; set; }
-
-        public Task PerformSubsonicSearch(string query)
-        {
-            throw new NotImplementedException();
-        }
-
         public void PlayNext(object sender, RoutedEventArgs routedEventArgs)
         {
             throw new NotImplementedException();
@@ -54,6 +45,11 @@ namespace Client.Tests.Mocks
         public void Stop()
         {
             StopCallCount++;
+        }
+
+        public void SendSearchQueryMessage(string query)
+        {
+            throw new NotImplementedException();
         }
 
         public void HandleError(Exception error)

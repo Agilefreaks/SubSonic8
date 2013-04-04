@@ -1,11 +1,12 @@
 ﻿using System;
+using Client.Common.Models.Subsonic;
 using Client.Common.Services;
 
 namespace Client.Tests.Mocks
 {
     public class MockSubsonicService : SubsonicService
     {
-        private bool _hasValidSubsonicUrl = false;
+        private bool _hasValidSubsonicUrl;
 
         public int GetUriForFileWithIdCallCount { get; set; }
 
@@ -39,9 +40,18 @@ namespace Client.Tests.Mocks
             return string.Empty;
         }
 
-        public void SetIsConfigured(bool value)
+        public void SetHasValidSubsonicUrl(bool value)
         {
             _hasValidSubsonicUrl = value;
+        }
+
+        public MockSubsonicService()
+        {
+            GetSong = id => new MockGetSongResult(id);
+            Search = s => new MockSearchResult
+                {
+                    GetResultFunc = () => new SearchResultCollection()
+                };
         }
     }
 }

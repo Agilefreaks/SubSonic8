@@ -7,9 +7,6 @@ namespace Client.Common.Models.Subsonic
     [XmlRoot(ElementName = "album", Namespace = "http://subsonic.org/restapi")]
     public class Album : SubsonicModelBase
     {
-        [XmlAttribute("name")]
-        public string Name { get; set; }
-
         [XmlAttribute("artist")]
         public string Artist { get; set; }
 

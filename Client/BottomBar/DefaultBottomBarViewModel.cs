@@ -5,6 +5,7 @@ using System.Linq;
 using Caliburn.Micro;
 using Client.Common.EventAggregatorMessages;
 using Client.Common.Models;
+using Client.Common.Services;
 using Subsonic8.MenuItem;
 using Subsonic8.Messages;
 using Subsonic8.Playback;
@@ -14,7 +15,7 @@ namespace Subsonic8.BottomBar
 {
     public class DefaultBottomBarViewModel : Screen, IDefaultBottomBarViewModel
     {
-        private readonly INavigationService _navigationService;
+        private readonly ICustomFrameAdapter _navigationService;
         private readonly IEventAggregator _eventAggregator;
         private bool _isOpened;
         private bool _isPlaying;
@@ -109,7 +110,7 @@ namespace Subsonic8.BottomBar
 
         public Action Navigate { get; set; }
 
-        public DefaultBottomBarViewModel(INavigationService navigationService, IEventAggregator eventAggregator)
+        public DefaultBottomBarViewModel(ICustomFrameAdapter navigationService, IEventAggregator eventAggregator)
         {
             _navigationService = navigationService;
             _eventAggregator = eventAggregator;

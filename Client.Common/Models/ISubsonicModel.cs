@@ -8,6 +8,8 @@ namespace Client.Common.Models
 
         string CoverArt { get; set; }
 
+        string Name { get; }
+
         Tuple<string, string> GetDescription();
     }
 }

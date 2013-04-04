@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using Caliburn.Micro;
+using Client.Common.Services;
 using Subsonic8.Framework.ViewModel;
 using Windows.UI.Xaml.Navigation;
 
 namespace Client.Tests.Mocks
 {
-    public class MockNavigationService : INavigationService
+    public class MockNavigationService : ICustomFrameAdapter
     {
         public Dictionary<Type, object> NavigateToViewModelCalls { get; private set; }
 
@@ -25,6 +26,12 @@ namespace Client.Tests.Mocks
         public event NavigationFailedEventHandler NavigationFailed;
 
         public event NavigationStoppedEventHandler NavigationStopped;
+
+        public void NavigateToViewModel<T>(object parameter = null)
+            where T : Screen
+        {
+            NavigateToViewModelCalls.Add(typeof(T), parameter);
+        }
 
         public MockNavigationService()
         {

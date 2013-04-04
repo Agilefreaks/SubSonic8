@@ -12,7 +12,7 @@ namespace Subsonic8.Framework.ViewModel
     {
         IEventAggregator EventAggregator { get; set; }
 
-        INavigationService NavigationService { get; set; }
+        ICustomFrameAdapter NavigationService { get; set; }
 
         ISubsonicService SubsonicService { get; set; }
 

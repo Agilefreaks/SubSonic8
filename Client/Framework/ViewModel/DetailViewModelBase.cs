@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Caliburn.Micro;
 using Client.Common.Models;
 using Client.Common.Results;
@@ -10,13 +11,13 @@ using Windows.UI.Xaml.Controls;
 namespace Subsonic8.Framework.ViewModel
 {
     public abstract class DetailViewModelBase<T> : ViewModelBase, IDetailViewModel<T>
-        where T : ISubsonicModel
+        where T : class, ISubsonicModel
     {
         private BindableCollection<MenuItemViewModel> _menuItems;
-        private ISubsonicModel _parameter;
+        private object _parameter;
         private T _item;
 
-        public ISubsonicModel Parameter
+        public object Parameter
         {
             get
             {
@@ -26,12 +27,11 @@ namespace Subsonic8.Framework.ViewModel
             set
             {
                 if (Equals(value, _parameter)) return;
-                
+
                 _parameter = value;
                 NotifyOfPropertyChange();
-               
+
                 LoadModel();
-                UpdateDisplayName();
             }
         }
 
@@ -69,14 +69,14 @@ namespace Subsonic8.Framework.ViewModel
         protected DetailViewModelBase()
         {
             MenuItems = new BindableCollection<MenuItemViewModel>();
-            UpdateDisplayName = () => DisplayName = _parameter.GetDescription().Item1;
+            UpdateDisplayName = () => DisplayName = Item == null ? string.Empty : Item.Name;
         }
 
         public void ChildClick(ItemClickEventArgs eventArgs)
         {
-            var navigableEntity = ((MenuItemViewModel)eventArgs.ClickedItem).Item;
+            var subsonicModel = ((MenuItemViewModel)eventArgs.ClickedItem).Item;
 
-            NavigationService.NavigateByEntityType(navigableEntity);
+            NavigationService.NavigateByModelType(subsonicModel);
         }
 
         protected abstract IServiceResultBase<T> GetResult(int id);
@@ -85,7 +85,19 @@ namespace Subsonic8.Framework.ViewModel
 
         protected async virtual void LoadModel()
         {
-            await GetResult(Parameter.Id).WithErrorHandler(this).OnSuccess(result => Item = result).Execute();
+            if (!(Parameter is int)) return;
+
+            var id = (int)Parameter;
+            await GetResult(id).WithErrorHandler(this).OnSuccess(result => Item = result).Execute();
+            await AfterLoadModel(id);
+            UpdateDisplayName();
+        }
+
+        protected virtual Task AfterLoadModel(int id)
+        {
+            var taskCompletionSource = new TaskCompletionSource<int>();
+            taskCompletionSource.SetResult(0);
+            return taskCompletionSource.Task;
         }
 
         private void PopulateMenuItems()
