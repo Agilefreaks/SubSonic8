@@ -8,7 +8,7 @@ using Windows.UI.Xaml.Controls;
 
 namespace Subsonic8.Main
 {
-    public interface IMainViewModel : IViewModel, IResultHandler<IList<IndexItem>>
+    public interface IMainViewModel : IViewModel, IResultHandler<IList<MusicFolder>>
     {
         BindableCollection<MenuItemViewModel> MenuItems { get; }
 
@@ -16,6 +16,6 @@ namespace Subsonic8.Main
 
         void Populate();
 
-        void SetMenuItems(IList<IndexItem> items);
+        void SetMenuItems(IList<MusicFolder> items);
     }
 }

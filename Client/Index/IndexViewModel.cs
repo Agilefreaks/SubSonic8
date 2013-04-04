@@ -1,5 +1,10 @@
-﻿using Caliburn.Micro;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Caliburn.Micro;
+using Client.Common.Models;
 using Client.Common.Models.Subsonic;
+using Client.Common.Results;
 using Subsonic8.Framework.ViewModel;
 using Subsonic8.MenuItem;
 using Subsonic8.MusicDirectory;
@@ -7,43 +12,8 @@ using Windows.UI.Xaml.Controls;
 
 namespace Subsonic8.Index
 {
-    public class IndexViewModel : ViewModelBase, IIndexViewModel
+    public class IndexViewModel : DetailViewModelBase<IndexItem>, IIndexViewModel
     {
-        private BindableCollection<MenuItemViewModel> _menuItems;
-        private string _parameter;
-
-        public string Parameter
-        {
-            get
-            {
-                return _parameter;
-            }
-
-            set
-            {
-                _parameter = value;
-                var indexItem = IndexItem.Deserialize(value);
-                if (indexItem != null)
-                {
-                    PopulateMenuItems(indexItem);
-                }
-            }
-        }
-
-        public BindableCollection<MenuItemViewModel> MenuItems
-        {
-            get
-            {
-                return _menuItems;
-            }
-
-            set
-            {
-                if (Equals(value, _menuItems)) return;
-                _menuItems = value;
-                NotifyOfPropertyChange();
-            }
-        }
 
         public IndexViewModel()
         {
@@ -60,12 +30,27 @@ namespace Subsonic8.Index
                                  .Execute();
         }
 
-        private void PopulateMenuItems(IndexItem indexItem)
+        protected override async void LoadModel()
         {
-            foreach (var artist in indexItem.Artists)
-            {
-                MenuItems.Add(new MenuItemViewModel { Title = artist.Name, Item = artist });
-            }
+            base.LoadModel();
+            await SubsonicService.GetMusicFolders().WithErrorHandler(this).OnSuccess(SetIndexName).Execute();
+        }
+
+        protected override IServiceResultBase<IndexItem> GetResult(int id)
+        {
+            return SubsonicService.GetIndex(Parameter.Id);
+        }
+
+        protected override IEnumerable<ISubsonicModel> GetItemsToDisplay()
+        {
+            return Item.Artists;
+        }
+
+        private void SetIndexName(IList<MusicFolder> musicFolders)
+        {
+            var result = SubsonicService.GetMusicFolders();
+            var rootFolder = result.Result.First(f => f.Id == Parameter.Id);
+            Item.Name = rootFolder != null ? rootFolder.Name : "Unknown";
         }
     }
 }

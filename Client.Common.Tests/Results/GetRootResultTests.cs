@@ -31,7 +31,7 @@ namespace Client.Common.Tests.Results
         [TestMethod]
         public void ViewNameShoulBeCorrect()
         {
-            _subject.ViewName.Should().Be("getIndexes.view");
+            _subject.ViewName.Should().Be("getMusicFolders.view");
         }
 
         [TestMethod]

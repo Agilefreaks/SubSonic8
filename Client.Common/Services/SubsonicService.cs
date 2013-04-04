@@ -25,7 +25,7 @@ namespace Client.Common.Services
             }
         }
 
-        public Func<IGetRootResult> GetRootIndex { get; set; }
+        public Func<IGetRootResult> GetMusicFolders { get; set; }
 
         public Func<int, IGetMusicDirectoryResult> GetMusicDirectory { get; set; }
 
@@ -34,6 +34,8 @@ namespace Client.Common.Services
         public Func<int, IGetAlbumResult> GetAlbum { get; set; }
 
         public Func<int, IGetSongResult> GetSong { get; set; }
+
+        public Func<int, IGetIndexResult> GetIndex { set; get; }
 
         public Func<string, ISearchResult> Search { get; set; }
 
@@ -44,11 +46,12 @@ namespace Client.Common.Services
 
         public SubsonicService()
         {
-            GetRootIndex = GetRootIndexImpl;
+            GetMusicFolders = GetMusicFoldersImpl;
             GetMusicDirectory = GetMusicDirectoryImpl;
             GetAlbum = GetAlbumImpl;
             GetArtist = GetArtistImpl;
             GetSong = GetSongImpl;
+            GetIndex = GetIndexImpl;
             Search = SearchImpl;
         }
 
@@ -57,9 +60,8 @@ namespace Client.Common.Services
             return new Uri(string.Format(_configuration.RequestFormatWithUsernameAndPassword(), "stream.view", _configuration.Username, _configuration.Password) + string.Format("&id={0}", id));
         }
 
-        public virtual Uri GetUriForVideoWithId(int id, int timeOffset = 0)
+        public virtual Uri GetUriForVideoWithId(int id, int timeOffset = 0, int maxBitRate = 0)
         {
-            var maxBitRate = 0;
             var uriString = string.Format("{0}stream/stream.ts?id={1}&hls=true&timeOffset={2}", _configuration.BaseUrl, id, timeOffset);
             if (maxBitRate > 0)
             {
@@ -107,7 +109,7 @@ namespace Client.Common.Services
             return new SearchResult(_configuration, query);
         }
 
-        private IGetRootResult GetRootIndexImpl()
+        private IGetRootResult GetMusicFoldersImpl()
         {
             return new GetRootResult(_configuration);
         }
@@ -125,6 +127,11 @@ namespace Client.Common.Services
         private IGetAlbumResult GetAlbumImpl(int id)
         {
             return new GetAlbumResult(_configuration, id);
+        }
+
+        private IGetIndexResult GetIndexImpl(int musicFolderId)
+        {
+            return new GetIndexResult(_configuration, musicFolderId);
         }
 
         private IGetSongResult GetSongImpl(int id)

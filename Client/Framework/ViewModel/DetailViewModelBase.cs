@@ -83,7 +83,7 @@ namespace Subsonic8.Framework.ViewModel
 
         protected abstract IEnumerable<ISubsonicModel> GetItemsToDisplay();
 
-        private async void LoadModel()
+        protected async virtual void LoadModel()
         {
             await GetResult(Parameter.Id).WithErrorHandler(this).OnSuccess(result => Item = result).Execute();
         }

@@ -7,9 +7,9 @@ using Client.Common.Services;
 
 namespace Client.Common.Results 
 {
-    public class GetRootResult : ServiceResultBase<IList<IndexItem>>, IGetRootResult
+    public class GetRootResult : ServiceResultBase<IList<MusicFolder>>, IGetRootResult
     {
-        public override string ViewName { get { return "getIndexes.view"; } }
+        public override string ViewName { get { return "getMusicFolders.view"; } }
 
         public GetRootResult(ISubsonicServiceConfiguration configuration)
             : base(configuration)
@@ -18,10 +18,10 @@ namespace Client.Common.Results
 
         protected override void HandleResponse(XDocument xDocument)
         {
-            var xmlSerializer = new XmlSerializer(typeof(IndexItem), new[] { typeof(Artist) });
+            var xmlSerializer = new XmlSerializer(typeof(MusicFolder));
 
-            Result = (from musicFolder in xDocument.Element(Namespace + "subsonic-response").Element(Namespace + "indexes").Descendants(Namespace + "index")
-                      select (IndexItem)xmlSerializer.Deserialize(musicFolder.CreateReader())).ToList();
+            Result = (from musicFolder in xDocument.Element(Namespace + "subsonic-response").Element(Namespace + "musicFolders").Descendants(Namespace + "musicFolder")
+                      select (MusicFolder)xmlSerializer.Deserialize(musicFolder.CreateReader())).ToList();
         }
     }
 }

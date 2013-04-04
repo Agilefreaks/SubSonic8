@@ -4,12 +4,12 @@ using Client.Common.Results;
 
 namespace Client.Tests.Mocks
 {
-    public class MockGetRootResult : MockServiceResultBase<IList<IndexItem>>, IGetRootResult
+    public class MockGetRootResult : MockServiceResultBase<IList<MusicFolder>>, IGetRootResult
     {
         public MockGetRootResult()
         {
             ExecuteCallCount = 0;
-            Result = new List<IndexItem>();
+            Result = new List<MusicFolder>();
         }
     }
 }

@@ -26,9 +26,9 @@ namespace Client.Common.Tests.Services
         }
 
         [TestMethod]
-        public void GetRootIndexAlwaysReturnsAGetIndexResult()
+        public void GetMusicFoldersAlwaysReturnsAGetRootResult()
         {
-            var result = _subject.GetRootIndex();
+            var result = _subject.GetMusicFolders();
 
             result.Should().BeOfType<GetRootResult>();
         }
@@ -37,7 +37,7 @@ namespace Client.Common.Tests.Services
         public void CtorShouldInitializeFunctions()
         {
             _subject.GetMusicDirectory.Should().NotBeNull();
-            _subject.GetRootIndex.Should().NotBeNull();
+            _subject.GetMusicFolders.Should().NotBeNull();
             _subject.GetAlbum.Should().NotBeNull();
             _subject.Search.Should().NotBeNull();
         }
@@ -124,6 +124,14 @@ namespace Client.Common.Tests.Services
 
             var expectedUri = new Uri("http://google.com/stream/stream.ts?id=30437&hls=true&timeOffset=100&duration=10&maxBitRate=50");
             uriForVideoStartingAt.Should().Be(expectedUri);
+        }
+
+        [TestMethod]
+        public void GetIndex_Always_ReturnsAGetIndexResult()
+        {
+            var result = _subject.GetIndex(5);
+
+            result.Should().BeOfType<GetIndexResult>();
         }
     }
 }

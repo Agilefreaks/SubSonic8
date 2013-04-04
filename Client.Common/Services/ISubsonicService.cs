@@ -7,7 +7,7 @@ namespace Client.Common.Services
     {
         SubsonicServiceConfiguration Configuration { get; set; }
 
-        Func<IGetRootResult> GetRootIndex { get; set; }
+        Func<IGetRootResult> GetMusicFolders { get; set; }
 
         Func<int, IGetMusicDirectoryResult> GetMusicDirectory { get; set; }
 
@@ -18,12 +18,14 @@ namespace Client.Common.Services
         Func<int, IGetSongResult> GetSong { get; set; }
 
         Func<string, ISearchResult> Search { get; set; }
-        
+
+        Func<int, IGetIndexResult> GetIndex { get; set; }
+
         bool HasValidSubsonicUrl { get; }
 
         Uri GetUriForFileWithId(int id);
 
-        Uri GetUriForVideoWithId(int id, int timeOffset = 0);
+        Uri GetUriForVideoWithId(int id, int timeOffset = 0, int maxBitRate = 0);
 
         Uri GetUriForVideoStartingAt(Uri source, double totalSeconds);
 

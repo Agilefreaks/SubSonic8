@@ -25,7 +25,7 @@ namespace Client.Tests.Mocks
             return new Uri(string.Format("http://subsonic.org?id={0}", id));
         }
 
-        public override Uri GetUriForVideoWithId(int id, int timeOffset = 0)
+        public override Uri GetUriForVideoWithId(int id, int timeOffset = 0, int maxBitrate = 0)
         {
             GetUriForVideoWithIdCallCount++;
 

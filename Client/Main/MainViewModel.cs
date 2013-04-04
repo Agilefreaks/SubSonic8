@@ -34,7 +34,7 @@ namespace Subsonic8.Main
         {
             if (SubsonicService.HasValidSubsonicUrl)
             {
-                await SubsonicService.GetRootIndex().WithErrorHandler(this).OnSuccess(SetMenuItems).Execute();
+                await SubsonicService.GetMusicFolders().WithErrorHandler(this).OnSuccess(SetMenuItems).Execute();
             }
             else
             {
@@ -43,14 +43,14 @@ namespace Subsonic8.Main
             }
         }
 
-        public void SetMenuItems(IList<IndexItem> items)
-        {
-            MenuItems.AddRange(items.Select(s => s.AsMenuItemViewModel()));
-        }
-
-        public void HandleSuccess(IList<IndexItem> result)
+        public void HandleSuccess(IList<MusicFolder> result)
         {
             SetMenuItems(result);
+        }
+
+        public void SetMenuItems(IList<MusicFolder> items)
+        {
+            MenuItems.AddRange(items.Select(s => s.AsMenuItemViewModel()));
         }
 
         protected override void OnInitialize()

@@ -3,7 +3,7 @@ using Client.Common.Models.Subsonic;
 
 namespace Client.Common.Results
 {
-    public interface IGetRootResult : IServiceResultBase<IList<IndexItem>>
+    public interface IGetRootResult : IServiceResultBase<IList<MusicFolder>>
     {
     }
 }
