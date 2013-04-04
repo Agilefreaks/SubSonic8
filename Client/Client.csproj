@@ -140,7 +140,6 @@
     <Compile Include="Framework\SettingsHelper.cs" />
     <Compile Include="Framework\ViewModel\IHaveState.cs" />
     <Compile Include="Framework\Interfaces\IToastNotificationCapable.cs" />
-    <Compile Include="Framework\ViewModel\ScreenWithStateBase.cs" />
     <Compile Include="Framework\Services\DialogNotificationOptions.cs" />
     <Compile Include="Framework\Services\DialogNotificationService.cs" />
     <Compile Include="Framework\Services\IDialogNotificationService.cs" />
@@ -158,6 +157,7 @@
     <Compile Include="Framework\ViewModel\IPlaybackControlsViewModel.cs" />
     <Compile Include="Framework\ViewModel\ItemViewModelBase.cs" />
     <Compile Include="Framework\ViewModel\PlaybackControlsViewModelBase.cs" />
+    <Compile Include="Framework\ViewModel\ScreenWithStateBase.cs" />
     <Compile Include="Messages\NotificationMessage.cs" />
     <Compile Include="Messages\ShowControlsMessage.cs" />
     <Compile Include="PlaylistItem\PlaylistItemView.xaml.cs">

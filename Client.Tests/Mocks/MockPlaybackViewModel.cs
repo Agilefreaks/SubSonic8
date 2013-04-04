@@ -89,7 +89,7 @@ namespace Client.Tests.Mocks
         }
 
         public IEventAggregator EventAggregator { get; set; }
-        public INavigationService NavigationService { get; set; }
+        public ICustomFrameAdapter NavigationService { get; set; }
         public ISubsonicService SubsonicService { get; set; }
         public IDialogNotificationService NotificationService { get; set; }
         public IDefaultBottomBarViewModel BottomBar { get; set; }

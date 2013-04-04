@@ -1,4 +1,5 @@
 ﻿using System;
+using Client.Common.Models.Subsonic;
 using Client.Common.Services;
 
 namespace Client.Tests.Mocks
@@ -47,6 +48,10 @@ namespace Client.Tests.Mocks
         public MockSubsonicService()
         {
             GetSong = id => new MockGetSongResult(id);
+            Search = s => new MockSearchResult
+                {
+                    GetResultFunc = () => new SearchResultCollection()
+                };
         }
     }
 }

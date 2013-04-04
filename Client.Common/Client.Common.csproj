@@ -165,6 +165,7 @@
     <Compile Include="Results\VisualStateResult.cs" />
     <Compile Include="EventAggregatorMessages\AddItemsMessage.cs" />
     <Compile Include="Services\CustomFrameAdapter.cs" />
+    <Compile Include="Services\ICustomFrameAdapter.cs" />
     <Compile Include="Services\ImageType.cs" />
     <Compile Include="Services\IPlaylistManagementService.cs" />
     <Compile Include="Services\IStorageService.cs" />

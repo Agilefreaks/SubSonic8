@@ -167,12 +167,11 @@ namespace Client.Tests.Search
         [TestMethod]
         public async Task Handle_PerformSearh_Calls_NavigateToSearchResult()
         {
-            var searchResult = new MockSearchResult();
-            MockSubsonicService.Search = s => searchResult;
-
             await Task.Run(() => Subject.Handle(new PerformSearch("test")));
 
             MockNavigationService.NavigateToViewModelCalls.Count.Should().Be(1);
+            MockNavigationService.NavigateToViewModelCalls.First().Key.Should().Be(typeof(SearchViewModel));
+            MockNavigationService.NavigateToViewModelCalls.First().Value.Should().BeOfType<SearchResultCollection>();
         }
     }
 }

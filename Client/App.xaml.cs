@@ -84,6 +84,7 @@ namespace Subsonic8
         {
             _navigationService = new CustomFrameAdapter(shellFrame, treatViewAsLoaded);
             Kernel.Bind<INavigationService>().ToConstant(_navigationService);
+            Kernel.Bind<ICustomFrameAdapter>().ToConstant(_navigationService);
         }
 
         private void InstantiateRequiredSingletons()

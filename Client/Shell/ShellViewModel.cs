@@ -70,7 +70,7 @@ namespace Subsonic8.Shell
 
         public ISubsonicService SubsonicService { get; set; }
 
-        public INavigationService NavigationService { get; set; }
+        public ICustomFrameAdapter NavigationService { get; set; }
 
         public IToastNotificationService NotificationService { get; set; }
 
@@ -85,7 +85,7 @@ namespace Subsonic8.Shell
             get { return "Subsonic8"; }
         }
 
-        public ShellViewModel(IEventAggregator eventAggregator, ISubsonicService subsonicService, INavigationService navigationService,
+        public ShellViewModel(IEventAggregator eventAggregator, ISubsonicService subsonicService, ICustomFrameAdapter navigationService,
             IToastNotificationService notificationService, IDialogNotificationService dialogNotificationService, IStorageService storageService, IWinRTWrappersService winRTWrappersService)
         {
             _eventAggregator = eventAggregator;
