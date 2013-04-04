@@ -1,14 +1,8 @@
-﻿using Caliburn.Micro;
-using Client.Common.Models.Subsonic;
-using Subsonic8.Framework.ViewModel;
-using Subsonic8.MenuItem;
+﻿using Subsonic8.Framework.ViewModel;
 
 namespace Subsonic8.Index
 {
-    public interface IIndexViewModel : IViewModel
+    public interface IIndexViewModel : IDetailViewModel<Client.Common.Models.Subsonic.IndexItem>
     {
-        IndexItem Parameter { get; set; }
-
-        BindableCollection<MenuItemViewModel> MenuItems { get; set; }
     }
 }

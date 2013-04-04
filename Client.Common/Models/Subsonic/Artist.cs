@@ -1,4 +1,5 @@
-﻿using System.Xml.Serialization;
+﻿using System;
+using System.Xml.Serialization;
 
 namespace Client.Common.Models.Subsonic
 {
@@ -11,6 +12,11 @@ namespace Client.Common.Models.Subsonic
         public override SubsonicModelTypeEnum Type
         {
             get { return SubsonicModelTypeEnum.MusicDirectory; }
+        }
+
+        public override System.Tuple<string, string> GetDescription()
+        {
+            return new Tuple<string, string>(Name, Name);
         }
     }
 }
