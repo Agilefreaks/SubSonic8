@@ -3,6 +3,7 @@ using Caliburn.Micro;
 using Client.Common.EventAggregatorMessages;
 using Client.Common.Services;
 using Subsonic8.BottomBar;
+using Subsonic8.Framework.Interfaces;
 using Subsonic8.Framework.Services;
 using Subsonic8.Shell;
 using Windows.UI.Xaml;

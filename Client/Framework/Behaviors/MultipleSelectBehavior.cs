@@ -6,7 +6,7 @@ using System.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
-namespace Subsonic8.Framework
+namespace Subsonic8.Framework.Behaviors
 {
     public class MultipleSelectBehavior
     {

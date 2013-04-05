@@ -6,6 +6,7 @@ using Client.Common.Results;
 using Client.Common.Services;
 using Subsonic8.BottomBar;
 using Subsonic8.Framework.Extensions;
+using Subsonic8.Framework.Interfaces;
 using Subsonic8.Framework.Services;
 using Subsonic8.Search;
 using Subsonic8.Settings;

@@ -5,9 +5,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:cal="using:Caliburn.Micro"
-    xmlns:framework="using:Subsonic8.Framework"
     xmlns:common="using:Subsonic8.Common" xmlns:playlistItem="using:Subsonic8.PlaylistItem"
     xmlns:playback="using:Subsonic8.Playback.Playback" xmlns:converters="using:Subsonic8.Converters"
+    xmlns:behaviors="using:Subsonic8.Framework.Behaviors"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -59,7 +59,7 @@
                     <ListView
                     ItemsSource = "{Binding PlaylistItems}" ItemTemplate="{StaticResource PlaylistItemTemplate}"
                     SelectionMode = "Multiple"
-                    framework:MultipleSelectBehavior.SelectedItems="{Binding SelectedItems, Mode=TwoWay}"
+                    behaviors:MultipleSelectBehavior.SelectedItems="{Binding SelectedItems, Mode=TwoWay}"
                     CanDragItems = "False" CanReorderItems = "False" AllowDrop = "False"
                     IsItemClickEnabled = "True"
                     cal:Message.Attach = "[Event ItemClick] = [Action StartPlayback($eventArgs)]"

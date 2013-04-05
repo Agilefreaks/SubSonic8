@@ -132,11 +132,12 @@
     <Compile Include="Converters\IntToTimeStringConverter.cs" />
     <Compile Include="Converters\PlaybackStateToVisibilityConverter.cs" />
     <Compile Include="Converters\PlayingStateToVisibilityConverter.cs" />
-    <Compile Include="Dialogs\DialogService.cs" />
+    <Compile Include="Framework\Services\DialogService.cs" />
     <Compile Include="Framework\AppPage.cs" />
     <Compile Include="Framework\CaliburnServiceLocatorApplication.cs" />
     <Compile Include="Framework\Extensions\ToastNotificationExtensions.cs" />
     <Compile Include="Framework\Interfaces\ISettingsHelper.cs" />
+    <Compile Include="Framework\Extensions\SettingsPaneExtensionMethods.cs" />
     <Compile Include="Framework\SettingsHelper.cs" />
     <Compile Include="Framework\ViewModel\IHaveState.cs" />
     <Compile Include="Framework\Interfaces\IToastNotificationCapable.cs" />
@@ -180,7 +181,7 @@
       <DependentUpon>ResultsFound.xaml</DependentUpon>
     </Compile>
     <Compile Include="Settings\Subsonic8Configuration.cs" />
-    <Compile Include="Shell\IBottomBarProvider.cs" />
+    <Compile Include="Framework\Interfaces\IBottomBarProvider.cs" />
     <Compile Include="BottomBar\IBottomBarViewModel.cs" />
     <Compile Include="BottomBar\IDefaultBottomBarViewModel.cs" />
     <Compile Include="MenuItem\IMenuItemViewModel.cs" />
@@ -218,7 +219,7 @@
     </Compile>
     <Compile Include="Search\ISearchViewModel.cs" />
     <Compile Include="Framework\Extensions\SubsonicModelToMenuItemViewModelExtensions.cs" />
-    <Compile Include="Framework\MultipleSelectBehavior.cs" />
+    <Compile Include="Framework\Behaviors\MultipleSelectBehavior.cs" />
     <Compile Include="Search\SearchView.xaml.cs">
       <DependentUpon>SearchView.xaml</DependentUpon>
     </Compile>
@@ -231,7 +232,7 @@
       <DependentUpon>MenuItemView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Messages\PlayFile.cs" />
-    <Compile Include="Shell\IPlayerControls.cs" />
+    <Compile Include="Framework\Interfaces\IPlayerControls.cs" />
     <Compile Include="Search\SearchViewModel.cs" />
     <Compile Include="Shell\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
@@ -437,6 +438,9 @@
     <SDKReference Include="Microsoft.PlayerFramework.Xaml.Adaptive, Version=1.8.0.5">
       <Name>Microsoft Player Framework Adaptive Streaming Plugin</Name>
     </SDKReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Dialogs\" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '11.0' ">
     <VisualStudioVersion>11.0</VisualStudioVersion>

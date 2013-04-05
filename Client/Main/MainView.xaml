@@ -5,7 +5,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:caliburn="using:Caliburn.Micro"
-    xmlns:framework="using:Subsonic8.Framework" xmlns:common="using:Subsonic8.Common" mc:Ignorable="d">
+    xmlns:framework="using:Subsonic8.Framework" xmlns:common="using:Subsonic8.Common"
+    xmlns:behaviors="using:Subsonic8.Framework.Behaviors" mc:Ignorable="d">
 
     <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
@@ -16,7 +17,7 @@
         <common:PageHeader DataContext="{Binding}" />
         
         <GridView x:Name="MenuItems" Grid.Row="1" Margin="0,-3,0,0" Padding="116,0,116,46" SelectionMode="Multiple"
-                  framework:MultipleSelectBehavior.SelectedItems="{Binding SelectedItems, Mode=TwoWay}"
+                  behaviors:MultipleSelectBehavior.SelectedItems="{Binding SelectedItems, Mode=TwoWay}"
                   IsItemClickEnabled="True" caliburn:Message.Attach="[Event ItemClick] = [IndexClick($eventArgs)]" />
     </Grid>
 </framework:AppPage>

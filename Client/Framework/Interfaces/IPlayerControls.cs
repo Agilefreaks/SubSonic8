@@ -1,7 +1,7 @@
 using System;
 using Windows.UI.Xaml;
 
-namespace Subsonic8.Shell
+namespace Subsonic8.Framework.Interfaces
 {
     public interface IPlayerControls
     {

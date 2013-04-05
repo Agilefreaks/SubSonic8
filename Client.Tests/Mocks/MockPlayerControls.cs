@@ -1,4 +1,5 @@
 using System;
+using Subsonic8.Framework.Interfaces;
 using Subsonic8.Shell;
 using Windows.UI.Xaml;
 

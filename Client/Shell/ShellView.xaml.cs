@@ -1,4 +1,5 @@
 ﻿using System;
+using Subsonic8.Framework.Interfaces;
 using Windows.Media;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
