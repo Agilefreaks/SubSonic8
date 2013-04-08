@@ -128,6 +128,7 @@ namespace Client.Common.Models
             }
         }
 
+        [XmlIgnore]
         public PlaylistItemState PlayingState
         {
             get
@@ -140,6 +141,11 @@ namespace Client.Common.Models
                 _playingState = value;
                 NotifyOfPropertyChange();
             }
+        }
+
+        public PlaylistItem()
+        {
+            PlayingState = PlaylistItemState.NotPlaying;            
         }
 
         public void InitializeFromSong(Song result, ISubsonicService subsonicService)
