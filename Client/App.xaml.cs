@@ -70,7 +70,7 @@ namespace Subsonic8
 
             BindShellViewModelToView(shellView);
 
-            await Kernel.Get<ISettingsHelper>().LoadSettings();
+            await LoadSettings();
 
             await RestoreLastViewOrGoToMain(shellView);
         }
@@ -100,6 +100,11 @@ namespace Subsonic8
             _shellViewModel = Kernel.Get<IShellViewModel>();
 
             ViewModelBinder.Bind(_shellViewModel, shellView, null);
+        }
+
+        private async Task LoadSettings()
+        {
+            await Kernel.Get<ISettingsHelper>().LoadSettings();
         }
 
         private async Task RestoreLastViewOrGoToMain(ShellView shellView)

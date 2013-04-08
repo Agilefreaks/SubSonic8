@@ -39,7 +39,6 @@ namespace Client.Common.Results
             Response = ResponseFunc;
         }
 
-                // TODO: Display Notification If Settings are not set
         public virtual void HandleStreamResponse(Stream stream)
         {
             XDocument xDocument = null;

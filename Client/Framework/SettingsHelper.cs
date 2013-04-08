@@ -18,20 +18,21 @@ namespace Subsonic8.Framework
         [Inject]
         public IToastNotificationService ToastNotificationService { get; set; }
 
-         public async Task LoadSettings()
-         {
-             var subsonic8Configuration = await GetSubsonic8Configuration();
+        public async Task LoadSettings()
+        {
+            var subsonic8Configuration = await GetSubsonic8Configuration();
 
-             SubsonicService.Configuration = subsonic8Configuration.SubsonicServiceConfiguration;
+            SubsonicService.Configuration = subsonic8Configuration.SubsonicServiceConfiguration;
 
-             ToastNotificationService.UseSound = subsonic8Configuration.ToastsUseSound;
-         }
+            ToastNotificationService.UseSound = subsonic8Configuration.ToastsUseSound;
+        }
 
-         private async Task<Subsonic8Configuration> GetSubsonic8Configuration()
-         {
-             var subsonic8Configuration = await StorageService.Load<Subsonic8Configuration>() ?? new Subsonic8Configuration();
+        private async Task<Subsonic8Configuration> GetSubsonic8Configuration()
+        {
+            var subsonic8Configuration = await StorageService.Load<Subsonic8Configuration>() ??
+                                         new Subsonic8Configuration();
 
-             return subsonic8Configuration;
-         }
+            return subsonic8Configuration;
+        }
     }
 }

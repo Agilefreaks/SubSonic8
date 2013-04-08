@@ -13,7 +13,7 @@ namespace Subsonic8.Playback
         IHandle<PlayFile>, IHandle<StartVideoPlaybackMessage>, IHandle<StartAudioPlaybackMessage>,
         IViewModel, IToastNotificationCapable
     {
-        int Parameter { set; }
+        int? Parameter { set; }
 
         Uri Source { get; set; }
 

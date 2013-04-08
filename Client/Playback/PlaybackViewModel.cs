@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using Caliburn.Micro;
 using Client.Common;
 using Client.Common.EventAggregatorMessages;
 using Client.Common.Models;
@@ -38,9 +37,15 @@ namespace Subsonic8.Playback
 
         #region Public Properties
 
-        public int Parameter
+        public int? Parameter
         {
-            set { LoadSongById(value); }
+            set
+            {
+                if (value.HasValue)
+                {
+                    LoadSongById(value.Value);
+                }
+            }
         }
 
         public Uri Source
