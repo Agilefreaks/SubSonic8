@@ -1,10 +1,10 @@
 using System.Collections.ObjectModel;
 using Caliburn.Micro;
-using Subsonic8.Messages;
+using Client.Common.EventAggregatorMessages;
 
 namespace Subsonic8.BottomBar
 {
-    public interface IBottomBarViewModel : IHandle<ShowControlsMessage>
+    public interface IBottomBarViewModel : IHandle<PlaylistStateChangedMessage>
     {
         ObservableCollection<object> SelectedItems { get; set; }
 

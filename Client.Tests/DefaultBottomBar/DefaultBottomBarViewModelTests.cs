@@ -7,7 +7,6 @@ using FluentAssertions;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using Subsonic8.BottomBar;
 using Subsonic8.MenuItem;
-using Subsonic8.Messages;
 
 namespace Client.Tests.DefaultBottomBar
 {
@@ -169,10 +168,7 @@ namespace Client.Tests.DefaultBottomBar
         public void HandleWithShowControlsMessage_WhenShowIsFalse_SetsDisplayPlayControlsToFalse()
         {
             _subject.DisplayPlayControls = true;
-            var showControlsMessage = new ShowControlsMessage
-            {
-                Show = false
-            };
+            var showControlsMessage = new PlaylistStateChangedMessage(false);
 
             _subject.Handle(showControlsMessage);
 
@@ -183,10 +179,7 @@ namespace Client.Tests.DefaultBottomBar
         public void HandleWithShowControlsMessage_WhenShowIsTrue_SetsDisplayPlayControlsToTrue()
         {
             _subject.DisplayPlayControls = false;
-            var showControlsMessage = new ShowControlsMessage
-            {
-                Show = true
-            };
+            var showControlsMessage = new PlaylistStateChangedMessage(true);
 
             _subject.Handle(showControlsMessage);
 

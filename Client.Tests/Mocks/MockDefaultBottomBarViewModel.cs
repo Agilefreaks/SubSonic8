@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using Client.Common.EventAggregatorMessages;
 using Subsonic8.BottomBar;
-using Subsonic8.Messages;
 
 namespace Client.Tests.Mocks
 {
@@ -25,32 +25,31 @@ namespace Client.Tests.Mocks
 
         public void NavigateToPlaylist()
         {
-
         }
 
         public void PlayPrevious()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void PlayNext()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void PlayPause()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void Play()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void Stop()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void AddToPlaylist()
@@ -60,15 +59,15 @@ namespace Client.Tests.Mocks
 
         public void PlayAll()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void RemoveFromPlaylist()
         {
-            
+
         }
 
-        public void Handle(ShowControlsMessage message)
+        public void Handle(PlaylistStateChangedMessage message)
         {
             throw new NotImplementedException();
         }

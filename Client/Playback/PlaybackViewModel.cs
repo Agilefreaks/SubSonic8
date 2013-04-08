@@ -32,6 +32,7 @@ namespace Subsonic8.Playback
         private TimeSpan _endTime;
         private TimeSpan _startTime;
         private IEmbededVideoPlaybackViewModel _embededVideoPlaybackViewModel;
+        private bool _playbackControlsVisible;
 
         #endregion
 
@@ -148,6 +149,20 @@ namespace Subsonic8.Playback
 
         public Func<IId, Task<Client.Common.Models.PlaylistItem>> LoadModel { get; set; }
 
+        public bool PlaybackControlsVisible
+        {
+            get
+            {
+                return _playbackControlsVisible;
+            }
+            set
+            {
+                if (value.Equals(_playbackControlsVisible)) return;
+                _playbackControlsVisible = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
         [Inject]
         public IToastNotificationService ToastNotificationService { get; set; }
 
@@ -191,6 +206,7 @@ namespace Subsonic8.Playback
         {
             UpdateDisplayName = () => DisplayName = "Playlist";
             LoadModel = LoadModelImpl;
+            CoverArt = CoverArtPlaceholderLarge;
         }
 
         public void StartPlayback(object e)
@@ -248,10 +264,7 @@ namespace Subsonic8.Playback
 
         public void Handle(PlaylistStateChangedMessage message)
         {
-            EventAggregator.Publish(new ShowControlsMessage
-                {
-                    Show = message.HasElements
-                });
+            PlaybackControlsVisible = message.HasElements;
         }
 
         public async void Handle(PlaylistMessage message)

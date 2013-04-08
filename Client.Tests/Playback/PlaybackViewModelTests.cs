@@ -113,12 +113,11 @@ namespace Client.Tests.Playback
         }
 
         [TestMethod]
-        public void Handle_PlaylistStateChangedMessage_PublishesAShowControlsMessageWithShowSetToHasElements()
+        public void Handle_PlaylistStateChangedMessage_SetsPlaybackControlsVisibleToMessageHasElements()
         {
             Subject.Handle(new PlaylistStateChangedMessage(true));
 
-            MockEventAggregator.Messages.Any(
-                m => m.GetType() == typeof(ShowControlsMessage) && ((ShowControlsMessage)m).Show).Should().BeTrue();
+            Subject.PlaybackControlsVisible.Should().Be(true);
         }
 
         [TestMethod]
@@ -346,6 +345,14 @@ namespace Client.Tests.Playback
             Subject.SavePlaylist();
 
             _mockWinRTWrappersService.GetNewStorageFileCallCount.Should().Be(1);
+        }
+
+        [TestMethod]
+        public void Ctor_Always_SetsCoverArtToCoverArtPlaceholderLarge()
+        {
+            var playbackViewModel = new PlaybackViewModel();
+
+            playbackViewModel.CoverArt.Should().Be(PlaybackViewModel.CoverArtPlaceholderLarge);
         }
 
         private void MockLoadModel()

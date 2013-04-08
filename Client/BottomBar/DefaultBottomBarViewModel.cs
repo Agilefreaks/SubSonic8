@@ -174,9 +174,9 @@ namespace Subsonic8.BottomBar
             _eventAggregator.Publish(new StopPlaybackMessage());
         }
 
-        public void Handle(ShowControlsMessage message)
+        public void Handle(PlaylistStateChangedMessage message)
         {
-            DisplayPlayControls = message.Show;
+            DisplayPlayControls = message.HasElements;
         }
 
         private void ManageSelectedItemsHooks(INotifyCollectionChanged newCollection, INotifyCollectionChanged oldCollection)

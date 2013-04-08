@@ -5,6 +5,10 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:cal="using:Caliburn.Micro"
     xmlns:ic="using:Subsonic8.Controls"
     mc:Ignorable="d">
+
+    <Page.Resources>
+        <cal:BooleanToVisibilityConverter x:Name="boolToVisibilityConverter"/>
+    </Page.Resources>
     
     <Grid>
         <Grid.RowDefinitions>
@@ -13,7 +17,7 @@
         </Grid.RowDefinitions>
 
         <Image Source="{Binding CoverArt}" Stretch="Uniform" MinHeight="400"/>
-        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0" Visibility="{Binding Path=PlaybackControlsVisible, Converter={StaticResource boolToVisibilityConverter}}">
             <Button Style="{StaticResource PreviousAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action Previous]"/>
             <ic:AppBarToggleButton Style="{StaticResource PlayAppBarButtonStyle}" CheckedStyle="{StaticResource PauseAppBarButtonStyle}" 
                                    cal:Message.Attach="[Event Click] = [Action PlayPause()]" AutoToggle="False" IsChecked="{Binding IsPlaying}"/>
