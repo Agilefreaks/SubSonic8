@@ -180,6 +180,10 @@
     <Compile Include="Search\Search\ResultsFound.xaml.cs">
       <DependentUpon>ResultsFound.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Settings\PrivacyPolicyView.xaml.cs">
+      <DependentUpon>PrivacyPolicyView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\PrivacyPolicyViewModel.cs" />
     <Compile Include="Settings\Subsonic8Configuration.cs" />
     <Compile Include="Framework\Interfaces\IBottomBarProvider.cs" />
     <Compile Include="BottomBar\IBottomBarViewModel.cs" />
@@ -361,6 +365,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Settings\PrivacyPolicyView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Settings\SettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -439,9 +447,7 @@
       <Name>Microsoft Player Framework Adaptive Streaming Plugin</Name>
     </SDKReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Dialogs\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '11.0' ">
     <VisualStudioVersion>11.0</VisualStudioVersion>
   </PropertyGroup>

@@ -160,6 +160,7 @@ namespace Subsonic8.Shell
 
             WinRTWrappersService.RegisterSearchQueryHandler((sender, args) => SendSearchQueryMessage(args.QueryText));
             WinRTWrappersService.RegisterSettingsRequestedHandler((sender, args) => args.AddSetting<SettingsViewModel>());
+            WinRTWrappersService.RegisterSettingsRequestedHandler((sender, args) => args.AddSetting<PrivacyPolicyViewModel>());
 
             PlayerControls = (IPlayerControls)view;
         }
