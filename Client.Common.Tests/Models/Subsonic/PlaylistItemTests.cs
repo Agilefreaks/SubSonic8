@@ -1,5 +1,6 @@
 ﻿using Client.Common.Models;
 using Client.Common.Models.Subsonic;
+using Client.Common.Services;
 using Client.Common.Tests.Mocks;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
@@ -97,6 +98,30 @@ namespace Client.Common.Tests.Models.Subsonic
             _subject.InitializeFromSong(new Song { IsVideo = false }, _mockSubsonicService);
 
             _subject.Type.Should().Be(PlaylistItemTypeEnum.Audio);
+        }
+
+        [TestMethod]
+        public void OriginalCoverArtUrl_CoverArtUrlIsRemoteUrlAndHasASizeAttribute_ReturnsTheUrlWithTheSizeAttribute500()
+        {
+            _subject.CoverArtUrl = "http://asda.com?as=1&size=70";
+
+            _subject.OriginalCoverArtUrl.Should().Be("http://asda.com?as=1&size=500");
+        }
+
+        [TestMethod]
+        public void OriginalCoverArtUrl_CoverArtUrlIsRemoteUrlAndDoesNotHaveASizeAttribute_ReturnsTheUrlWithTheSizeAttribute500()
+        {
+            _subject.CoverArtUrl = "https://asda.com?as=1";
+
+            _subject.OriginalCoverArtUrl.Should().Be("https://asda.com?as=1&size=500");
+        }
+
+        [TestMethod]
+        public void OriginalCoverArtUrl_CoverArtUrlIsLocalFile_ReturnsTheLocalFileUrl()
+        {
+            _subject.CoverArtUrl = SubsonicService.CoverArtPlaceholder;
+
+            _subject.OriginalCoverArtUrl.Should().Be(SubsonicService.CoverArtPlaceholder);
         }
     }
 }

@@ -240,7 +240,7 @@ namespace Subsonic8.Playback
 
         public void Handle(StartAudioPlaybackMessage message)
         {
-            CoverArt = message.Item.CoverArtUrl;
+            CoverArt = message.Item.OriginalCoverArtUrl;
             State = PlaybackViewModelStateEnum.Audio;
 
             this.ShowToast(message.Item);

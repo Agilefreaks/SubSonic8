@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 using Caliburn.Micro;
 using Client.Common.Models.Subsonic;
@@ -91,6 +92,24 @@ namespace Client.Common.Models
                 if (value == _coverArtUrl) return;
                 _coverArtUrl = value;
                 NotifyOfPropertyChange();
+            }
+        }
+
+        [XmlIgnore]
+        public string OriginalCoverArtUrl
+        {
+            get
+            {
+                var regex = new Regex(@"&size=[\d]{1,}");
+                var strings = regex.Split(CoverArtUrl);
+                var result = strings[0];
+                var uri = new Uri(result, UriKind.RelativeOrAbsolute);
+                if (uri.IsAbsoluteUri)
+                {
+                    result += string.Format("&size={0}", (int)ImageType.Original);
+                }
+
+                return result;
             }
         }
 
