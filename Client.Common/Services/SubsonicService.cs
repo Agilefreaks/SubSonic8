@@ -57,7 +57,7 @@ namespace Client.Common.Services
 
         public virtual Uri GetUriForFileWithId(int id)
         {
-            return new Uri(string.Format(_configuration.RequestFormatWithUsernameAndPassword(), "stream.view", _configuration.Username, _configuration.Password) + string.Format("&id={0}", id));
+            return new Uri(string.Format(_configuration.RequestFormatWithUsernameAndPassword(), "stream.view", _configuration.Username, _configuration.EncodedPassword) + string.Format("&id={0}", id));
         }
 
         public virtual Uri GetUriForVideoWithId(int id, int timeOffset = 0, int maxBitRate = 0)
@@ -93,7 +93,7 @@ namespace Client.Common.Services
             {
                 result =
                     string.Format(_configuration.RequestFormatWithUsernameAndPassword(), "getCoverArt.view", _configuration.Username,
-                                  _configuration.Password) + string.Format("&id={0}", coverArt) +
+                                  _configuration.EncodedPassword) + string.Format("&id={0}", coverArt) +
                     string.Format("&size={0}", (int)imageType);
             }
             else

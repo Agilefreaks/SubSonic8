@@ -31,5 +31,13 @@ namespace Client.Common.Tests.Services
 
             _subject.BaseUrl.Should().Be("http://localhost:4040/");
         }
+
+        [TestMethod]
+        public void EncodedPassword_Always_ReturnsThePasswordHexEncoded()
+        {
+            _subject.Password = "sesame";
+
+            _subject.EncodedPassword.Should().Be("enc:736573616d65");
+        }
     }
 }

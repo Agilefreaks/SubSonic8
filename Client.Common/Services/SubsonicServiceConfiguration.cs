@@ -1,9 +1,13 @@
-﻿using Caliburn.Micro;
+﻿using System.Collections.Generic;
+using System.Text;
+using Caliburn.Micro;
 
 namespace Client.Common.Services
 {
     public class SubsonicServiceConfiguration : PropertyChangedBase, ISubsonicServiceConfiguration
     {
+        private static readonly char[] HexChars = "0123456789ABCDEF".ToCharArray();
+
         private string _username, _password, _baseUrl;
 
         public string Username
@@ -51,11 +55,20 @@ namespace Client.Common.Services
 
         public string EncodedCredentials()
         {
-            byte[] bytes = System.Text.Encoding.UTF8.GetBytes(string.Format("{0}:{1}", Username, Password));
+            var bytes = Encoding.UTF8.GetBytes(string.Format("{0}:{1}", Username, Password));
+
             return System.Convert.ToBase64String(bytes);
         }
 
-        private string AddEndingSlashIfNotExisting(string value)
+        public string EncodedPassword
+        {
+            get
+            {
+                return "enc:" + BytesToHex(Encoding.UTF8.GetBytes(Password)).ToLowerInvariant();
+            }
+        }
+
+        private static string AddEndingSlashIfNotExisting(string value)
         {
             var result = value;
             if (!string.IsNullOrEmpty(value) && result.LastIndexOf("/", System.StringComparison.Ordinal) != result.Length - 1)
@@ -64,6 +77,18 @@ namespace Client.Common.Services
             }
 
             return result;
+        }
+
+        private static string BytesToHex(ICollection<byte> data)
+        {
+            var builder = new StringBuilder(data.Count * 2);
+            foreach (var @byte in data)
+            {
+                builder.Append(HexChars[@byte >> 4]);
+                builder.Append(HexChars[@byte & 0xf]);
+            }
+
+            return builder.ToString();
         }
     }
 }
