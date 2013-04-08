@@ -145,7 +145,8 @@ namespace Client.Common.Models
 
         public PlaylistItem()
         {
-            PlayingState = PlaylistItemState.NotPlaying;            
+            PlayingState = PlaylistItemState.NotPlaying;
+            CoverArtUrl = SubsonicService.CoverArtPlaceholder;
         }
 
         public void InitializeFromSong(Song result, ISubsonicService subsonicService)

@@ -131,5 +131,13 @@ namespace Client.Common.Tests.Models.Subsonic
 
             playlistItem.PlayingState.Should().Be(PlaylistItemState.NotPlaying);
         }
+
+        [TestMethod]
+        public void Ctor_Always_SetsCoverArtUrlToPlaceholder()
+        {
+            var playlistItem = new PlaylistItem();
+
+            playlistItem.CoverArtUrl.Should().Be(SubsonicService.CoverArtPlaceholder);
+        }
     }
 }
