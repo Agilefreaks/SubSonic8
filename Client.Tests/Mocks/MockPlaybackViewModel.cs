@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Threading.Tasks;
@@ -109,6 +110,8 @@ namespace Client.Tests.Mocks
         public bool ShuffleOn { get; private set; }
         public bool IsPlaying { get; private set; }
         public TimeSpan EndTime { get; set; }
+        public IToastNotificationService ToastNotificationService { get; private set; }
+
         public void ClearPlaylist()
         {
             throw new NotImplementedException();
@@ -119,6 +122,12 @@ namespace Client.Tests.Mocks
             throw new NotImplementedException();
         }
 
-        public IToastNotificationService ToastNotificationService { get; private set; }
+        public void LoadState(string parameter, Dictionary<string, object> statePageState)
+        {
+        }
+
+        public void SaveState(Dictionary<string, object> statePageState, List<Type> knownTypes)
+        {
+        }
     }
 }

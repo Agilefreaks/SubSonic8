@@ -15,7 +15,7 @@
         <TextBox x:Name="Configuration_SubsonicServiceConfiguration_Username" Style="{StaticResource SettingsTextBoxStyle}"/>
 
         <TextBlock Text="Password" Style="{StaticResource SettingsTextStyle}"/>
-        <TextBox x:Name="Configuration_SubsonicServiceConfiguration_Password" Style="{StaticResource SettingsTextBoxStyle}"/>
+        <PasswordBox x:Name="Configuration_SubsonicServiceConfiguration_Password" Style="{StaticResource PasswordTextBoxStyle}"/>
 
         <ToggleSwitch Header="Sound For Notifications" IsOn="{Binding Path=Configuration.ToastsUseSound, Mode=TwoWay}"
                       Margin="0,10" OffContent="Off" OnContent="On" Style="{StaticResource LightToggleSwitch}">

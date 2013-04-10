@@ -11,7 +11,7 @@ namespace Subsonic8.Playback
 {
     public interface IPlaybackViewModel : IHandle<PlaylistMessage>, IHandle<PlaylistStateChangedMessage>,
         IHandle<PlayFile>, IHandle<StartVideoPlaybackMessage>, IHandle<StartAudioPlaybackMessage>,
-        IViewModel, IToastNotificationCapable
+        IViewModel, IToastNotificationCapable, IHaveState
     {
         int? Parameter { set; }
 

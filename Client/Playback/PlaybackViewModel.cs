@@ -400,5 +400,13 @@ namespace Subsonic8.Playback
                                  .OnSuccess(song => Handle(new PlayFile { Model = song }))
                                  .Execute();
         }
+
+        public void LoadState(string parameter, Dictionary<string, object> statePageState)
+        {
+        }
+
+        public void SaveState(Dictionary<string, object> statePageState, List<Type> knownTypes)
+        {
+        }
     }
 }

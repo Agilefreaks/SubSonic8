@@ -1,4 +1,4 @@
-﻿<Page
+﻿<framework:AppPage
     x:Class="Subsonic8.Playback.PlaybackView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
@@ -7,7 +7,7 @@
     xmlns:cal="using:Caliburn.Micro"
     xmlns:common="using:Subsonic8.Common" xmlns:playlistItem="using:Subsonic8.PlaylistItem"
     xmlns:playback="using:Subsonic8.Playback.Playback" xmlns:converters="using:Subsonic8.Converters"
-    xmlns:behaviors="using:Subsonic8.Framework.Behaviors"
+    xmlns:behaviors="using:Subsonic8.Framework.Behaviors" xmlns:framework="using:Subsonic8.Framework"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -79,4 +79,4 @@
             </Grid>
         </Grid>
     </Grid>
-</Page>
+</framework:AppPage>
