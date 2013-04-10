@@ -22,7 +22,6 @@ h1. Contributing
 # Commit your changes (git commit -am "Added CoolFeature")
 # Push to the branch (git push origin my_cool_feature)
 # Open a Pull Request
-# Enjoy a refreshing Diet Coke and wait (wille listening to a great song of course)
 
 h1. Contact
 
