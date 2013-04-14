@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Client.Common.Models;
 using Client.Common.Services;
 using Windows.ApplicationModel.Search;
 using Windows.Foundation;
@@ -62,7 +61,7 @@ namespace Client.Tests.Mocks
             throw new NotImplementedException();
         }
 
-        public Task<T> LoadFromFile<T>(IStorageFile storageFile, PlaylistItemCollection playlistItems) where T : new()
+        public Task<T> LoadFromFile<T>(IStorageFile storageFile) where T : new()
         {
             throw new NotImplementedException();
         }

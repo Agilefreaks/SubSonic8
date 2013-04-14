@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
-using Client.Common.Models;
 using Windows.ApplicationModel.Search;
 using Windows.Foundation;
 using Windows.Storage;
@@ -43,7 +42,7 @@ namespace Client.Common.Services
             return await fileOpenPicker.PickSingleFileAsync();
         }
 
-        public async Task<T> LoadFromFile<T>(IStorageFile storageFile, PlaylistItemCollection playlistItems)
+        public async Task<T> LoadFromFile<T>(IStorageFile storageFile)
             where T : new()
         {
             var randomAccessStream = await storageFile.OpenReadAsync();
@@ -58,7 +57,7 @@ namespace Client.Common.Services
             }
             finally
             {
-                randomAccessStream.Dispose();                
+                randomAccessStream.Dispose();
             }
 
             return result;

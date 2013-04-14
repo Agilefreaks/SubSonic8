@@ -355,6 +355,23 @@ namespace Client.Tests.Playback
             playbackViewModel.CoverArt.Should().Be(PlaybackViewModel.CoverArtPlaceholderLarge);
         }
 
+        [TestMethod]
+        public void LoadState_StateContainsPlaylistKey_IsAbleToRestorePlaylistFromPreviouslySavePlaylist()
+        {
+            var knownTypes = new List<Type>();
+            var statePageState = new Dictionary<string, object>();
+            Subject.PlaylistItems.Add(new PlaylistItem { Artist = "test_a", UriAsString = "http://google.com/" });
+            Subject.SaveState(statePageState, knownTypes);
+            Subject.PlaylistItems.Clear();
+            Subject.PlaylistItems.Count.Should().Be(0);
+
+            Subject.LoadState(null, statePageState);
+
+            Subject.PlaylistItems.Count.Should().Be(1);
+            Subject.PlaylistItems[0].Artist.Should().Be("test_a");
+            Subject.PlaylistItems[0].UriAsString.Should().Be("http://google.com/");
+        }
+
         private void MockLoadModel()
         {
             Subject.LoadModel = model =>
