@@ -132,6 +132,8 @@
     <Compile Include="Converters\IntToTimeStringConverter.cs" />
     <Compile Include="Converters\PlaybackStateToVisibilityConverter.cs" />
     <Compile Include="Converters\PlayingStateToVisibilityConverter.cs" />
+    <Compile Include="Framework\Behaviors\IActiveItemProvider.cs" />
+    <Compile Include="Framework\Behaviors\ScrollIntoViewBehavior.cs" />
     <Compile Include="Framework\Services\DialogService.cs" />
     <Compile Include="Framework\AppPage.cs" />
     <Compile Include="Framework\CaliburnServiceLocatorApplication.cs" />

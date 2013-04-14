@@ -111,6 +111,7 @@ namespace Client.Tests.Mocks
         public bool IsPlaying { get; private set; }
         public TimeSpan EndTime { get; set; }
         public IToastNotificationService ToastNotificationService { get; private set; }
+        public object ActiveItem { get; private set; }
 
         public void ClearPlaylist()
         {

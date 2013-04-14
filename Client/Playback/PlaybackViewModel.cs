@@ -167,6 +167,8 @@ namespace Subsonic8.Playback
             }
         }
 
+        public object ActiveItem { get { return PlaylistManagementService.CurrentItem; } }
+
         [Inject]
         public IToastNotificationService ToastNotificationService { get; set; }
 
@@ -253,6 +255,8 @@ namespace Subsonic8.Playback
                 }
             }
 
+            NotifyOfPropertyChange(() => ActiveItem);
+
             this.ShowToast(message.Item);
         }
 
@@ -260,6 +264,8 @@ namespace Subsonic8.Playback
         {
             CoverArt = message.Item.OriginalCoverArtUrl;
             State = PlaybackViewModelStateEnum.Audio;
+
+            NotifyOfPropertyChange(() => ActiveItem);
 
             this.ShowToast(message.Item);
         }

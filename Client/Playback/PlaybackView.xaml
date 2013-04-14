@@ -8,6 +8,7 @@
     xmlns:common="using:Subsonic8.Common" xmlns:playlistItem="using:Subsonic8.PlaylistItem"
     xmlns:playback="using:Subsonic8.Playback.Playback" xmlns:converters="using:Subsonic8.Converters"
     xmlns:behaviors="using:Subsonic8.Framework.Behaviors" xmlns:framework="using:Subsonic8.Framework"
+    xmlns:i="using:Windows.UI.Interactivity"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -62,6 +63,10 @@
                     behaviors:MultipleSelectBehavior.SelectedItems="{Binding SelectedItems, Mode=TwoWay}"
                     CanDragItems = "False" CanReorderItems = "False" AllowDrop = "False"
                     IsItemClickEnabled = "True"
+                    cal:Message.Attach = "[Event ItemClick] = [Action StartPlayback($eventArgs)]">
+                        <i:Interaction.Behaviors>
+                            <behaviors:ScrollIntoViewBehavior ActiveItemProvider="{Binding}"/>
+                        </i:Interaction.Behaviors>
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">
                                 <Setter Property="HorizontalContentAlignment" Value="Stretch" />
