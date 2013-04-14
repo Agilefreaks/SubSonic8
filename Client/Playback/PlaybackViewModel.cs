@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 using Client.Common;
 using Client.Common.EventAggregatorMessages;
 using Client.Common.Models;
@@ -21,6 +24,7 @@ namespace Subsonic8.Playback
     public class PlaybackViewModel : PlaybackControlsViewModelBase, IPlaybackViewModel
     {
         public const string CoverArtPlaceholderLarge = @"/Assets/CoverArtPlaceholderLarge.jpg";
+        private const string StatePlaylistKey = "playlist_items";
 
         #region Private Fields
 
@@ -224,11 +228,9 @@ namespace Subsonic8.Playback
         public async void LoadPlaylist()
         {
             var storageFile = await WinRTWrappersService.OpenStorageFile();
-            if (storageFile != null)
-            {
-                var playlistItemCollection = await WinRTWrappersService.LoadFromFile<PlaylistItemCollection>(storageFile, PlaylistItems);
-                _playlistManagementService.LoadPlaylist(playlistItemCollection);
-            }
+            if (storageFile == null) return;
+            var playlistItemCollection = await WinRTWrappersService.LoadFromFile<PlaylistItemCollection>(storageFile);
+            _playlistManagementService.LoadPlaylist(playlistItemCollection);
         }
 
         public async void SavePlaylist()
@@ -287,6 +289,29 @@ namespace Subsonic8.Playback
             var playlistItem = await LoadModel(message.Model);
             EventAggregator.Publish(new AddItemsMessage { Queue = new List<Client.Common.Models.PlaylistItem>(new[] { playlistItem }) });
             EventAggregator.Publish(new PlayItemAtIndexMessage(PlaylistItems.Count - 1));
+        }
+
+        public void LoadState(string parameter, Dictionary<string, object> statePageState)
+        {
+            if (!statePageState.ContainsKey(StatePlaylistKey) || PlaylistItems.Any()) return;
+            var bytes = Convert.FromBase64String((string)statePageState[StatePlaylistKey]);
+            var memoryStream = new MemoryStream(bytes);
+            var xmlSerializer = new XmlSerializer(typeof(PlaylistItemCollection));
+            var playlist = (PlaylistItemCollection)xmlSerializer.Deserialize(memoryStream);
+            PlaylistItems.Clear();
+            PlaylistItems.AddRange(playlist);
+        }
+
+        public void SaveState(Dictionary<string, object> statePageState, List<Type> knownTypes)
+        {
+            knownTypes.Add(typeof(string));
+            var xmlSerializer = new XmlSerializer(typeof(PlaylistItemCollection));
+            using (var memoryStream = new MemoryStream())
+            {
+                xmlSerializer.Serialize(memoryStream, PlaylistItems);
+                memoryStream.Flush();
+                statePageState.Add(StatePlaylistKey, Convert.ToBase64String(memoryStream.ToArray()));
+            }
         }
 
         protected override void OnActivate()
@@ -399,14 +424,6 @@ namespace Subsonic8.Playback
                                  .WithErrorHandler(this)
                                  .OnSuccess(song => Handle(new PlayFile { Model = song }))
                                  .Execute();
-        }
-
-        public void LoadState(string parameter, Dictionary<string, object> statePageState)
-        {
-        }
-
-        public void SaveState(Dictionary<string, object> statePageState, List<Type> knownTypes)
-        {
         }
     }
 }
