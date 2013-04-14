@@ -55,15 +55,13 @@
                         <Button Style="{StaticResource SaveAppBarButtonStyle}" x:Name="SavePlaylist"/>
                     </StackPanel>
                 </Grid>
-                <ScrollViewer Grid.Row="1">
+                <ScrollViewer Grid.Row="1" Margin="0,0,46,46">
                     <ListView
                     ItemsSource = "{Binding PlaylistItems}" ItemTemplate="{StaticResource PlaylistItemTemplate}"
                     SelectionMode = "Multiple"
                     behaviors:MultipleSelectBehavior.SelectedItems="{Binding SelectedItems, Mode=TwoWay}"
                     CanDragItems = "False" CanReorderItems = "False" AllowDrop = "False"
                     IsItemClickEnabled = "True"
-                    cal:Message.Attach = "[Event ItemClick] = [Action StartPlayback($eventArgs)]"
-                    Padding="116,0,116,46" Grid.Row="1">
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">
                                 <Setter Property="HorizontalContentAlignment" Value="Stretch" />
