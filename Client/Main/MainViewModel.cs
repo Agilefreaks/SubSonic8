@@ -34,6 +34,10 @@ namespace Subsonic8.Main
             if (SubsonicService.HasValidSubsonicUrl)
             {
                 await SubsonicService.GetMusicFolders().WithErrorHandler(this).OnSuccess(SetMenuItems).Execute();
+                if (MenuItems.Count == 1)
+                {
+                    NavigationService.NavigateToViewModel<IndexViewModel>(MenuItems[0].Item.Id);
+                }
             }
             else
             {
