@@ -2,7 +2,7 @@
 using System.Text;
 using Caliburn.Micro;
 
-namespace Client.Common.Services
+namespace Client.Common.Services.DataStructures.SubsonicService
 {
     public class SubsonicServiceConfiguration : PropertyChangedBase, ISubsonicServiceConfiguration
     {

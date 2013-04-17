@@ -1,4 +1,4 @@
-namespace Client.Common.Services
+namespace Client.Common.Services.DataStructures.SubsonicService
 {
     public interface ISubsonicServiceConfiguration
     {

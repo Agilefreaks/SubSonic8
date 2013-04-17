@@ -1,4 +1,5 @@
 ﻿using Client.Common.Services;
+using Client.Common.Services.DataStructures.SubsonicService;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 

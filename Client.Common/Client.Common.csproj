@@ -171,7 +171,7 @@
     <Compile Include="Services\IPlaylistManagementService.cs" />
     <Compile Include="Services\IStorageService.cs" />
     <Compile Include="Services\ISubsonicService.cs" />
-    <Compile Include="Services\ISubsonicServiceConfiguration.cs" />
+    <Compile Include="Services\DataStructures\SubsonicService\ISubsonicServiceConfiguration.cs" />
     <Compile Include="Services\IWinRTWrappersService.cs" />
     <Compile Include="Helpers\MediaControlHandler.cs" />
     <Compile Include="Services\PlaylistManagementService.cs" />
@@ -182,9 +182,9 @@
     <Compile Include="EventAggregatorMessages\StopAudioPlaybackMessage.cs" />
     <Compile Include="Services\StorageService.cs" />
     <Compile Include="Services\SubsonicService.cs" />
-    <Compile Include="Services\SubsonicServiceConfiguration.cs" />
+    <Compile Include="Services\DataStructures\SubsonicService\SubsonicServiceConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\SubsonicServiceConfigurationExtensions.cs" />
+    <Compile Include="Services\DataStructures\SubsonicService\SubsonicServiceConfigurationExtensions.cs" />
     <Compile Include="Services\WinRTWrappersService.cs" />
   </ItemGroup>
   <ItemGroup>
