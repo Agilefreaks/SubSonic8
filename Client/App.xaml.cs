@@ -92,7 +92,6 @@ namespace Subsonic8
             //resolved so that they can start listening for events
             Kernel.Get<IPlaybackViewModel>();
             Kernel.Get<IFullScreenVideoPlaybackViewModel>();
-            Kernel.Get<ISearchViewModel>();
         }
 
         private void BindShellViewModelToView(ShellView shellView)
