@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using MetroLog;
 using Windows.ApplicationModel.Search;
 using Windows.Foundation;
 using Windows.Storage;
@@ -13,6 +14,8 @@ namespace Client.Common.Services
 {
     public class WinRTWrappersService : IWinRTWrappersService
     {
+        private static readonly ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger<WinRTWrappersService>();
+
         public void RegisterSearchQueryHandler(TypedEventHandler<SearchPane, SearchPaneQuerySubmittedEventArgs> handler)
         {
             SearchPane.GetForCurrentView().QuerySubmitted += handler;
@@ -52,8 +55,9 @@ namespace Client.Common.Services
             {
                 result = (T)xmlSerializer.Deserialize(randomAccessStream.AsStreamForRead());
             }
-            catch (Exception)
+            catch (Exception exception)
             {
+                Log.Error("Exception during deserializing object from file",exception);
             }
             finally
             {
