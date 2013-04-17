@@ -1,6 +1,5 @@
 using System;
 using Subsonic8.Framework.Interfaces;
-using Subsonic8.Shell;
 using Windows.UI.Xaml;
 
 namespace Client.Tests.Mocks
@@ -8,12 +7,16 @@ namespace Client.Tests.Mocks
     internal class MockPlayerControls : IPlayerControls
     {
         public event RoutedEventHandler PlayNextClicked;
-        
+
         public event RoutedEventHandler PlayPreviousClicked;
 
         public Action PlayPause { get; private set; }
 
         public Action Stop { get; private set; }
+
+        public Action Play { get; private set; }
+
+        public Action Pause { get; private set; }
 
         public int PlayPauseCallCount { get; set; }
 

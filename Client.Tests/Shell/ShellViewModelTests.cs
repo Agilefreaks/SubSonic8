@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using Caliburn.Micro;
 using Client.Common.EventAggregatorMessages;
-using Client.Common.Models.Subsonic;
 using Client.Tests.Mocks;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
@@ -46,21 +45,6 @@ namespace Client.Tests.Shell
         public void CtorShouldSubscribeToEventAggregator()
         {
             _eventAggregator.Subscriber.Should().Be(Subject);
-        }
-
-        [TestMethod]
-        public void PlayNextShouldCallPublishOnEventAggregator()
-        {
-            Subject.PlayNext(null, null);
-            _eventAggregator.PublishCallCount.Should().Be(1);
-        }
-
-        [TestMethod]
-        public void PlayPreviousShouldCallPublishOnEventAggregator()
-        {
-            Subject.PlayPrevious(null, null);
-
-            _eventAggregator.PublishCallCount.Should().Be(1);
         }
 
         [TestMethod]

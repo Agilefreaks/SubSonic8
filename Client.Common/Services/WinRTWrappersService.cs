@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using Client.Common.Helpers;
 using MetroLog;
 using Windows.ApplicationModel.Search;
 using Windows.Foundation;
+using Windows.Media;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.UI.ApplicationSettings;
@@ -24,6 +26,16 @@ namespace Client.Common.Services
         public void RegisterSettingsRequestedHandler(TypedEventHandler<SettingsPane, SettingsPaneCommandsRequestedEventArgs> handler)
         {
             SettingsPane.GetForCurrentView().CommandsRequested += handler;
+        }
+
+        public void RegisterMediaControlHandler(IMediaControlHandler mediaControlHandler)
+        {
+            MediaControl.PlayPressed += mediaControlHandler.PlayPressed;
+            MediaControl.PausePressed += mediaControlHandler.PausePressed;
+            MediaControl.PlayPauseTogglePressed += mediaControlHandler.PlayPausePressed;
+            MediaControl.StopPressed += mediaControlHandler.StopPressed;
+            MediaControl.NextTrackPressed += mediaControlHandler.PlayNextTrackPressed;
+            MediaControl.PreviousTrackPressed += mediaControlHandler.PlayPreviousTrackPressed;
         }
 
         public async Task<IStorageFile> GetNewStorageFile()

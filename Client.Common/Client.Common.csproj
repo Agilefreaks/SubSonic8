@@ -167,11 +167,13 @@
     <Compile Include="Services\CustomFrameAdapter.cs" />
     <Compile Include="Services\ICustomFrameAdapter.cs" />
     <Compile Include="Services\ImageType.cs" />
+    <Compile Include="Helpers\IMediaControlHandler.cs" />
     <Compile Include="Services\IPlaylistManagementService.cs" />
     <Compile Include="Services\IStorageService.cs" />
     <Compile Include="Services\ISubsonicService.cs" />
     <Compile Include="Services\ISubsonicServiceConfiguration.cs" />
     <Compile Include="Services\IWinRTWrappersService.cs" />
+    <Compile Include="Helpers\MediaControlHandler.cs" />
     <Compile Include="Services\PlaylistManagementService.cs" />
     <Compile Include="EventAggregatorMessages\PlaylistStateChangedMessage.cs" />
     <Compile Include="EventAggregatorMessages\PlayPreviousMessage.cs" />

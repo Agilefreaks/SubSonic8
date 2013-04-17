@@ -17,7 +17,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <MediaElement x:Name="mediaElement" AudioCategory="BackgroundCapableMedia" AutoPlay="True" Source="{Binding Path=Source}" cal:Message.Attach="[Event MediaEnded] = [Action PlayNext($sender, $eventArgs)]"/>
+        <MediaElement x:Name="mediaElement" AudioCategory="BackgroundCapableMedia" AutoPlay="True" Source="{Binding Path=Source}" cal:Message.Attach="[Event MediaEnded] = [Action SongEnded]"/>
 
         <Frame Grid.Row="0" DataContext="{x:Null}" Content="Frame" x:Name="shellFrame" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="0" />
 

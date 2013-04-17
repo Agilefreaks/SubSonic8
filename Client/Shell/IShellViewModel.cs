@@ -6,7 +6,6 @@ using Client.Common.Services;
 using Subsonic8.BottomBar;
 using Subsonic8.Framework.Interfaces;
 using Subsonic8.Framework.Services;
-using Windows.UI.Xaml;
 
 namespace Subsonic8.Shell
 {
@@ -22,14 +21,6 @@ namespace Subsonic8.Shell
         IDialogNotificationService DialogNotificationService { get; set; }
 
         IPlayerControls PlayerControls { get; set; }
-
-        void PlayNext(object sender, RoutedEventArgs routedEventArgs);
-
-        void PlayPrevious(object sender, RoutedEventArgs routedEventArgs);
-
-        void PlayPause();
-
-        void Stop();
 
         void SendSearchQueryMessage(string query);
     }
