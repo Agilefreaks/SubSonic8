@@ -53,11 +53,14 @@ namespace Client.Common.Services.DataStructures.SubsonicService
             }
         }
 
-        public string EncodedCredentials()
+        public string EncodedCredentials
         {
-            var bytes = Encoding.UTF8.GetBytes(string.Format("{0}:{1}", Username, Password));
+            get
+            {
+                var bytes = Encoding.UTF8.GetBytes(string.Format("{0}:{1}", Username, Password));
 
-            return System.Convert.ToBase64String(bytes);
+                return System.Convert.ToBase64String(bytes);   
+            }
         }
 
         public string EncodedPassword

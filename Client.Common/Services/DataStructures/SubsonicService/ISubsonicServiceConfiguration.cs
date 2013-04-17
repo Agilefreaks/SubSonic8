@@ -8,6 +8,6 @@ namespace Client.Common.Services.DataStructures.SubsonicService
 
         string BaseUrl { get; set; }
 
-        string EncodedCredentials();
+        string EncodedCredentials { get; }
     }
 }
