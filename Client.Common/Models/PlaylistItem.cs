@@ -4,6 +4,7 @@ using System.Xml.Serialization;
 using Caliburn.Micro;
 using Client.Common.Models.Subsonic;
 using Client.Common.Services;
+using Client.Common.Services.DataStructures.SubsonicService;
 
 namespace Client.Common.Models
 {

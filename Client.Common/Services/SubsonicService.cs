@@ -2,6 +2,7 @@
 using System.Text.RegularExpressions;
 using Caliburn.Micro;
 using Client.Common.Results;
+using Client.Common.Services.DataStructures.SubsonicService;
 
 namespace Client.Common.Services
 {
