@@ -244,28 +244,11 @@ namespace Subsonic8.Playback
             }
         }
 
-        public void Handle(StartVideoPlaybackMessage message)
+        public void Handle(StartPlaybackMessage message)
         {
-            if (!message.FullScreen)
-            {
-                State = PlaybackViewModelStateEnum.Video;
-                if (!IsActive)
-                {
-                    NavigationService.NavigateToViewModel<PlaybackViewModel>();
-                }
-            }
-
-            NotifyOfPropertyChange(() => ActiveItem);
-
-            this.ShowToast(message.Item);
-        }
-
-        public void Handle(StartAudioPlaybackMessage message)
-        {
-            CoverArt = message.Item.OriginalCoverArtUrl;
-            State = PlaybackViewModelStateEnum.Audio;
-
-            NotifyOfPropertyChange(() => ActiveItem);
+            //CoverArt = message.Item.OriginalCoverArtUrl;
+            //State = PlaybackViewModelStateEnum.Audio;
+            //NotifyOfPropertyChange(() => ActiveItem);
 
             this.ShowToast(message.Item);
         }
@@ -279,7 +262,7 @@ namespace Subsonic8.Playback
         {
             if (message.ClearCurrent)
             {
-                EventAggregator.Publish(new StopPlaybackMessage());
+                EventAggregator.Publish(new StopMessage());
                 _playlistManagementService.Clear();
                 _playNextItem = true;
             }

@@ -57,11 +57,11 @@ namespace Client.Tests.Mocks
         {
         }
 
-        public void Handle(StartAudioPlaybackMessage message)
+        public void Handle(StartPlaybackMessage message)
         {
         }
 
-        public void Handle(StopPlaybackMessage message)
+        public void Handle(StopMessage message)
         {
         }
 
@@ -69,11 +69,11 @@ namespace Client.Tests.Mocks
         {
         }
 
-        public void Handle(StopAudioPlaybackMessage message)
+        public void Handle(StopPlaybackMessage message)
         {
         }
 
-        public void Handle(PausePlaybackMessage message)
+        public void Handle(PauseMessage message)
         {
         }
 

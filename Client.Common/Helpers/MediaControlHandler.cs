@@ -14,22 +14,22 @@ namespace Client.Common.Helpers
 
         public void PlayPressed(object sender, object e)
         {
-            _eventAggregator.Publish(new PlayPauseMessage());
+            _eventAggregator.Publish(new PlayMessage());
         }
 
         public void PlayPausePressed(object sender, object e)
         {
-            _eventAggregator.Publish(new PlayPauseMessage());
+            _eventAggregator.Publish(new PauseMessage());
         }
 
         public void PausePressed(object sender, object e)
         {
-            _eventAggregator.Publish(new PausePlaybackMessage());
+            _eventAggregator.Publish(new PauseMessage());
         }
 
         public void StopPressed(object sender, object e)
         {
-            _eventAggregator.Publish(new StopPlaybackMessage());
+            _eventAggregator.Publish(new StopMessage());
         }
 
         public void PlayNextTrackPressed(object sender, object e)

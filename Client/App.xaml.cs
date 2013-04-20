@@ -66,7 +66,7 @@ namespace Subsonic8
 
             RegisterNavigationService(shellView.ShellFrame);
 
-            InstantiateRequiredSingletons();
+            RegisterPlayers();
 
             BindShellViewModelToView(shellView);
 
@@ -87,11 +87,12 @@ namespace Subsonic8
             Kernel.Bind<ICustomFrameAdapter>().ToConstant(_navigationService);
         }
 
-        private void InstantiateRequiredSingletons()
+        private void RegisterPlayers()
         {
-            //resolved so that they can start listening for events
-            Kernel.Get<IPlaybackViewModel>();
-            Kernel.Get<IFullScreenVideoPlaybackViewModel>();
+            var playerManagementService = Kernel.Get<IPlayerManagementService>();
+            playerManagementService.RegisterAudioPlayer(_shellViewModel);
+            playerManagementService.RegisterVideoPlayer(Kernel.Get<IPlaybackViewModel>());
+            playerManagementService.RegisterVideoPlayer(Kernel.Get<IFullScreenVideoPlaybackViewModel>());
         }
 
         private void BindShellViewModelToView(ShellView shellView)

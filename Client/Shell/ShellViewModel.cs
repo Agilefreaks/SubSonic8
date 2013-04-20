@@ -84,7 +84,8 @@ namespace Subsonic8.Shell
         }
 
         public ShellViewModel(IEventAggregator eventAggregator, ISubsonicService subsonicService, ICustomFrameAdapter navigationService,
-            IToastNotificationService notificationService, IDialogNotificationService dialogNotificationService, IStorageService storageService, IWinRTWrappersService winRTWrappersService)
+            IToastNotificationService notificationService, IDialogNotificationService dialogNotificationService, 
+            IStorageService storageService, IWinRTWrappersService winRTWrappersService)
         {
             _eventAggregator = eventAggregator;
             SubsonicService = subsonicService;
@@ -95,29 +96,6 @@ namespace Subsonic8.Shell
             WinRTWrappersService = winRTWrappersService;
 
             eventAggregator.Subscribe(this);
-        }
-
-        public void Handle(StartAudioPlaybackMessage message)
-        {
-            Source = message.Item.Uri;
-        }
-
-        public void Handle(StopAudioPlaybackMessage message)
-        {
-            if (_playerControls != null)
-                _playerControls.Stop();
-        }
-
-        public void Handle(ResumePlaybackMessage message)
-        {
-            if (_playerControls != null)
-                _playerControls.PlayPause();
-        }
-
-        public void Handle(PausePlaybackMessage message)
-        {
-            if (_playerControls != null)
-                _playerControls.PlayPause();
         }
 
         public void Handle(ChangeBottomBarMessage message)
@@ -135,6 +113,32 @@ namespace Subsonic8.Shell
             _eventAggregator.Publish(new PlayNextMessage());
         }
 
+        public async void HandleError(Exception error)
+        {
+            await new MessageDialogResult(error.ToString(), "Ooops...").Execute();
+        }
+
+        public void Play(Client.Common.Models.PlaylistItem item)
+        {
+            Source = item.Uri;
+            _playerControls.Play();
+        }
+
+        public void Pause()
+        {
+            _playerControls.Pause();
+        }
+
+        public void Resume()
+        {
+            _playerControls.Play();
+        }
+
+        public void Stop()
+        {
+            _playerControls.Stop();
+        }
+
         protected override void OnViewAttached(object view, object context)
         {
             base.OnViewAttached(view, context);
@@ -145,11 +149,6 @@ namespace Subsonic8.Shell
             WinRTWrappersService.RegisterMediaControlHandler(new MediaControlHandler(_eventAggregator));
 
             PlayerControls = (IPlayerControls)view;
-        }
-
-        public async void HandleError(Exception error)
-        {
-            await new MessageDialogResult(error.ToString(), "Ooops...").Execute();
         }
     }
 }

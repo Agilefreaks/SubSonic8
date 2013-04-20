@@ -171,7 +171,7 @@ namespace Subsonic8.BottomBar
 
         public void Stop()
         {
-            _eventAggregator.Publish(new StopPlaybackMessage());
+            _eventAggregator.Publish(new StopMessage());
         }
 
         public void Handle(PlaylistStateChangedMessage message)

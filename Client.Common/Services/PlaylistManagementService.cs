@@ -176,9 +176,29 @@ namespace Client.Common.Services
             }
         }
 
-        public void Handle(StopPlaybackMessage message)
+        public void Handle(StopMessage message)
         {
             StopPlaybackAction();
+        }
+
+        public void Handle(PauseMessage message)
+        {
+            Pause();
+        }
+
+        public void Handle(PlayMessage message)
+        {
+            if (CurrentItem != null)
+            {
+                if (!IsPlaying)
+                {
+                    Resume();
+                }
+            }
+            else
+            {
+                StartPlayback(GetNextTrackNumber());
+            }
         }
 
         public void PlayPause()
@@ -195,13 +215,13 @@ namespace Client.Common.Services
 
         public void Pause()
         {
-            _eventAggregator.Publish(new PausePlaybackMessage());
+            _eventAggregator.Publish(new PausePlaybackMessage(CurrentItem));
             IsPlaying = false;
         }
 
         public void Resume()
         {
-            _eventAggregator.Publish(new ResumePlaybackMessage());
+            _eventAggregator.Publish(new ResumePlaybackMessage(CurrentItem));
             IsPlaying = true;
         }
 
@@ -209,15 +229,12 @@ namespace Client.Common.Services
         {
             StopPlaybackAction();
             CurrentItem = Items[trackNumber];
-            if (CurrentItem.Type == PlaylistItemTypeEnum.Audio)
-            {
-                _eventAggregator.Publish(new StartAudioPlaybackMessage(CurrentItem));
-            }
-            else
-            {
-                _eventAggregator.Publish(new StartVideoPlaybackMessage(CurrentItem) { FullScreen = true });
-            }
+            StartPlayback();
+        }
 
+        private void StartPlayback()
+        {
+            _eventAggregator.Publish(new StartPlaybackMessage(CurrentItem));
             CurrentItem.PlayingState = PlaylistItemState.Playing;
             IsPlaying = true;
         }
@@ -225,11 +242,7 @@ namespace Client.Common.Services
         public void StopPlayback()
         {
             if (CurrentItem == null) return;
-
-            _eventAggregator.Publish(CurrentItem.Type == PlaylistItemTypeEnum.Audio
-                                         ? (object) new StopAudioPlaybackMessage()
-                                         : new StopVideoPlaybackMessage());
-
+            _eventAggregator.Publish(new StopPlaybackMessage(CurrentItem));
             CurrentItem.PlayingState = PlaylistItemState.NotPlaying;
             IsPlaying = false;
         }

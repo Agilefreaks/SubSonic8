@@ -47,12 +47,21 @@ namespace Client.Common.Tests.Helpers
         }
 
         [TestMethod]
+        public void PlayPressed_Always_ShouldPublishANewPlayPuaseMessage()
+        {
+            _subject.PlayPressed(null, null);
+
+            _eventAggregator.PublishCallCount.Should().Be(1);
+            _eventAggregator.Messages[0].Should().BeOfType<PlayMessage>();
+        }
+
+        [TestMethod]
         public void PausePressed_Always_ShouldPublishANewPlayPuaseMessage()
         {
             _subject.PausePressed(null, null);
 
             _eventAggregator.PublishCallCount.Should().Be(1);
-            _eventAggregator.Messages[0].Should().BeOfType<PausePlaybackMessage>();
+            _eventAggregator.Messages[0].Should().BeOfType<PauseMessage>();
         }
 
         [TestMethod]
@@ -61,7 +70,7 @@ namespace Client.Common.Tests.Helpers
             _subject.StopPressed(null, null);
 
             _eventAggregator.PublishCallCount.Should().Be(1);
-            _eventAggregator.Messages[0].Should().BeOfType<StopPlaybackMessage>();
+            _eventAggregator.Messages[0].Should().BeOfType<StopMessage>();
         }
     }
 }

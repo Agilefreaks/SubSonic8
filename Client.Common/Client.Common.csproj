@@ -103,13 +103,19 @@
   <ItemGroup>
     <Compile Include="CommonModule.cs" />
     <Compile Include="EventAggregatorMessages\PausePlaybackMessage.cs" />
+    <Compile Include="EventAggregatorMessages\PlaybackMessageBase.cs" />
+    <Compile Include="EventAggregatorMessages\PlayMessage.cs" />
+    <Compile Include="Services\DataStructures\PlayerManagementService\IPlayer.cs" />
+    <Compile Include="Services\DataStructures\PlayerManagementService\PlayerType.cs" />
+    <Compile Include="Services\IPlayerManagementService.cs" />
+    <Compile Include="EventAggregatorMessages\PauseMessage.cs" />
+    <Compile Include="Services\PlayerManagementService.cs" />
     <Compile Include="EventAggregatorMessages\PlayItemAtIndexMessage.cs" />
     <Compile Include="EventAggregatorMessages\PlayPauseMessage.cs" />
     <Compile Include="EventAggregatorMessages\RemoveItemsMessage.cs" />
     <Compile Include="EventAggregatorMessages\ResumePlaybackMessage.cs" />
-    <Compile Include="EventAggregatorMessages\StartAudioPlaybackMessage.cs" />
-    <Compile Include="EventAggregatorMessages\StartVideoPlaybackMessage.cs" />
-    <Compile Include="EventAggregatorMessages\StopPlaybackMessage.cs" />
+    <Compile Include="EventAggregatorMessages\StartPlaybackMessage.cs" />
+    <Compile Include="EventAggregatorMessages\StopMessage.cs" />
     <Compile Include="EventAggregatorMessages\ToggleShuffleMessage.cs" />
     <Compile Include="Models\IId.cs" />
     <Compile Include="Models\ISubsonicModel.cs" />
@@ -178,8 +184,7 @@
     <Compile Include="EventAggregatorMessages\PlaylistStateChangedMessage.cs" />
     <Compile Include="EventAggregatorMessages\PlayPreviousMessage.cs" />
     <Compile Include="EventAggregatorMessages\PlayNextMessage.cs" />
-    <Compile Include="EventAggregatorMessages\StopVideoPlaybackMessage.cs" />
-    <Compile Include="EventAggregatorMessages\StopAudioPlaybackMessage.cs" />
+    <Compile Include="EventAggregatorMessages\StopPlaybackMessage.cs" />
     <Compile Include="Services\StorageService.cs" />
     <Compile Include="Services\SubsonicService.cs" />
     <Compile Include="Services\DataStructures\SubsonicService\SubsonicServiceConfiguration.cs" />

@@ -37,7 +37,7 @@ namespace Client.Tests.Mocks
             throw new NotImplementedException();
         }
 
-        public void Handle(StartAudioPlaybackMessage message)
+        public void Handle(StartPlaybackMessage message)
         {
             throw new NotImplementedException();
         }

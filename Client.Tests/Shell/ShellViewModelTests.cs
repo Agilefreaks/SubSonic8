@@ -50,7 +50,7 @@ namespace Client.Tests.Shell
         [TestMethod]
         public void Handle_WithStopAudioPlaybackMessage_CallsPlayerControlsStop()
         {
-            Subject.Handle(new StopAudioPlaybackMessage());
+            Subject.Handle(new StopPlaybackMessage());
 
             _mockPlayerControls.StopCallCount.Should().Be(1);
         }

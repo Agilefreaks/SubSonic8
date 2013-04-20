@@ -69,7 +69,7 @@ namespace Client.Common.Services
             }
             catch (Exception exception)
             {
-                Log.Error("Exception during deserializing object from file",exception);
+                Log.Error("Exception during deserializing object from file", exception);
             }
             finally
             {

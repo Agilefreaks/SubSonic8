@@ -114,6 +114,7 @@
     <Compile Include="Helpers\MediaControlHandlerTests.cs" />
     <Compile Include="Mocks\MockEventAggregator.cs" />
     <Compile Include="Mocks\MockSubsonicService.cs" />
+    <Compile Include="Mocks\MockPlayer.cs" />
     <Compile Include="Models\Subsonic\AlbumTests.cs" />
     <Compile Include="Models\Subsonic\ArtistTests.cs" />
     <Compile Include="Models\Subsonic\ExpandedArtistTests.cs" />
@@ -128,6 +129,7 @@
     <Compile Include="Results\GetMusicDirectoryResultTests.cs" />
     <Compile Include="Results\GetRootResultTests.cs" />
     <Compile Include="Results\GetSongResultTests.cs" />
+    <Compile Include="Services\PlayerManagementServiceTests.cs" />
     <Compile Include="Services\PlaylistManagementServiceTests.cs" />
     <Compile Include="Services\SubsonicServiceConfigurationTests.cs" />
     <Compile Include="Services\SubsonicServiceTests.cs" />

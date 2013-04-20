@@ -69,7 +69,7 @@ namespace Client.Tests.Mocks
             throw new System.NotImplementedException();
         }
 
-        public void Handle(StopPlaybackMessage message)
+        public void Handle(StopMessage message)
         {
             throw new System.NotImplementedException();
         }
