@@ -5,6 +5,7 @@ using Client.Common.Services;
 using Subsonic8.Framework;
 using Subsonic8.Framework.Interfaces;
 using Subsonic8.Main;
+using Subsonic8.Playback;
 using Subsonic8.Shell;
 using Subsonic8.VideoPlayback;
 using Windows.ApplicationModel.Activation;
@@ -68,6 +69,8 @@ namespace Subsonic8
 
             RegisterPlayers();
 
+            InstantiateRequiredSingletons();
+
             await LoadSettings();
 
             await RestoreLastViewOrGoToMain(shellView);
@@ -91,6 +94,11 @@ namespace Subsonic8
             playerManagementService.RegisterAudioPlayer(_shellViewModel);
             playerManagementService.RegisterVideoPlayer(Kernel.Get<IEmbededVideoPlaybackViewModel>());
             playerManagementService.RegisterVideoPlayer(Kernel.Get<IFullScreenVideoPlaybackViewModel>());
+        }
+
+        private void InstantiateRequiredSingletons()
+        {
+            Kernel.Get<IPlaybackViewModel>();
         }
 
         private void BindShellViewModelToView(ShellView shellView)
