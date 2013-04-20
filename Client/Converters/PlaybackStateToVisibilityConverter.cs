@@ -13,7 +13,7 @@ namespace Subsonic8.Converters
             var stringParameter = parameter as string;
             if (value.GetType() == typeof(PlaybackViewModelStateEnum) && parameter is string)
             {
-                result = stringParameter == value.ToString() ? Visibility.Visible : Visibility.Collapsed;
+                result = stringParameter.Contains(value.ToString()) ? Visibility.Visible : Visibility.Collapsed;
             }
 
             return result;
@@ -23,6 +23,5 @@ namespace Subsonic8.Converters
         {
             throw new NotImplementedException();
         }
-
     }
 }

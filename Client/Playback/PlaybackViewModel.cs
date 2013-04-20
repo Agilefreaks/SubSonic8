@@ -38,6 +38,7 @@ namespace Subsonic8.Playback
         private IEmbededVideoPlaybackViewModel _embededVideoPlaybackViewModel;
         private bool _playbackControlsVisible;
         private IPlayerManagementService _playerManagementService;
+        private IFullScreenVideoPlaybackViewModel _fullScreenVideoPlaybackViewModel;
 
         #endregion
 
@@ -180,12 +181,28 @@ namespace Subsonic8.Playback
             {
                 return _embededVideoPlaybackViewModel;
             }
-
             set
             {
                 if (Equals(value, _embededVideoPlaybackViewModel)) return;
                 _embededVideoPlaybackViewModel = value;
                 NotifyOfPropertyChange(() => EmbededVideoPlaybackViewModel);
+                HookEmbededVideoPlaybackViewModel();
+            }
+        }
+
+        [Inject]
+        public IFullScreenVideoPlaybackViewModel FullScreenVideoPlaybackViewModel
+        {
+            get
+            {
+                return _fullScreenVideoPlaybackViewModel;
+            }
+            set
+            {
+                if (Equals(value, _fullScreenVideoPlaybackViewModel)) return;
+                _fullScreenVideoPlaybackViewModel = value;
+                NotifyOfPropertyChange();
+                HookFullScreenVideoPlaybackViewModel();
             }
         }
 
@@ -416,7 +433,9 @@ namespace Subsonic8.Playback
         {
             State = PlayerManagementService.CurrentPlayer == EmbededVideoPlaybackViewModel
                         ? PlaybackViewModelStateEnum.Video
-                        : PlaybackViewModelStateEnum.Audio;
+                        : PlayerManagementService.CurrentPlayer == FullScreenVideoPlaybackViewModel
+                              ? PlaybackViewModelStateEnum.FullScreen
+                              : PlaybackViewModelStateEnum.Audio;
         }
 
         private void PlaylistManagementServiceOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
@@ -439,6 +458,30 @@ namespace Subsonic8.Playback
                                  .WithErrorHandler(this)
                                  .OnSuccess(song => Handle(new PlayFile { Model = song }))
                                  .Execute();
+        }
+
+        private void HookEmbededVideoPlaybackViewModel()
+        {
+            EmbededVideoPlaybackViewModel.FullScreenChanged += (sender, eventArgs) => SwitchToFullScreenVideoPlayback(eventArgs);
+        }
+
+        private void HookFullScreenVideoPlaybackViewModel()
+        {
+            FullScreenVideoPlaybackViewModel.FullScreenChanged += (sender, eventArgs) => SwitchToEmbededVideoPlayback();
+        }
+
+        private void SwitchToFullScreenVideoPlayback(PlaybackStateEventArgs eventArgs)
+        {
+            EventAggregator.Publish(new StopMessage());
+            PlayerManagementService.DefaultVideoPlayer = FullScreenVideoPlaybackViewModel;
+            EventAggregator.Publish(new PlayMessage());
+        }
+
+        private void SwitchToEmbededVideoPlayback()
+        {
+            EventAggregator.Publish(new StopMessage());
+            PlayerManagementService.DefaultVideoPlayer = EmbededVideoPlaybackViewModel;
+            EventAggregator.Publish(new PlayMessage());
         }
     }
 }

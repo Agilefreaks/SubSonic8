@@ -26,52 +26,51 @@ namespace Client.Tests.Mocks
 
         public void Clear()
         {
-            ClearCallCount++;            
+            ClearCallCount++;
         }
 
         public void LoadPlaylist(PlaylistItemCollection playlistItemCollection)
         {
-            throw new System.NotImplementedException();
         }
 
         public void Handle(PlayNextMessage message)
         {
-            throw new System.NotImplementedException();
         }
 
         public void Handle(PlayPreviousMessage message)
         {
-            throw new System.NotImplementedException();
         }
 
         public void Handle(AddItemsMessage message)
         {
-            throw new System.NotImplementedException();
         }
 
         public void Handle(ToggleShuffleMessage message)
         {
-            throw new System.NotImplementedException();
         }
 
         public void Handle(RemoveItemsMessage message)
         {
-            throw new System.NotImplementedException();
         }
 
         public void Handle(PlayPauseMessage message)
         {
-            throw new System.NotImplementedException();
         }
 
         public void Handle(PlayItemAtIndexMessage message)
         {
-            throw new System.NotImplementedException();
         }
 
         public void Handle(StopMessage message)
         {
-            throw new System.NotImplementedException();
+        }
+
+        public void Handle(PauseMessage message)
+        {
+        }
+
+        public void Handle(PlayMessage message)
+        {
         }
     }
 }

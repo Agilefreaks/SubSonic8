@@ -1,6 +1,7 @@
 ﻿using System;
-using Client.Common.EventAggregatorMessages;
+using Client.Common.Services.DataStructures.PlayerManagementService;
 using Microsoft.PlayerFramework;
+using Subsonic8.Framework.Interfaces;
 using Subsonic8.Framework.Services;
 using Subsonic8.Framework.ViewModel;
 
@@ -12,6 +13,9 @@ namespace Subsonic8.VideoPlayback
         private Uri _source;
         private TimeSpan _startTime;
         private TimeSpan _endTime;
+        private IPlayerControls _playerControls;
+
+        public event EventHandler<PlaybackStateEventArgs> FullScreenChanged;
 
         public IToastNotificationService ToastNotificationService { get { return _notificationService; } }
 
@@ -59,15 +63,6 @@ namespace Subsonic8.VideoPlayback
             }
         }
 
-        public virtual StartVideoPlaybackMessage Parameter
-        {
-            set
-            {
-                if (value == null) return;
-                Handle(value);
-            }
-        }
-
         protected Client.Common.Models.PlaylistItem Item { get; set; }
 
         public VideoPlaybackViewModel(IToastNotificationService notificationService)
@@ -75,47 +70,47 @@ namespace Subsonic8.VideoPlayback
             _notificationService = notificationService;
         }
 
-        public virtual void Handle(StartVideoPlaybackMessage message)
+        protected override void OnViewAttached(object view, object context)
         {
-            Item = message.Item;
-            StartTime = TimeSpan.FromSeconds(message.StartTime).Negate();
-            EndTime = TimeSpan.FromSeconds(message.EndTime);
-            Source = SubsonicService.GetUriForVideoStartingAt(message.Item.Uri, message.StartTime);
+            base.OnViewAttached(view, context);
+            _playerControls = view as IPlayerControls;
         }
 
-        public virtual void Handle(StopVideoPlaybackMessage message)
+        public void OnFullScreenChanged(MediaPlayer mediaPlayer)
         {
-            Source = null;
-        }
-
-        public void FullScreenChanged(MediaPlayer mediaPlayer)
-        {
-            mediaPlayer.Pause();
-            var message = GetStartVideoPlaybackMessageWithCurrentPosition(mediaPlayer);
-            EventAggregator.Publish(message);
-        }
-
-        public virtual StartVideoPlaybackMessage GetStartVideoPlaybackMessageWithCurrentPosition(MediaPlayer mediaPlayer)
-        {
-            TimeSpan startTime, endTime;
-            if (mediaPlayer.TimeRemaining != TimeSpan.Zero)
+            if (FullScreenChanged != null)
             {
-                startTime = EndTime - mediaPlayer.TimeRemaining;
-                endTime = mediaPlayer.TimeRemaining;
+                FullScreenChanged(this, new PlaybackStateEventArgs
+                    {
+                        StartTime = mediaPlayer.StartTime,
+                        EndTime = mediaPlayer.EndTime,
+                        TimeRemaining = mediaPlayer.TimeRemaining
+                    });
             }
-            else
-            {
-                startTime = mediaPlayer.StartTime;
-                endTime = mediaPlayer.EndTime;
-            }
+        }
 
-            var videoPlaybackMessage = new StartVideoPlaybackMessage(Item)
-            {
-                StartTime = startTime.TotalSeconds,
-                EndTime = endTime.TotalSeconds
-            };
+        void IPlayer.Play(Client.Common.Models.PlaylistItem item)
+        {
+            Item = item;
+            StartTime = TimeSpan.FromSeconds(0).Negate();
+            EndTime = TimeSpan.FromSeconds(item.Duration);
+            Source = SubsonicService.GetUriForVideoStartingAt(item.Uri, 0);
+            if (_playerControls != null) _playerControls.PlayAction();
+        }
 
-            return videoPlaybackMessage;
+        void IPlayer.Pause()
+        {
+            if (_playerControls != null) _playerControls.PauseAction();
+        }
+
+        void IPlayer.Resume()
+        {
+            if (_playerControls != null) _playerControls.PlayAction();
+        }
+
+        void IPlayer.Stop()
+        {
+            if (_playerControls != null) _playerControls.PauseAction();
         }
     }
 }

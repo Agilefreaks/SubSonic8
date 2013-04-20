@@ -2,7 +2,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using Caliburn.Micro;
-using Client.Common.EventAggregatorMessages;
+using Client.Common.Models;
 using Client.Common.Services;
 using Subsonic8.BottomBar;
 using Subsonic8.Framework.Services;
@@ -83,20 +83,25 @@ namespace Client.Tests.Mocks
             throw new NotImplementedException();
         }
 
+        public void Play(PlaylistItem item)
+        {
+        }
+
+        public void Pause()
+        {
+        }
+
+        public void Resume()
+        {
+        }
+
         public void Stop()
         {
             throw new NotImplementedException();
         }
 
         public IToastNotificationService ToastNotificationService { get; private set; }
-        public void Handle(StartVideoPlaybackMessage message)
-        {
-            throw new NotImplementedException();
-        }
 
-        public void Handle(StopVideoPlaybackMessage message)
-        {
-            throw new NotImplementedException();
-        }
+        public event EventHandler<PlaybackStateEventArgs> FullScreenChanged;
     }
 }

@@ -18,6 +18,10 @@ namespace Client.Tests.Mocks
 
         public Action PauseAction { get; private set; }
 
+        public void SetSource(Uri source)
+        {
+        }
+
         public int PlayPauseCallCount { get; set; }
 
         public int StopCallCount { get; set; }

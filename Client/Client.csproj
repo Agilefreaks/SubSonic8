@@ -247,13 +247,14 @@
       <DependentUpon>EmbededVideoPlaybackView.xaml</DependentUpon>
     </Compile>
     <Compile Include="VideoPlayback\EmbededVideoPlaybackViewModel.cs" />
-    <Compile Include="VideoPlayback\IEmbededVideoPlaybackViewModel.cs" />
-    <Compile Include="VideoPlayback\IFullScreenVideoPlaybackViewModel.cs" />
     <Compile Include="VideoPlayback\FullScreenVideoPlaybackView.xaml.cs">
       <DependentUpon>FullScreenVideoPlaybackView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="VideoPlayback\IEmbededVideoPlaybackViewModel.cs" />
+    <Compile Include="VideoPlayback\IFullScreenVideoPlaybackViewModel.cs" />
     <Compile Include="VideoPlayback\FullScreenVideoPlaybackViewModel.cs" />
     <Compile Include="VideoPlayback\IVidePlaybackViewModel.cs" />
+    <Compile Include="VideoPlayback\PlaybackStateEventArgs.cs" />
     <Compile Include="VideoPlayback\VideoPlaybackViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -383,8 +384,8 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="VideoPlayback\FullScreenVideoPlaybackView.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>

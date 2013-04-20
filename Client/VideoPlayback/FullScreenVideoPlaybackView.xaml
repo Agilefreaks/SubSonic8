@@ -9,7 +9,6 @@
 
     <Grid Background="Black">
         <mmppf:MediaPlayer Source="{Binding Path=Source}" Width="Auto" Height="Auto" IsFullScreenVisible="True" StartTime="{Binding Path=StartTime}" EndTime="{Binding Path=EndTime}" 
-                           MediaEnded="MediaPlayer_OnMediaEnded" IsFullScreenChanged="MediaPlayer_OnIsFullScreenChanged" x:Name="MediaPlayer">
-        </mmppf:MediaPlayer>
+                           MediaEnded="MediaPlayer_OnMediaEnded" IsFullScreenChanged="MediaPlayer_OnIsFullScreenChanged" x:Name="MediaPlayer"/>
     </Grid>
 </Page>
