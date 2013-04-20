@@ -40,7 +40,7 @@ namespace Client.Common.Tests.Helpers
         [TestMethod]
         public void PlayPausePressed_Always_ShouldPublishANewPlayPuaseMessage()
         {
-            _subject.PlayPressed(null, null);
+            _subject.PlayPausePressed(null, null);
 
             _eventAggregator.PublishCallCount.Should().Be(1);
             _eventAggregator.Messages[0].Should().BeOfType<PlayPauseMessage>();

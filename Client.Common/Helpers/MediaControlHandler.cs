@@ -19,7 +19,7 @@ namespace Client.Common.Helpers
 
         public void PlayPausePressed(object sender, object e)
         {
-            _eventAggregator.Publish(new PauseMessage());
+            _eventAggregator.Publish(new PlayPauseMessage());
         }
 
         public void PausePressed(object sender, object e)
