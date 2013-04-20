@@ -80,10 +80,17 @@ namespace Subsonic8.Framework.Behaviors
 
         private static void SelectedItemsCollectionChanged(DependencyObject dependencyObject, NotifyCollectionChangedEventArgs eventArgs)
         {
-            var oldItems = eventArgs.OldItems ?? new List<object>();
-            var newItems = eventArgs.NewItems ?? new List<object>();
             var gridSelectedItemsList = ((ListViewBase)dependencyObject).SelectedItems;
-            UpdateCollection(gridSelectedItemsList, oldItems, newItems);
+            if (eventArgs.Action == NotifyCollectionChangedAction.Reset)
+            {
+                gridSelectedItemsList.Clear();
+            }
+            else
+            {
+                var toRemove = eventArgs.OldItems ?? new List<object>();
+                var toAdd = eventArgs.NewItems ?? new List<object>();
+                UpdateCollection(gridSelectedItemsList, toRemove, toAdd);
+            }
         }
 
         private static void OnGridSelectionChanged(object sender, SelectionChangedEventArgs eventArgs)
