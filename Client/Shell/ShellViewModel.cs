@@ -121,22 +121,22 @@ namespace Subsonic8.Shell
         public void Play(Client.Common.Models.PlaylistItem item)
         {
             Source = item.Uri;
-            _playerControls.Play();
+            _playerControls.PlayAction();
         }
 
         public void Pause()
         {
-            _playerControls.Pause();
+            _playerControls.PauseAction();
         }
 
         public void Resume()
         {
-            _playerControls.Play();
+            _playerControls.PlayAction();
         }
 
         public void Stop()
         {
-            _playerControls.Stop();
+            _playerControls.StopAction();
         }
 
         protected override void OnViewAttached(object view, object context)

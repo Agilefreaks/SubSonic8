@@ -12,11 +12,11 @@ namespace Client.Tests.Mocks
 
         public Action PlayPause { get; private set; }
 
-        public Action Stop { get; private set; }
+        public Action StopAction { get; private set; }
 
-        public Action Play { get; private set; }
+        public Action PlayAction { get; private set; }
 
-        public Action Pause { get; private set; }
+        public Action PauseAction { get; private set; }
 
         public int PlayPauseCallCount { get; set; }
 
@@ -25,7 +25,7 @@ namespace Client.Tests.Mocks
         public MockPlayerControls()
         {
             PlayPause = PlayPauseImpl;
-            Stop = StopImplementation;
+            StopAction = StopImplementation;
         }
 
         private void StopImplementation()

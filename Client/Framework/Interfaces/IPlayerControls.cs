@@ -4,10 +4,10 @@ namespace Subsonic8.Framework.Interfaces
 {
     public interface IPlayerControls
     {
-        Action Stop { get; }
+        Action StopAction { get; }
 
-        Action Play { get; }
+        Action PlayAction { get; }
 
-        Action Pause { get; }
+        Action PauseAction { get; }
     }
 }
