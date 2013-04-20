@@ -64,23 +64,6 @@ namespace Client.Tests.Playback
         }
 
         [TestMethod]
-        public void HandleStartVideoPlayback_Alawys_CallsNotificationManagerShow()
-        {
-            Subject.Handle(new StartVideoPlaybackMessage(new PlaylistItem()) { FullScreen = true });
-
-            _mockToastNotificationService.ShowCallCount.Should().Be(1);
-        }
-
-        [TestMethod]
-        public void HandleStartVideoPlayback_MessageIsNotForFullScreen_SetsStateToVideo()
-        {
-            ((IActivate)Subject).Activate();
-            Subject.Handle(new StartVideoPlaybackMessage(new PlaylistItem()) { FullScreen = false });
-
-            Subject.State.Should().Be(PlaybackViewModelStateEnum.Video);
-        }
-
-        [TestMethod]
         public void HandleStartAudioPlayback_Alawys_CallsNotificationManagerShow()
         {
             Subject.Handle(new StartPlaybackMessage(new PlaylistItem()));

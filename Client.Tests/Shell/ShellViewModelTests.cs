@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Caliburn.Micro;
 using Client.Common.EventAggregatorMessages;
+using Client.Common.Models;
 using Client.Tests.Mocks;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
@@ -48,9 +49,9 @@ namespace Client.Tests.Shell
         }
 
         [TestMethod]
-        public void Handle_WithStopAudioPlaybackMessage_CallsPlayerControlsStop()
+        public void Stop_CallsPlayerControlsStop()
         {
-            Subject.Handle(new StopPlaybackMessage());
+            Subject.Stop();
 
             _mockPlayerControls.StopCallCount.Should().Be(1);
         }
