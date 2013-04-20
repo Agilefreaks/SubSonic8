@@ -131,5 +131,17 @@ namespace Client.Common.Tests.Services
             mockPlayer.PlayCount.Should().Be(1);
             mockPlayer.PlayCallArguments.First().Should().Be(playlistItem);
         }
+
+        [TestMethod]
+        public void HandleStartPlayback_Always_SetsTheCurrentPlayerToThePlayerForTheItem()
+        {
+            var mockPlayer = new MockPlayer();
+            _subject.DefaultAudioPlayer = mockPlayer;
+            var playlistItem = new PlaylistItem();
+
+            _subject.Handle(new StartPlaybackMessage(playlistItem));
+
+            _subject.CurrentPlayer.Should().Be(mockPlayer);
+        }
     }
 }

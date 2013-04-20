@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Caliburn.Micro;
 using Client.Common.EventAggregatorMessages;
@@ -12,6 +13,9 @@ namespace Client.Common.Services
         private readonly IEventAggregator _eventAggregator;
         private static readonly Dictionary<IPlayer, PlayerType> Players = new Dictionary<IPlayer, PlayerType>();
         private static readonly Dictionary<PlayerType, IPlayer> DefaultPlayers = new Dictionary<PlayerType, IPlayer>();
+        private IPlayer _currnetPlayer;
+
+        public event EventHandler<EventArgs> CurrentPlayerChanged;
 
         public IEnumerable<IPlayer> RegisteredPlayers
         {
@@ -50,6 +54,25 @@ namespace Client.Common.Services
             get { return DefaultAudioPlayer ?? RegisteredAudioPlayers.FirstOrDefault(); }
         }
 
+        public IPlayer CurrentPlayer
+        {
+            get
+            {
+                return _currnetPlayer;
+            }
+            set
+            {
+                if (_currnetPlayer == value) return;
+                _currnetPlayer = value;
+                RaiseCurrentPlayerChanged();
+            }
+        }
+
+        public PlayerType CurrentPlayerType
+        {
+            get { return Players[CurrentPlayer]; }
+        }
+
         public PlayerManagementService(IEventAggregator eventAggregator)
         {
             _eventAggregator = eventAggregator;
@@ -66,19 +89,10 @@ namespace Client.Common.Services
             Players.Add(player, PlayerType.Audio);
         }
 
-        private static IEnumerable<IPlayer> GetPlayersByType(PlayerType playerType)
-        {
-            return Players.Where(kvp => kvp.Value == playerType).Select(kvp => kvp.Key);
-        }
-
-        private static IPlayer GetDefaultPlayerByType(PlayerType playerType)
-        {
-            return DefaultPlayers.Where(kvp => kvp.Key == playerType).Select(kvp => kvp.Value).SingleOrDefault();
-        }
-
         public void Handle(StartPlaybackMessage message)
         {
             var player = GetPlayerFor(message.Item);
+            CurrentPlayer = player;
             player.Play(message.Item);
         }
 
@@ -105,6 +119,24 @@ namespace Client.Common.Services
             var player = item.Type == PlaylistItemTypeEnum.Audio ? AudioPlayer : VideoPlayer;
 
             return player;
+        }
+
+        private static IEnumerable<IPlayer> GetPlayersByType(PlayerType playerType)
+        {
+            return Players.Where(kvp => kvp.Value == playerType).Select(kvp => kvp.Key);
+        }
+
+        private static IPlayer GetDefaultPlayerByType(PlayerType playerType)
+        {
+            return DefaultPlayers.Where(kvp => kvp.Key == playerType).Select(kvp => kvp.Value).SingleOrDefault();
+        }
+
+        private void RaiseCurrentPlayerChanged()
+        {
+            if (CurrentPlayerChanged != null)
+            {
+                CurrentPlayerChanged(this, new EventArgs());
+            }
         }
     }
 }

@@ -37,6 +37,7 @@ namespace Subsonic8.Playback
         private TimeSpan _startTime;
         private IEmbededVideoPlaybackViewModel _embededVideoPlaybackViewModel;
         private bool _playbackControlsVisible;
+        private IPlayerManagementService _playerManagementService;
 
         #endregion
 
@@ -206,6 +207,21 @@ namespace Subsonic8.Playback
             }
         }
 
+        [Inject]
+        public IPlayerManagementService PlayerManagementService
+        {
+            get
+            {
+                return _playerManagementService;
+            }
+            set
+            {
+                if (Equals(value, _playerManagementService)) return;
+                _playerManagementService = value;
+                HookPlayerManagementService();
+            }
+        }
+
         #endregion
 
         public PlaybackViewModel()
@@ -246,10 +262,8 @@ namespace Subsonic8.Playback
 
         public void Handle(StartPlaybackMessage message)
         {
-            //CoverArt = message.Item.OriginalCoverArtUrl;
-            //State = PlaybackViewModelStateEnum.Audio;
-            //NotifyOfPropertyChange(() => ActiveItem);
-
+            CoverArt = message.Item.OriginalCoverArtUrl;
+            NotifyOfPropertyChange(() => ActiveItem);
             this.ShowToast(message.Item);
         }
 
@@ -391,6 +405,18 @@ namespace Subsonic8.Playback
         private void HookPlaylistManagementService()
         {
             PlaylistManagementService.PropertyChanged += PlaylistManagementServiceOnPropertyChanged;
+        }
+
+        private void HookPlayerManagementService()
+        {
+            PlayerManagementService.CurrentPlayerChanged += (sender, eventArgs) => SetStateByCurrentPlayer();
+        }
+
+        private void SetStateByCurrentPlayer()
+        {
+            State = PlayerManagementService.CurrentPlayer == EmbededVideoPlaybackViewModel
+                        ? PlaybackViewModelStateEnum.Video
+                        : PlaybackViewModelStateEnum.Audio;
         }
 
         private void PlaylistManagementServiceOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
