@@ -16,6 +16,7 @@ namespace Client.Common.Services
         private bool _wasEmpty;
         private PlaylistItemCollection _items;
         private bool _isPlaying;
+        private bool _isPaused;
 
         public PlaylistHistoryStack PlaylistHistory { get; private set; }
 
@@ -38,11 +39,11 @@ namespace Client.Common.Services
 
         public void Clear()
         {
-            Items.Clear();            
+            Items.Clear();
         }
 
         public void LoadPlaylist(PlaylistItemCollection playlistItemCollection)
-        {            
+        {
             if (playlistItemCollection == null) return;
             StopPlaybackAction();
             Items.Clear();
@@ -103,7 +104,22 @@ namespace Client.Common.Services
             {
                 if (value.Equals(_isPlaying)) return;
                 _isPlaying = value;
+                if (_isPlaying) IsPaused = false;
                 NotifyOfPropertyChange();
+            }
+        }
+
+        public bool IsPaused
+        {
+            get
+            {
+                return _isPaused;
+            }
+            private set
+            {
+                _isPaused = value;
+                if (_isPaused) IsPlaying = false;
+                NotifyOfPropertyChange(() => IsPaused);
             }
         }
 
@@ -188,17 +204,7 @@ namespace Client.Common.Services
 
         public void Handle(PlayMessage message)
         {
-            if (CurrentItem != null)
-            {
-                if (!IsPlaying)
-                {
-                    Resume();
-                }
-            }
-            else
-            {
-                StartPlayback(GetNextTrackNumber());
-            }
+            Play();
         }
 
         public void PlayPause()
@@ -209,14 +215,34 @@ namespace Client.Common.Services
             }
             else
             {
-                Resume();
+                Play();
+            }
+        }
+
+        public void Play()
+        {
+            if (CurrentItem != null)
+            {
+                if (IsPaused)
+                {
+                    Resume();
+                }
+                else
+                {
+                    StartPlayback();
+                }
+            }
+            else
+            {
+                StartPlayback(GetNextTrackNumber());
             }
         }
 
         public void Pause()
         {
+            if (!IsPlaying) return;
             _eventAggregator.Publish(new PausePlaybackMessage(CurrentItem));
-            IsPlaying = false;
+            IsPaused = true;
         }
 
         public void Resume()
@@ -245,6 +271,7 @@ namespace Client.Common.Services
             _eventAggregator.Publish(new StopPlaybackMessage(CurrentItem));
             CurrentItem.PlayingState = PlaylistItemState.NotPlaying;
             IsPlaying = false;
+            IsPaused = false;
         }
 
         public int GetNextTrackNumber()
