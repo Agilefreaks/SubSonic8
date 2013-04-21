@@ -1,5 +1,6 @@
 using System;
 using Client.Common.Results;
+using Client.Common.Services.DataStructures.SubsonicService;
 
 namespace Client.Common.Services
 {

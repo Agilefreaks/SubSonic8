@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using Caliburn.Micro;
 using Client.Common.EventAggregatorMessages;
-using Client.Common.Models.Subsonic;
+using Client.Common.Models;
 using Client.Tests.Mocks;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
@@ -49,24 +49,9 @@ namespace Client.Tests.Shell
         }
 
         [TestMethod]
-        public void PlayNextShouldCallPublishOnEventAggregator()
+        public void Stop_CallsPlayerControlsStop()
         {
-            Subject.PlayNext(null, null);
-            _eventAggregator.PublishCallCount.Should().Be(1);
-        }
-
-        [TestMethod]
-        public void PlayPreviousShouldCallPublishOnEventAggregator()
-        {
-            Subject.PlayPrevious(null, null);
-
-            _eventAggregator.PublishCallCount.Should().Be(1);
-        }
-
-        [TestMethod]
-        public void Handle_WithStopAudioPlaybackMessage_CallsPlayerControlsStop()
-        {
-            Subject.Handle(new StopAudioPlaybackMessage());
+            Subject.Stop();
 
             _mockPlayerControls.StopCallCount.Should().Be(1);
         }

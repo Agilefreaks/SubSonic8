@@ -201,7 +201,7 @@ namespace Client.Tests.DefaultBottomBar
             _subject.Stop();
 
             _eventAggregator.Messages.Count.Should().Be(1);
-            _eventAggregator.Messages[0].Should().BeOfType<StopPlaybackMessage>();
+            _eventAggregator.Messages[0].Should().BeOfType<StopMessage>();
         }
     }
 }

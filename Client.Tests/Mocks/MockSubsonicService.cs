@@ -1,6 +1,7 @@
 ﻿using System;
 using Client.Common.Models.Subsonic;
 using Client.Common.Services;
+using Client.Common.Services.DataStructures.SubsonicService;
 
 namespace Client.Tests.Mocks
 {

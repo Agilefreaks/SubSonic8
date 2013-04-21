@@ -5,8 +5,9 @@ using Client.Common.Models;
 
 namespace Client.Common.Services
 {
-    public interface IPlaylistManagementService : IHandle<PlayNextMessage>, IHandle<PlayPreviousMessage>, IHandle<AddItemsMessage>, IHandle<ToggleShuffleMessage>,
-        IHandle<RemoveItemsMessage>, IHandle<PlayPauseMessage>, IHandle<PlayItemAtIndexMessage>, IHandle<StopPlaybackMessage>, INotifyPropertyChanged
+    public interface IPlaylistManagementService : IHandle<PlayNextMessage>, IHandle<PlayPreviousMessage>, IHandle<AddItemsMessage>,
+        IHandle<ToggleShuffleMessage>, IHandle<RemoveItemsMessage>, IHandle<PlayPauseMessage>, IHandle<PlayItemAtIndexMessage>,
+        IHandle<StopMessage>, IHandle<PauseMessage>, IHandle<PlayMessage>, INotifyPropertyChanged
     {
         PlaylistItem CurrentItem { get; }
 

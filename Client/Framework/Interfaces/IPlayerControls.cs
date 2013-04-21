@@ -1,16 +1,13 @@
 using System;
-using Windows.UI.Xaml;
 
 namespace Subsonic8.Framework.Interfaces
 {
     public interface IPlayerControls
     {
-        event RoutedEventHandler PlayNextClicked;
+        Action StopAction { get; }
 
-        event RoutedEventHandler PlayPreviousClicked;
+        Action PlayAction { get; }
 
-        Action PlayPause { get; }
-
-        Action Stop { get; }
+        Action PauseAction { get; }
     }
 }

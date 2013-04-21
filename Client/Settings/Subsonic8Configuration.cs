@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using Caliburn.Micro;
 using Client.Common.Services;
+using Client.Common.Services.DataStructures.SubsonicService;
 
 namespace Subsonic8.Settings
 {

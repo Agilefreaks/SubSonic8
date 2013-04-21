@@ -71,6 +71,8 @@ namespace Subsonic8.Search
             }
         }
 
+        protected SearchResultCollection Results { get; set; }
+
         public SearchViewModel()
         {
             MenuItemViewModels = new List<MenuItemViewModel>();
@@ -132,15 +134,13 @@ namespace Subsonic8.Search
             State = MenuItemViewModels.Any() ? SearchResultState.ResultsFound : SearchResultState.NoResultsFound;
         }
 
-        protected SearchResultCollection Results { get; set; }
-
         protected override void OnEventAggregatorSet()
         {
             base.OnEventAggregatorSet();
             EventAggregator.Subscribe(this);
         }
 
-        private void RemoveCoverArt(IEnumerable<MenuItemViewModel> menuItemViewModels)
+        private static void RemoveCoverArt(IEnumerable<MenuItemViewModel> menuItemViewModels)
         {
             foreach (var menuItemViewModel in menuItemViewModels)
             {

@@ -2,11 +2,11 @@
 
 namespace Client.Common.EventAggregatorMessages
 {
-    public class StartAudioPlaybackMessage
+    public class PlaybackMessageBase
     {
         public PlaylistItem Item { get; set; }
 
-        public StartAudioPlaybackMessage(PlaylistItem item)
+        public PlaybackMessageBase(PlaylistItem item)
         {
             Item = item;
         }

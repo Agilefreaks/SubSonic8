@@ -1,6 +1,7 @@
 ﻿using System;
 using Caliburn.Micro;
 using Client.Common.EventAggregatorMessages;
+using Client.Common.Models;
 using Client.Common.Services;
 using Subsonic8.BottomBar;
 using Subsonic8.Framework.Interfaces;
@@ -30,17 +31,27 @@ namespace Client.Tests.Mocks
 
         public void PlayNext(object sender, RoutedEventArgs routedEventArgs)
         {
-            throw new NotImplementedException();
         }
 
         public void PlayPrevious(object sender, RoutedEventArgs routedEventArgs)
         {
-            throw new NotImplementedException();
         }
 
         public void PlayPause()
         {
             PlayPauseCallCount++;
+        }
+
+        public void Play(PlaylistItem item, object options = null)
+        {
+        }
+
+        public void Pause()
+        {
+        }
+
+        public void Resume()
+        {
         }
 
         public void Stop()
@@ -57,11 +68,11 @@ namespace Client.Tests.Mocks
         {
         }
 
-        public void Handle(StartAudioPlaybackMessage message)
+        public void Handle(StartPlaybackMessage message)
         {
         }
 
-        public void Handle(StopPlaybackMessage message)
+        public void Handle(StopMessage message)
         {
         }
 
@@ -69,11 +80,11 @@ namespace Client.Tests.Mocks
         {
         }
 
-        public void Handle(StopAudioPlaybackMessage message)
+        public void Handle(StopPlaybackMessage message)
         {
         }
 
-        public void Handle(PausePlaybackMessage message)
+        public void Handle(PauseMessage message)
         {
         }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Client.Common.Services;
+using Client.Common.Services.DataStructures.SubsonicService;
 
 namespace Client.Common.Results
 {

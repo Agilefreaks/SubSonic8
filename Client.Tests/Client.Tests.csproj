@@ -107,6 +107,9 @@
   </PropertyGroup>
   <ItemGroup>
     <!--A reference to the entire .Net Framework and Windows SDK are automatically included-->
+    <SDKReference Include="Microsoft.PlayerFramework.Xaml, Version=1.8.0.5">
+      <Name>Microsoft Player Framework</Name>
+    </SDKReference>
     <SDKReference Include="MSTestFramework, Version=11.0" />
     <SDKReference Include="TestPlatform, Version=11.0" />
   </ItemGroup>
@@ -183,9 +186,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Caliburn.Micro.1.5.0\lib\win8\Caliburn.Micro.Extensions.dll</HintPath>
     </Reference>
-    <Reference Include="Callisto, Version=1.2.6.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Callisto, Version=1.2.7.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Callisto.1.2.6\lib\winrt45\Callisto.dll</HintPath>
+      <HintPath>..\packages\Callisto.1.2.8\lib\winrt45\Callisto.dll</HintPath>
     </Reference>
     <Reference Include="FluentAssertions, Version=2.0.1.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

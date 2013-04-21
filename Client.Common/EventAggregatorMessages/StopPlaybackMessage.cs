@@ -1,6 +1,12 @@
-﻿namespace Client.Common.EventAggregatorMessages
+﻿using Client.Common.Models;
+
+namespace Client.Common.EventAggregatorMessages
 {
-    public class StopPlaybackMessage
+    public class StopPlaybackMessage : PlaybackMessageBase
     {
+        public StopPlaybackMessage(PlaylistItem item)
+            : base(item)
+        {
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Client.Common.Helpers;
 using Client.Common.Services;
 using Windows.ApplicationModel.Search;
 using Windows.Foundation;
@@ -64,6 +65,10 @@ namespace Client.Tests.Mocks
         public Task<T> LoadFromFile<T>(IStorageFile storageFile) where T : new()
         {
             throw new NotImplementedException();
+        }
+
+        public void RegisterMediaControlHandler(IMediaControlHandler mediaControlHandler)
+        {
         }
     }
 }

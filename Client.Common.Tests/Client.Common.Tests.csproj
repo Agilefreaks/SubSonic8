@@ -111,8 +111,10 @@
     <SDKReference Include="TestPlatform, Version=11.0" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helpers\MediaControlHandlerTests.cs" />
     <Compile Include="Mocks\MockEventAggregator.cs" />
     <Compile Include="Mocks\MockSubsonicService.cs" />
+    <Compile Include="Mocks\MockPlayer.cs" />
     <Compile Include="Models\Subsonic\AlbumTests.cs" />
     <Compile Include="Models\Subsonic\ArtistTests.cs" />
     <Compile Include="Models\Subsonic\ExpandedArtistTests.cs" />
@@ -127,6 +129,7 @@
     <Compile Include="Results\GetMusicDirectoryResultTests.cs" />
     <Compile Include="Results\GetRootResultTests.cs" />
     <Compile Include="Results\GetSongResultTests.cs" />
+    <Compile Include="Services\PlayerManagementServiceTests.cs" />
     <Compile Include="Services\PlaylistManagementServiceTests.cs" />
     <Compile Include="Services\SubsonicServiceConfigurationTests.cs" />
     <Compile Include="Services\SubsonicServiceTests.cs" />
@@ -154,8 +157,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Caliburn.Micro.1.5.0\lib\win8\Caliburn.Micro.Extensions.dll</HintPath>
     </Reference>
-    <Reference Include="Callisto">
-      <HintPath>..\packages\Callisto.1.2.6\lib\winrt45\Callisto.dll</HintPath>
+    <Reference Include="Callisto, Version=1.2.7.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Callisto.1.2.8\lib\winrt45\Callisto.dll</HintPath>
     </Reference>
     <Reference Include="FluentAssertions, Version=2.0.1.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
