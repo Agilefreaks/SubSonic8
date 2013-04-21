@@ -3,6 +3,7 @@
     public enum PlaybackViewModelStateEnum
     {
         Audio,
-        Video
+        Video,
+        FullScreen
     }
 }

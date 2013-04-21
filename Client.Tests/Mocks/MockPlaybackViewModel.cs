@@ -32,17 +32,7 @@ namespace Client.Tests.Mocks
             throw new NotImplementedException();
         }
 
-        public void Handle(StartVideoPlaybackMessage message)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Handle(StartAudioPlaybackMessage message)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Handle(StopVideoPlaybackMessage message)
+        public void Handle(StartPlaybackMessage message)
         {
             throw new NotImplementedException();
         }

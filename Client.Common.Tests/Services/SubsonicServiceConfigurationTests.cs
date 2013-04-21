@@ -1,4 +1,4 @@
-﻿using Client.Common.Services;
+﻿using Client.Common.Services.DataStructures.SubsonicService;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 
@@ -21,7 +21,7 @@ namespace Client.Common.Tests.Services
             _subject.Username = "Aladdin";
             _subject.Password = "open sesame";
 
-            _subject.EncodedCredentials().Should().Be("QWxhZGRpbjpvcGVuIHNlc2FtZQ==");
+            _subject.EncodedCredentials.Should().Be("QWxhZGRpbjpvcGVuIHNlc2FtZQ==");
         }
 
         [TestMethod]

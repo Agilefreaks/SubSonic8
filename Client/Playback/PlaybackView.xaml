@@ -8,7 +8,7 @@
     xmlns:common="using:Subsonic8.Common" xmlns:playlistItem="using:Subsonic8.PlaylistItem"
     xmlns:playback="using:Subsonic8.Playback.Playback" xmlns:converters="using:Subsonic8.Converters"
     xmlns:behaviors="using:Subsonic8.Framework.Behaviors" xmlns:framework="using:Subsonic8.Framework"
-    xmlns:i="using:Windows.UI.Interactivity"
+    xmlns:i="using:Windows.UI.Interactivity" xmlns:videoPlayback="using:Subsonic8.VideoPlayback"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -18,67 +18,72 @@
         <converters:PlaybackStateToVisibilityConverter x:Name="PlaybackStateToVisibilityConverter"/>
     </Page.Resources>
 
-    <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="140" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+    <Grid>
+        <ContentControl HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='FullScreen'}">
+            <videoPlayback:FullScreenVideoPlaybackView cal:Bind.Model="{Binding Path=FullScreenVideoPlaybackViewModel}" />
+        </ContentControl>
+        <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}" Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='VideoAudio'}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="140" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
-        <common:PageHeader DataContext="{Binding}" />
+            <common:PageHeader DataContext="{Binding}" />
 
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
 
-            <ContentControl HorizontalAlignment="Center" VerticalAlignment="Center" Padding="116,0,116,46">
-                <Grid>
-                    <playback:Audio cal:Bind.Model="{Binding}" Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='Audio'}"/>
-                    <playback:Video cal:Bind.Model="{Binding}" Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='Video'}"/>
+                <ContentControl HorizontalAlignment="Center" VerticalAlignment="Center" Padding="116,0,116,46">
+                    <Grid>
+                        <playback:Audio cal:Bind.Model="{Binding}" Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='Audio'}"/>
+                        <playback:Video cal:Bind.Model="{Binding}" Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='Video'}"/>
+                    </Grid>
+                </ContentControl>
+
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                            <Button Style="{StaticResource ClearPlaylistAppBarButtonStyle}" x:Name="ClearPlaylist"/>
+                            <Button Style="{StaticResource LoadPlaylistAppBarButtonStyle}" x:Name="LoadPlaylist"/>
+                            <Button Style="{StaticResource SaveAppBarButtonStyle}" x:Name="SavePlaylist"/>
+                        </StackPanel>
+                    </Grid>
+                    <ScrollViewer Grid.Row="1" Margin="0,0,46,46">
+                        <ListView
+                        ItemsSource = "{Binding PlaylistItems}" ItemTemplate="{StaticResource PlaylistItemTemplate}"
+                        SelectionMode = "Multiple"
+                        behaviors:MultipleSelectBehavior.SelectedItems="{Binding SelectedItems, Mode=TwoWay}"
+                        CanDragItems = "False" CanReorderItems = "False" AllowDrop = "False"
+                        IsItemClickEnabled = "True"
+                        cal:Message.Attach = "[Event ItemClick] = [Action StartPlayback($eventArgs)]">
+                            <i:Interaction.Behaviors>
+                                <behaviors:ScrollIntoViewBehavior ActiveItemProvider="{Binding}"/>
+                            </i:Interaction.Behaviors>
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                            <ListView.Template>
+                                <ControlTemplate>
+                                    <ItemsPresenter/>
+                                </ControlTemplate>
+                            </ListView.Template>
+                        </ListView>
+                    </ScrollViewer>
                 </Grid>
-            </ContentControl>
-
-            <Grid Grid.Column="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <StackPanel Grid.Column="1" Orientation="Horizontal">
-                        <Button Style="{StaticResource ClearPlaylistAppBarButtonStyle}" x:Name="ClearPlaylist"/>
-                        <Button Style="{StaticResource LoadPlaylistAppBarButtonStyle}" x:Name="LoadPlaylist"/>
-                        <Button Style="{StaticResource SaveAppBarButtonStyle}" x:Name="SavePlaylist"/>
-                    </StackPanel>
-                </Grid>
-                <ScrollViewer Grid.Row="1" Margin="0,0,46,46">
-                    <ListView
-                    ItemsSource = "{Binding PlaylistItems}" ItemTemplate="{StaticResource PlaylistItemTemplate}"
-                    SelectionMode = "Multiple"
-                    behaviors:MultipleSelectBehavior.SelectedItems="{Binding SelectedItems, Mode=TwoWay}"
-                    CanDragItems = "False" CanReorderItems = "False" AllowDrop = "False"
-                    IsItemClickEnabled = "True"
-                    cal:Message.Attach = "[Event ItemClick] = [Action StartPlayback($eventArgs)]">
-                        <i:Interaction.Behaviors>
-                            <behaviors:ScrollIntoViewBehavior ActiveItemProvider="{Binding}"/>
-                        </i:Interaction.Behaviors>
-                        <ListView.ItemContainerStyle>
-                            <Style TargetType="ListViewItem">
-                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                            </Style>
-                        </ListView.ItemContainerStyle>
-                        <ListView.Template>
-                            <ControlTemplate>
-                                <ItemsPresenter/>
-                            </ControlTemplate>
-                        </ListView.Template>
-                    </ListView>
-                </ScrollViewer>
             </Grid>
         </Grid>
     </Grid>

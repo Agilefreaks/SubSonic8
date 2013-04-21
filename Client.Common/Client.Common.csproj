@@ -103,13 +103,19 @@
   <ItemGroup>
     <Compile Include="CommonModule.cs" />
     <Compile Include="EventAggregatorMessages\PausePlaybackMessage.cs" />
+    <Compile Include="EventAggregatorMessages\PlaybackMessageBase.cs" />
+    <Compile Include="EventAggregatorMessages\PlayMessage.cs" />
+    <Compile Include="Services\DataStructures\PlayerManagementService\IPlayer.cs" />
+    <Compile Include="Services\DataStructures\PlayerManagementService\PlayerType.cs" />
+    <Compile Include="Services\IPlayerManagementService.cs" />
+    <Compile Include="EventAggregatorMessages\PauseMessage.cs" />
+    <Compile Include="Services\PlayerManagementService.cs" />
     <Compile Include="EventAggregatorMessages\PlayItemAtIndexMessage.cs" />
     <Compile Include="EventAggregatorMessages\PlayPauseMessage.cs" />
     <Compile Include="EventAggregatorMessages\RemoveItemsMessage.cs" />
     <Compile Include="EventAggregatorMessages\ResumePlaybackMessage.cs" />
-    <Compile Include="EventAggregatorMessages\StartAudioPlaybackMessage.cs" />
-    <Compile Include="EventAggregatorMessages\StartVideoPlaybackMessage.cs" />
-    <Compile Include="EventAggregatorMessages\StopPlaybackMessage.cs" />
+    <Compile Include="EventAggregatorMessages\StartPlaybackMessage.cs" />
+    <Compile Include="EventAggregatorMessages\StopMessage.cs" />
     <Compile Include="EventAggregatorMessages\ToggleShuffleMessage.cs" />
     <Compile Include="Models\IId.cs" />
     <Compile Include="Models\ISubsonicModel.cs" />
@@ -166,23 +172,24 @@
     <Compile Include="EventAggregatorMessages\AddItemsMessage.cs" />
     <Compile Include="Services\CustomFrameAdapter.cs" />
     <Compile Include="Services\ICustomFrameAdapter.cs" />
-    <Compile Include="Services\ImageType.cs" />
+    <Compile Include="Services\DataStructures\SubsonicService\ImageType.cs" />
+    <Compile Include="Helpers\IMediaControlHandler.cs" />
     <Compile Include="Services\IPlaylistManagementService.cs" />
     <Compile Include="Services\IStorageService.cs" />
     <Compile Include="Services\ISubsonicService.cs" />
-    <Compile Include="Services\ISubsonicServiceConfiguration.cs" />
+    <Compile Include="Services\DataStructures\SubsonicService\ISubsonicServiceConfiguration.cs" />
     <Compile Include="Services\IWinRTWrappersService.cs" />
+    <Compile Include="Helpers\MediaControlHandler.cs" />
     <Compile Include="Services\PlaylistManagementService.cs" />
     <Compile Include="EventAggregatorMessages\PlaylistStateChangedMessage.cs" />
     <Compile Include="EventAggregatorMessages\PlayPreviousMessage.cs" />
     <Compile Include="EventAggregatorMessages\PlayNextMessage.cs" />
-    <Compile Include="EventAggregatorMessages\StopVideoPlaybackMessage.cs" />
-    <Compile Include="EventAggregatorMessages\StopAudioPlaybackMessage.cs" />
+    <Compile Include="EventAggregatorMessages\StopPlaybackMessage.cs" />
     <Compile Include="Services\StorageService.cs" />
     <Compile Include="Services\SubsonicService.cs" />
-    <Compile Include="Services\SubsonicServiceConfiguration.cs" />
+    <Compile Include="Services\DataStructures\SubsonicService\SubsonicServiceConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\SubsonicServiceConfigurationExtensions.cs" />
+    <Compile Include="Services\DataStructures\SubsonicService\SubsonicServiceConfigurationExtensions.cs" />
     <Compile Include="Services\WinRTWrappersService.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -194,8 +201,18 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Caliburn.Micro.1.5.0\lib\win8\Caliburn.Micro.Extensions.dll</HintPath>
     </Reference>
-    <Reference Include="Callisto">
-      <HintPath>..\packages\Callisto.1.2.6\lib\winrt45\Callisto.dll</HintPath>
+    <Reference Include="Callisto, Version=1.2.7.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Callisto.1.2.8\lib\winrt45\Callisto.dll</HintPath>
+    </Reference>
+    <Reference Include="MetroLog">
+      <HintPath>..\packages\MetroLog.0.8.1.1\lib\netcore45\MetroLog.dll</HintPath>
+    </Reference>
+    <Reference Include="MetroLog.NetCore">
+      <HintPath>..\packages\MetroLog.0.8.1.1\lib\netcore45\MetroLog.NetCore.dll</HintPath>
+    </Reference>
+    <Reference Include="MetroLog.WinRT">
+      <HintPath>..\packages\MetroLog.0.8.1.1\lib\netcore45\MetroLog.WinRT.winmd</HintPath>
     </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation">
       <HintPath>..\Lib\Microsoft.Practices.ServiceLocation.dll</HintPath>

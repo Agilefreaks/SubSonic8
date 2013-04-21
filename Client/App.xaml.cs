@@ -6,7 +6,6 @@ using Subsonic8.Framework;
 using Subsonic8.Framework.Interfaces;
 using Subsonic8.Main;
 using Subsonic8.Playback;
-using Subsonic8.Search;
 using Subsonic8.Shell;
 using Subsonic8.VideoPlayback;
 using Windows.ApplicationModel.Activation;
@@ -66,9 +65,11 @@ namespace Subsonic8
 
             RegisterNavigationService(shellView.ShellFrame);
 
-            InstantiateRequiredSingletons();
-
             BindShellViewModelToView(shellView);
+
+            RegisterPlayers();
+
+            InstantiateRequiredSingletons();
 
             await LoadSettings();
 
@@ -87,12 +88,17 @@ namespace Subsonic8
             Kernel.Bind<ICustomFrameAdapter>().ToConstant(_navigationService);
         }
 
+        private void RegisterPlayers()
+        {
+            var playerManagementService = Kernel.Get<IPlayerManagementService>();
+            playerManagementService.RegisterAudioPlayer(_shellViewModel);
+            playerManagementService.RegisterVideoPlayer(Kernel.Get<IEmbededVideoPlaybackViewModel>());
+            playerManagementService.RegisterVideoPlayer(Kernel.Get<IFullScreenVideoPlaybackViewModel>());
+        }
+
         private void InstantiateRequiredSingletons()
         {
-            //resolved so that they can start listening for events
             Kernel.Get<IPlaybackViewModel>();
-            Kernel.Get<IFullScreenVideoPlaybackViewModel>();
-            Kernel.Get<ISearchViewModel>();
         }
 
         private void BindShellViewModelToView(ShellView shellView)

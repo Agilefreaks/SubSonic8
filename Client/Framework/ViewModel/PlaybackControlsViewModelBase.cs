@@ -21,7 +21,7 @@ namespace Subsonic8.Framework.ViewModel
 
         public virtual void Stop()
         {
-            EventAggregator.Publish(new StopPlaybackMessage());
+            EventAggregator.Publish(new StopMessage());
         }
 
         protected override void OnEventAggregatorSet()

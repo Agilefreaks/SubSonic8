@@ -1,4 +1,4 @@
-namespace Client.Common.Services
+namespace Client.Common.Services.DataStructures.SubsonicService
 {
     public interface ISubsonicServiceConfiguration
     {
@@ -8,6 +8,6 @@ namespace Client.Common.Services
 
         string BaseUrl { get; set; }
 
-        string EncodedCredentials();
+        string EncodedCredentials { get; }
     }
 }

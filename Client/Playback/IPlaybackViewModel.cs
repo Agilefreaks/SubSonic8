@@ -11,7 +11,7 @@ using Subsonic8.Messages;
 namespace Subsonic8.Playback
 {
     public interface IPlaybackViewModel : IHandle<PlaylistMessage>, IHandle<PlaylistStateChangedMessage>,
-        IHandle<PlayFile>, IHandle<StartVideoPlaybackMessage>, IHandle<StartAudioPlaybackMessage>,
+        IHandle<PlayFile>, IHandle<StartPlaybackMessage>,
         IViewModel, IToastNotificationCapable, IHaveState, IActiveItemProvider
     {
         int? Parameter { set; }
@@ -27,8 +27,6 @@ namespace Subsonic8.Playback
         bool ShuffleOn { get; }
 
         bool IsPlaying { get; }
-
-        TimeSpan EndTime { get; set; }
 
         void ClearPlaylist();
 

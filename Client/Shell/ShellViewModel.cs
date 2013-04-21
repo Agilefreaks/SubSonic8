@@ -1,6 +1,7 @@
 ﻿using System;
 using Caliburn.Micro;
 using Client.Common.EventAggregatorMessages;
+using Client.Common.Helpers;
 using Client.Common.Models.Subsonic;
 using Client.Common.Results;
 using Client.Common.Services;
@@ -10,7 +11,6 @@ using Subsonic8.Framework.Interfaces;
 using Subsonic8.Framework.Services;
 using Subsonic8.Search;
 using Subsonic8.Settings;
-using Windows.UI.Xaml;
 
 namespace Subsonic8.Shell
 {
@@ -61,10 +61,6 @@ namespace Subsonic8.Shell
             {
                 _playerControls = value;
                 NotifyOfPropertyChange();
-                if (_playerControls != null)
-                {
-                    HookupPlayerControls();
-                }
             }
         }
 
@@ -88,7 +84,8 @@ namespace Subsonic8.Shell
         }
 
         public ShellViewModel(IEventAggregator eventAggregator, ISubsonicService subsonicService, ICustomFrameAdapter navigationService,
-            IToastNotificationService notificationService, IDialogNotificationService dialogNotificationService, IStorageService storageService, IWinRTWrappersService winRTWrappersService)
+            IToastNotificationService notificationService, IDialogNotificationService dialogNotificationService,
+            IStorageService storageService, IWinRTWrappersService winRTWrappersService)
         {
             _eventAggregator = eventAggregator;
             SubsonicService = subsonicService;
@@ -101,49 +98,6 @@ namespace Subsonic8.Shell
             eventAggregator.Subscribe(this);
         }
 
-        public void PlayNext(object sender, RoutedEventArgs routedEventArgs)
-        {
-            _eventAggregator.Publish(new PlayNextMessage());
-        }
-
-        public void PlayPrevious(object sender, RoutedEventArgs routedEventArgs)
-        {
-            _eventAggregator.Publish(new PlayPreviousMessage());
-        }
-
-        public void PlayPause()
-        {
-            _eventAggregator.Publish(new PlayPauseMessage());
-        }
-
-        public void Stop()
-        {
-            _eventAggregator.Publish(new StopPlaybackMessage());
-        }
-
-        public void Handle(StartAudioPlaybackMessage message)
-        {
-            Source = message.Item.Uri;
-        }
-
-        public void Handle(StopAudioPlaybackMessage message)
-        {
-            if (_playerControls != null)
-                _playerControls.Stop();
-        }
-
-        public void Handle(ResumePlaybackMessage message)
-        {
-            if (_playerControls != null)
-                _playerControls.PlayPause();
-        }
-
-        public void Handle(PausePlaybackMessage message)
-        {
-            if (_playerControls != null)
-                _playerControls.PlayPause();
-        }
-
         public void Handle(ChangeBottomBarMessage message)
         {
             BottomBar = message.BottomBarViewModel;
@@ -154,6 +108,37 @@ namespace Subsonic8.Shell
             NavigationService.NavigateToViewModel<SearchViewModel>(query);
         }
 
+        public void SongEnded()
+        {
+            _eventAggregator.Publish(new PlayNextMessage());
+        }
+
+        public async void HandleError(Exception error)
+        {
+            await new MessageDialogResult(error.ToString(), "Ooops...").Execute();
+        }
+
+        public void Play(Client.Common.Models.PlaylistItem item, object options = null)
+        {
+            Source = item.Uri;
+            _playerControls.PlayAction();
+        }
+
+        public void Pause()
+        {
+            _playerControls.PauseAction();
+        }
+
+        public void Resume()
+        {
+            _playerControls.PlayAction();
+        }
+
+        public void Stop()
+        {
+            _playerControls.StopAction();
+        }
+
         protected override void OnViewAttached(object view, object context)
         {
             base.OnViewAttached(view, context);
@@ -161,19 +146,9 @@ namespace Subsonic8.Shell
             WinRTWrappersService.RegisterSearchQueryHandler((sender, args) => SendSearchQueryMessage(args.QueryText));
             WinRTWrappersService.RegisterSettingsRequestedHandler((sender, args) => args.AddSetting<SettingsViewModel>());
             WinRTWrappersService.RegisterSettingsRequestedHandler((sender, args) => args.AddSetting<PrivacyPolicyViewModel>());
+            WinRTWrappersService.RegisterMediaControlHandler(new MediaControlHandler(_eventAggregator));
 
             PlayerControls = (IPlayerControls)view;
-        }
-
-        private void HookupPlayerControls()
-        {
-            _playerControls.PlayNextClicked += PlayNext;
-            _playerControls.PlayPreviousClicked += PlayPrevious;
-        }
-
-        public async void HandleError(Exception error)
-        {
-            await new MessageDialogResult(error.ToString(), "Ooops...").Execute();
         }
     }
 }

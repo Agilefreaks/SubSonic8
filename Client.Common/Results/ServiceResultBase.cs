@@ -5,7 +5,7 @@ using System.ServiceModel;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Caliburn.Micro;
-using Client.Common.Services;
+using Client.Common.Services.DataStructures.SubsonicService;
 
 namespace Client.Common.Results
 {
@@ -112,7 +112,7 @@ namespace Client.Common.Results
             try
             {
                 var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, RequestUrl);
-                httpRequestMessage.Headers.Add("Authorization", string.Format("Basic {0}", Configuration.EncodedCredentials()));
+                httpRequestMessage.Headers.Add("Authorization", string.Format("Basic {0}", Configuration.EncodedCredentials));
                 var response = await Client.SendAsync(httpRequestMessage);
                 result.Stream = await response.Content.ReadAsStreamAsync();
             }

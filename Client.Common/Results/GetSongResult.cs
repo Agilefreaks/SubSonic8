@@ -2,6 +2,7 @@
 using System.Xml.Serialization;
 using Client.Common.Models.Subsonic;
 using Client.Common.Services;
+using Client.Common.Services.DataStructures.SubsonicService;
 
 namespace Client.Common.Results
 {

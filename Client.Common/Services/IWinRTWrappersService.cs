@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Client.Common.Helpers;
 using Windows.ApplicationModel.Search;
 using Windows.Foundation;
 using Windows.Storage;
@@ -20,5 +21,7 @@ namespace Client.Common.Services
 
         Task<T> LoadFromFile<T>(IStorageFile storageFile)
             where T : new();
+
+        void RegisterMediaControlHandler(IMediaControlHandler mediaControlHandler);
     }
 }

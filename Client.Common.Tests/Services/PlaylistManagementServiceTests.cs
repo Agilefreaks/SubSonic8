@@ -329,28 +329,17 @@ namespace Client.Common.Tests.Services
 
             _subject.StartPlayback(1);
 
-            _mockEventAggregator.Messages.Any(m => m.GetType() == typeof(StartAudioPlaybackMessage)).Should().BeTrue();
+            _mockEventAggregator.Messages.Any(m => m.GetType() == typeof(StartPlaybackMessage)).Should().BeTrue();
         }
 
         [TestMethod]
-        public void StartPlayback_ItemAtGivenIndexIsVideo_SendsStartVideoPlaybackMessageWithGivenItem()
+        public void StartPlayback_ItemAtGivenIndexIsVideo_SendsStartPlaybackMessageWithGivenItem()
         {
             _subject.Items.Add(new PlaylistItem { Type = PlaylistItemTypeEnum.Video });
 
             _subject.StartPlayback(0);
 
-            _mockEventAggregator.Messages.Any(m => m.GetType() == typeof(StartVideoPlaybackMessage)).Should().BeTrue();
-        }
-
-        [TestMethod]
-        public void StartPlayback_ItemAtGivenIndexIsVideo_SendsStartVideoPlaybackMessageWithFullScreenTrue()
-        {
-            _subject.Items.Add(new PlaylistItem { Type = PlaylistItemTypeEnum.Video });
-
-            _subject.StartPlayback(0);
-
-            _mockEventAggregator.Messages.Any(m => m.GetType() == typeof (StartVideoPlaybackMessage) && ((StartVideoPlaybackMessage) m).FullScreen)
-                                .Should().BeTrue();
+            _mockEventAggregator.Messages.Any(m => m.GetType() == typeof(StartPlaybackMessage)).Should().BeTrue();
         }
 
         [TestMethod]
@@ -393,18 +382,18 @@ namespace Client.Common.Tests.Services
 
             _subject.StopPlayback();
 
-            _mockEventAggregator.Messages.Any(m => m.GetType() == typeof(StopAudioPlaybackMessage)).Should().BeTrue();
+            _mockEventAggregator.Messages.Any(m => m.GetType() == typeof(StopPlaybackMessage)).Should().BeTrue();
         }
 
         [TestMethod]
-        public void StopPlayback_CurrentItemIsOfTypeVideo_SendsStopVideoPlaybackMessage()
+        public void StopPlayback_CurrentItemIsOfTypeVideo_SendsStopPlaybackMessage()
         {
             _subject.Items.Add(new PlaylistItem { Type = PlaylistItemTypeEnum.Video });
             _subject.Handle(new PlayNextMessage());
 
             _subject.StopPlayback();
 
-            _mockEventAggregator.Messages.Any(m => m.GetType() == typeof(StopVideoPlaybackMessage)).Should().BeTrue();
+            _mockEventAggregator.Messages.Any(m => m.GetType() == typeof(StopPlaybackMessage)).Should().BeTrue();
         }
 
         [TestMethod]
@@ -464,13 +453,37 @@ namespace Client.Common.Tests.Services
         }
 
         [TestMethod]
-        public void PlayPause_IsNotPlaying_SendsAResumePlaybackMessage()
+        public void PlayPause_IsNotPlayingAndNoCurrentItemSet_SendsAStartPlaybackMessage()
         {
-            _subject.StopPlayback();
+            _subject.Items.Add(new PlaylistItem());
+
+            _subject.PlayPause();
+
+            _mockEventAggregator.Messages.Any(m => m.GetType() == typeof(StartPlaybackMessage)).Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void PlayPause_IsNotPlayingAndCurrentItemSetAndIsPaused_SendsAResumePlaybackMessage()
+        {
+            _subject.Items.Add(new PlaylistItem());
+            _subject.StartPlayback(0);
+            _subject.Pause();
 
             _subject.PlayPause();
 
             _mockEventAggregator.Messages.Any(m => m.GetType() == typeof(ResumePlaybackMessage)).Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void PlayPause_IsNotPlayingAndCurrentItemSetAndIsNotPaused_SendsAStartPlaybackMessage()
+        {
+            _subject.Items.Add(new PlaylistItem());
+            _subject.StartPlayback(0);
+            _subject.StopPlayback();
+
+            _subject.PlayPause();
+
+            _mockEventAggregator.Messages.Any(m => m.GetType() == typeof(StartPlaybackMessage)).Should().BeTrue();
         }
 
         [TestMethod]
@@ -482,6 +495,96 @@ namespace Client.Common.Tests.Services
             _subject.PlayPause();
 
             _mockEventAggregator.Messages.Any(m => m.GetType() == typeof(PausePlaybackMessage)).Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void Play_NoCurrentItemSet_SendsAStartPlaybackMessage()
+        {
+            _subject.Items.Add(new PlaylistItem());
+
+            _subject.Play();
+
+            _mockEventAggregator.Messages.Any(m => m.GetType() == typeof(StartPlaybackMessage)).Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void Play_CurrentItemSetAndIsPaused_SendsAResumePlaybackMessage()
+        {
+            _subject.Items.Add(new PlaylistItem());
+            _subject.StartPlayback(0);
+            _subject.Pause();
+
+            _subject.Play();
+
+            _mockEventAggregator.Messages.Any(m => m.GetType() == typeof(ResumePlaybackMessage)).Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void Play_CurrentItemSetAndIsNotPaused_SendsAStartPlaybackMessage()
+        {
+            _subject.Items.Add(new PlaylistItem());
+            _subject.StartPlayback(0);
+            _subject.StopPlayback();
+
+            _subject.Play();
+
+            _mockEventAggregator.Messages.Any(m => m.GetType() == typeof(StartPlaybackMessage)).Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void Play_Always_SetsIsPlayingTrueAndIsPausedFalse()
+        {
+            _subject.Items.Add(new PlaylistItem());
+
+            _subject.Play();
+
+            _subject.IsPlaying.Should().BeTrue();
+            _subject.IsPaused.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void Pause_IsPlaying_SetsIsPlayingFalseAndIsPausedTrue()
+        {
+            _subject.Items.Add(new PlaylistItem());
+            _subject.Play();
+
+            _subject.Pause();
+
+            _subject.IsPlaying.Should().BeFalse();
+            _subject.IsPaused.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void Pause_IsNotPlaying_DoesNotSetIsPausedTrue()
+        {
+            _subject.Items.Add(new PlaylistItem());
+
+            _subject.Pause();
+
+            _subject.IsPaused.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void StopPlayback_IsPlaying_SetsIsPlayingFalse()
+        {
+            _subject.Items.Add(new PlaylistItem());
+            _subject.Play();
+
+            _subject.StopPlayback();
+
+            _subject.IsPlaying.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void StopPlayback_IsPaused_SetsIsPausedFalse()
+        {
+            _subject.Items.Add(new PlaylistItem());
+            _subject.Play();
+            _subject.Pause();
+
+            _subject.StopPlayback();
+
+            _subject.IsPaused.Should().BeFalse();
         }
 
         [TestMethod]
@@ -534,9 +637,31 @@ namespace Client.Common.Tests.Services
             var callCount = 0;
             _subject.StopPlaybackAction = () => { callCount++; };
 
-            _subject.Handle(new StopPlaybackMessage());
+            _subject.Handle(new StopMessage());
 
             callCount.Should().Be(1);
+        }
+
+        [TestMethod]
+        public void HandlePlayMessage_TheCurrentItemIsPaused_SendsAResumePlaybackMessage()
+        {
+            _subject.Items.Add(new PlaylistItem());
+            _subject.StartPlayback(0);
+            _subject.Pause();
+
+            _subject.Handle(new PlayMessage());
+
+            _mockEventAggregator.Messages.Any(m => m.GetType() == typeof(ResumePlaybackMessage)).Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void HandlePlayMessage_TheCurrentItemIsNotSet_SendsAStartPlaybackMessage()
+        {
+            _subject.Items.Add(new PlaylistItem());
+
+            _subject.Handle(new PlayMessage());
+
+            _mockEventAggregator.Messages.Any(m => m.GetType() == typeof(StartPlaybackMessage)).Should().BeTrue();
         }
 
         private static IEnumerable<PlaylistItem> GeneratePlaylistItems(int itemsCount = 2)

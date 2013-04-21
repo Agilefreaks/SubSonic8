@@ -17,9 +17,23 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <MediaElement x:Name="mediaElement" AudioCategory="BackgroundCapableMedia" AutoPlay="True" Source="{Binding Path=Source}" cal:Message.Attach="[Event MediaEnded] = [Action PlayNext($sender, $eventArgs)]"/>
+        <MediaElement x:Name="mediaElement" AudioCategory="BackgroundCapableMedia" AutoPlay="True" Source="{Binding Path=Source}" cal:Message.Attach="[Event MediaEnded] = [Action SongEnded]"/>
 
-        <Frame Grid.Row="0" DataContext="{x:Null}" Content="Frame" x:Name="shellFrame" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="0" />
+        <Frame Grid.Row="0" DataContext="{x:Null}" x:Name="shellFrame" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <ProgressRing Grid.Row="1" Grid.Column="1" IsActive="True" Width="50" Height="50" />
+            </Grid>
+        </Frame>
 
         <ProgressBar Grid.Row="0" VerticalAlignment="Top" VerticalContentAlignment="Top" x:Name="LoadingIndicator" Visibility="Collapsed" IsIndeterminate="True" HorizontalAlignment="Stretch"/>
 
