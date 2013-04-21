@@ -2,12 +2,13 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using Caliburn.Micro;
-using Client.Common.Models;
 using Client.Common.Services;
+using Microsoft.PlayerFramework;
 using Subsonic8.BottomBar;
 using Subsonic8.Framework.Services;
 using Subsonic8.VideoPlayback;
 using Action = System.Action;
+using PlaylistItem = Client.Common.Models.PlaylistItem;
 
 namespace Client.Tests.Mocks
 {
@@ -107,5 +108,9 @@ namespace Client.Tests.Mocks
         public TimeSpan StartTime { get; set; }
 
         public TimeSpan EndTime { get; set; }
+
+        public void OnFullScreenChanged(MediaPlayer mediaPlayer)
+        {
+        }
     }
 }

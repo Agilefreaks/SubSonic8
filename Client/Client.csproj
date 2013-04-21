@@ -255,6 +255,7 @@
     <Compile Include="VideoPlayback\FullScreenVideoPlaybackViewModel.cs" />
     <Compile Include="VideoPlayback\IVidePlaybackViewModel.cs" />
     <Compile Include="VideoPlayback\PlaybackStateEventArgs.cs" />
+    <Compile Include="VideoPlayback\VideoPlaybackView.cs" />
     <Compile Include="VideoPlayback\VideoPlaybackViewModel.cs" />
     <Compile Include="VideoPlayback\VideoStartInfo.cs" />
   </ItemGroup>
