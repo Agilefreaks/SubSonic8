@@ -63,8 +63,6 @@ namespace Subsonic8.VideoPlayback
             }
         }
 
-        protected Client.Common.Models.PlaylistItem Item { get; set; }
-
         public VideoPlaybackViewModel(IToastNotificationService notificationService)
         {
             _notificationService = notificationService;
@@ -91,7 +89,6 @@ namespace Subsonic8.VideoPlayback
 
         void IPlayer.Play(Client.Common.Models.PlaylistItem item, object options)
         {
-            Item = item;
             var startInfo = GetStartInfo(item, options as PlaybackStateEventArgs);
             StartTime = startInfo.StartTime.Negate();
             EndTime = startInfo.EndTime;
