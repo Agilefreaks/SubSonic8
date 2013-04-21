@@ -119,7 +119,7 @@ namespace Subsonic8.VideoPlayback
             var videoStartInfo = new VideoStartInfo();
             if (eventArgs == null)
             {
-                videoStartInfo.StartTime = TimeSpan.FromSeconds(0);
+                videoStartInfo.StartTime = TimeSpan.Zero;
                 videoStartInfo.EndTime = TimeSpan.FromSeconds(item.Duration);
             }
             else
@@ -136,6 +136,9 @@ namespace Subsonic8.VideoPlayback
                 }
             }
 
+            videoStartInfo.EndTime = videoStartInfo.EndTime == TimeSpan.Zero
+                                         ? TimeSpan.FromSeconds(item.Duration)
+                                         : videoStartInfo.EndTime;
             videoStartInfo.Source = SubsonicService.GetUriForVideoStartingAt(item.Uri, videoStartInfo.StartTime.TotalSeconds);
 
             return videoStartInfo;
