@@ -8,5 +8,9 @@ namespace Subsonic8.VideoPlayback
     public interface IVidePlaybackViewModel : IViewModel, IToastNotificationCapable, IPlayer
     {
         event EventHandler<PlaybackStateEventArgs> FullScreenChanged;
+
+        TimeSpan StartTime { get; set; }
+
+        TimeSpan EndTime { get; set; }
     }
 }

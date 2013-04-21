@@ -89,12 +89,13 @@ namespace Subsonic8.VideoPlayback
             }
         }
 
-        void IPlayer.Play(Client.Common.Models.PlaylistItem item)
+        void IPlayer.Play(Client.Common.Models.PlaylistItem item, object options)
         {
             Item = item;
-            StartTime = TimeSpan.FromSeconds(0).Negate();
-            EndTime = TimeSpan.FromSeconds(item.Duration);
-            Source = SubsonicService.GetUriForVideoStartingAt(item.Uri, 0);
+            var startInfo = GetStartInfo(item, options as PlaybackStateEventArgs);
+            StartTime = startInfo.StartTime.Negate();
+            EndTime = startInfo.EndTime;
+            Source = startInfo.Source;
             if (_playerControls != null) _playerControls.PlayAction();
         }
 
@@ -111,6 +112,33 @@ namespace Subsonic8.VideoPlayback
         void IPlayer.Stop()
         {
             if (_playerControls != null) _playerControls.PauseAction();
+        }
+
+        private VideoStartInfo GetStartInfo(Client.Common.Models.PlaylistItem item, PlaybackStateEventArgs eventArgs)
+        {
+            var videoStartInfo = new VideoStartInfo();
+            if (eventArgs == null)
+            {
+                videoStartInfo.StartTime = TimeSpan.FromSeconds(0);
+                videoStartInfo.EndTime = TimeSpan.FromSeconds(item.Duration);
+            }
+            else
+            {
+                if (eventArgs.TimeRemaining != TimeSpan.Zero)
+                {
+                    videoStartInfo.StartTime = eventArgs.EndTime - eventArgs.TimeRemaining;
+                    videoStartInfo.EndTime = eventArgs.TimeRemaining;
+                }
+                else
+                {
+                    videoStartInfo.StartTime = eventArgs.StartTime;
+                    videoStartInfo.EndTime = eventArgs.EndTime;
+                }
+            }
+
+            videoStartInfo.Source = SubsonicService.GetUriForVideoStartingAt(item.Uri, videoStartInfo.StartTime.TotalSeconds);
+
+            return videoStartInfo;
         }
     }
 }

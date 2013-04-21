@@ -28,8 +28,6 @@ namespace Subsonic8.Playback
 
         bool IsPlaying { get; }
 
-        TimeSpan EndTime { get; set; }
-
         void ClearPlaylist();
 
         void SavePlaylist();

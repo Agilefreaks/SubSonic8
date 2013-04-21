@@ -256,6 +256,7 @@
     <Compile Include="VideoPlayback\IVidePlaybackViewModel.cs" />
     <Compile Include="VideoPlayback\PlaybackStateEventArgs.cs" />
     <Compile Include="VideoPlayback\VideoPlaybackViewModel.cs" />
+    <Compile Include="VideoPlayback\VideoStartInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

@@ -204,7 +204,7 @@ namespace Client.Common.Services
 
         public void Handle(PlayMessage message)
         {
-            Play();
+            Play(message.Options);
         }
 
         public void PlayPause()
@@ -219,7 +219,7 @@ namespace Client.Common.Services
             }
         }
 
-        public void Play()
+        public void Play(object options = null)
         {
             if (CurrentItem != null)
             {
@@ -229,7 +229,7 @@ namespace Client.Common.Services
                 }
                 else
                 {
-                    StartPlayback();
+                    StartPlayback(options);
                 }
             }
             else
@@ -258,9 +258,9 @@ namespace Client.Common.Services
             StartPlayback();
         }
 
-        private void StartPlayback()
+        private void StartPlayback(object options = null)
         {
-            _eventAggregator.Publish(new StartPlaybackMessage(CurrentItem));
+            _eventAggregator.Publish(new StartPlaybackMessage(CurrentItem) { Options = options });
             CurrentItem.PlayingState = PlaylistItemState.Playing;
             IsPlaying = true;
         }

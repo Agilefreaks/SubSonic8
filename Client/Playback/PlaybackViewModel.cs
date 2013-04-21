@@ -33,8 +33,6 @@ namespace Subsonic8.Playback
         private Uri _source;
         private string _coverArt;
         private bool _playNextItem;
-        private TimeSpan _endTime;
-        private TimeSpan _startTime;
         private IEmbededVideoPlaybackViewModel _embededVideoPlaybackViewModel;
         private bool _playbackControlsVisible;
         private IPlayerManagementService _playerManagementService;
@@ -115,36 +113,6 @@ namespace Subsonic8.Playback
                                 ? CoverArtPlaceholderLarge
                                 : value;
                 NotifyOfPropertyChange();
-            }
-        }
-
-        public TimeSpan EndTime
-        {
-            get
-            {
-                return _endTime;
-            }
-
-            set
-            {
-                if (value.Equals(_endTime)) return;
-                _endTime = value;
-                NotifyOfPropertyChange(() => EndTime);
-            }
-        }
-
-        public TimeSpan StartTime
-        {
-            get
-            {
-                return _startTime;
-            }
-
-            set
-            {
-                if (value.Equals(_startTime)) return;
-                _startTime = value;
-                NotifyOfPropertyChange(() => StartTime);
             }
         }
 
@@ -467,21 +435,21 @@ namespace Subsonic8.Playback
 
         private void HookFullScreenVideoPlaybackViewModel()
         {
-            FullScreenVideoPlaybackViewModel.FullScreenChanged += (sender, eventArgs) => SwitchToEmbededVideoPlayback();
+            FullScreenVideoPlaybackViewModel.FullScreenChanged += (sender, eventArgs) => SwitchToEmbededVideoPlayback(eventArgs);
         }
 
         private void SwitchToFullScreenVideoPlayback(PlaybackStateEventArgs eventArgs)
         {
             EventAggregator.Publish(new StopMessage());
             PlayerManagementService.DefaultVideoPlayer = FullScreenVideoPlaybackViewModel;
-            EventAggregator.Publish(new PlayMessage());
+            EventAggregator.Publish(new PlayMessage { Options = eventArgs });
         }
 
-        private void SwitchToEmbededVideoPlayback()
+        private void SwitchToEmbededVideoPlayback(PlaybackStateEventArgs eventArgs)
         {
             EventAggregator.Publish(new StopMessage());
             PlayerManagementService.DefaultVideoPlayer = EmbededVideoPlaybackViewModel;
-            EventAggregator.Publish(new PlayMessage());
+            EventAggregator.Publish(new PlayMessage { Options = eventArgs });
         }
     }
 }

@@ -9,7 +9,7 @@ namespace Client.Common.Tests.Mocks
         private readonly List<PlaylistItem> _playCallArguments;
 
         public int PlayCount { get; set; }
-        
+
         public IEnumerable<PlaylistItem> PlayCallArguments { get; private set; }
 
         public MockPlayer()
@@ -18,7 +18,7 @@ namespace Client.Common.Tests.Mocks
             PlayCallArguments = _playCallArguments;
         }
 
-        public void Play(PlaylistItem item)
+        public void Play(PlaylistItem item, object options = null)
         {
             PlayCount++;
             _playCallArguments.Add(item);

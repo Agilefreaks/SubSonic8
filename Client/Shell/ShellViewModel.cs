@@ -84,7 +84,7 @@ namespace Subsonic8.Shell
         }
 
         public ShellViewModel(IEventAggregator eventAggregator, ISubsonicService subsonicService, ICustomFrameAdapter navigationService,
-            IToastNotificationService notificationService, IDialogNotificationService dialogNotificationService, 
+            IToastNotificationService notificationService, IDialogNotificationService dialogNotificationService,
             IStorageService storageService, IWinRTWrappersService winRTWrappersService)
         {
             _eventAggregator = eventAggregator;
@@ -118,7 +118,7 @@ namespace Subsonic8.Shell
             await new MessageDialogResult(error.ToString(), "Ooops...").Execute();
         }
 
-        public void Play(Client.Common.Models.PlaylistItem item)
+        public void Play(Client.Common.Models.PlaylistItem item, object options = null)
         {
             Source = item.Uri;
             _playerControls.PlayAction();

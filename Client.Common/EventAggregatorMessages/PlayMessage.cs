@@ -2,5 +2,6 @@
 {
     public class PlayMessage
     {
+        public object Options { get; set; }
     }
 }

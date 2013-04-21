@@ -42,7 +42,7 @@ namespace Client.Tests.Mocks
             PlayPauseCallCount++;
         }
 
-        public void Play(PlaylistItem item)
+        public void Play(PlaylistItem item, object options = null)
         {
         }
 

@@ -93,7 +93,7 @@ namespace Client.Common.Services
         {
             var player = GetPlayerFor(message.Item);
             CurrentPlayer = player;
-            player.Play(message.Item);
+            player.Play(message.Item, message.Options);
         }
 
         public void Handle(StopPlaybackMessage message)

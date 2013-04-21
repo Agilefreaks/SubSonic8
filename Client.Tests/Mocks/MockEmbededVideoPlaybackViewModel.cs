@@ -83,7 +83,7 @@ namespace Client.Tests.Mocks
             throw new NotImplementedException();
         }
 
-        public void Play(PlaylistItem item)
+        public void Play(PlaylistItem item, object options = null)
         {
         }
 
@@ -103,5 +103,9 @@ namespace Client.Tests.Mocks
         public IToastNotificationService ToastNotificationService { get; private set; }
 
         public event EventHandler<PlaybackStateEventArgs> FullScreenChanged;
+
+        public TimeSpan StartTime { get; set; }
+
+        public TimeSpan EndTime { get; set; }
     }
 }
