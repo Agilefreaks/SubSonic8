@@ -1,18 +1,21 @@
 ﻿using System;
 using Microsoft.PlayerFramework;
-using Subsonic8.Framework.Interfaces;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 namespace Subsonic8.VideoPlayback
 {
-    public abstract class VideoPlaybackView : Page, IPlayerControls
+    public abstract class VideoPlaybackView : Page, IVideoPlayerView
     {
         public Action StopAction { get; private set; }
 
         public Action PlayAction { get; private set; }
 
         public Action PauseAction { get; private set; }
+
+        public Action<TimeSpan> SetStartTimeAction { get; private set; }
+
+        public Action<TimeSpan> SetEndTimeAction { get; private set; }
 
         protected abstract MediaPlayer GetMediaPlayer { get; }
 
@@ -21,6 +24,8 @@ namespace Subsonic8.VideoPlayback
             StopAction = Stop;
             PlayAction = Play;
             PauseAction = Pause;
+            SetStartTimeAction = SetStartTime;
+            SetEndTimeAction = SetEndTime;
         }
 
         protected void MediaPlayer_OnMediaEnded(object sender, MediaPlayerActionEventArgs e)
@@ -42,12 +47,26 @@ namespace Subsonic8.VideoPlayback
 
         private void Play()
         {
-            GetMediaPlayer.Play();
+            var mediaPlayer = GetMediaPlayer;
+            mediaPlayer.AutoPlay = true;
+            mediaPlayer.Play();
         }
 
         private void Stop()
         {
-            GetMediaPlayer.Stop();
+            var mediaPlayer = GetMediaPlayer;
+            mediaPlayer.AutoPlay = false;
+            mediaPlayer.Stop();
+        }
+
+        private void SetStartTime(TimeSpan startTime)
+        {
+            GetMediaPlayer.StartTime = startTime;
+        }
+
+        private void SetEndTime(TimeSpan endTime)
+        {
+            GetMediaPlayer.EndTime = endTime;
         }
     }
 }

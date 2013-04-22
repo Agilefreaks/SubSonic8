@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using Client.Common.Services.DataStructures.PlayerManagementService;
 using Microsoft.PlayerFramework;
-using Subsonic8.Framework.Interfaces;
 using Subsonic8.Framework.Services;
 using Subsonic8.Framework.ViewModel;
 
@@ -13,7 +13,8 @@ namespace Subsonic8.VideoPlayback
         private Uri _source;
         private TimeSpan _startTime;
         private TimeSpan _endTime;
-        private IPlayerControls _playerControls;
+        private IVideoPlayerView _playerControls;
+        private List<Action> _pendingPlayerActions;
 
         public event EventHandler<PlaybackStateEventArgs> FullScreenChanged;
 
@@ -71,7 +72,8 @@ namespace Subsonic8.VideoPlayback
         protected override void OnViewAttached(object view, object context)
         {
             base.OnViewAttached(view, context);
-            _playerControls = view as IPlayerControls;
+            _playerControls = view as IVideoPlayerView;
+            ExecutePendingPlayerActions();
         }
 
         public void OnFullScreenChanged(MediaPlayer mediaPlayer)
@@ -89,11 +91,18 @@ namespace Subsonic8.VideoPlayback
 
         void IPlayer.Play(Client.Common.Models.PlaylistItem item, object options)
         {
+            //var regex = new Regex("(.*)(id=)([0-9]{1,})(.*)");
+            //var id = int.Parse(regex.Matches(item.UriAsString)[0].Groups[3].Value);
+            //await SubsonicService.GetSong(id).WithErrorHandler(this).Execute();
             var startInfo = GetStartInfo(item, options as PlaybackStateEventArgs);
-            StartTime = startInfo.StartTime.Negate();
-            EndTime = startInfo.EndTime;
             Source = startInfo.Source;
-            if (_playerControls != null) _playerControls.PlayAction();
+            _pendingPlayerActions = new List<Action>
+                {
+                    () => _playerControls.SetStartTimeAction(startInfo.StartTime.Negate()),
+                    () => _playerControls.SetEndTimeAction(startInfo.EndTime),
+                    () => _playerControls.PlayAction()
+                };
+            ExecutePendingPlayerActions();
         }
 
         void IPlayer.Pause()
@@ -123,7 +132,7 @@ namespace Subsonic8.VideoPlayback
             {
                 if (eventArgs.TimeRemaining != TimeSpan.Zero)
                 {
-                    videoStartInfo.StartTime = eventArgs.EndTime - eventArgs.TimeRemaining;
+                    videoStartInfo.StartTime = eventArgs.EndTime - eventArgs.TimeRemaining - eventArgs.StartTime;
                     videoStartInfo.EndTime = eventArgs.TimeRemaining;
                 }
                 else
@@ -139,6 +148,16 @@ namespace Subsonic8.VideoPlayback
             videoStartInfo.Source = SubsonicService.GetUriForVideoStartingAt(item.Uri, videoStartInfo.StartTime.TotalSeconds);
 
             return videoStartInfo;
+        }
+
+        private void ExecutePendingPlayerActions()
+        {
+            if (_playerControls == null) return;
+            foreach (var action in _pendingPlayerActions)
+            {
+                action();
+            }
+            _pendingPlayerActions.Clear();
         }
     }
 }

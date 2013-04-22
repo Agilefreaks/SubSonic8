@@ -253,6 +253,7 @@
     <Compile Include="VideoPlayback\IEmbededVideoPlaybackViewModel.cs" />
     <Compile Include="VideoPlayback\IFullScreenVideoPlaybackViewModel.cs" />
     <Compile Include="VideoPlayback\FullScreenVideoPlaybackViewModel.cs" />
+    <Compile Include="VideoPlayback\IVideoPlayerView.cs" />
     <Compile Include="VideoPlayback\IVidePlaybackViewModel.cs" />
     <Compile Include="VideoPlayback\PlaybackStateEventArgs.cs" />
     <Compile Include="VideoPlayback\VideoPlaybackView.cs" />

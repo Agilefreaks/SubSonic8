@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Caliburn.Micro;
 using Client.Common.EventAggregatorMessages;
+using Client.Common.Models;
 using Client.Common.Services.DataStructures.PlayerManagementService;
 
 namespace Client.Common.Services
@@ -21,5 +22,6 @@ namespace Client.Common.Services
         PlayerType CurrentPlayerType { get; }
         void RegisterVideoPlayer(IPlayer player);
         void RegisterAudioPlayer(IPlayer player);
+        IPlayer GetPlayerFor(PlaylistItem item);
     }
 }
