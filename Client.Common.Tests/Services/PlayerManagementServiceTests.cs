@@ -19,6 +19,12 @@ namespace Client.Common.Tests.Services
             _subject = new PlayerManagementService(new MockEventAggregator());
         }
 
+        [TestCleanup]
+        public void Cleanup()
+        {
+            _subject.ClearPlayers();
+        }
+
         [TestMethod]
         public void RegisterVideoPlayer_Should_AddTheGivenPlayerToTheRegisteredVideoPlayersList()
         {

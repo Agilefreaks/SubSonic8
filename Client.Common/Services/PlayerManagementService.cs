@@ -121,6 +121,11 @@ namespace Client.Common.Services
             return player;
         }
 
+        public void ClearPlayers()
+        {
+            Players.Clear();
+        }
+
         private static IEnumerable<IPlayer> GetPlayersByType(PlayerType playerType)
         {
             return Players.Where(kvp => kvp.Value == playerType).Select(kvp => kvp.Key);

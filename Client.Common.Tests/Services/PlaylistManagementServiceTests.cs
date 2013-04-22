@@ -418,8 +418,11 @@ namespace Client.Common.Tests.Services
         }
 
         [TestMethod]
-        public void Pause_Always_SendsPausePlaybackMessage()
+        public void Pause_IsPlaying_SendsPausePlaybackMessage()
         {
+            _subject.Items.Add(new PlaylistItem());
+            _subject.Play();
+
             _subject.Pause();
 
             _mockEventAggregator.Messages.Any(m => m.GetType() == typeof(PausePlaybackMessage)).Should().BeTrue();
