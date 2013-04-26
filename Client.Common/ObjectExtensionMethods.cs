@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 using System.Reflection;
+using MetroLog;
 
 namespace Client.Common
 {
@@ -28,6 +29,16 @@ namespace Client.Common
             }
 
             return memberExpression.Member;
+        }
+
+        public static void Log<T>(this T source, string message)
+        {
+            LogManagerFactory.DefaultLogManager.GetLogger<T>().Info(message);
+        }
+
+        public static void Log<T>(this T source, Exception exception)
+        {
+            LogManagerFactory.DefaultLogManager.GetLogger<T>().Error("Exception", exception);
         }
     }
 }
