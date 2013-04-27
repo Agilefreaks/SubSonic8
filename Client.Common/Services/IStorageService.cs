@@ -9,5 +9,7 @@ namespace Client.Common.Services
         Task<T> Load<T>();
 
         Task Delete<T>();
+
+        Task<string> GetData<T>();
     }
 }

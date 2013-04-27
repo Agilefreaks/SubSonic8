@@ -49,6 +49,14 @@ namespace Client.Tests.Mocks
             return taskCompletionSource.Task;
         }
 
+        public Task<string> GetData<T>()
+        {
+            var taskCompletionSource = new TaskCompletionSource<string>();
+            taskCompletionSource.SetResult(string.Empty);
+
+            return taskCompletionSource.Task;
+        }
+
         public Task Save<T>(T data, string handle)
         {
             SaveCallCount++;
