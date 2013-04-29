@@ -35,11 +35,12 @@ namespace Subsonic8.Framework.Services
             return tileNotification;
         }
 
-        private static ITileWideSmallImageAndText03 GetWideTemplate(PlaybackNotificationOptions options)
+        private static ITileWideImageAndText02 GetWideTemplate(PlaybackNotificationOptions options)
         {
-            var tile = TileContentFactory.CreateTileWideSmallImageAndText03();
+            var tile = TileContentFactory.CreateTileWideImageAndText02();
             tile.Image.Src = options.ImageUrl;
-            tile.TextBodyWrap.Text = string.Format("{0} - {1}", options.Title, options.Subtitle);
+            tile.TextCaption1.Text = options.Title;
+            tile.TextCaption2.Text = options.Subtitle;
             tile.RequireSquareContent = true;
 
             return tile;

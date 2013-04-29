@@ -255,7 +255,7 @@ namespace Subsonic8.Playback
             this.ShowToast(message.Item);
             await TileNotificationService.Show(new PlaybackNotificationOptions
                 {
-                    ImageUrl = message.Item.CoverArtUrl,
+                    ImageUrl = message.Item.OriginalCoverArtUrl,
                     Title = message.Item.Title,
                     Subtitle = message.Item.Artist
                 });
