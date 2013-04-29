@@ -107,6 +107,7 @@
     <Compile Include="EventAggregatorMessages\PlayMessage.cs" />
     <Compile Include="Services\DataStructures\PlayerManagementService\IPlayer.cs" />
     <Compile Include="Services\DataStructures\PlayerManagementService\PlayerType.cs" />
+    <Compile Include="Services\DataStructures\SubsonicService\SubsonicServiceConfiguration.cs" />
     <Compile Include="Services\IPlayerManagementService.cs" />
     <Compile Include="EventAggregatorMessages\PauseMessage.cs" />
     <Compile Include="Services\PlayerManagementService.cs" />
@@ -187,7 +188,6 @@
     <Compile Include="EventAggregatorMessages\StopPlaybackMessage.cs" />
     <Compile Include="Services\StorageService.cs" />
     <Compile Include="Services\SubsonicService.cs" />
-    <Compile Include="Services\DataStructures\SubsonicService\SubsonicServiceConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\DataStructures\SubsonicService\SubsonicServiceConfigurationExtensions.cs" />
     <Compile Include="Services\WinRTWrappersService.cs" />

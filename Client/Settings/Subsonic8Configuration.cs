@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using Caliburn.Micro;
-using Client.Common.Services;
 using Client.Common.Services.DataStructures.SubsonicService;
 
 namespace Subsonic8.Settings
@@ -46,7 +45,7 @@ namespace Subsonic8.Settings
             SubsonicServiceConfiguration = new SubsonicServiceConfiguration();
         }
 
-        private void HookChildObject(SubsonicServiceConfiguration newValue, SubsonicServiceConfiguration oldValue)
+        private void HookChildObject(INotifyPropertyChanged newValue, INotifyPropertyChanged oldValue)
         {
             if (oldValue != null)
             {
