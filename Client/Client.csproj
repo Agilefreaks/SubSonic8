@@ -143,6 +143,7 @@
     <Compile Include="Converters\PlayingStateToVisibilityConverter.cs" />
     <Compile Include="Framework\Behaviors\IActiveItemProvider.cs" />
     <Compile Include="Framework\Behaviors\ScrollIntoViewBehavior.cs" />
+    <Compile Include="Framework\Extensions\ModelLoaderExtensionMethods.cs" />
     <Compile Include="Framework\INotificationsHelper.cs" />
     <Compile Include="Framework\ITileNotificationCapable.cs" />
     <Compile Include="Framework\NotificationsHelper.cs" />
@@ -173,6 +174,7 @@
     <Compile Include="Framework\ViewModel\DetailViewModelBase.cs" />
     <Compile Include="Framework\Extensions\NavigationServiceExtensions.cs" />
     <Compile Include="Framework\ViewModel\IDetailViewModel.cs" />
+    <Compile Include="Framework\ViewModel\ISongLoader.cs" />
     <Compile Include="Framework\ViewModel\IPlaybackControlsViewModel.cs" />
     <Compile Include="Framework\ViewModel\ItemViewModelBase.cs" />
     <Compile Include="Framework\ViewModel\PlaybackControlsViewModelBase.cs" />
@@ -220,7 +222,6 @@
     </Compile>
     <Compile Include="MenuItem\MenuItemViewModel.cs" />
     <Compile Include="Main\MainViewModel.cs" />
-    <Compile Include="Messages\PlaylistMessage.cs" />
     <Compile Include="MusicDirectory\IMusicDirectoryViewModel.cs" />
     <Compile Include="MusicDirectory\MusicDirectoryView.xaml.cs">
       <DependentUpon>MusicDirectoryView.xaml</DependentUpon>
@@ -252,7 +253,6 @@
     <Compile Include="MenuItem\MenuItemView.xaml.cs">
       <DependentUpon>MenuItemView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Messages\PlayFile.cs" />
     <Compile Include="Framework\Interfaces\IPlayerControls.cs" />
     <Compile Include="Search\SearchViewModel.cs" />
     <Compile Include="Shell\ShellView.xaml.cs">

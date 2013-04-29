@@ -70,7 +70,8 @@ namespace Subsonic8.BottomBar
             }
         }
 
-        protected BottomBarViewModelBase(INavigationService navigationService, IEventAggregator eventAggregator, IPlaylistManagementService playlistManagementService)
+        protected BottomBarViewModelBase(INavigationService navigationService, IEventAggregator eventAggregator,
+            IPlaylistManagementService playlistManagementService)
         {
             NavigationService = navigationService;
             EventAggregator = eventAggregator;

@@ -9,7 +9,6 @@ using Client.Tests.Framework.ViewModel;
 using Client.Tests.Mocks;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
-using Subsonic8.Messages;
 using Subsonic8.Playback;
 
 namespace Client.Tests.Playback
@@ -110,154 +109,11 @@ namespace Client.Tests.Playback
         }
 
         [TestMethod]
-        public async Task HandleWithPlaylistShouldFireAnAddItemsMessageForEachMediaItem()
-        {
-            await Task.Run(() => Subject.Handle(new PlaylistMessage
-                                       {
-                                           Queue =
-                                               new List<ISubsonicModel>
-                                                           {
-                                                               new Song {IsVideo = true},
-                                                               new Song {IsVideo = false}
-                                                           }
-                                       }));
-
-            MockEventAggregator.Messages.Count.Should().Be(2);
-            MockEventAggregator.Messages.All(m => m.GetType() == typeof(AddItemsMessage)).Should().BeTrue();
-        }
-
-        [TestMethod]
-        public async Task HandleWithPlaylistMessage_ClearCurrentTrue_ShouldPublishAPlayNextMessage()
-        {
-            await Task.Run(() => Subject.Handle(new PlaylistMessage
-                                   {
-                                       Queue = new List<ISubsonicModel> { new Song(), new Song(), new Song() },
-                                       ClearCurrent = true
-                                   }));
-
-            MockEventAggregator.Messages.Single(m => m.GetType() == typeof(PlayNextMessage)).Should().NotBeNull();
-        }
-
-        [TestMethod]
-        public async Task HandleWithPlaylistMessageWhenClearCurrentIsTrueClearsTheCurrentPlaylist()
-        {
-            await Task.Run(() => Subject.Handle(new PlaylistMessage { Queue = new List<ISubsonicModel>(), ClearCurrent = true }));
-
-            _mockPlaylistManagementService.ClearCallCount.Should().Be(1);
-        }
-
-        [TestMethod]
-        public async Task HandleWithPlaylistMessage_QueHasItemOfTypeAlbum_CallsSubsonicServiceGetAlbumAndAdsAllItsSongsToThePlaylist()
-        {
-            MockLoadModel();
-            var subsonicModels = new List<ISubsonicModel> { new Common.Models.Subsonic.Album { Id = 5 } };
-            var songs = new List<Song> { new Song(), new Song() };
-            var album = new Common.Models.Subsonic.Album { Songs = songs };
-            var mockGetAlbumResult = new MockGetAlbumResult { GetResultFunc = () => album };
-            var callCount = 0;
-            MockSubsonicService.GetAlbum = albumId =>
-                {
-                    callCount++;
-                    albumId.Should().Be(5);
-                    return mockGetAlbumResult;
-                };
-
-            await Task.Run(() => Subject.Handle(new PlaylistMessage { Queue = subsonicModels }));
-
-            callCount.Should().Be(1);
-            MockEventAggregator.Messages.All(m => m.GetType() == typeof(AddItemsMessage)).Should().BeTrue();
-            MockEventAggregator.Messages.Count.Should().Be(2);
-        }
-
-        [TestMethod]
-        public async Task HandleWithPlaylistMessage_QueHasItemOfTypeArtist_CallsSubsonicServiceGetArtistAndAddsAllSongsFromAllAlbumsToThePlaylist()
-        {
-            MockLoadModel();
-            var addToPlaylistQue = new List<ISubsonicModel> { new ExpandedArtist { Id = 5 } };
-            var albums = new List<Common.Models.Subsonic.Album>
-                {
-                    new Common.Models.Subsonic.Album(),
-                    new Common.Models.Subsonic.Album()
-                };
-            var artist = new ExpandedArtist { Albums = albums };
-            var mockGetAlbumResult = new MockGetArtistResult { GetResultFunc = () => artist };
-            var callCount = 0;
-            MockSubsonicService.GetArtist = albumId =>
-                {
-                    callCount++;
-                    albumId.Should().Be(5);
-                    return mockGetAlbumResult;
-                };
-            var getAlbumCallCount = 0;
-            MockSubsonicService.GetAlbum = artistId =>
-                {
-                    getAlbumCallCount++;
-                    return new MockGetAlbumResult
-                        {
-                            GetResultFunc = () => new Common.Models.Subsonic.Album { Songs = new List<Song> { new Song() } }
-                        };
-                };
-
-            await Task.Run(() => Subject.Handle(new PlaylistMessage { Queue = addToPlaylistQue }));
-
-            callCount.Should().Be(1);
-            getAlbumCallCount.Should().Be(2);
-            MockEventAggregator.Messages.All(m => m.GetType() == typeof(AddItemsMessage)).Should().BeTrue();
-            MockEventAggregator.Messages.Count.Should().Be(2);
-        }
-
-        [TestMethod]
-        public async Task HandleWithPlaylistMessage_QueHasItemOfTypeMusicDirectory_CallsSubsonicServiceGetMusicDirectorysAndAddsAllSongsToThePlaylist()
-        {
-            MockLoadModel();
-            var addToPlaylistQue = new List<ISubsonicModel> { new Common.Models.Subsonic.MusicDirectory { Id = 5 } };
-            var children = new List<MusicDirectoryChild> { new MusicDirectoryChild(), new MusicDirectoryChild() };
-            var musicDirectory = new Common.Models.Subsonic.MusicDirectory { Children = children };
-            var mockGetAlbumResult = new MockGetMusicDirectoryResult { GetResultFunc = () => musicDirectory };
-            var callCount = 0;
-            MockSubsonicService.GetMusicDirectory = directoryId =>
-                {
-                    callCount++;
-                    directoryId.Should().Be(5);
-                    return mockGetAlbumResult;
-                };
-
-            await Task.Run(() => Subject.Handle(new PlaylistMessage { Queue = addToPlaylistQue }));
-
-            callCount.Should().Be(1);
-            MockEventAggregator.Messages.All(m => m.GetType() == typeof(AddItemsMessage)).Should().BeTrue();
-            MockEventAggregator.Messages.Count.Should().Be(2);
-        }
-
-        [TestMethod]
-        public async Task HandleWithPlaylistMessage_QueHasItemOfTypeIndexItem_CallsSubsonicServiceGetMusicDirectorysForEachChildArtist()
-        {
-            MockLoadModel();
-            var addToPlaylistQue = new List<ISubsonicModel> { new IndexItem { Id = 5, Artists = new List<Common.Models.Subsonic.Artist> { new Common.Models.Subsonic.Artist { Id = 3 } } } };
-            var children = new List<MusicDirectoryChild> { new MusicDirectoryChild(), new MusicDirectoryChild() };
-            var musicDirectory = new Common.Models.Subsonic.MusicDirectory { Children = children };
-            var mockGetMusicDirectoryResult = new MockGetMusicDirectoryResult { GetResultFunc = () => musicDirectory };
-            var callCount = 0;
-            MockSubsonicService.GetMusicDirectory = directoryId =>
-                {
-                    callCount++;
-                    directoryId.Should().Be(3);
-                    return mockGetMusicDirectoryResult;
-                };
-
-            await Task.Run(() => Subject.Handle(new PlaylistMessage { Queue = addToPlaylistQue }));
-
-            callCount.Should().Be(1);
-            MockEventAggregator.Messages.All(m => m.GetType() == typeof(AddItemsMessage)).Should().BeTrue();
-            MockEventAggregator.Messages.Count.Should().Be(2);
-        }
-
-        [TestMethod]
         public async Task HandleWithPlayFileOfTypeSongShouldPublishAAddItemMessage()
         {
             MockLoadModel();
 
-            await Task.Run(() => Subject.Handle(new PlayFile { Model = new Song { IsVideo = false } }));
+            await Task.Run(() => Subject.AddToPlaylistAndPlay(new Song { IsVideo = false }));
 
             MockEventAggregator.Messages.Any(
                 m =>
@@ -271,7 +127,7 @@ namespace Client.Tests.Playback
             MockLoadModel();
             _mockPlaylistManagementService.Items = new PlaylistItemCollection { new PlaylistItem() };
 
-            await Task.Run(() => Subject.Handle(new PlayFile { Model = new Song { IsVideo = false } }));
+            await Task.Run(() => Subject.AddToPlaylistAndPlay(new Song { IsVideo = false }));
 
             MockEventAggregator.Messages.Any(
                 m => m.GetType() == typeof(PlayItemAtIndexMessage) && ((PlayItemAtIndexMessage)m).Index == 0).Should().BeTrue();
