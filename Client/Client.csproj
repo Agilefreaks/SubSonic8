@@ -118,11 +118,20 @@
     </Compile>
     <Compile Include="Artist\ArtistViewModel.cs" />
     <Compile Include="Artist\IArtistViewModel.cs" />
+    <Compile Include="BottomBar\BottomBarViewModelBase.cs" />
     <Compile Include="BottomBar\ChangeBottomBarMessage.cs" />
     <Compile Include="BottomBar\DefaultBottomBarView.xaml.cs">
       <DependentUpon>DefaultBottomBarView.xaml</DependentUpon>
     </Compile>
     <Compile Include="BottomBar\DefaultBottomBarViewModel.cs" />
+    <Compile Include="BottomBar\IPlaybackBottomBarViewModel.cs" />
+    <Compile Include="BottomBar\PlaybackBottomBarView.xaml.cs">
+      <DependentUpon>PlaybackBottomBarView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="BottomBar\PlaybackBottomBarViewModel.cs" />
+    <Compile Include="BottomBar\PlaybackControlsView.xaml.cs">
+      <DependentUpon>PlaybackControlsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ClientModule.cs" />
     <Compile Include="Common\PageHeader.xaml.cs">
       <DependentUpon>PageHeader.xaml</DependentUpon>
@@ -134,6 +143,7 @@
     <Compile Include="Converters\PlayingStateToVisibilityConverter.cs" />
     <Compile Include="Framework\Behaviors\IActiveItemProvider.cs" />
     <Compile Include="Framework\Behaviors\ScrollIntoViewBehavior.cs" />
+    <Compile Include="Framework\Extensions\ModelLoaderExtensionMethods.cs" />
     <Compile Include="Framework\INotificationsHelper.cs" />
     <Compile Include="Framework\ITileNotificationCapable.cs" />
     <Compile Include="Framework\NotificationsHelper.cs" />
@@ -146,6 +156,8 @@
     <Compile Include="Framework\Services\ITileNotificationService.cs" />
     <Compile Include="Framework\Services\TileNotificationService.cs" />
     <Compile Include="Framework\SettingsHelper.cs" />
+    <Compile Include="Framework\ViewModel\CollectionViewModelBase.cs" />
+    <Compile Include="Framework\ViewModel\ICollectionViewModel.cs" />
     <Compile Include="Framework\ViewModel\IHaveState.cs" />
     <Compile Include="Framework\Interfaces\IToastNotificationCapable.cs" />
     <Compile Include="Framework\Services\DialogNotificationOptions.cs" />
@@ -162,6 +174,7 @@
     <Compile Include="Framework\ViewModel\DetailViewModelBase.cs" />
     <Compile Include="Framework\Extensions\NavigationServiceExtensions.cs" />
     <Compile Include="Framework\ViewModel\IDetailViewModel.cs" />
+    <Compile Include="Framework\ViewModel\ISongLoader.cs" />
     <Compile Include="Framework\ViewModel\IPlaybackControlsViewModel.cs" />
     <Compile Include="Framework\ViewModel\ItemViewModelBase.cs" />
     <Compile Include="Framework\ViewModel\PlaybackControlsViewModelBase.cs" />
@@ -209,7 +222,6 @@
     </Compile>
     <Compile Include="MenuItem\MenuItemViewModel.cs" />
     <Compile Include="Main\MainViewModel.cs" />
-    <Compile Include="Messages\PlaylistMessage.cs" />
     <Compile Include="MusicDirectory\IMusicDirectoryViewModel.cs" />
     <Compile Include="MusicDirectory\MusicDirectoryView.xaml.cs">
       <DependentUpon>MusicDirectoryView.xaml</DependentUpon>
@@ -241,7 +253,6 @@
     <Compile Include="MenuItem\MenuItemView.xaml.cs">
       <DependentUpon>MenuItemView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Messages\PlayFile.cs" />
     <Compile Include="Framework\Interfaces\IPlayerControls.cs" />
     <Compile Include="Search\SearchViewModel.cs" />
     <Compile Include="Shell\ShellView.xaml.cs">
@@ -298,6 +309,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="BottomBar\DefaultBottomBarView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="BottomBar\PlaybackBottomBarView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="BottomBar\PlaybackControlsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

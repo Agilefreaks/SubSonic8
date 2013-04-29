@@ -1,4 +1,5 @@
 ﻿using System;
+using Caliburn.Micro;
 using Client.Common.MugenExtensions;
 using Subsonic8.BottomBar;
 using Subsonic8.Framework;
@@ -21,11 +22,13 @@ namespace Subsonic8
 
             Singletons.AddRange(new[]
                 {
+                    new Tuple<Type[], Type>(new[] { typeof(IEventAggregator) }, typeof(EventAggregator)),
                     new Tuple<Type[], Type>(new[] { typeof(IShellViewModel), typeof(ShellViewModel) }, typeof(ShellViewModel)),
                     new Tuple<Type[], Type>(new[] { typeof(IPlaybackViewModel), typeof(PlaybackViewModel) }, typeof(PlaybackViewModel)),
-                    new Tuple<Type[], Type>(new[] { typeof(IFullScreenVideoPlaybackViewModel), typeof(FullScreenVideoPlaybackViewModel) }, typeof(FullScreenVideoPlaybackViewModel)), 
+                    new Tuple<Type[], Type>(new[] { typeof(IFullScreenVideoPlaybackViewModel) }, typeof(FullScreenVideoPlaybackViewModel)),
                     new Tuple<Type[], Type>(new[] { typeof(IEmbededVideoPlaybackViewModel) }, typeof(EmbededVideoPlaybackViewModel)), 
                     new Tuple<Type[], Type>(new[] { typeof(IDefaultBottomBarViewModel) }, typeof(DefaultBottomBarViewModel)),
+                    new Tuple<Type[], Type>(new[] { typeof(IPlaybackBottomBarViewModel) }, typeof(PlaybackBottomBarViewModel)),
                     new Tuple<Type[], Type>(new[] { typeof(ISettingsHelper) }, typeof(SettingsHelper)),
                     new Tuple<Type[], Type>(new[] { typeof(INotificationsHelper) }, typeof(NotificationsHelper))
                 });

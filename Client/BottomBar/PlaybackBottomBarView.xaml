@@ -1,24 +1,24 @@
-﻿<Page
-    x:Class="Subsonic8.BottomBar.DefaultBottomBarView"
+﻿<UserControl
+    x:Class="Subsonic8.BottomBar.PlaybackBottomBarView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:cal="using:Caliburn.Micro"
     xmlns:bottomBar="using:Subsonic8.BottomBar" mc:Ignorable="d">
 
-    <Page.Resources>
+    <UserControl.Resources>
         <cal:BooleanToVisibilityConverter x:Key="VisibilityConverter"/>
-    </Page.Resources>
+    </UserControl.Resources>
+
     <Grid>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-            <Button Style="{StaticResource AddAllAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action AddToPlaylist()]" Visibility="{Binding CanAddToPlaylist, Converter={StaticResource VisibilityConverter}}" />
-            <Button Style="{StaticResource PlayAllAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action PlayAll()]" Visibility="{Binding CanAddToPlaylist, Converter={StaticResource VisibilityConverter}}" />
+            <Button Style="{StaticResource RemoveAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action RemoveFromPlaylist()]" Visibility="{Binding CanRemoveFromPlaylist, Converter={StaticResource VisibilityConverter}}" />
         </StackPanel>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
             <bottomBar:PlaybackControlsView/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Style="{StaticResource ListAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action NavigateToPlaylist()]"/>
                 <Button Style="{StaticResource HomeAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action NavigateToRoot()]"/>
             </StackPanel>
         </StackPanel>
     </Grid>
-</Page>
+</UserControl>

@@ -12,9 +12,9 @@ namespace Subsonic8.Album
             return SubsonicService.GetAlbum(id);
         }
 
-        protected override IEnumerable<ISubsonicModel> GetItemsToDisplay()
+        protected override IEnumerable<ISubsonicModel> GetItemsToDisplay(Client.Common.Models.Subsonic.Album result)
         {
-            return Item.Songs;
+            return result.Songs;
         }
     }
 }

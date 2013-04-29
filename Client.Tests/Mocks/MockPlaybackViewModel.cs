@@ -17,17 +17,7 @@ namespace Client.Tests.Mocks
 {
     public class MockPlaybackViewModel : IPlaybackViewModel
     {
-        public void Handle(PlaylistMessage message)
-        {
-            throw new NotImplementedException();
-        }
-
         public void Handle(PlaylistStateChangedMessage message)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Handle(PlayFile message)
         {
             throw new NotImplementedException();
         }

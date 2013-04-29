@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -12,9 +13,10 @@ using Client.Common.Models;
 using Client.Common.Models.Subsonic;
 using Client.Common.Services;
 using MugenInjection.Attributes;
+using Subsonic8.BottomBar;
+using Subsonic8.Framework.Extensions;
 using Subsonic8.Framework.Services;
 using Subsonic8.Framework.ViewModel;
-using Subsonic8.Messages;
 using Subsonic8.VideoPlayback;
 using Windows.UI.Xaml.Controls;
 
@@ -31,11 +33,11 @@ namespace Subsonic8.Playback
         private PlaybackViewModelStateEnum _state;
         private Uri _source;
         private string _coverArt;
-        private bool _playNextItem;
         private IEmbededVideoPlaybackViewModel _embededVideoPlaybackViewModel;
         private bool _playbackControlsVisible;
         private IPlayerManagementService _playerManagementService;
         private IFullScreenVideoPlaybackViewModel _fullScreenVideoPlaybackViewModel;
+        private IPlaybackBottomBarViewModel _bottomBar;
 
         #endregion
 
@@ -94,11 +96,6 @@ namespace Subsonic8.Playback
             get { return _playlistManagementService.IsPlaying; }
         }
 
-        public bool ShuffleOn
-        {
-            get { return _playlistManagementService.ShuffleOn; }
-        }
-
         public string CoverArt
         {
             get
@@ -115,12 +112,20 @@ namespace Subsonic8.Playback
             }
         }
 
+        public Func<IId, Task<Client.Common.Models.PlaylistItem>> LoadModel { get; set; }
+
+        public ObservableCollection<object> SelectedItems
+        {
+            get
+            {
+                return BottomBar != null ? BottomBar.SelectedItems : new ObservableCollection<object>();
+            }
+        }
+
         public PlaylistItemCollection PlaylistItems
         {
             get { return _playlistManagementService.Items; }
         }
-
-        public Func<IId, Task<Client.Common.Models.PlaylistItem>> LoadModel { get; set; }
 
         public bool PlaybackControlsVisible
         {
@@ -177,6 +182,21 @@ namespace Subsonic8.Playback
         }
 
         [Inject]
+        public IPlaybackBottomBarViewModel BottomBar
+        {
+            get
+            {
+                return _bottomBar;
+            }
+            set
+            {
+                if (Equals(value, _bottomBar)) return;
+                _bottomBar = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
+        [Inject]
         public IWinRTWrappersService WinRTWrappersService { get; set; }
 
         [Inject]
@@ -214,8 +234,8 @@ namespace Subsonic8.Playback
         public PlaybackViewModel()
         {
             UpdateDisplayName = () => DisplayName = "Playlist";
-            LoadModel = LoadModelImpl;
             CoverArt = CoverArtPlaceholderLarge;
+            LoadModel = this.LoadSong;
         }
 
         public void StartPlayback(object e)
@@ -258,35 +278,17 @@ namespace Subsonic8.Playback
             PlaybackControlsVisible = message.HasElements;
         }
 
-        public async void Handle(PlaylistMessage message)
-        {
-            if (message.ClearCurrent)
-            {
-                EventAggregator.Publish(new StopMessage());
-                _playlistManagementService.Clear();
-                _playNextItem = true;
-            }
-
-            foreach (var item in message.Queue)
-            {
-                await AddItemToPlaylist(item);
-            }
-        }
-
-        public async void Handle(PlayFile message)
-        {
-            var playlistItem = await LoadModel(message.Model);
-            EventAggregator.Publish(new AddItemsMessage { Queue = new List<Client.Common.Models.PlaylistItem>(new[] { playlistItem }) });
-            EventAggregator.Publish(new PlayItemAtIndexMessage(PlaylistItems.Count - 1));
-        }
-
         public void LoadState(string parameter, Dictionary<string, object> statePageState)
         {
             if (!statePageState.ContainsKey(StatePlaylistKey) || PlaylistItems.Any()) return;
             var bytes = Convert.FromBase64String((string)statePageState[StatePlaylistKey]);
-            var memoryStream = new MemoryStream(bytes);
-            var xmlSerializer = new XmlSerializer(typeof(PlaylistItemCollection));
-            var playlist = (PlaylistItemCollection)xmlSerializer.Deserialize(memoryStream);
+            PlaylistItemCollection playlist;
+            using (var memoryStream = new MemoryStream(bytes))
+            {
+                var xmlSerializer = new XmlSerializer(typeof(PlaylistItemCollection));
+                playlist = (PlaylistItemCollection)xmlSerializer.Deserialize(memoryStream);
+            }
+
             PlaylistItems.Clear();
             PlaylistItems.AddRange(playlist);
         }
@@ -303,89 +305,20 @@ namespace Subsonic8.Playback
             }
         }
 
+        public async Task AddToPlaylistAndPlay(Song model)
+        {
+            var playlistItem = await LoadModel(model);
+            EventAggregator.Publish(new AddItemsMessage
+                {
+                    Queue = new List<Client.Common.Models.PlaylistItem>(new[] { playlistItem })
+                });
+            EventAggregator.Publish(new PlayItemAtIndexMessage(PlaylistItems.Count - 1));
+        }
+
         protected override void OnActivate()
         {
             base.OnActivate();
-            SetupBottomBar();
-        }
-
-        private async Task AddItemToPlaylist(ISubsonicModel item)
-        {
-            if (item.Type == SubsonicModelTypeEnum.Song || item.Type == SubsonicModelTypeEnum.Video)
-            {
-                var addItemsMessage = new AddItemsMessage { Queue = new List<Client.Common.Models.PlaylistItem>(new[] { await LoadModel(item) }) };
-                EventAggregator.Publish(addItemsMessage);
-                if (_playNextItem)
-                {
-                    _playNextItem = false;
-                    EventAggregator.Publish(new PlayNextMessage());
-                }
-            }
-            else
-            {
-                var children = new List<ISubsonicModel>();
-                switch (item.Type)
-                {
-                    case SubsonicModelTypeEnum.Album:
-                        {
-                            await SubsonicService.GetAlbum(item.Id)
-                                                 .WithErrorHandler(this)
-                                                 .OnSuccess(result => children.AddRange(result.Songs))
-                                                 .Execute();
-
-                        } break;
-                    case SubsonicModelTypeEnum.Artist:
-                        {
-                            await SubsonicService.GetArtist(item.Id)
-                                                 .WithErrorHandler(this)
-                                                 .OnSuccess(result => children.AddRange(result.Albums))
-                                                 .Execute();
-                        } break;
-                    case SubsonicModelTypeEnum.MusicDirectory:
-                        {
-                            await SubsonicService.GetMusicDirectory(item.Id)
-                                                 .WithErrorHandler(this)
-                                                 .OnSuccess(result => children.AddRange(result.Children))
-                                                 .Execute();
-                        } break;
-                    case SubsonicModelTypeEnum.Index:
-                        {
-                            children.AddRange(((IndexItem)item).Artists);
-                        } break;
-                }
-
-                foreach (var subsonicModel in children)
-                {
-                    await AddItemToPlaylist(subsonicModel);
-                }
-            }
-        }
-
-        private async Task<Client.Common.Models.PlaylistItem> LoadModelImpl(IId model)
-        {
-            Client.Common.Models.PlaylistItem playlistItem = null;
-            if (model != null)
-            {
-                await SubsonicService.GetSong(model.Id)
-                                     .WithErrorHandler(this)
-                                     .OnSuccess(result => playlistItem = CreatePlaylistItemFromSong(result)).Execute();
-            }
-
-            return playlistItem;
-        }
-
-        private void SetupBottomBar()
-        {
-            BottomBar.IsOpened = false;
-            BottomBar.IsOnPlaylist = true;
-        }
-
-        private Client.Common.Models.PlaylistItem CreatePlaylistItemFromSong(Song result)
-        {
-            var playlistItem = new Client.Common.Models.PlaylistItem();
-            playlistItem.InitializeFromSong(result, SubsonicService);
-
-            return playlistItem;
+            SetAppBottomBar();
         }
 
         private void HookPlaylistManagementService()
@@ -409,14 +342,8 @@ namespace Subsonic8.Playback
 
         private void PlaylistManagementServiceOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
-            if (propertyChangedEventArgs.PropertyName == _playlistManagementService.GetPropertyName(() => _playlistManagementService.ShuffleOn))
-            {
-                NotifyOfPropertyChange(() => ShuffleOn);
-            }
-
             if (propertyChangedEventArgs.PropertyName == _playlistManagementService.GetPropertyName(() => _playlistManagementService.IsPlaying))
             {
-                BottomBar.IsPlaying = _playlistManagementService.IsPlaying;
                 NotifyOfPropertyChange(() => IsPlaying);
             }
         }
@@ -425,7 +352,7 @@ namespace Subsonic8.Playback
         {
             await SubsonicService.GetSong(songId)
                                  .WithErrorHandler(this)
-                                 .OnSuccess(song => Handle(new PlayFile { Model = song }))
+                                 .OnSuccess(song => AddToPlaylistAndPlay(song))
                                  .Execute();
         }
 
@@ -451,6 +378,11 @@ namespace Subsonic8.Playback
             EventAggregator.Publish(new StopMessage());
             PlayerManagementService.DefaultVideoPlayer = EmbededVideoPlaybackViewModel;
             EventAggregator.Publish(new PlayMessage { Options = eventArgs });
+        }
+
+        private void SetAppBottomBar()
+        {
+            EventAggregator.Publish(new ChangeBottomBarMessage { BottomBarViewModel = BottomBar });
         }
     }
 }
