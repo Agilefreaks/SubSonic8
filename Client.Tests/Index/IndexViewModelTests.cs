@@ -6,7 +6,7 @@ using Subsonic8.Index;
 namespace Client.Tests.Index
 {
     [TestClass]
-    public class IndexViewModelTests : ViewModelBaseTests<IndexViewModel>
+    public class IndexViewModelTests : DetailViewModelBaseTests<Common.Models.Subsonic.IndexItem, IndexViewModel>
     {
         protected override IndexViewModel Subject { get; set; }
 

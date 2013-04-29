@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using Caliburn.Micro;
 using Client.Common.Services;
 using MugenInjection.Attributes;
-using Subsonic8.BottomBar;
 using Subsonic8.Framework.Services;
 using Action = System.Action;
 
@@ -13,7 +11,6 @@ namespace Subsonic8.Framework.ViewModel
     {
         private ICustomFrameAdapter _navigationService;
         private ISubsonicService _subsonicService;
-        private IDefaultBottomBarViewModel _bottomBar;
         private IEventAggregator _eventAggregator;
 
         [Inject]
@@ -65,29 +62,6 @@ namespace Subsonic8.Framework.ViewModel
             }
         }
 
-        [Inject]
-        public IDefaultBottomBarViewModel BottomBar
-        {
-            get
-            {
-                return _bottomBar;
-            }
-
-            set
-            {
-                _bottomBar = value;
-                NotifyOfPropertyChange();
-            }
-        }
-
-        public ObservableCollection<object> SelectedItems
-        {
-            get
-            {
-                return BottomBar != null ? BottomBar.SelectedItems : new ObservableCollection<object>();
-            }
-        }
-
         public bool CanGoBack
         {
             get
@@ -125,13 +99,6 @@ namespace Subsonic8.Framework.ViewModel
             base.OnActivate();
 
             UpdateDisplayName();
-            SetShellBottomBar();
-            BottomBar.IsOnPlaylist = false;
-        }
-
-        private void SetShellBottomBar()
-        {
-            EventAggregator.Publish(new ChangeBottomBarMessage { BottomBarViewModel = BottomBar });
         }
     }
 }

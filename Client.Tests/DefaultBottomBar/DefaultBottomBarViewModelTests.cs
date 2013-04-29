@@ -1,7 +1,12 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using Caliburn.Micro;
 using Client.Common.EventAggregatorMessages;
+using Client.Common.Models;
+using Client.Common.Models.Subsonic;
 using Client.Tests.Mocks;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
@@ -16,6 +21,8 @@ namespace Client.Tests.DefaultBottomBar
         private DefaultBottomBarViewModel _subject;
         private MockEventAggregator _eventAggregator;
         private MockNavigationService _navigationService;
+        private MockPlyalistManagementService _mockPlyalistManagementService;
+        private MockSubsonicService _mockSubsonicService;
 
         [TestInitialize]
         public void TestInitialize()
@@ -23,21 +30,19 @@ namespace Client.Tests.DefaultBottomBar
             IoC.GetInstance = (type, s) => null;
             _eventAggregator = new MockEventAggregator();
             _navigationService = new MockNavigationService();
-            _subject = new DefaultBottomBarViewModel(_navigationService, _eventAggregator) { Navigate = _navigationService.DoNavigate };
+            _mockPlyalistManagementService = new MockPlyalistManagementService();
+            _mockSubsonicService = new MockSubsonicService();
+            _subject = new DefaultBottomBarViewModel(_navigationService, _eventAggregator, _mockPlyalistManagementService)
+                {
+                    NavigateOnPlay = _navigationService.DoNavigate,
+                    SubsonicService = _mockSubsonicService
+                };
         }
 
         [TestMethod]
         public void CtorShouldInitializeSelectedItemsCollection()
         {
             _subject.SelectedItems.Should().NotBeNull();
-        }
-
-        [TestMethod]
-        public void AddToPlaylistCallsEventAggregatorPublish()
-        {
-            _subject.AddToPlaylist();
-
-            _eventAggregator.PublishCallCount.Should().Be(1);
         }
 
         [TestMethod]
@@ -79,32 +84,6 @@ namespace Client.Tests.DefaultBottomBar
         }
 
         [TestMethod]
-        public void RemoveFromPlaylistCallsEventAggregatorPublish()
-        {
-            _subject.RemoveFromPlaylist();
-
-            _eventAggregator.PublishCallCount.Should().Be(1);
-        }
-
-        [TestMethod]
-        public void RemoveFromPlaylistCallsEventAggregatorPublishWithRemoveFromPlaylistMessageType()
-        {
-            _subject.RemoveFromPlaylist();
-
-            _eventAggregator.Messages.Last().GetType().Should().Be<RemoveItemsMessage>();
-        }
-
-        [TestMethod]
-        public void RemoveFromPlaylistCallsEventAggregatorPublishWithQueueParameterSetToSelectedItems()
-        {
-            _subject.SelectedItems = new ObservableCollection<object> { new Common.Models.PlaylistItem() };
-
-            _subject.RemoveFromPlaylist();
-
-            ((RemoveItemsMessage)_eventAggregator.Messages.Last()).Queue.Should().HaveCount(1);
-        }
-
-        [TestMethod]
         public void IsOpened_SelectedItemsIsEmpty_ReturnsFalse()
         {
             _subject.SelectedItems = new ObservableCollection<object>();
@@ -139,36 +118,26 @@ namespace Client.Tests.DefaultBottomBar
         {
             _subject.SelectedItems.Add(new MenuItemViewModel());
             _subject.SelectedItems.Add(42);
-            _subject.SelectedItems.Add(new Common.Models.PlaylistItem());
+            _subject.SelectedItems.Add(new PlaylistItem());
 
             _subject.CanAddToPlaylist.Should().BeFalse();
-        }
-
-        [TestMethod]
-        public void CanRemoveFromPlaylist_SelectedItemsAreOfTypePlaylistItemViewModel_ReturnsTrue()
-        {
-            _subject.SelectedItems.Add(new Common.Models.PlaylistItem());
-            _subject.SelectedItems.Add(new Common.Models.PlaylistItem());
-            _subject.SelectedItems.Add(new Common.Models.PlaylistItem());
-
-            _subject.CanRemoveFromPlaylist.Should().BeTrue();
         }
 
         [TestMethod]
         public void CanAddToPlaylist_SelectedItemsAreNotAllOfTypePlaylisttemViewModel_ReturnsFalse()
         {
             _subject.SelectedItems.Add(42);
-            _subject.SelectedItems.Add(new Common.Models.PlaylistItem());
+            _subject.SelectedItems.Add(new PlaylistItem());
             _subject.SelectedItems.Add(new MenuItemViewModel());
 
             _subject.CanAddToPlaylist.Should().BeFalse();
         }
 
         [TestMethod]
-        public void HandleWithShowControlsMessage_WhenShowIsFalse_SetsDisplayPlayControlsToFalse()
+        public void HandleWithShowControlsMessage_WhenPlaylistDoesNotHaveElements_SetsDisplayPlayControlsToFalse()
         {
-            _subject.DisplayPlayControls = true;
             var showControlsMessage = new PlaylistStateChangedMessage(false);
+            _mockPlyalistManagementService.HasElements = false;
 
             _subject.Handle(showControlsMessage);
 
@@ -176,10 +145,10 @@ namespace Client.Tests.DefaultBottomBar
         }
 
         [TestMethod]
-        public void HandleWithShowControlsMessage_WhenShowIsTrue_SetsDisplayPlayControlsToTrue()
+        public void HandleWithShowControlsMessage_WhenPlaylistHasElements_SetsDisplayPlayControlsToTrue()
         {
-            _subject.DisplayPlayControls = false;
             var showControlsMessage = new PlaylistStateChangedMessage(true);
+            _mockPlyalistManagementService.HasElements = true;
 
             _subject.Handle(showControlsMessage);
 
@@ -202,6 +171,161 @@ namespace Client.Tests.DefaultBottomBar
 
             _eventAggregator.Messages.Count.Should().Be(1);
             _eventAggregator.Messages[0].Should().BeOfType<StopMessage>();
+        }
+
+        [TestMethod]
+        public void AddToPlaylistShouldFireAnAddItemsMessageForEachMediaItem()
+        {
+            _subject.SelectedItems.Add(new MenuItemViewModel { Item = new Song { IsVideo = true } });
+            _subject.SelectedItems.Add(new MenuItemViewModel { Item = new Song { IsVideo = false } });
+
+            _subject.AddToPlaylist();
+
+            _eventAggregator.Messages.Count.Should().Be(2);
+            _eventAggregator.Messages.All(m => m.GetType() == typeof(AddItemsMessage)).Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void PlayAll_ShouldPublishAPlayNextMessage()
+        {
+            _subject.SelectedItems.Add(new MenuItemViewModel { Item = new Song() });
+            _subject.SelectedItems.Add(new MenuItemViewModel { Item = new Song() });
+            _subject.SelectedItems.Add(new MenuItemViewModel { Item = new Song() });
+
+            _subject.PlayAll();
+
+            _eventAggregator.Messages.Single(m => m.GetType() == typeof(PlayNextMessage)).Should().NotBeNull();
+        }
+
+        [TestMethod]
+        public void PlayAll_ClearsTheCurrentPlaylist()
+        {
+            _subject.SelectedItems.Add(new MenuItemViewModel { Item = new Song() });
+
+            _subject.PlayAll();
+
+            _mockPlyalistManagementService.ClearCallCount.Should().Be(1);
+        }
+
+        [TestMethod]
+        public void AddToPlaylist_SelectedItemsHasItemOfTypeAlbum_CallsSubsonicServiceGetAlbumAndAdsAllItsSongsToThePlaylist()
+        {
+            MockLoadModel();
+            _subject.SelectedItems.Add(new MenuItemViewModel { Item = new Common.Models.Subsonic.Album { Id = 5 } });
+            var songs = new List<Song> { new Song(), new Song() };
+            var album = new Common.Models.Subsonic.Album { Songs = songs };
+            var mockGetAlbumResult = new MockGetAlbumResult { GetResultFunc = () => album };
+            var callCount = 0;
+            _mockSubsonicService.GetAlbum = albumId =>
+            {
+                callCount++;
+                albumId.Should().Be(5);
+                return mockGetAlbumResult;
+            };
+
+            _subject.AddToPlaylist();
+
+            callCount.Should().Be(1);
+            _eventAggregator.Messages.All(m => m.GetType() == typeof(AddItemsMessage)).Should().BeTrue();
+            _eventAggregator.Messages.Count.Should().Be(2);
+        }
+
+        [TestMethod]
+        public void AddToPlaylist_QueHasItemOfTypeIndexItem_CallsSubsonicServiceGetMusicDirectorysForEachChildArtist()
+        {
+            MockLoadModel();
+            _subject.SelectedItems.Add(new MenuItemViewModel { Item = new IndexItem { Id = 5, Artists = new List<Common.Models.Subsonic.Artist> { new Common.Models.Subsonic.Artist { Id = 3 } } } });
+            var children = new List<MusicDirectoryChild> { new MusicDirectoryChild(), new MusicDirectoryChild() };
+            var musicDirectory = new Common.Models.Subsonic.MusicDirectory { Children = children };
+            var mockGetMusicDirectoryResult = new MockGetMusicDirectoryResult { GetResultFunc = () => musicDirectory };
+            var callCount = 0;
+            _mockSubsonicService.GetMusicDirectory = directoryId =>
+            {
+                callCount++;
+                directoryId.Should().Be(3);
+                return mockGetMusicDirectoryResult;
+            };
+
+            _subject.AddToPlaylist();
+
+            callCount.Should().Be(1);
+            _eventAggregator.Messages.All(m => m.GetType() == typeof(AddItemsMessage)).Should().BeTrue();
+            _eventAggregator.Messages.Count.Should().Be(2);
+        }
+
+        [TestMethod]
+        public void AddToPlaylist_QueHasItemOfTypeArtist_CallsSubsonicServiceGetArtistAndAddsAllSongsFromAllAlbumsToThePlaylist()
+        {
+            MockLoadModel();
+            _subject.SelectedItems.Add(new MenuItemViewModel { Item = new ExpandedArtist { Id = 5 } });
+            var albums = new List<Common.Models.Subsonic.Album>
+                {
+                    new Common.Models.Subsonic.Album(),
+                    new Common.Models.Subsonic.Album()
+                };
+            var artist = new ExpandedArtist { Albums = albums };
+            var mockGetAlbumResult = new MockGetArtistResult { GetResultFunc = () => artist };
+            var callCount = 0;
+            _mockSubsonicService.GetArtist = albumId =>
+            {
+                callCount++;
+                albumId.Should().Be(5);
+                return mockGetAlbumResult;
+            };
+            var getAlbumCallCount = 0;
+            _mockSubsonicService.GetAlbum = artistId =>
+            {
+                getAlbumCallCount++;
+                return new MockGetAlbumResult
+                {
+                    GetResultFunc = () => new Common.Models.Subsonic.Album { Songs = new List<Song> { new Song() } }
+                };
+            };
+
+            _subject.AddToPlaylist();
+
+            callCount.Should().Be(1);
+            getAlbumCallCount.Should().Be(2);
+            _eventAggregator.Messages.All(m => m.GetType() == typeof(AddItemsMessage)).Should().BeTrue();
+            _eventAggregator.Messages.Count.Should().Be(2);
+        }
+
+        [TestMethod]
+        public void AddToPlaylist_QueHasItemOfTypeMusicDirectory_CallsSubsonicServiceGetMusicDirectorysAndAddsAllSongsToThePlaylist()
+        {
+            MockLoadModel();
+            _subject.SelectedItems.Add(new MenuItemViewModel { Item = new Common.Models.Subsonic.MusicDirectory { Id = 5 } });
+            var children = new List<MusicDirectoryChild> { new MusicDirectoryChild(), new MusicDirectoryChild() };
+            var musicDirectory = new Common.Models.Subsonic.MusicDirectory { Children = children };
+            var mockGetAlbumResult = new MockGetMusicDirectoryResult { GetResultFunc = () => musicDirectory };
+            var callCount = 0;
+            _mockSubsonicService.GetMusicDirectory = directoryId =>
+            {
+                callCount++;
+                directoryId.Should().Be(5);
+                return mockGetAlbumResult;
+            };
+
+            _subject.AddToPlaylist();
+
+            callCount.Should().Be(1);
+            _eventAggregator.Messages.All(m => m.GetType() == typeof(AddItemsMessage)).Should().BeTrue();
+            _eventAggregator.Messages.Count.Should().Be(2);
+        }
+
+        private void MockLoadModel()
+        {
+            _subject.LoadModel = model =>
+            {
+                var tcr = new TaskCompletionSource<PlaylistItem>();
+                tcr.SetResult(new PlaylistItem
+                {
+                    PlayingState = PlaylistItemState.NotPlaying,
+                    Uri = new Uri("http://test-uri"),
+                    Artist = "test-artist"
+                });
+                return tcr.Task;
+            };
         }
     }
 }

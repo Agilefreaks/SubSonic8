@@ -9,7 +9,7 @@
     mc:Ignorable="d">
 
     <ContentControl.Resources>
-        <CollectionViewSource x:Key="GroupedSource" IsSourceGrouped="True" Source="{Binding MenuItems}" />
+        <CollectionViewSource x:Key="GroupedSource" IsSourceGrouped="True" Source="{Binding GroupedMenuItems}" />
         <DataTemplate x:Key="MenuItemTemplate">
             <ContentControl cal:View.Model="{Binding}"/>
         </DataTemplate>
@@ -20,7 +20,7 @@
               behaviors:MultipleSelectBehavior.SelectedItems="{Binding SelectedItems, Mode=TwoWay}"
               ItemTemplate="{StaticResource MenuItemTemplate}"
               IsItemClickEnabled="True" 
-              cal:Message.Attach="[Event ItemClick] = [Action SearchResultClick($eventArgs)];">
+              cal:Message.Attach="[Event ItemClick] = [Action ChildClick($eventArgs)];">
 
         <GridView.ItemsPanel>
             <ItemsPanelTemplate>

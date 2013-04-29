@@ -7,8 +7,6 @@ using Client.Common.Models.Subsonic;
 using Client.Common.Results;
 using Subsonic8.Framework.ViewModel;
 using Subsonic8.MenuItem;
-using Subsonic8.MusicDirectory;
-using Windows.UI.Xaml.Controls;
 
 namespace Subsonic8.Index
 {
@@ -24,12 +22,12 @@ namespace Subsonic8.Index
             return SubsonicService.GetIndex(id);
         }
 
-        protected override IEnumerable<ISubsonicModel> GetItemsToDisplay()
+        protected override IEnumerable<ISubsonicModel> GetItemsToDisplay(IndexItem result)
         {
-            return Item.Artists;
+            return result.Artists;
         }
 
-        protected override async Task AfterLoadModel(int id)
+        protected override async Task AfterPopulate(int id)
         {
             var result = SubsonicService.GetMusicFolders();
             await result.WithErrorHandler(this).OnSuccess(r => SetIndexName(r, id)).Execute();

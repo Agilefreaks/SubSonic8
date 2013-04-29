@@ -1,0 +1,23 @@
+﻿<UserControl
+    x:Class="Subsonic8.BottomBar.PlaybackControlsView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:cal="using:Caliburn.Micro"
+    xmlns:ic="using:Subsonic8.Controls"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <cal:BooleanToVisibilityConverter x:Key="VisibilityConverter"/>
+    </UserControl.Resources>
+
+    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Visibility="{Binding DisplayPlayControls, Converter={StaticResource VisibilityConverter}}">
+        <Button Style="{StaticResource PreviousAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action PlayPrevious()]"/>
+        <ic:AppBarToggleButton Style="{StaticResource PlayAppBarButtonStyle}" CheckedStyle="{StaticResource PauseAppBarButtonStyle}" 
+                                   cal:Message.Attach="[Event Click] = [Action PlayPause()]" AutoToggle="False" IsChecked="{Binding IsPlaying}"/>
+        <Button Style="{StaticResource StopAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action Stop()]"/>
+        <Button Style="{StaticResource NextAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action PlayNext()]"/>
+        <ic:AppBarToggleButton Style="{StaticResource ShuffleOffAppBarButtonStyle}" CheckedStyle="{StaticResource ShuffleOnAppBarButtonStyle}" 
+                                   cal:Message.Attach="[Event Click] = [Action ToggleShuffle()]" AutoToggle="False" IsChecked="{Binding Path=ShuffleOn}"/>
+    </StackPanel>
+</UserControl>

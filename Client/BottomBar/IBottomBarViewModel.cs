@@ -10,13 +10,9 @@ namespace Subsonic8.BottomBar
 
         bool IsOpened { get; set; }
 
-        bool IsPlaying { get; set; }
+        bool IsPlaying { get; }
 
-        bool IsOnPlaylist { get; set; }
-
-        bool DisplayPlayControls { get; set; }
-
-        void NavigateToPlaylist();
+        bool DisplayPlayControls { get; }
 
         void PlayPrevious();
 
@@ -25,5 +21,9 @@ namespace Subsonic8.BottomBar
         void PlayPause();
 
         void Stop();
+
+        void ToggleShuffle();
+
+        void NavigateToRoot();
     }
 }

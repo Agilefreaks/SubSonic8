@@ -28,7 +28,6 @@ namespace Subsonic8
 
         protected override void Configure()
         {
-            Kernel.Bind<IEventAggregator>().To<EventAggregator>().InSingletonScope();
             Kernel.Load<CommonModule>();
             Kernel.Load<ClientModule>();
         }

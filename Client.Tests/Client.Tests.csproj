@@ -121,6 +121,7 @@
     <Compile Include="Framework\NotificationHelperTests.cs" />
     <Compile Include="Framework\Services\DialogNotificationOptionsTests.cs" />
     <Compile Include="Framework\Services\NotificationOptionsTests.cs" />
+    <Compile Include="Framework\ViewModel\CollectionViewModelBaseTests.cs" />
     <Compile Include="Framework\ViewModel\DetailViewModelBaseTests.cs" />
     <Compile Include="Framework\ViewModel\ItemViewModelBaseTests.cs" />
     <Compile Include="MenuItem\MenuItemViewModelBaseTests.cs" />
@@ -149,6 +150,7 @@
     <Compile Include="MusicDirectory\MusicDirectoryViewModelTests.cs" />
     <Compile Include="Mocks\MockPlayerControls.cs" />
     <Compile Include="Mocks\MockPlyalistManagementService.cs" />
+    <Compile Include="PlaybackBottomBar\PlaybackBottomBarViewModelTests.cs" />
     <Compile Include="Playback\PlaybackViewModelTests.cs" />
     <Compile Include="Search\SearchConvertersTests.cs" />
     <Compile Include="Search\SearchViewModelTests.cs" />
