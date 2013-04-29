@@ -99,6 +99,7 @@ namespace Subsonic8
         private void InstantiateRequiredSingletons()
         {
             Kernel.Get<IPlaybackViewModel>();
+            Kernel.Get<INotificationsHelper>();
         }
 
         private void BindShellViewModelToView(ShellView shellView)

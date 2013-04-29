@@ -12,7 +12,6 @@ using Client.Common.Models;
 using Client.Common.Models.Subsonic;
 using Client.Common.Services;
 using MugenInjection.Attributes;
-using Subsonic8.Framework.Extensions;
 using Subsonic8.Framework.Services;
 using Subsonic8.Framework.ViewModel;
 using Subsonic8.Messages;
@@ -248,17 +247,10 @@ namespace Subsonic8.Playback
             }
         }
 
-        public async void Handle(StartPlaybackMessage message)
+        public void Handle(StartPlaybackMessage message)
         {
             CoverArt = message.Item.OriginalCoverArtUrl;
             NotifyOfPropertyChange(() => ActiveItem);
-            this.ShowToast(message.Item);
-            await TileNotificationService.Show(new PlaybackNotificationOptions
-                {
-                    ImageUrl = message.Item.OriginalCoverArtUrl,
-                    Title = message.Item.Title,
-                    Subtitle = message.Item.Artist
-                });
         }
 
         public void Handle(PlaylistStateChangedMessage message)

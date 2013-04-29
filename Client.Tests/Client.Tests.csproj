@@ -118,6 +118,7 @@
     <Compile Include="ClientTestBase.cs" />
     <Compile Include="Converters\IntToTimeStringConverterTests.cs" />
     <Compile Include="DefaultBottomBar\DefaultBottomBarViewModelTests.cs" />
+    <Compile Include="Framework\NotificationHelperTests.cs" />
     <Compile Include="Framework\Services\DialogNotificationOptionsTests.cs" />
     <Compile Include="Framework\Services\NotificationOptionsTests.cs" />
     <Compile Include="Framework\ViewModel\DetailViewModelBaseTests.cs" />
@@ -131,6 +132,7 @@
     <Compile Include="Mocks\MockGetMusicDirectoryResult.cs" />
     <Compile Include="Mocks\MockGetSongResult.cs" />
     <Compile Include="Mocks\MockPlaybackViewModel.cs" />
+    <Compile Include="Mocks\MockTileNotificationService.cs" />
     <Compile Include="Mocks\MockToastNotificationService.cs" />
     <Compile Include="Mocks\MockSearchResult.cs" />
     <Compile Include="Mocks\MockServiceResultBase.cs" />

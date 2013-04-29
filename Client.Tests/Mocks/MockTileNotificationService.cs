@@ -3,11 +3,9 @@ using Subsonic8.Framework.Services;
 
 namespace Client.Tests.Mocks
 {
-    public class MockToastNotificationService : IToastNotificationService
+    public class MockTileNotificationService : ITileNotificationService
     {
         public int ShowCallCount { get; set; }
-
-        public bool UseSound { get; set; }
 
         public Task Show(PlaybackNotificationOptions options)
         {

@@ -64,14 +64,6 @@ namespace Client.Tests.Playback
         }
 
         [TestMethod]
-        public void HandleStartAudioPlayback_Alawys_CallsNotificationManagerShow()
-        {
-            Subject.Handle(new StartPlaybackMessage(new PlaylistItem()));
-
-            _mockToastNotificationService.ShowCallCount.Should().Be(1);
-        }
-
-        [TestMethod]
         public void HandleStartAudioPlayback_Alawys_SetsStateToAudio()
         {
             Subject.Handle(new StartPlaybackMessage(new PlaylistItem()));

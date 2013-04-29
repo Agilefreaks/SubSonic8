@@ -26,7 +26,8 @@ namespace Subsonic8
                     new Tuple<Type[], Type>(new[] { typeof(IFullScreenVideoPlaybackViewModel), typeof(FullScreenVideoPlaybackViewModel) }, typeof(FullScreenVideoPlaybackViewModel)), 
                     new Tuple<Type[], Type>(new[] { typeof(IEmbededVideoPlaybackViewModel) }, typeof(EmbededVideoPlaybackViewModel)), 
                     new Tuple<Type[], Type>(new[] { typeof(IDefaultBottomBarViewModel) }, typeof(DefaultBottomBarViewModel)),
-                    new Tuple<Type[], Type>(new[] { typeof(ISettingsHelper) }, typeof(SettingsHelper))
+                    new Tuple<Type[], Type>(new[] { typeof(ISettingsHelper) }, typeof(SettingsHelper)),
+                    new Tuple<Type[], Type>(new[] { typeof(INotificationsHelper) }, typeof(NotificationsHelper))
                 });
         }
     }
