@@ -17,6 +17,7 @@ namespace Subsonic8.Framework.Services
         public Task Show(PlaybackNotificationOptions options)
         {
             var tileNotification = GetTileNotification(options);
+
             return Task.Factory.StartNew(() => _tileUpdater.Update(tileNotification));
         }
 
@@ -28,7 +29,7 @@ namespace Subsonic8.Framework.Services
 
             var tileNotification = new TileNotification(wideTemplate.GetXml())
                 {
-                    ExpirationTime = new DateTimeOffset(DateTime.UtcNow, TimeSpan.FromMinutes(5))
+                    ExpirationTime = new DateTimeOffset(DateTime.UtcNow.Add(TimeSpan.FromMinutes(5)))
                 };
 
             return tileNotification;
