@@ -10,8 +10,6 @@ namespace Client.Common.Services
 
         Task Delete<T>();
 
-        Task Save<T>(T data, string handle);
-
-        Task<T> Load<T>(string handle);
+        Task<string> GetData<T>();
     }
 }

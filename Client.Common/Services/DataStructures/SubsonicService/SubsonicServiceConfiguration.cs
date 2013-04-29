@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using System.Xml.Serialization;
 using Caliburn.Micro;
 
 namespace Client.Common.Services.DataStructures.SubsonicService
@@ -10,6 +11,7 @@ namespace Client.Common.Services.DataStructures.SubsonicService
 
         private string _username, _password, _baseUrl;
 
+        [XmlIgnore]
         public string Username
         {
             get
@@ -24,6 +26,7 @@ namespace Client.Common.Services.DataStructures.SubsonicService
             }
         }
 
+        [XmlIgnore]
         public string Password
         {
             get
