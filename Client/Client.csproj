@@ -140,6 +140,8 @@
     <Compile Include="Framework\Extensions\ToastNotificationExtensions.cs" />
     <Compile Include="Framework\Interfaces\ISettingsHelper.cs" />
     <Compile Include="Framework\Extensions\SettingsPaneExtensionMethods.cs" />
+    <Compile Include="Framework\Services\ITileNotificationService.cs" />
+    <Compile Include="Framework\Services\TileNotificationService.cs" />
     <Compile Include="Framework\SettingsHelper.cs" />
     <Compile Include="Framework\ViewModel\IHaveState.cs" />
     <Compile Include="Framework\Interfaces\IToastNotificationCapable.cs" />
@@ -149,7 +151,7 @@
     <Compile Include="Framework\Services\INotificationService.cs" />
     <Compile Include="Framework\Services\IToastNotificationService.cs" />
     <Compile Include="Framework\Services\PossibleAction.cs" />
-    <Compile Include="Framework\Services\ToastNotificationOptions.cs" />
+    <Compile Include="Framework\Services\PlaybackNotificationOptions.cs" />
     <Compile Include="Framework\Services\ToastNotificationService.cs" />
     <Compile Include="Framework\Services\UICommandAdapter.cs" />
     <Compile Include="Framework\SuspensionManager.cs" />

@@ -143,6 +143,9 @@ namespace Subsonic8.Playback
         public IToastNotificationService ToastNotificationService { get; set; }
 
         [Inject]
+        public ITileNotificationService TileNotificationService { get; set; }
+
+        [Inject]
         public IEmbededVideoPlaybackViewModel EmbededVideoPlaybackViewModel
         {
             get
@@ -245,11 +248,17 @@ namespace Subsonic8.Playback
             }
         }
 
-        public void Handle(StartPlaybackMessage message)
+        public async void Handle(StartPlaybackMessage message)
         {
             CoverArt = message.Item.OriginalCoverArtUrl;
             NotifyOfPropertyChange(() => ActiveItem);
             this.ShowToast(message.Item);
+            await TileNotificationService.Show(new PlaybackNotificationOptions
+                {
+                    ImageUrl = message.Item.CoverArtUrl,
+                    Title = message.Item.Title,
+                    Subtitle = message.Item.Artist
+                });
         }
 
         public void Handle(PlaylistStateChangedMessage message)

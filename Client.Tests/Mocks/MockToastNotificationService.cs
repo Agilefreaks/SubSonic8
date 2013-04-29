@@ -9,7 +9,7 @@ namespace Client.Tests.Mocks
 
         public bool UseSound { get; set; }
 
-        public Task Show(ToastNotificationOptions options)
+        public Task Show(PlaybackNotificationOptions options)
         {
             ShowCallCount++;
 

@@ -8,7 +8,7 @@ namespace Subsonic8.Framework.Extensions
         public static async void ShowToast<T>(this T notificationServiceOwner, Client.Common.Models.PlaylistItem model)
             where T : IToastNotificationCapable
         {
-            await notificationServiceOwner.ToastNotificationService.Show(new ToastNotificationOptions
+            await notificationServiceOwner.ToastNotificationService.Show(new PlaybackNotificationOptions
                 {
                     ImageUrl = model.CoverArtUrl,
                     Title = model.Title,

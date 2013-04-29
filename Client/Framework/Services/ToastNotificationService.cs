@@ -8,7 +8,7 @@ namespace Subsonic8.Framework.Services
     {
         public bool UseSound { get; set; }
 
-        public Task Show(ToastNotificationOptions options)
+        public Task Show(PlaybackNotificationOptions options)
         {
             var toastXml = BuildToast(options);
             var toast = new ToastNotification(toastXml);
@@ -17,7 +17,7 @@ namespace Subsonic8.Framework.Services
             return Task.Factory.StartNew(() => toastNotifier.Show(toast));
         }
 
-        private XmlDocument BuildToast(ToastNotificationOptions options)
+        private XmlDocument BuildToast(PlaybackNotificationOptions options)
         {
             var template = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastImageAndText02);
 

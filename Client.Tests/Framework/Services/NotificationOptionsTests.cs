@@ -10,7 +10,7 @@ namespace Client.Tests.Framework.Services
         [TestMethod]
         public void TitleReturnsUnknownIfItIsSetToNull()
         {
-            var options = new ToastNotificationOptions
+            var options = new PlaybackNotificationOptions
                               {
                                   Title = null
                               };
@@ -21,7 +21,7 @@ namespace Client.Tests.Framework.Services
         [TestMethod]
         public void TitleReturnsUnknownIfItIsSetToEmpty()
         {
-            var options = new ToastNotificationOptions
+            var options = new PlaybackNotificationOptions
             {
                 Title = string.Empty
             };
@@ -33,7 +33,7 @@ namespace Client.Tests.Framework.Services
         public void TitleRerturnsValueSet()
         {
             const string title = "title";
-            var options = new ToastNotificationOptions
+            var options = new PlaybackNotificationOptions
                               {
                                   Title = title
                               };
@@ -44,7 +44,7 @@ namespace Client.Tests.Framework.Services
         [TestMethod]
         public void SubtitleReturnsUnknownIfSetToNull()
         {
-            var options = new ToastNotificationOptions
+            var options = new PlaybackNotificationOptions
             {
                 Subtitle = null
             };
@@ -55,7 +55,7 @@ namespace Client.Tests.Framework.Services
         [TestMethod]
         public void SubtitleReturnsUnknownIfSetToEmpty()
         {
-            var options = new ToastNotificationOptions
+            var options = new PlaybackNotificationOptions
             {
                 Subtitle = string.Empty
             };
@@ -67,7 +67,7 @@ namespace Client.Tests.Framework.Services
         public void SubtitleRerturnsValueSet()
         {
             const string subtitle = "subtitle";
-            var options = new ToastNotificationOptions
+            var options = new PlaybackNotificationOptions
             {
                 Subtitle = subtitle
             };
