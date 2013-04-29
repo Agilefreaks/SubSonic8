@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
-using Windows.Data.Xml.Dom;
+using NotificationsExtensions.TileContent;
 using Windows.UI.Notifications;
 
 namespace Subsonic8.Framework.Services
@@ -24,10 +22,11 @@ namespace Subsonic8.Framework.Services
 
         private static TileNotification GetTileNotification(PlaybackNotificationOptions options)
         {
-            var squareTempalte = GetSquateTempalte(options);
             var wideTemplate = GetWideTemplate(options);
-            CombineTemplates(squareTempalte, wideTemplate);
-            var tileNotification = new TileNotification(squareTempalte)
+            var squareTempalte = GetSquateTempalte(options);
+            wideTemplate.SquareContent = squareTempalte;
+
+            var tileNotification = new TileNotification(wideTemplate.GetXml())
                 {
                     ExpirationTime = new DateTimeOffset(DateTime.UtcNow, TimeSpan.FromMinutes(5))
                 };
@@ -35,53 +34,23 @@ namespace Subsonic8.Framework.Services
             return tileNotification;
         }
 
-        private static XmlDocument GetWideTemplate(PlaybackNotificationOptions options)
+        private static ITileWideSmallImageAndText03 GetWideTemplate(PlaybackNotificationOptions options)
         {
-            var template = TileUpdateManager.GetTemplateContent(TileTemplateType.TileWideSmallImageAndText03);
+            var tile = TileContentFactory.CreateTileWideSmallImageAndText03();
+            tile.Image.Src = options.ImageUrl;
+            tile.TextBodyWrap.Text = string.Format("{0} - {1}", options.Title, options.Subtitle);
+            tile.RequireSquareContent = true;
 
-            var imageElement = template.GetElementsByTagName("image").First();
-            Debug.Assert(imageElement != null, "imageElement != null");
-            imageElement.Attributes.First(attr => attr.NodeName == "src").NodeValue = options.ImageUrl;
-
-            var textElement = GetTextElementById(template, "1");
-            textElement.InnerText = string.Format("{0} - {1}", options.Title, options.Subtitle);
-
-            return template;
+            return tile;
         }
 
-        private static XmlDocument GetSquateTempalte(PlaybackNotificationOptions options)
+        private static ITileSquarePeekImageAndText04 GetSquateTempalte(PlaybackNotificationOptions options)
         {
-            var template = TileUpdateManager.GetTemplateContent(TileTemplateType.TileSquarePeekImageAndText04);
+            var tile = TileContentFactory.CreateTileSquarePeekImageAndText04();
+            tile.Image.Src = options.ImageUrl;
+            tile.TextBodyWrap.Text = string.Format("{0} - {1}", options.Title, options.Subtitle);
 
-            var imageElement = template.GetElementsByTagName("image").First();
-            Debug.Assert(imageElement != null, "imageElement != null");
-            imageElement.Attributes.First(attr => attr.NodeName == "src").NodeValue = options.ImageUrl;
-
-            var textElement = GetTextElementById(template, "1");
-            textElement.InnerText = string.Format("{0} - {1}", options.Title, options.Subtitle);
-
-            return template;
-        }
-
-        private static IXmlNode GetTextElementById(XmlDocument xmlDocument, string id)
-        {
-            return xmlDocument.GetElementsByTagName("text").First(element => GetId(element) == id);
-        }
-
-        private static string GetId(IXmlNode element)
-        {
-            return GetIdAttribute(element).NodeValue.ToString();
-        }
-
-        private static IXmlNode GetIdAttribute(IXmlNode element)
-        {
-            return element.Attributes.First(attr => attr.NodeName == "id");
-        }
-
-        private static void CombineTemplates(XmlDocument firstTemplate, XmlDocument secondTemplate)
-        {
-            var nodeCopy = firstTemplate.ImportNode(secondTemplate.GetElementsByTagName("binding").First(), true);
-            firstTemplate.GetElementsByTagName("visual").First().AppendChild(nodeCopy);
+            return tile;
         }
     }
 }
