@@ -11,7 +11,6 @@ namespace Client.Tests.Framework.ViewModel
     public abstract class ViewModelBaseTests<TViewModel> : ClientTestBase
         where TViewModel : IViewModel, new()
     {
-        protected MockDefaultBottomBarViewModel MockDefaultBottomBar;
         protected MockSubsonicService MockSubsonicService;
         protected MockNavigationService MockNavigationService;
         protected MockDialogNotificationService MockDialogNotificationService;
@@ -22,7 +21,6 @@ namespace Client.Tests.Framework.ViewModel
         [TestInitialize]
         public void TestInitialize()
         {
-            MockDefaultBottomBar = new MockDefaultBottomBarViewModel();
             MockSubsonicService = new MockSubsonicService();
             MockNavigationService = new MockNavigationService();
             MockDialogNotificationService = new MockDialogNotificationService();
@@ -30,27 +28,12 @@ namespace Client.Tests.Framework.ViewModel
             Subject = new TViewModel
                 {
                     EventAggregator = MockEventAggregator,
-                    BottomBar = MockDefaultBottomBar,
                     SubsonicService = MockSubsonicService,
                     NavigationService = MockNavigationService,
                     NotificationService = MockDialogNotificationService,
                     UpdateDisplayName = () => Subject.DisplayName = ""
                 };
             TestInitializeExtensions();
-        }
-
-        [TestMethod]
-        public void CtorShouldSetDefaultBottomBar()
-        {
-            Subject.BottomBar.Should().NotBeNull();
-        }
-
-        [TestMethod]
-        public void SelectedItemWhenBottomBarIsNillShouldNotThrowException()
-        {
-            Subject.BottomBar = null;
-
-            Subject.SelectedItems.Should().NotBeNull();
         }
 
         [TestMethod]
@@ -75,18 +58,8 @@ namespace Client.Tests.Framework.ViewModel
             mockDialogNotificationService.Showed.Count.Should().Be(1);
         }
 
-        [TestMethod]
-        public virtual void OnActivateShouldSetBottomBarIsOnPlaylistToFalse()
-        {
-            Subject.BottomBar.IsOnPlaylist = true;
-
-            Subject.Activate();
-
-            Subject.BottomBar.IsOnPlaylist.Should().BeFalse();
-        }
-
         protected virtual void TestInitializeExtensions()
-        {            
+        {
         }
     }
 }

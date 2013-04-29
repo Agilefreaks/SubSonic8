@@ -1,61 +1,17 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Client.Common.Models;
 using Client.Common.Models.Subsonic;
-using Subsonic8.Framework.Extensions;
+using Client.Common.Results;
 using Subsonic8.Framework.ViewModel;
 using Subsonic8.MenuItem;
-using Windows.UI.Xaml.Controls;
 
 namespace Subsonic8.Search
 {
-    public class SearchViewModel : ViewModelBase, ISearchViewModel
+    public class SearchViewModel : CollectionViewModelBase<string, SearchResultCollection>, ISearchViewModel
     {
-        private string _parameter;
-        private List<MenuItemViewModel> _menuItemViewModels;
         private SearchResultState _state;
-
-        public string Parameter
-        {
-            get
-            {
-                return _parameter;
-            }
-
-            set
-            {
-                if (Equals(value, _parameter)) return;
-                _parameter = value;
-                NotifyOfPropertyChange();
-                UpdateDisplayName();
-                PerformSearch(Parameter);
-            }
-        }
-
-        public List<IGrouping<string, MenuItemViewModel>> MenuItems
-        {
-            get
-            {
-                return (from item in MenuItemViewModels
-                        group item by item.Type
-                            into gr
-                            orderby gr.Key
-                            select gr).ToList();
-            }
-        }
-
-        public List<MenuItemViewModel> MenuItemViewModels
-        {
-            get
-            {
-                return _menuItemViewModels;
-            }
-
-            private set
-            {
-                _menuItemViewModels = value;
-                NotifyOfPropertyChange(() => MenuItems);
-            }
-        }
 
         public SearchResultState State
         {
@@ -64,87 +20,70 @@ namespace Subsonic8.Search
                 return _state;
             }
 
-            set
+            private set
             {
                 _state = value;
                 NotifyOfPropertyChange();
             }
         }
 
-        protected SearchResultCollection Results { get; set; }
+        public List<IGrouping<string, MenuItemViewModel>> GroupedMenuItems
+        {
+            get
+            {
+                return (from item in MenuItems
+                        group item by item.Type
+                            into gr
+                            orderby gr.Key
+                            select gr).ToList();
+            }
+        }
 
         public SearchViewModel()
         {
-            MenuItemViewModels = new List<MenuItemViewModel>();
             State = SearchResultState.NoResultsFound;
             UpdateDisplayName = () => DisplayName = string.Format("Searched for: \"{0}\"", Parameter ?? string.Empty);
         }
 
-        public void PopulateMenuItems(SearchResultCollection result)
-        {
-            MenuItemViewModels.Clear();
-
-            if (result == null) return;
-
-            PopulateArtists(result.Artists);
-            PopulateAlbums(result.Albums);
-            PopulateSongs(result.Songs);
-
-            foreach (var subsonicModel in _menuItemViewModels.Select(x => x.Item))
-            {
-                subsonicModel.CoverArt = SubsonicService.GetCoverArtForId(subsonicModel.CoverArt);
-            }
-        }
-
-        public void PopulateArtists(List<ExpandedArtist> artists)
-        {
-            var menuItemViewModels = artists.Select(a => a.AsMenuItemViewModel()).ToList();
-            RemoveCoverArt(menuItemViewModels);
-            MenuItemViewModels.AddRange(menuItemViewModels);
-        }
-
-        public void PopulateAlbums(List<Client.Common.Models.Subsonic.Album> albums)
-        {
-            var menuItemViewModels = albums.Select(a => a.AsMenuItemViewModel()).ToList();
-            RemoveCoverArt(menuItemViewModels);
-            MenuItemViewModels.AddRange(menuItemViewModels);
-        }
-
-        public void PopulateSongs(List<Song> songs)
-        {
-            var menuItemViewModels = songs.Select(a => a.AsMenuItemViewModel()).ToList();
-            MenuItemViewModels.AddRange(menuItemViewModels);
-        }
-
-        public void SearchResultClick(ItemClickEventArgs eventArgs)
-        {
-            var navigableEntity = ((MenuItemViewModel)eventArgs.ClickedItem).Item;
-
-            NavigationService.NavigateByModelType(navigableEntity);
-        }
-
-        public async void PerformSearch(string parameter)
+        protected override void Populate()
         {
             State = SearchResultState.Busy;
-            await SubsonicService.Search(parameter)
-                                 .WithErrorHandler(this)
-                                 .OnSuccess(PopulateMenuItems)
-                                 .Execute();
-
-            State = MenuItemViewModels.Any() ? SearchResultState.ResultsFound : SearchResultState.NoResultsFound;
+            base.Populate();
         }
 
-        protected override void OnEventAggregatorSet()
+        protected override IServiceResultBase<SearchResultCollection> GetResult(string parameter)
         {
-            base.OnEventAggregatorSet();
-            EventAggregator.Subscribe(this);
+            return SubsonicService.Search(parameter);
         }
 
-        private static void RemoveCoverArt(IEnumerable<MenuItemViewModel> menuItemViewModels)
+        protected override IEnumerable<ISubsonicModel> GetItemsToDisplay(SearchResultCollection result)
+        {
+            var models = new List<ISubsonicModel>();
+            if (result != null)
+            {
+                RemoveCoverArt(result.Artists);
+                RemoveCoverArt(result.Albums);
+
+                models.AddRange(result.Artists);
+                models.AddRange(result.Albums);
+                models.AddRange(result.Songs);
+            }
+
+            return models;
+        }
+
+        protected override Task AfterPopulate(string parameter)
+        {
+            State = MenuItems.Any() ? SearchResultState.ResultsFound : SearchResultState.NoResultsFound;
+
+            return Task.Factory.StartNew(() => { });
+        }
+
+        private static void RemoveCoverArt(IEnumerable<ISubsonicModel> menuItemViewModels)
         {
             foreach (var menuItemViewModel in menuItemViewModels)
             {
-                menuItemViewModel.CoverArtId = string.Empty;
+                menuItemViewModel.CoverArt = null;
             }
         }
     }

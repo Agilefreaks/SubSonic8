@@ -118,11 +118,20 @@
     </Compile>
     <Compile Include="Artist\ArtistViewModel.cs" />
     <Compile Include="Artist\IArtistViewModel.cs" />
+    <Compile Include="BottomBar\BottomBarViewModelBase.cs" />
     <Compile Include="BottomBar\ChangeBottomBarMessage.cs" />
     <Compile Include="BottomBar\DefaultBottomBarView.xaml.cs">
       <DependentUpon>DefaultBottomBarView.xaml</DependentUpon>
     </Compile>
     <Compile Include="BottomBar\DefaultBottomBarViewModel.cs" />
+    <Compile Include="BottomBar\IPlaybackBottomBarViewModel.cs" />
+    <Compile Include="BottomBar\PlaybackBottomBarView.xaml.cs">
+      <DependentUpon>PlaybackBottomBarView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="BottomBar\PlaybackBottomBarViewModel.cs" />
+    <Compile Include="BottomBar\PlaybackControlsView.xaml.cs">
+      <DependentUpon>PlaybackControlsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ClientModule.cs" />
     <Compile Include="Common\PageHeader.xaml.cs">
       <DependentUpon>PageHeader.xaml</DependentUpon>
@@ -146,6 +155,8 @@
     <Compile Include="Framework\Services\ITileNotificationService.cs" />
     <Compile Include="Framework\Services\TileNotificationService.cs" />
     <Compile Include="Framework\SettingsHelper.cs" />
+    <Compile Include="Framework\ViewModel\CollectionViewModelBase.cs" />
+    <Compile Include="Framework\ViewModel\ICollectionViewModel.cs" />
     <Compile Include="Framework\ViewModel\IHaveState.cs" />
     <Compile Include="Framework\Interfaces\IToastNotificationCapable.cs" />
     <Compile Include="Framework\Services\DialogNotificationOptions.cs" />
@@ -298,6 +309,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="BottomBar\DefaultBottomBarView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="BottomBar\PlaybackBottomBarView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="BottomBar\PlaybackControlsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

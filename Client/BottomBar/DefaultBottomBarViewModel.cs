@@ -1,12 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
 using Caliburn.Micro;
-using Client.Common.EventAggregatorMessages;
 using Client.Common.Models;
 using Client.Common.Services;
-using Subsonic8.Main;
 using Subsonic8.MenuItem;
 using Subsonic8.Messages;
 using Subsonic8.Playback;
@@ -14,89 +11,13 @@ using Action = System.Action;
 
 namespace Subsonic8.BottomBar
 {
-    public class DefaultBottomBarViewModel : Screen, IDefaultBottomBarViewModel
+    public class DefaultBottomBarViewModel : BottomBarViewModelBase, IDefaultBottomBarViewModel
     {
         private readonly ICustomFrameAdapter _navigationService;
-        private readonly IEventAggregator _eventAggregator;
-        private bool _isOpened;
-        private bool _isPlaying;
-        private bool _isOnPlaylist;
-        private ObservableCollection<object> _selectedItems;
-        private bool _displayPlayControls;
-
-        public ObservableCollection<object> SelectedItems
-        {
-            get
-            {
-                return _selectedItems;
-            }
-
-            set
-            {
-                if (_selectedItems == value) return;
-                ManageSelectedItemsHooks(value, _selectedItems);
-                _selectedItems = value;
-                UpdateIsOpened();
-                NotifyOfPropertyChange();
-            }
-        }
 
         private IEnumerable<ISubsonicModel> SelectedSubsonicItems
         {
             get { return SelectedItems.Cast<IMenuItemViewModel>().Select(vm => vm.Item); }
-        }
-
-        public bool IsOpened
-        {
-            get
-            {
-                return _isOpened;
-            }
-
-            set
-            {
-                _isOpened = value;
-                NotifyOfPropertyChange();
-            }
-        }
-
-        public bool IsPlaying
-        {
-            get
-            {
-                return _isPlaying;
-            }
-
-            set
-            {
-                _isPlaying = value;
-                NotifyOfPropertyChange();
-            }
-        }
-
-        public bool IsOnPlaylist
-        {
-            get
-            {
-                return _isOnPlaylist;
-            }
-
-            set
-            {
-                _isOnPlaylist = value;
-                NotifyOfPropertyChange();
-            }
-        }
-
-        public bool DisplayPlayControls
-        {
-            get { return _displayPlayControls; }
-
-            set
-            {
-                _displayPlayControls = value;
-                NotifyOfPropertyChange();
-            }
         }
 
         public bool CanAddToPlaylist
@@ -104,39 +25,26 @@ namespace Subsonic8.BottomBar
             get { return SelectedItems.Any() && SelectedItems.All(x => x.GetType() == typeof(MenuItemViewModel)); }
         }
 
-        public bool CanRemoveFromPlaylist
-        {
-            get { return SelectedItems.Any() && SelectedItems.All(x => x.GetType() == typeof(Client.Common.Models.PlaylistItem)); }
-        }
+        public Action NavigateOnPlay { get; set; }
 
-        public Action Navigate { get; set; }
-
-        public DefaultBottomBarViewModel(ICustomFrameAdapter navigationService, IEventAggregator eventAggregator)
+        public DefaultBottomBarViewModel(ICustomFrameAdapter navigationService, IEventAggregator eventAggregator, IPlaylistManagementService playlistManagementService)
+            : base(navigationService, eventAggregator, playlistManagementService)
         {
             _navigationService = navigationService;
-            _eventAggregator = eventAggregator;
-            _eventAggregator.Subscribe(this);
-            SelectedItems = new ObservableCollection<object>();
-            SelectedItems.CollectionChanged += OnSelectedItemsChanged;
-            Navigate = () => _navigationService.NavigateToViewModel<PlaybackViewModel>();
+            NavigateOnPlay = () => _navigationService.NavigateToViewModel<PlaybackViewModel>();
         }
 
         public void AddToPlaylist()
         {
-            _eventAggregator.Publish(new PlaylistMessage { Queue = SelectedSubsonicItems.ToList() });
+            EventAggregator.Publish(new PlaylistMessage { Queue = SelectedSubsonicItems.ToList() });
             SelectedItems.Clear();
         }
 
         public void PlayAll()
         {
-            _eventAggregator.Publish(new PlaylistMessage { Queue = SelectedItems.Select(i => ((IMenuItemViewModel)i).Item).ToList(), ClearCurrent = true });
+            EventAggregator.Publish(new PlaylistMessage { Queue = SelectedItems.Select(i => ((IMenuItemViewModel)i).Item).ToList(), ClearCurrent = true });
             SelectedItems.Clear();
-            Navigate();
-        }
-
-        public void RemoveFromPlaylist()
-        {
-            _eventAggregator.Publish(new RemoveItemsMessage { Queue = SelectedItems.Select(x => (Client.Common.Models.PlaylistItem)x).ToList() });
+            NavigateOnPlay();
         }
 
         public void NavigateToPlaylist()
@@ -144,64 +52,10 @@ namespace Subsonic8.BottomBar
             _navigationService.NavigateToViewModel<PlaybackViewModel>();
         }
 
-        public void NavigateToRoot()
+        protected override void OnSelectedItemsChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
         {
-            _navigationService.NavigateToViewModel<MainViewModel>();
-        }
-
-        public void PlayPrevious()
-        {
-            _eventAggregator.Publish(new PlayPreviousMessage());
-        }
-
-        public void PlayNext()
-        {
-            _eventAggregator.Publish(new PlayNextMessage());
-        }
-
-        public void PlayPause()
-        {
-            _eventAggregator.Publish(new PlayPauseMessage());
-        }
-
-        public void ToggleShuffle()
-        {
-            _eventAggregator.Publish(new ToggleShuffleMessage());
-        }
-
-        public void Stop()
-        {
-            _eventAggregator.Publish(new StopMessage());
-        }
-
-        public void Handle(PlaylistStateChangedMessage message)
-        {
-            DisplayPlayControls = message.HasElements;
-        }
-
-        private void ManageSelectedItemsHooks(INotifyCollectionChanged newCollection, INotifyCollectionChanged oldCollection)
-        {
-            if (oldCollection != null)
-            {
-                oldCollection.CollectionChanged -= OnSelectedItemsChanged;
-            }
-
-            if (newCollection != null)
-            {
-                newCollection.CollectionChanged += OnSelectedItemsChanged;
-            }
-        }
-
-        private void OnSelectedItemsChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
-        {
-            UpdateIsOpened();
-        }
-
-        private void UpdateIsOpened()
-        {
+            base.OnSelectedItemsChanged(sender, notifyCollectionChangedEventArgs);
             NotifyOfPropertyChange(() => CanAddToPlaylist);
-            NotifyOfPropertyChange(() => CanRemoveFromPlaylist);
-            IsOpened = SelectedItems.Count != 0;
         }
     }
 }

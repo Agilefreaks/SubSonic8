@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Linq;
 using Caliburn.Micro;
 using Client.Common.EventAggregatorMessages;
 using Client.Tests.Mocks;
@@ -16,6 +15,7 @@ namespace Client.Tests.DefaultBottomBar
         private DefaultBottomBarViewModel _subject;
         private MockEventAggregator _eventAggregator;
         private MockNavigationService _navigationService;
+        private MockPlyalistManagementService _mockPlyalistManagementService;
 
         [TestInitialize]
         public void TestInitialize()
@@ -23,7 +23,8 @@ namespace Client.Tests.DefaultBottomBar
             IoC.GetInstance = (type, s) => null;
             _eventAggregator = new MockEventAggregator();
             _navigationService = new MockNavigationService();
-            _subject = new DefaultBottomBarViewModel(_navigationService, _eventAggregator) { Navigate = _navigationService.DoNavigate };
+            _mockPlyalistManagementService = new MockPlyalistManagementService();
+            _subject = new DefaultBottomBarViewModel(_navigationService, _eventAggregator, _mockPlyalistManagementService) { NavigateOnPlay = _navigationService.DoNavigate };
         }
 
         [TestMethod]
@@ -79,32 +80,6 @@ namespace Client.Tests.DefaultBottomBar
         }
 
         [TestMethod]
-        public void RemoveFromPlaylistCallsEventAggregatorPublish()
-        {
-            _subject.RemoveFromPlaylist();
-
-            _eventAggregator.PublishCallCount.Should().Be(1);
-        }
-
-        [TestMethod]
-        public void RemoveFromPlaylistCallsEventAggregatorPublishWithRemoveFromPlaylistMessageType()
-        {
-            _subject.RemoveFromPlaylist();
-
-            _eventAggregator.Messages.Last().GetType().Should().Be<RemoveItemsMessage>();
-        }
-
-        [TestMethod]
-        public void RemoveFromPlaylistCallsEventAggregatorPublishWithQueueParameterSetToSelectedItems()
-        {
-            _subject.SelectedItems = new ObservableCollection<object> { new Common.Models.PlaylistItem() };
-
-            _subject.RemoveFromPlaylist();
-
-            ((RemoveItemsMessage)_eventAggregator.Messages.Last()).Queue.Should().HaveCount(1);
-        }
-
-        [TestMethod]
         public void IsOpened_SelectedItemsIsEmpty_ReturnsFalse()
         {
             _subject.SelectedItems = new ObservableCollection<object>();
@@ -145,16 +120,6 @@ namespace Client.Tests.DefaultBottomBar
         }
 
         [TestMethod]
-        public void CanRemoveFromPlaylist_SelectedItemsAreOfTypePlaylistItemViewModel_ReturnsTrue()
-        {
-            _subject.SelectedItems.Add(new Common.Models.PlaylistItem());
-            _subject.SelectedItems.Add(new Common.Models.PlaylistItem());
-            _subject.SelectedItems.Add(new Common.Models.PlaylistItem());
-
-            _subject.CanRemoveFromPlaylist.Should().BeTrue();
-        }
-
-        [TestMethod]
         public void CanAddToPlaylist_SelectedItemsAreNotAllOfTypePlaylisttemViewModel_ReturnsFalse()
         {
             _subject.SelectedItems.Add(42);
@@ -167,7 +132,6 @@ namespace Client.Tests.DefaultBottomBar
         [TestMethod]
         public void HandleWithShowControlsMessage_WhenShowIsFalse_SetsDisplayPlayControlsToFalse()
         {
-            _subject.DisplayPlayControls = true;
             var showControlsMessage = new PlaylistStateChangedMessage(false);
 
             _subject.Handle(showControlsMessage);
@@ -178,7 +142,6 @@ namespace Client.Tests.DefaultBottomBar
         [TestMethod]
         public void HandleWithShowControlsMessage_WhenShowIsTrue_SetsDisplayPlayControlsToTrue()
         {
-            _subject.DisplayPlayControls = false;
             var showControlsMessage = new PlaylistStateChangedMessage(true);
 
             _subject.Handle(showControlsMessage);

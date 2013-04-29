@@ -24,8 +24,6 @@ namespace Subsonic8.Playback
 
         Func<IId, Task<Client.Common.Models.PlaylistItem>> LoadModel { get; set; }
 
-        bool ShuffleOn { get; }
-
         bool IsPlaying { get; }
 
         void ClearPlaylist();

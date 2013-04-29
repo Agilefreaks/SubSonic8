@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Caliburn.Micro;
 using Client.Common.EventAggregatorMessages;
 using Client.Common.Models;
 using Client.Common.Models.Subsonic;
@@ -44,26 +43,6 @@ namespace Client.Tests.Playback
         }
 
         [TestMethod]
-        public void OnActivate_Always_SetsBottomBarIsOpenToFalse()
-        {
-            Subject.BottomBar.IsOpened = true;
-
-            ((IActivate)Subject).Activate();
-
-            Subject.BottomBar.IsOpened.Should().BeFalse();
-        }
-
-        [TestMethod]
-        public override void OnActivateShouldSetBottomBarIsOnPlaylistToFalse()
-        {
-            Subject.BottomBar.IsOnPlaylist = false;
-
-            ((IActivate)Subject).Activate();
-
-            Subject.BottomBar.IsOnPlaylist.Should().BeTrue();
-        }
-
-        [TestMethod]
         public void HandleStartAudioPlayback_Alawys_SetsStateToAudio()
         {
             Subject.Handle(new StartPlaybackMessage(new PlaylistItem()));
@@ -101,14 +80,6 @@ namespace Client.Tests.Playback
             _mockPlaylistManagementService.IsPlaying = true;
 
             Subject.IsPlaying.Should().BeTrue();
-        }
-
-        [TestMethod]
-        public void ShuffleOnReturnsPlaylistManagementServiceShuffleOn()
-        {
-            _mockPlaylistManagementService.ShuffleOn = true;
-
-            Subject.ShuffleOn.Should().BeTrue();
         }
 
         [TestMethod]

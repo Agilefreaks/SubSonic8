@@ -13,15 +13,16 @@ namespace Client.Tests.Mocks
 
         public bool IsPlaying { get; set; }
 
-        public Action Navigate { get; set; }
+        public Action NavigateOnPlay { get; set; }
 
         public bool DisplayPlayControls { get; set; }
 
-        public bool IsOnPlaylist { get; set; }
-
         public bool CanAddToPlaylist { get; private set; }
 
-        public bool CanRemoveFromPlaylist { get; private set; }
+        public MockDefaultBottomBarViewModel()
+        {
+            CanAddToPlaylist = false;
+        }
 
         public void NavigateToPlaylist()
         {
@@ -52,6 +53,14 @@ namespace Client.Tests.Mocks
             throw new NotImplementedException();
         }
 
+        public void ToggleShuffle()
+        {
+        }
+
+        public void NavigateToRoot()
+        {
+        }
+
         public void AddToPlaylist()
         {
 
@@ -60,11 +69,6 @@ namespace Client.Tests.Mocks
         public void PlayAll()
         {
             throw new NotImplementedException();
-        }
-
-        public void RemoveFromPlaylist()
-        {
-
         }
 
         public void Handle(PlaylistStateChangedMessage message)
