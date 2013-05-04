@@ -105,6 +105,8 @@
     <Compile Include="EventAggregatorMessages\PausePlaybackMessage.cs" />
     <Compile Include="EventAggregatorMessages\PlaybackMessageBase.cs" />
     <Compile Include="EventAggregatorMessages\PlayMessage.cs" />
+    <Compile Include="Models\IMediaModel.cs" />
+    <Compile Include="Models\Subsonic\MediaModelBase.cs" />
     <Compile Include="Services\DataStructures\PlayerManagementService\IPlayer.cs" />
     <Compile Include="Services\DataStructures\PlayerManagementService\PlayerType.cs" />
     <Compile Include="Services\DataStructures\SubsonicService\SubsonicServiceConfiguration.cs" />

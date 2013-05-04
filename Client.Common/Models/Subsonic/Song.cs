@@ -12,7 +12,7 @@ namespace Client.Common.Models.Subsonic
         [XmlAttribute("songCount")]
         public int SongCount { get; set; }
 
-        public override SubsonicModelTypeEnum Type 
+        public override SubsonicModelTypeEnum Type
         {
             get { return IsVideo ? SubsonicModelTypeEnum.Video : SubsonicModelTypeEnum.Song; }
         }

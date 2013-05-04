@@ -17,7 +17,7 @@ namespace Subsonic8.MusicDirectory
             return SubsonicService.GetMusicDirectory(id);
         }
 
-        protected override IEnumerable<ISubsonicModel> GetItemsToDisplay(Client.Common.Models.Subsonic.MusicDirectory result)
+        protected override IEnumerable<IMediaModel> GetItemsToDisplay(Client.Common.Models.Subsonic.MusicDirectory result)
         {
             return result.Children;
         }

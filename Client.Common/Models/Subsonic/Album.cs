@@ -5,7 +5,7 @@ using System.Xml.Serialization;
 namespace Client.Common.Models.Subsonic
 {
     [XmlRoot(ElementName = "album", Namespace = "http://subsonic.org/restapi")]
-    public class Album : SubsonicModelBase
+    public class Album : MediaModelBase
     {
         [XmlAttribute("artist")]
         public string Artist { get; set; }

@@ -22,7 +22,7 @@ namespace Subsonic8.Index
             return SubsonicService.GetIndex(id);
         }
 
-        protected override IEnumerable<ISubsonicModel> GetItemsToDisplay(IndexItem result)
+        protected override IEnumerable<IMediaModel> GetItemsToDisplay(IndexItem result)
         {
             return result.Artists;
         }

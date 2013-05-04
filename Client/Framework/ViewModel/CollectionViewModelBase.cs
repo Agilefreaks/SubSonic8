@@ -88,7 +88,7 @@ namespace Subsonic8.Framework.ViewModel
 
         protected abstract IServiceResultBase<TResult> GetResult(TParameter parameter);
 
-        protected abstract IEnumerable<ISubsonicModel> GetItemsToDisplay(TResult result);
+        protected abstract IEnumerable<IMediaModel> GetItemsToDisplay(TResult result);
 
         protected async virtual void Populate()
         {

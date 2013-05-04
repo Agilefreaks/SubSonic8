@@ -4,7 +4,7 @@ using System.Xml.Serialization;
 namespace Client.Common.Models.Subsonic
 {
     [XmlRoot(ElementName = "child", Namespace = "http://subsonic.org/restapi")]
-    public class MusicDirectoryChild : SubsonicModelBase
+    public class MusicDirectoryChild : MediaModelBase
     {
         [XmlAttribute("parent")]
         public int Parent { get; set; }

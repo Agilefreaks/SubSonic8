@@ -6,8 +6,8 @@ using System.Text;
 namespace Client.Common.Models.Subsonic
 {
     [DataContract]
-    public abstract class SerializableModelBase<T> : SubsonicModelBase
-        where T : SubsonicModelBase
+    public abstract class SerializableModelBase<T> : MediaModelBase
+        where T : MediaModelBase
     {
         public string Serialize()
         {
