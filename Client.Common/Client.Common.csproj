@@ -107,6 +107,8 @@
     <Compile Include="EventAggregatorMessages\PlayMessage.cs" />
     <Compile Include="Models\IMediaModel.cs" />
     <Compile Include="Models\Subsonic\MediaModelBase.cs" />
+    <Compile Include="Models\Subsonic\Playlist.cs" />
+    <Compile Include="Models\Subsonic\PlaylistEntry.cs" />
     <Compile Include="Services\DataStructures\PlayerManagementService\IPlayer.cs" />
     <Compile Include="Services\DataStructures\PlayerManagementService\PlayerType.cs" />
     <Compile Include="Services\DataStructures\SubsonicService\SubsonicServiceConfiguration.cs" />
