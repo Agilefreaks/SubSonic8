@@ -32,5 +32,10 @@ namespace Client.Common.Models.Subsonic
         {
             get { return SubsonicModelTypeEnum.Playlist; }
         }
+
+        public override Tuple<string, string> GetDescription()
+        {
+            return new Tuple<string, string>(Name, string.Format("{0} items", SongCount));
+        }
     }
 }

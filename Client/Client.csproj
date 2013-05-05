@@ -189,6 +189,11 @@
     <Compile Include="PlaylistItem\PlaylistItem\Playing.xaml.cs">
       <DependentUpon>Playing.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Playlists\IManagePlaylistsViewModel.cs" />
+    <Compile Include="Playlists\ManagePlaylistsViewModel.cs" />
+    <Compile Include="Playlists\ManagePlaylistView.xaml.cs">
+      <DependentUpon>ManagePlaylistView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Search\SearchResultState.cs" />
     <Compile Include="Search\Search\Busy.xaml.cs">
       <DependentUpon>Busy.xaml</DependentUpon>
@@ -375,6 +380,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="PlaylistItem\PlaylistItem\Playing.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Playlists\ManagePlaylistView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

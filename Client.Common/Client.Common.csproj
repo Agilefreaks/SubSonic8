@@ -106,6 +106,7 @@
     <Compile Include="EventAggregatorMessages\PlaybackMessageBase.cs" />
     <Compile Include="EventAggregatorMessages\PlayMessage.cs" />
     <Compile Include="Models\IMediaModel.cs" />
+    <Compile Include="Models\Subsonic\GenericMediaModel.cs" />
     <Compile Include="Models\Subsonic\MediaModelBase.cs" />
     <Compile Include="Models\Subsonic\Playlist.cs" />
     <Compile Include="Models\Subsonic\PlaylistCollection.cs" />

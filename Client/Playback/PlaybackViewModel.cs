@@ -17,6 +17,7 @@ using Subsonic8.BottomBar;
 using Subsonic8.Framework.Extensions;
 using Subsonic8.Framework.Services;
 using Subsonic8.Framework.ViewModel;
+using Subsonic8.Playlists;
 using Subsonic8.VideoPlayback;
 using Windows.UI.Xaml.Controls;
 
@@ -256,6 +257,11 @@ namespace Subsonic8.Playback
             if (storageFile == null) return;
             var playlistItemCollection = await WinRTWrappersService.LoadFromFile<PlaylistItemCollection>(storageFile);
             _playlistManagementService.LoadPlaylist(playlistItemCollection);
+        }
+
+        public void LoadRemotePlaylist()
+        {
+            NavigationService.NavigateToViewModel<ManagePlaylistsViewModel>();
         }
 
         public async void SavePlaylist()

@@ -45,7 +45,7 @@ namespace Subsonic8.Search
             UpdateDisplayName = () => DisplayName = string.Format("Searched for: \"{0}\"", Parameter ?? string.Empty);
         }
 
-        protected override void Populate()
+        public override void Populate()
         {
             State = SearchResultState.Busy;
             base.Populate();

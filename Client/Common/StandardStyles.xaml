@@ -478,6 +478,11 @@
         <Setter Property="AutomationProperties.AutomationId" Value="OpenLocalAppBarButton"/>
         <Setter Property="AutomationProperties.Name" Value="Load"/>
         <Setter Property="Content" Value="&#xE197;"/>
+    </Style>        
+    <Style x:Key="LoadRemotePlaylistAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
+        <Setter Property="AutomationProperties.AutomationId" Value="OpenLocalAppBarButton"/>
+        <Setter Property="AutomationProperties.Name" Value="Load Remote"/>
+        <Setter Property="Content" Value="&#xE148;"/>
     </Style>    
     <Style x:Key="SaveAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
         <Setter Property="AutomationProperties.AutomationId" Value="SaveAppBarButton"/>

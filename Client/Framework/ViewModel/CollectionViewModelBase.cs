@@ -86,16 +86,16 @@ namespace Subsonic8.Framework.ViewModel
             NavigationService.NavigateByModelType(subsonicModel);
         }
 
-        protected abstract IServiceResultBase<TResult> GetResult(TParameter parameter);
-
-        protected abstract IEnumerable<IMediaModel> GetItemsToDisplay(TResult result);
-
-        protected async virtual void Populate()
+        public async virtual void Populate()
         {
             await GetResult(Parameter).WithErrorHandler(this).OnSuccess(OnResultSuccessfull).Execute();
             await AfterPopulate(Parameter);
             UpdateDisplayName();
         }
+
+        protected abstract IServiceResultBase<TResult> GetResult(TParameter parameter);
+
+        protected abstract IEnumerable<IMediaModel> GetItemsToDisplay(TResult result);
 
         protected virtual void OnResultSuccessfull(TResult result)
         {
