@@ -4,7 +4,7 @@ using System.Xml.Serialization;
 
 namespace Client.Common.Models.Subsonic
 {
-    [XmlRoot(ElementName = "Playlist", Namespace = "http://subsonic.org/restapi")]
+    [XmlRoot(ElementName = "playlist", Namespace = "http://subsonic.org/restapi")]
     public class Playlist : SubsonicModelBase
     {
         [XmlAttribute("fan")]
@@ -26,7 +26,7 @@ namespace Client.Common.Models.Subsonic
         public DateTime Created { get; set; }
 
         [XmlElement(ElementName = "entry", Namespace = "http://subsonic.org/restapi")]
-        public List<MusicDirectoryChild> Entries { get; set; }
+        public List<PlaylistEntry> Entries { get; set; }
 
         public override SubsonicModelTypeEnum Type
         {

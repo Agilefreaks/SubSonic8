@@ -106,13 +106,16 @@
     <Compile Include="EventAggregatorMessages\PlaybackMessageBase.cs" />
     <Compile Include="EventAggregatorMessages\PlayMessage.cs" />
     <Compile Include="Models\IMediaModel.cs" />
+    <Compile Include="Models\ISongModel.cs" />
     <Compile Include="Models\Subsonic\GenericMediaModel.cs" />
     <Compile Include="Models\Subsonic\MediaModelBase.cs" />
     <Compile Include="Models\Subsonic\Playlist.cs" />
     <Compile Include="Models\Subsonic\PlaylistCollection.cs" />
     <Compile Include="Models\Subsonic\PlaylistEntry.cs" />
     <Compile Include="Results\GetAllPlaylistsResult.cs" />
+    <Compile Include="Results\GetPlaylistResult.cs" />
     <Compile Include="Results\IGetAllPlaylistsResult.cs" />
+    <Compile Include="Results\IGetPlaylistResult.cs" />
     <Compile Include="Services\DataStructures\PlayerManagementService\IPlayer.cs" />
     <Compile Include="Services\DataStructures\PlayerManagementService\PlayerType.cs" />
     <Compile Include="Services\DataStructures\SubsonicService\SubsonicServiceConfiguration.cs" />

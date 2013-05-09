@@ -79,7 +79,7 @@ namespace Subsonic8.Framework.ViewModel
             MenuItems = new BindableCollection<MenuItemViewModel>();
         }
 
-        public void ChildClick(ItemClickEventArgs eventArgs)
+        public virtual void ChildClick(ItemClickEventArgs eventArgs)
         {
             var subsonicModel = ((MenuItemViewModel)eventArgs.ClickedItem).Item;
 

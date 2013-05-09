@@ -118,6 +118,7 @@
     <Compile Include="ClientTestBase.cs" />
     <Compile Include="Converters\IntToTimeStringConverterTests.cs" />
     <Compile Include="DefaultBottomBar\DefaultBottomBarViewModelTests.cs" />
+    <Compile Include="Framework\Extenions\SongExtensionMethodTests.cs" />
     <Compile Include="Framework\NotificationHelperTests.cs" />
     <Compile Include="Framework\Services\DialogNotificationOptionsTests.cs" />
     <Compile Include="Framework\Services\NotificationOptionsTests.cs" />

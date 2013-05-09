@@ -144,6 +144,7 @@
     <Compile Include="Framework\Behaviors\IActiveItemProvider.cs" />
     <Compile Include="Framework\Behaviors\ScrollIntoViewBehavior.cs" />
     <Compile Include="Framework\Extensions\ModelLoaderExtensionMethods.cs" />
+    <Compile Include="Framework\Extensions\SongExtensionMethods.cs" />
     <Compile Include="Framework\INotificationsHelper.cs" />
     <Compile Include="Framework\ITileNotificationCapable.cs" />
     <Compile Include="Framework\NotificationsHelper.cs" />
