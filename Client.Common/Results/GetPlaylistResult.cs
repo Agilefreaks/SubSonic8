@@ -5,13 +5,13 @@ using Client.Common.Services.DataStructures.SubsonicService;
 
 namespace Client.Common.Results
 {
-    public class GetSongResult : ServiceResultBase<Song>, IGetSongResult
+    public class GetPlaylistResult : ServiceResultBase<Playlist>, IGetPlaylistResult
     {
         public int Id { get; private set; }
 
         public override string ViewName
         {
-            get { return "getSong.view"; }
+            get { return "getPlaylist.view"; }
         }
 
         public override string RequestUrl
@@ -22,7 +22,7 @@ namespace Client.Common.Results
             }
         }
 
-        public GetSongResult(ISubsonicServiceConfiguration configuration, int id)
+        public GetPlaylistResult(ISubsonicServiceConfiguration configuration, int id)
             : base(configuration)
         {
             Id = id;
@@ -30,11 +30,12 @@ namespace Client.Common.Results
 
         protected override void HandleResponse(XDocument xDocument)
         {
-            var xmlSerializer = new XmlSerializer(typeof(Song));
-            var xElement = xDocument.Element(Namespace + "subsonic-response").Element(Namespace + "song");
-            using (var xmlReader = xElement.CreateReader())
+            var xmlSerializer = new XmlSerializer(typeof (Playlist), PlaylistEntry.GetXmlAttributeOverrides(),
+                                                  new[] {typeof (PlaylistEntry)}, null, Namespace.NamespaceName);
+            var xElement = xDocument.Element(Namespace + "subsonic-response").Element(Namespace + "playlist");
+            using (var reader = xElement.CreateReader())
             {
-                Result = (Song)xmlSerializer.Deserialize(xmlReader);
+                Result = (Playlist)xmlSerializer.Deserialize(reader);
             }
         }
     }

@@ -15,11 +15,7 @@ namespace Client.Common.Models.Subsonic
 
         [XmlAttribute("name")]
         [DataMember]
-        public string Name { get; set; }
-
-        [XmlAttribute("coverArt")]
-        [DataMember]
-        public virtual string CoverArt { get; set; }
+        public virtual string Name { get; set; }
 
         public virtual Tuple<string, string> GetDescription()
         {

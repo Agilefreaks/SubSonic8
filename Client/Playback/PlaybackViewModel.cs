@@ -17,6 +17,7 @@ using Subsonic8.BottomBar;
 using Subsonic8.Framework.Extensions;
 using Subsonic8.Framework.Services;
 using Subsonic8.Framework.ViewModel;
+using Subsonic8.Playlists;
 using Subsonic8.VideoPlayback;
 using Windows.UI.Xaml.Controls;
 
@@ -258,6 +259,11 @@ namespace Subsonic8.Playback
             _playlistManagementService.LoadPlaylist(playlistItemCollection);
         }
 
+        public void LoadRemotePlaylist()
+        {
+            NavigationService.NavigateToViewModel<ManagePlaylistsViewModel>();
+        }
+
         public async void SavePlaylist()
         {
             var storageFile = await WinRTWrappersService.GetNewStorageFile();
@@ -281,6 +287,7 @@ namespace Subsonic8.Playback
         public void LoadState(string parameter, Dictionary<string, object> statePageState)
         {
             if (!statePageState.ContainsKey(StatePlaylistKey) || PlaylistItems.Any()) return;
+
             var bytes = Convert.FromBase64String((string)statePageState[StatePlaylistKey]);
             PlaylistItemCollection playlist;
             using (var memoryStream = new MemoryStream(bytes))

@@ -79,23 +79,23 @@ namespace Subsonic8.Framework.ViewModel
             MenuItems = new BindableCollection<MenuItemViewModel>();
         }
 
-        public void ChildClick(ItemClickEventArgs eventArgs)
+        public virtual void ChildClick(ItemClickEventArgs eventArgs)
         {
             var subsonicModel = ((MenuItemViewModel)eventArgs.ClickedItem).Item;
 
             NavigationService.NavigateByModelType(subsonicModel);
         }
 
-        protected abstract IServiceResultBase<TResult> GetResult(TParameter parameter);
-
-        protected abstract IEnumerable<ISubsonicModel> GetItemsToDisplay(TResult result);
-
-        protected async virtual void Populate()
+        public async virtual void Populate()
         {
             await GetResult(Parameter).WithErrorHandler(this).OnSuccess(OnResultSuccessfull).Execute();
             await AfterPopulate(Parameter);
             UpdateDisplayName();
         }
+
+        protected abstract IServiceResultBase<TResult> GetResult(TParameter parameter);
+
+        protected abstract IEnumerable<IMediaModel> GetItemsToDisplay(TResult result);
 
         protected virtual void OnResultSuccessfull(TResult result)
         {

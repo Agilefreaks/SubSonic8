@@ -3,7 +3,6 @@ using System.Linq;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 using Client.Common.Models.Subsonic;
-using Client.Common.Services;
 using Client.Common.Services.DataStructures.SubsonicService;
 
 namespace Client.Common.Results
@@ -33,10 +32,18 @@ namespace Client.Common.Results
 
         protected override void HandleResponse(XDocument xDocument)
         {
-            var xmlSerializer = new XmlSerializer(typeof(SearchResultCollection), new[] { typeof(ExpandedArtist), typeof(Album), typeof(Song) });
-
-            Result = (from searchResult in xDocument.Element(Namespace + "subsonic-response").Descendants(Namespace + "searchResult3")
-                      select (SearchResultCollection)xmlSerializer.Deserialize(searchResult.CreateReader())).Single();
+            var xmlSerializer = new XmlSerializer(typeof(SearchResultCollection),
+                                                  new[] { typeof(ExpandedArtist), typeof(Album), typeof(Song) });
+            Result = (xDocument.Element(Namespace + "subsonic-response")
+                               .Descendants(Namespace + "searchResult3")
+                               .Select(
+                                   searchResult =>
+                                   {
+                                       using (var xmlReader = searchResult.CreateReader())
+                                       {
+                                           return (SearchResultCollection)xmlSerializer.Deserialize(xmlReader);
+                                       }
+                                   })).Single();
 
             Result.Query = _query;
         }

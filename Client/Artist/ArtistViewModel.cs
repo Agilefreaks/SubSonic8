@@ -20,7 +20,7 @@ namespace Subsonic8.Artist
             return SubsonicService.GetArtist(id);
         }
 
-        protected override IEnumerable<ISubsonicModel> GetItemsToDisplay(ExpandedArtist result)
+        protected override IEnumerable<IMediaModel> GetItemsToDisplay(ExpandedArtist result)
         {
             return result.Albums;
         }

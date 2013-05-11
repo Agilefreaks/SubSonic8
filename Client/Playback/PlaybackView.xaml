@@ -57,6 +57,7 @@
                         <StackPanel Grid.Column="1" Orientation="Horizontal">
                             <Button Style="{StaticResource ClearPlaylistAppBarButtonStyle}" x:Name="ClearPlaylist"/>
                             <Button Style="{StaticResource LoadPlaylistAppBarButtonStyle}" x:Name="LoadPlaylist"/>
+                            <Button Style="{StaticResource LoadRemotePlaylistAppBarButtonStyle}" x:Name="LoadRemotePlaylist"/>
                             <Button Style="{StaticResource SaveAppBarButtonStyle}" x:Name="SavePlaylist"/>
                         </StackPanel>
                     </Grid>

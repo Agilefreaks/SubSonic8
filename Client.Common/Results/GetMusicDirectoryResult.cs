@@ -34,7 +34,10 @@ namespace Client.Common.Results
         {
             var xmlSerializer = new XmlSerializer(typeof(MusicDirectory), new[] { typeof(MusicDirectoryChild) });
             var xElement = xDocument.Element(Namespace + "subsonic-response").Element(Namespace + "directory");
-            Result = (MusicDirectory)xmlSerializer.Deserialize(xElement.CreateReader());
+            using (var xmlReader = xElement.CreateReader())
+            {
+                Result = (MusicDirectory)xmlSerializer.Deserialize(xmlReader);
+            }
         }
     }
 }

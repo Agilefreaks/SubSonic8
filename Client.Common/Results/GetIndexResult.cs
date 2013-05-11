@@ -2,7 +2,6 @@
 using System.Xml.Linq;
 using System.Xml.Serialization;
 using Client.Common.Models.Subsonic;
-using Client.Common.Services;
 using Client.Common.Services.DataStructures.SubsonicService;
 
 namespace Client.Common.Results
@@ -24,7 +23,8 @@ namespace Client.Common.Results
             }
         }
 
-        public GetIndexResult(ISubsonicServiceConfiguration configuration, int musicFolderId) : base(configuration)
+        public GetIndexResult(ISubsonicServiceConfiguration configuration, int musicFolderId)
+            : base(configuration)
         {
             MusicFolderId = musicFolderId;
         }
@@ -32,8 +32,16 @@ namespace Client.Common.Results
         protected override void HandleResponse(XDocument xDocument)
         {
             var xmlSerializer = new XmlSerializer(typeof(IndexItem), new[] { typeof(Artist) });
-            var indexItems = (from musicFolder in xDocument.Element(Namespace + "subsonic-response").Element(Namespace + "indexes").Descendants(Namespace + "index")
-                      select (IndexItem)xmlSerializer.Deserialize(musicFolder.CreateReader())).ToList();
+            var indexItems = (xDocument.Element(Namespace + "subsonic-response")
+                                       .Element(Namespace + "indexes")
+                                       .Descendants(Namespace + "index")
+                                       .Select(musicFolder =>
+                                           {
+                                               using (var xmlReader = musicFolder.CreateReader())
+                                               {
+                                                   return (IndexItem)xmlSerializer.Deserialize(xmlReader);
+                                               }
+                                           })).ToList();
             Result = new IndexItem
                 {
                     Name = string.Empty,
