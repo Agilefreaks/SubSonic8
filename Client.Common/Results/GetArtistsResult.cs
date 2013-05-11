@@ -1,7 +1,6 @@
 ﻿using System.Xml.Linq;
 using System.Xml.Serialization;
 using Client.Common.Models.Subsonic;
-using Client.Common.Services;
 using Client.Common.Services.DataStructures.SubsonicService;
 
 namespace Client.Common.Results
@@ -34,7 +33,10 @@ namespace Client.Common.Results
             var xmlSerializer = new XmlSerializer(typeof(ExpandedArtist), new[] { typeof(Album) });
 
             var xElement = xDocument.Element(Namespace + "subsonic-response").Element(Namespace + "artist");
-            Result = (ExpandedArtist)xmlSerializer.Deserialize(xElement.CreateReader());
+            using (var xmlReader = xElement.CreateReader())
+            {
+                Result = (ExpandedArtist)xmlSerializer.Deserialize(xmlReader);
+            }
         }
     }
 }

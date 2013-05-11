@@ -45,7 +45,7 @@ namespace Subsonic8.Search
             UpdateDisplayName = () => DisplayName = string.Format("Searched for: \"{0}\"", Parameter ?? string.Empty);
         }
 
-        protected override void Populate()
+        public override void Populate()
         {
             State = SearchResultState.Busy;
             base.Populate();
@@ -56,9 +56,9 @@ namespace Subsonic8.Search
             return SubsonicService.Search(parameter);
         }
 
-        protected override IEnumerable<ISubsonicModel> GetItemsToDisplay(SearchResultCollection result)
+        protected override IEnumerable<IMediaModel> GetItemsToDisplay(SearchResultCollection result)
         {
-            var models = new List<ISubsonicModel>();
+            var models = new List<IMediaModel>();
             if (result != null)
             {
                 RemoveCoverArt(result.Artists);
@@ -79,7 +79,7 @@ namespace Subsonic8.Search
             return Task.Factory.StartNew(() => { });
         }
 
-        private static void RemoveCoverArt(IEnumerable<ISubsonicModel> menuItemViewModels)
+        private static void RemoveCoverArt(IEnumerable<IMediaModel> menuItemViewModels)
         {
             foreach (var menuItemViewModel in menuItemViewModels)
             {

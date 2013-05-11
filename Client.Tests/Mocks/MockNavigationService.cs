@@ -57,7 +57,6 @@ namespace Client.Tests.Mocks
 
         public void GoBack()
         {
-            throw new NotImplementedException();
         }
 
         public void DoNavigate()

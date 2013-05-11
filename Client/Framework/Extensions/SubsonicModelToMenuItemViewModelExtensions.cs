@@ -6,7 +6,7 @@ namespace Subsonic8.Framework.Extensions
     public static class SubsonicModelToMenuItemViewModelExtensions
     {
         public static MenuItemViewModel AsMenuItemViewModel<T>(this T item)
-            where T : ISubsonicModel
+            where T : IMediaModel
         {
             var description = item.GetDescription();
             return new MenuItemViewModel

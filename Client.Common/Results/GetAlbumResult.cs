@@ -1,7 +1,6 @@
 ﻿using System.Xml.Linq;
 using System.Xml.Serialization;
 using Client.Common.Models.Subsonic;
-using Client.Common.Services;
 using Client.Common.Services.DataStructures.SubsonicService;
 
 namespace Client.Common.Results
@@ -33,9 +32,12 @@ namespace Client.Common.Results
 
         protected override void HandleResponse(XDocument xDocument)
         {
-            var xmlSerializer = new XmlSerializer(typeof(Album), new[] { typeof(Album) });
+            var xmlSerializer = new XmlSerializer(typeof(Album));
             var xElement = xDocument.Element(Namespace + "subsonic-response").Element(Namespace + "album");
-            Result = (Album)xmlSerializer.Deserialize(xElement.CreateReader());
+            using (var xmlReader = xElement.CreateReader())
+            {
+                Result = (Album)xmlSerializer.Deserialize(xmlReader);
+            }
         }
     }
 }

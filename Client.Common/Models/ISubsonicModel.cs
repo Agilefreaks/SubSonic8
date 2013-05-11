@@ -6,8 +6,6 @@ namespace Client.Common.Models
     {
         SubsonicModelTypeEnum Type { get; }
 
-        string CoverArt { get; set; }
-
         string Name { get; }
 
         Tuple<string, string> GetDescription();

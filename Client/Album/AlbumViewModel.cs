@@ -12,7 +12,7 @@ namespace Subsonic8.Album
             return SubsonicService.GetAlbum(id);
         }
 
-        protected override IEnumerable<ISubsonicModel> GetItemsToDisplay(Client.Common.Models.Subsonic.Album result)
+        protected override IEnumerable<IMediaModel> GetItemsToDisplay(Client.Common.Models.Subsonic.Album result)
         {
             return result.Songs;
         }

@@ -8,6 +8,7 @@ namespace Client.Common.Models
         Song,
         Video,
         Index,
-        Folder
+        Folder,
+        Playlist
     }
 }

@@ -4,7 +4,7 @@ using System.Xml.Serialization;
 namespace Client.Common.Models.Subsonic
 {
     [XmlRoot(ElementName = "musicFolder", Namespace = "http://subsonic.org/restapi")]
-    public class MusicFolder : SubsonicModelBase
+    public class MusicFolder : MediaModelBase
     {
         public override SubsonicModelTypeEnum Type
         {

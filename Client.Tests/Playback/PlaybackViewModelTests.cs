@@ -10,6 +10,7 @@ using Client.Tests.Mocks;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using Subsonic8.Playback;
+using Subsonic8.Playlists;
 
 namespace Client.Tests.Playback
 {
@@ -172,6 +173,16 @@ namespace Client.Tests.Playback
             Subject.PlaylistItems.Count.Should().Be(1);
             Subject.PlaylistItems[0].Artist.Should().Be("test_a");
             Subject.PlaylistItems[0].UriAsString.Should().Be("http://google.com/");
+        }
+
+        [TestMethod]
+        public void LoadRemotePlaylist_Always_ShouldNavigateToManagePlaylistsViewModel()
+        {
+            Subject.LoadRemotePlaylist();
+
+            MockNavigationService.NavigateToViewModelCalls.Count.Should().Be(1);
+            MockNavigationService.NavigateToViewModelCalls.First().Key.Should().Be(typeof(ManagePlaylistsViewModel));
+            MockNavigationService.NavigateToViewModelCalls.First().Value.Should().BeNull();
         }
 
         private void MockLoadModel()

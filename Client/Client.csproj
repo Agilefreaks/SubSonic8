@@ -144,6 +144,7 @@
     <Compile Include="Framework\Behaviors\IActiveItemProvider.cs" />
     <Compile Include="Framework\Behaviors\ScrollIntoViewBehavior.cs" />
     <Compile Include="Framework\Extensions\ModelLoaderExtensionMethods.cs" />
+    <Compile Include="Framework\Extensions\SongExtensionMethods.cs" />
     <Compile Include="Framework\INotificationsHelper.cs" />
     <Compile Include="Framework\ITileNotificationCapable.cs" />
     <Compile Include="Framework\NotificationsHelper.cs" />
@@ -188,6 +189,11 @@
     </Compile>
     <Compile Include="PlaylistItem\PlaylistItem\Playing.xaml.cs">
       <DependentUpon>Playing.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Playlists\IManagePlaylistsViewModel.cs" />
+    <Compile Include="Playlists\ManagePlaylistsViewModel.cs" />
+    <Compile Include="Playlists\ManagePlaylistView.xaml.cs">
+      <DependentUpon>ManagePlaylistView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Search\SearchResultState.cs" />
     <Compile Include="Search\Search\Busy.xaml.cs">
@@ -375,6 +381,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="PlaylistItem\PlaylistItem\Playing.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Playlists\ManagePlaylistView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

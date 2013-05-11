@@ -2,7 +2,6 @@
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 using Caliburn.Micro;
-using Client.Common.Models.Subsonic;
 using Client.Common.Services;
 using Client.Common.Services.DataStructures.SubsonicService;
 
@@ -148,21 +147,6 @@ namespace Client.Common.Models
         {
             PlayingState = PlaylistItemState.NotPlaying;
             CoverArtUrl = SubsonicService.CoverArtPlaceholder;
-        }
-
-        public void InitializeFromSong(Song result, ISubsonicService subsonicService)
-        {
-            Artist = result.Artist;
-            Title = result.Title;
-            Uri = result.Type == SubsonicModelTypeEnum.Video
-                      ? subsonicService.GetUriForVideoWithId(result.Id)
-                      : subsonicService.GetUriForFileWithId(result.Id);
-            CoverArtUrl = subsonicService.GetCoverArtForId(result.CoverArt);
-            PlayingState = PlaylistItemState.NotPlaying;
-            Duration = result.Duration;
-            Type = result.Type == SubsonicModelTypeEnum.Video
-                       ? PlaylistItemTypeEnum.Video
-                       : PlaylistItemTypeEnum.Audio;
         }
     }
 }
