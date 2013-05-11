@@ -9,6 +9,15 @@ namespace Client.Common.Models.Subsonic
         [XmlAttribute("parent")]
         public int ParentId { get; set; }
 
+        [XmlAttribute("title")]
+        public string Title { get; set; }
+
+        public override string Name
+        {
+            get { return Title; }
+            set { Title = value; }
+        }
+
         [XmlAttribute("album")]
         public string Album { get; set; }
 

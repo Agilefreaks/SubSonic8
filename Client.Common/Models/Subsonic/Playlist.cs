@@ -28,6 +28,11 @@ namespace Client.Common.Models.Subsonic
         [XmlElement(ElementName = "entry", Namespace = "http://subsonic.org/restapi")]
         public List<PlaylistEntry> Entries { get; set; }
 
+        public Playlist()
+        {
+            Entries = new List<PlaylistEntry>();
+        }
+
         public override SubsonicModelTypeEnum Type
         {
             get { return SubsonicModelTypeEnum.Playlist; }

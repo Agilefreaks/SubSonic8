@@ -38,7 +38,7 @@ namespace Client.Tests.Mocks
         {
             GetCoverArtForIdCallCount++;
 
-            return string.Empty;
+            return "http://test.mock";
         }
 
         public void SetHasValidSubsonicUrl(bool value)

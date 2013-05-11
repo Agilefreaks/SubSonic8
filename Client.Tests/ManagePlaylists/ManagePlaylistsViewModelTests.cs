@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Client.Common.EventAggregatorMessages;
 using Client.Common.Models.Subsonic;
 using Client.Tests.Framework.ViewModel;
 using Client.Tests.Mocks;
@@ -13,6 +14,8 @@ namespace Client.Tests.ManagePlaylists
     public class ManagePlaylistsViewModelTests : ViewModelBaseTests<ManagePlaylistsViewModel>
     {
         private MockGetAllPlaylistsResult _mockGetAllPlaylistsResult;
+        private MockPlyalistManagementService _mockPlyalistManagementService;
+
         protected override ManagePlaylistsViewModel Subject { get; set; }
 
         protected override void TestInitializeExtensions()
@@ -20,6 +23,8 @@ namespace Client.Tests.ManagePlaylists
             base.TestInitializeExtensions();
             _mockGetAllPlaylistsResult = new MockGetAllPlaylistsResult();
             MockSubsonicService.GetAllPlaylists = () => _mockGetAllPlaylistsResult;
+            _mockPlyalistManagementService = new MockPlyalistManagementService();
+            Subject.PlaylistManagementService = _mockPlyalistManagementService;
         }
 
         [TestMethod]
@@ -39,6 +44,23 @@ namespace Client.Tests.ManagePlaylists
             await Task.Run(() => Subject.Populate());
 
             Subject.MenuItems.Count.Should().Be(2);
+        }
+
+        [TestMethod]
+        public void LoadPlaylist_Always_SendsAStopPlaybackMessage()
+        {
+            Subject.LoadPlaylist(new Playlist());
+
+            MockEventAggregator.PublishCallCount.Should().Be(1);
+            MockEventAggregator.Messages[0].Should().BeOfType<StopMessage>();
+        }
+
+        [TestMethod]
+        public void LoadPlaylist_Always_ShouldClearThePlaylist()
+        {
+            Subject.LoadPlaylist(new Playlist());
+
+            _mockPlyalistManagementService.ClearCallCount.Should().Be(1);
         }
     }
 }

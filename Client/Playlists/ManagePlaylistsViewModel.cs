@@ -19,7 +19,7 @@ namespace Subsonic8.Playlists
 
         public ManagePlaylistsViewModel()
         {
-            UpdateDisplayName = () => DisplayName = "Open remote playlist";
+            UpdateDisplayName = () => DisplayName = "Load remote playlist";
         }
 
         public override async void ChildClick(Windows.UI.Xaml.Controls.ItemClickEventArgs eventArgs)
@@ -33,6 +33,16 @@ namespace Subsonic8.Playlists
         {
             MenuItems.Clear();
             base.OnViewLoaded(view);
+        }
+
+        public void LoadPlaylist(Playlist playlist)
+        {
+            EventAggregator.Publish(new StopMessage());
+            PlaylistManagementService.Clear();
+            var playlistItemCollection = new PlaylistItemCollection();
+            playlistItemCollection.AddRange(playlist.Entries.Select(e => e.AsPlaylistItem(SubsonicService)));
+            PlaylistManagementService.LoadPlaylist(playlistItemCollection);
+            GoBack();
         }
 
         protected override void OnActivate()
@@ -49,16 +59,6 @@ namespace Subsonic8.Playlists
         protected override IEnumerable<IMediaModel> GetItemsToDisplay(PlaylistCollection result)
         {
             return result.Playlists.Select(x => new GenericMediaModel(x));
-        }
-
-        private void LoadPlaylist(Playlist playlist)
-        {
-            EventAggregator.Publish(new StopMessage());
-            PlaylistManagementService.Clear();
-            var playlistItemCollection = new PlaylistItemCollection();
-            playlistItemCollection.AddRange(playlist.Entries.Select(e => e.AsPlaylistItem(SubsonicService)));
-            PlaylistManagementService.LoadPlaylist(playlistItemCollection);
-            GoBack();
         }
     }
 }

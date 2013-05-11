@@ -26,8 +26,7 @@ namespace Subsonic8.Framework.Extensions
 
         private static Client.Common.Models.PlaylistItem CreatePlaylistItemFromSong(Song result, ISubsonicService subsonicService)
         {
-            var playlistItem = new Client.Common.Models.PlaylistItem();
-            playlistItem.InitializeFromSong(result, subsonicService);
+            var playlistItem = result.AsPlaylistItem(subsonicService);
 
             return playlistItem;
         }

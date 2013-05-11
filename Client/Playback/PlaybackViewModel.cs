@@ -287,6 +287,7 @@ namespace Subsonic8.Playback
         public void LoadState(string parameter, Dictionary<string, object> statePageState)
         {
             if (!statePageState.ContainsKey(StatePlaylistKey) || PlaylistItems.Any()) return;
+
             var bytes = Convert.FromBase64String((string)statePageState[StatePlaylistKey]);
             PlaylistItemCollection playlist;
             using (var memoryStream = new MemoryStream(bytes))
