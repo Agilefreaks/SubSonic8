@@ -1,25 +1,13 @@
 ﻿using System.Xml.Linq;
 using System.Xml.Serialization;
 using Client.Common.Models.Subsonic;
-using Client.Common.Services;
 using Client.Common.Services.DataStructures.SubsonicService;
 
 namespace Client.Common.Results
 {
     public class GetSongResult : ServiceResultBase<Song>, IGetSongResult
     {
-        private readonly int _id;
-
-        public int Id
-        {
-            get { return _id; }
-        }
-
-        public GetSongResult(ISubsonicServiceConfiguration configuration, int id)
-            : base(configuration)
-        {
-            _id = id;
-        }
+        public int Id { get; private set; }
 
         public override string ViewName
         {
@@ -34,11 +22,20 @@ namespace Client.Common.Results
             }
         }
 
+        public GetSongResult(ISubsonicServiceConfiguration configuration, int id)
+            : base(configuration)
+        {
+            Id = id;
+        }
+
         protected override void HandleResponse(XDocument xDocument)
         {
-            var xmlSerializer = new XmlSerializer(typeof(Song), new[] { typeof(Song) });
+            var xmlSerializer = new XmlSerializer(typeof(Song));
             var xElement = xDocument.Element(Namespace + "subsonic-response").Element(Namespace + "song");
-            Result = (Song)xmlSerializer.Deserialize(xElement.CreateReader());
+            using (var xmlReader = xElement.CreateReader())
+            {
+                Result = (Song)xmlSerializer.Deserialize(xmlReader);
+            }
         }
     }
 }
