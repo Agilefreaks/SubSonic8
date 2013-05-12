@@ -19,6 +19,8 @@ namespace Client.Tests.Mocks
 
         public bool CanGoBack { get; private set; }
 
+        public int GoBackCallCount { get; set; }
+
         public event NavigatedEventHandler Navigated;
 
         public event NavigatingCancelEventHandler Navigating;
@@ -57,6 +59,7 @@ namespace Client.Tests.Mocks
 
         public void GoBack()
         {
+            GoBackCallCount++;
         }
 
         public void DoNavigate()
