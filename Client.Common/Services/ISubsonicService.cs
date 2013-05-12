@@ -27,6 +27,7 @@ namespace Client.Common.Services
         Func<int, IGetPlaylistResult> GetPlaylist { get; set; }
 
         bool HasValidSubsonicUrl { get; }
+        Func<int, IDeletePlaylistResult> DeletePlaylist { get; set; }
 
         Uri GetUriForFileWithId(int id);
 

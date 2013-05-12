@@ -44,6 +44,8 @@ namespace Client.Common.Services
 
         public Func<string, ISearchResult> Search { get; set; }
 
+        public Func<int, IDeletePlaylistResult> DeletePlaylist { get; set; }
+
         public virtual bool HasValidSubsonicUrl
         {
             get { return Configuration != null && !string.IsNullOrEmpty(Configuration.BaseUrl); }
@@ -60,6 +62,7 @@ namespace Client.Common.Services
             Search = SearchImpl;
             GetAllPlaylists = GetAllPlaylistsImpl;
             GetPlaylist = GetPlaylistImpl;
+            DeletePlaylist = DeletePlaylistImpl;
         }
 
         public virtual Uri GetUriForFileWithId(int id)
@@ -154,6 +157,11 @@ namespace Client.Common.Services
         private IGetPlaylistResult GetPlaylistImpl(int id)
         {
             return new GetPlaylistResult(_configuration, id);
+        }
+
+        private IDeletePlaylistResult DeletePlaylistImpl(int id)
+        {
+            return new DeletePlaylistResult(Configuration, id);
         }
     }
 }

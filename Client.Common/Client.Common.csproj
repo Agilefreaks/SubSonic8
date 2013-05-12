@@ -112,8 +112,10 @@
     <Compile Include="Models\Subsonic\Playlist.cs" />
     <Compile Include="Models\Subsonic\PlaylistCollection.cs" />
     <Compile Include="Models\Subsonic\PlaylistEntry.cs" />
+    <Compile Include="Results\DeletePlaylistResult.cs" />
     <Compile Include="Results\GetAllPlaylistsResult.cs" />
     <Compile Include="Results\GetPlaylistResult.cs" />
+    <Compile Include="Results\IDeletePlaylistResult.cs" />
     <Compile Include="Results\IGetAllPlaylistsResult.cs" />
     <Compile Include="Results\IGetPlaylistResult.cs" />
     <Compile Include="Services\DataStructures\PlayerManagementService\IPlayer.cs" />
