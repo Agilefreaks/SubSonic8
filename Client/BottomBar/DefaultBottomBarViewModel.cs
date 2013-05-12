@@ -19,7 +19,6 @@ namespace Subsonic8.BottomBar
 {
     public class DefaultBottomBarViewModel : BottomBarViewModelBase, IDefaultBottomBarViewModel
     {
-        private readonly ICustomFrameAdapter _navigationService;
         private bool _playNextItem;
 
         public bool CanAddToPlaylist
@@ -46,10 +45,8 @@ namespace Subsonic8.BottomBar
             IPlaylistManagementService playlistManagementService)
             : base(navigationService, eventAggregator, playlistManagementService)
         {
-            _navigationService = navigationService;
-
             LoadModel = this.LoadSong;
-            NavigateOnPlay = () => _navigationService.NavigateToViewModel<PlaybackViewModel>();
+            NavigateOnPlay = () => NavigationService.NavigateToViewModel<PlaybackViewModel>();
         }
 
         public void AddToPlaylist()
@@ -67,7 +64,7 @@ namespace Subsonic8.BottomBar
 
         public void NavigateToPlaylist()
         {
-            _navigationService.NavigateToViewModel<PlaybackViewModel>();
+            NavigationService.NavigateToViewModel<PlaybackViewModel>();
         }
 
         protected override void OnSelectedItemsChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
