@@ -14,7 +14,7 @@ namespace Subsonic8.Framework.ViewModel
 
         BindableCollection<MenuItemViewModel> MenuItems { get; set; }
 
-        IDefaultBottomBarViewModel BottomBar { get; set; }
+        IBottomBarViewModel BottomBar { get; set; }
 
         void ChildClick(ItemClickEventArgs eventArgs);
     }
