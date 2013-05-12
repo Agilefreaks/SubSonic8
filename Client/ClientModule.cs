@@ -30,6 +30,7 @@ namespace Subsonic8
                     new Tuple<Type[], Type>(new[] { typeof(IEmbededVideoPlaybackViewModel) }, typeof(EmbededVideoPlaybackViewModel)), 
                     new Tuple<Type[], Type>(new[] { typeof(IDefaultBottomBarViewModel) }, typeof(DefaultBottomBarViewModel)),
                     new Tuple<Type[], Type>(new[] { typeof(IPlaybackBottomBarViewModel) }, typeof(PlaybackBottomBarViewModel)),
+                    new Tuple<Type[], Type>(new[] { typeof(IPlaylistBottomBarViewModel) }, typeof(PlaylistBottomBarViewModel)),
                     new Tuple<Type[], Type>(new[] { typeof(IManagePlaylistsViewModel), typeof(ManagePlaylistsViewModel) }, typeof(ManagePlaylistsViewModel)),
                     new Tuple<Type[], Type>(new[] { typeof(ISettingsHelper) }, typeof(SettingsHelper)),
                     new Tuple<Type[], Type>(new[] { typeof(INotificationsHelper) }, typeof(NotificationsHelper))
