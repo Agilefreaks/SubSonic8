@@ -72,7 +72,7 @@ namespace Subsonic8.Playlists
 
         private void OnSaveFinished(bool result)
         {
-            if (result)
+            if (!result)
             {
                 DialogNotificationService.Show(new DialogNotificationOptions
                     {
