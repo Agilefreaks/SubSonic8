@@ -21,7 +21,8 @@ namespace Client.Common.Results
         {
             get
             {
-                return base.RequestUrl + "&name=" + WebUtility.UrlEncode(Name) + SongIds.Aggregate(string.Empty, (result, entry) => result + "&songId=" + entry.ToString());
+                return base.RequestUrl + "&name=" + WebUtility.UrlEncode(Name) +
+                       SongIds.Aggregate(string.Empty, (result, entry) => result + "&songId=" + entry.ToString());
             }
         }
 

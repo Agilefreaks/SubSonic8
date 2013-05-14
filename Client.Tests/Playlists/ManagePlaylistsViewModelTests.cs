@@ -12,7 +12,7 @@ using FluentAssertions;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using Subsonic8.Playlists;
 
-namespace Client.Tests.ManagePlaylists
+namespace Client.Tests.Playlists
 {
     [TestClass]
     public class ManagePlaylistsViewModelTests : ViewModelBaseTests<ManagePlaylistsViewModel>

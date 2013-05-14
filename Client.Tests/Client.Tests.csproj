@@ -125,7 +125,10 @@
     <Compile Include="Framework\ViewModel\CollectionViewModelBaseTests.cs" />
     <Compile Include="Framework\ViewModel\DetailViewModelBaseTests.cs" />
     <Compile Include="Framework\ViewModel\ItemViewModelBaseTests.cs" />
-    <Compile Include="ManagePlaylists\ManagePlaylistsViewModelTests.cs" />
+    <Compile Include="Mocks\MockCreatePlaylistResult.cs" />
+    <Compile Include="Mocks\MockGetPlaylistResult.cs" />
+    <Compile Include="Mocks\MockUpdatePlaylistResult.cs" />
+    <Compile Include="Playlists\ManagePlaylistsViewModelTests.cs" />
     <Compile Include="MenuItem\MenuItemViewModelBaseTests.cs" />
     <Compile Include="Mocks\MockDefaultBottomBarViewModel.cs" />
     <Compile Include="Mocks\MockDialogNotificationService.cs" />
@@ -155,6 +158,7 @@
     <Compile Include="Mocks\MockPlyalistManagementService.cs" />
     <Compile Include="PlaybackBottomBar\PlaybackBottomBarViewModelTests.cs" />
     <Compile Include="Playback\PlaybackViewModelTests.cs" />
+    <Compile Include="Playlists\SavePlaylistViewModelTests.cs" />
     <Compile Include="Search\SearchConvertersTests.cs" />
     <Compile Include="Search\SearchViewModelTests.cs" />
     <Compile Include="Settings\SettingsViewModelTests.cs" />

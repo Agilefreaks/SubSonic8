@@ -1,5 +1,8 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Client.Common;
+using Client.Common.Models.Subsonic;
 using Client.Common.Services;
 using MugenInjection.Attributes;
 using Subsonic8.Framework.Services;
@@ -55,19 +58,39 @@ namespace Subsonic8.Playlists
 
         public async void Save()
         {
-            var oldPlaylist = MenuItems.FirstOrDefault(item => item.Title == PlaylistName);
-            var songIds = PlaylistManagementService.Items.Select(ExtractId);
-            if (oldPlaylist != null)
+            var existingEntry = MenuItems.FirstOrDefault(item => item.Item.Name == PlaylistName);
+            if (existingEntry != null)
             {
-                GoBack();
+                await SubsonicService.GetPlaylist(existingEntry.Item.Id)
+                                     .WithErrorHandler(this)
+                                     .OnSuccess(async result => await UpdatePlaylist(result))
+                                     .Execute();
             }
             else
             {
+                var songIds = GetSongIdsForActivePlaylist();
                 await SubsonicService.CreatePlaylist(PlaylistName, songIds)
                                      .WithErrorHandler(this)
                                      .OnSuccess(OnSaveFinished)
                                      .Execute();
             }
+        }
+
+        private static int ExtractId(Client.Common.Models.PlaylistItem item)
+        {
+            return int.Parse(item.Uri.ExtractParamterFromQuery("id"));
+        }
+
+        private async Task UpdatePlaylist(Playlist playlist)
+        {
+            var songIds = GetSongIdsForActivePlaylist().ToList();
+            var songIdsInPlaylist = playlist.Entries.Select(entry => entry.Id).ToList();
+            var songIdsToAdd = songIds.Where(songId => !songIdsInPlaylist.Contains(songId));
+            var songIndexesToRemove = songIdsInPlaylist.Where(songId => !songIds.Contains(songId))
+                                                       .Select(songId => songIdsInPlaylist.IndexOf(songId));
+            await SubsonicService.UpdatePlaylist(playlist.Id, songIdsToAdd, songIndexesToRemove)
+                                 .WithErrorHandler(this)
+                                 .OnSuccess(OnSaveFinished).Execute();
         }
 
         private void OnSaveFinished(bool result)
@@ -85,9 +108,9 @@ namespace Subsonic8.Playlists
             }
         }
 
-        private static int ExtractId(Client.Common.Models.PlaylistItem item)
+        private IEnumerable<int> GetSongIdsForActivePlaylist()
         {
-            return int.Parse(item.Uri.ExtractParamterFromQuery("id"));
+            return PlaylistManagementService.Items.Select(ExtractId);
         }
     }
 }

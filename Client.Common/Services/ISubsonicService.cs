@@ -29,6 +29,8 @@ namespace Client.Common.Services
 
         Func<string, IEnumerable<int>, ICreatePlaylistResult> CreatePlaylist { get; set; }
 
+        Func<int, IEnumerable<int>, IEnumerable<int>, IUpdatePlaylistResult> UpdatePlaylist { get; set; }
+
         bool HasValidSubsonicUrl { get; }
 
         Func<int, IDeletePlaylistResult> DeletePlaylist { get; set; }
