@@ -112,12 +112,14 @@
     <Compile Include="Models\Subsonic\Playlist.cs" />
     <Compile Include="Models\Subsonic\PlaylistCollection.cs" />
     <Compile Include="Models\Subsonic\PlaylistEntry.cs" />
+    <Compile Include="Results\CreatePlaylistResult.cs" />
     <Compile Include="Results\DeletePlaylistResult.cs" />
     <Compile Include="Results\GetAllPlaylistsResult.cs" />
     <Compile Include="Results\GetPlaylistResult.cs" />
     <Compile Include="Results\IDeletePlaylistResult.cs" />
     <Compile Include="Results\IGetAllPlaylistsResult.cs" />
     <Compile Include="Results\IGetPlaylistResult.cs" />
+    <Compile Include="Results\ICreatePlaylistResult.cs" />
     <Compile Include="Services\DataStructures\PlayerManagementService\IPlayer.cs" />
     <Compile Include="Services\DataStructures\PlayerManagementService\PlayerType.cs" />
     <Compile Include="Services\DataStructures\SubsonicService\SubsonicServiceConfiguration.cs" />
@@ -204,6 +206,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\DataStructures\SubsonicService\SubsonicServiceConfigurationExtensions.cs" />
     <Compile Include="Services\WinRTWrappersService.cs" />
+    <Compile Include="UriExtensionMethods.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Caliburn.Micro, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">

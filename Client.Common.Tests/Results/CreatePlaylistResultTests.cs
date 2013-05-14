@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Xml.Linq;
 using Client.Common.Results;
 using Client.Common.Services.DataStructures.SubsonicService;
@@ -8,12 +10,12 @@ using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 namespace Client.Common.Tests.Results
 {
     [TestClass]
-    public class DeletePlaylistResultTests
+    public class CreatePlaylistResultTests
     {
-        internal class DeletePlaylistResultWrapper : DeletePlaylistResult
+        internal class CreatePlaylistResultWrapper : CreatePlaylistResult
         {
-            public DeletePlaylistResultWrapper(ISubsonicServiceConfiguration configuration, int id)
-                : base(configuration, id)
+            public CreatePlaylistResultWrapper(ISubsonicServiceConfiguration configuration, string name, IEnumerable<int> songIds)
+                : base(configuration, name, songIds)
             {
             }
 
@@ -23,32 +25,37 @@ namespace Client.Common.Tests.Results
             }
         }
 
-        private DeletePlaylistResultWrapper _subject;
         private const string Data =
             "<subsonic-response xmlns=\"http://subsonic.org/restapi\" status=\"ok\" version=\"1.8.0\"></subsonic-response>";
+
+        private CreatePlaylistResultWrapper _subject;
+        private List<int> _songIds;
 
         [TestInitialize]
         public void Setup()
         {
-            _subject = new DeletePlaylistResultWrapper(new SubsonicServiceConfiguration(), 1);
+            _songIds = new List<int>();
+            _subject = new CreatePlaylistResultWrapper(new SubsonicServiceConfiguration(), "test playlist", _songIds);
         }
 
         [TestMethod]
-        public void ViewNameShouldBegetMusicDirectory()
+        public void ViewNameShouldBesavePlaylist()
         {
-            _subject.ViewName.Should().Be("deletePlaylist.view");
+            _subject.ViewName.Should().Be("savePlaylist.view");
         }
 
         [TestMethod]
         public void RequestUrlShouldBeCorrect()
         {
-            _subject.RequestUrl.Should().EndWith("&id=1");
+            _songIds.AddRange(Enumerable.Range(0, 5));
+
+            _subject.RequestUrl.Should().EndWith("&name=test+playlist&songId=0&songId=1&songId=2&songId=3&songId=4");
         }
 
         [TestMethod]
         public void HandleResponse_ResponseIsEmpty_ReturnsTrue()
         {
-            var result = new DeletePlaylistResultWrapper(new SubsonicServiceConfiguration(), 1);
+            var result = new CreatePlaylistResultWrapper(new SubsonicServiceConfiguration(), string.Empty, new int[0]);
 
             result.CallHandleResponse(XDocument.Load(new StringReader(Data)));
 

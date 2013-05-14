@@ -124,6 +124,7 @@
     <Compile Include="Models\Subsonic\PlaylistItemTests.cs" />
     <Compile Include="Models\Subsonic\SearchResultCollectionTests.cs" />
     <Compile Include="Models\Subsonic\SongTests.cs" />
+    <Compile Include="Results\CreatePlaylistResultTests.cs" />
     <Compile Include="Results\DeletePlaylistResultTests.cs" />
     <Compile Include="Results\GetAlbumResultTests.cs" />
     <Compile Include="Results\GetIndexResultTests.cs" />

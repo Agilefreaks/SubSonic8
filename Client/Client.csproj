@@ -187,7 +187,6 @@
     <Compile Include="Framework\ViewModel\ItemViewModelBase.cs" />
     <Compile Include="Framework\ViewModel\PlaybackControlsViewModelBase.cs" />
     <Compile Include="Framework\ViewModel\ScreenWithStateBase.cs" />
-    <Compile Include="Messages\NotificationMessage.cs" />
     <Compile Include="PlaylistItem\PlaylistItemView.xaml.cs">
       <DependentUpon>PlaylistItemView.xaml</DependentUpon>
     </Compile>
@@ -197,11 +196,18 @@
     <Compile Include="PlaylistItem\PlaylistItem\Playing.xaml.cs">
       <DependentUpon>Playing.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Playlists\IPlaylistViewModel.cs" />
+    <Compile Include="Playlists\ISavePlaylistViewModel.cs" />
+    <Compile Include="Playlists\PlaylistViewModelBase.cs" />
+    <Compile Include="Playlists\SavePlaylistView.xaml.cs">
+      <DependentUpon>SavePlaylistView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Playlists\IManagePlaylistsViewModel.cs" />
     <Compile Include="Playlists\ManagePlaylistsViewModel.cs" />
     <Compile Include="Playlists\ManagePlaylistView.xaml.cs">
       <DependentUpon>ManagePlaylistView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Playlists\SavePlaylistViewModel.cs" />
     <Compile Include="Search\SearchResultState.cs" />
     <Compile Include="Search\Search\Busy.xaml.cs">
       <DependentUpon>Busy.xaml</DependentUpon>
@@ -395,6 +401,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Playlists\SavePlaylistView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Playlists\ManagePlaylistView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -474,7 +484,9 @@
       <Name>Microsoft Player Framework</Name>
     </SDKReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Messages\" />
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '11.0' ">
     <VisualStudioVersion>11.0</VisualStudioVersion>
   </PropertyGroup>

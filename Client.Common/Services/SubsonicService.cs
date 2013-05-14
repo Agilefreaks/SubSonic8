@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Caliburn.Micro;
 using Client.Common.Results;
@@ -46,6 +47,8 @@ namespace Client.Common.Services
 
         public Func<int, IDeletePlaylistResult> DeletePlaylist { get; set; }
 
+        public Func<string, IEnumerable<int>, ICreatePlaylistResult> CreatePlaylist { get; set; }
+
         public virtual bool HasValidSubsonicUrl
         {
             get { return Configuration != null && !string.IsNullOrEmpty(Configuration.BaseUrl); }
@@ -63,6 +66,7 @@ namespace Client.Common.Services
             GetAllPlaylists = GetAllPlaylistsImpl;
             GetPlaylist = GetPlaylistImpl;
             DeletePlaylist = DeletePlaylistImpl;
+            CreatePlaylist = CreatePlaylistImpl;
         }
 
         public virtual Uri GetUriForFileWithId(int id)
@@ -162,6 +166,11 @@ namespace Client.Common.Services
         private IDeletePlaylistResult DeletePlaylistImpl(int id)
         {
             return new DeletePlaylistResult(Configuration, id);
+        }
+
+        private ICreatePlaylistResult CreatePlaylistImpl(string name, IEnumerable<int> songIds)
+        {
+            return new CreatePlaylistResult(Configuration, name, songIds);
         }
     }
 }

@@ -59,6 +59,7 @@
                             <Button Style="{StaticResource LoadPlaylistAppBarButtonStyle}" x:Name="LoadPlaylist"/>
                             <Button Style="{StaticResource SaveAppBarButtonStyle}" x:Name="SavePlaylist"/>
                             <Button Style="{StaticResource LoadRemotePlaylistAppBarButtonStyle}" x:Name="LoadRemotePlaylist"/>
+                            <Button Style="{StaticResource SaveRemoteAppBarButtonStyle}" x:Name="SaveRemotePlaylist"/>
                         </StackPanel>
                     </Grid>
                     <ScrollViewer Grid.Row="1" Margin="0,0,46,46">
