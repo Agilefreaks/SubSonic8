@@ -1,18 +1,16 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Client.Common.EventAggregatorMessages;
 using Client.Common.Models;
 using Client.Common.Models.Subsonic;
-using Client.Common.Results;
 using Client.Common.Services;
 using MugenInjection.Attributes;
 using Subsonic8.Framework.Extensions;
-using Subsonic8.Framework.ViewModel;
 using Subsonic8.MenuItem;
+using Windows.UI.Xaml.Controls;
 
 namespace Subsonic8.Playlists
 {
-    public class ManagePlaylistsViewModel : CollectionViewModelBase<object, PlaylistCollection>, IManagePlaylistsViewModel
+    public class ManagePlaylistsViewModel : PlaylistViewModelBase, IManagePlaylistsViewModel
     {
         [Inject]
         public IPlaylistManagementService PlaylistManagementService { get; set; }
@@ -22,43 +20,20 @@ namespace Subsonic8.Playlists
             UpdateDisplayName = () => DisplayName = "Load remote playlist";
         }
 
-        public override async void ChildClick(Windows.UI.Xaml.Controls.ItemClickEventArgs eventArgs)
+        public override async void ChildClick(ItemClickEventArgs eventArgs)
         {
             var subsonicModel = ((MenuItemViewModel)eventArgs.ClickedItem).Item;
-
             await SubsonicService.GetPlaylist(subsonicModel.Id).WithErrorHandler(this).OnSuccess(LoadPlaylist).Execute();
-        }
-
-        protected override void OnViewLoaded(object view)
-        {
-            MenuItems.Clear();
-            base.OnViewLoaded(view);
         }
 
         public void LoadPlaylist(Playlist playlist)
         {
             EventAggregator.Publish(new StopMessage());
             PlaylistManagementService.Clear();
+            GoBack();
             var playlistItemCollection = new PlaylistItemCollection();
             playlistItemCollection.AddRange(playlist.Entries.Select(e => e.AsPlaylistItem(SubsonicService)));
             PlaylistManagementService.LoadPlaylist(playlistItemCollection);
-            GoBack();
-        }
-
-        protected override void OnActivate()
-        {
-            base.OnActivate();
-            Populate();
-        }
-
-        protected override IServiceResultBase<PlaylistCollection> GetResult(object parameter)
-        {
-            return SubsonicService.GetAllPlaylists();
-        }
-
-        protected override IEnumerable<IMediaModel> GetItemsToDisplay(PlaylistCollection result)
-        {
-            return result.Playlists.Select(x => new GenericMediaModel(x));
         }
     }
 }

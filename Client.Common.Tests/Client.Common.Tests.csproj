@@ -124,12 +124,16 @@
     <Compile Include="Models\Subsonic\PlaylistItemTests.cs" />
     <Compile Include="Models\Subsonic\SearchResultCollectionTests.cs" />
     <Compile Include="Models\Subsonic\SongTests.cs" />
+    <Compile Include="Results\CreatePlaylistResultTests.cs" />
+    <Compile Include="Results\DeletePlaylistResultTests.cs" />
     <Compile Include="Results\GetAlbumResultTests.cs" />
     <Compile Include="Results\GetIndexResultTests.cs" />
     <Compile Include="Results\GetMusicDirectoryResultTests.cs" />
     <Compile Include="Results\GetPlaylistResultTests.cs" />
     <Compile Include="Results\GetRootResultTests.cs" />
     <Compile Include="Results\GetSongResultTests.cs" />
+    <Compile Include="Results\RenamePlaylistResultTests.cs" />
+    <Compile Include="Results\UpdatePlaylistResultTests.cs" />
     <Compile Include="Services\PlayerManagementServiceTests.cs" />
     <Compile Include="Services\PlaylistManagementServiceTests.cs" />
     <Compile Include="Services\SubsonicServiceConfigurationTests.cs" />

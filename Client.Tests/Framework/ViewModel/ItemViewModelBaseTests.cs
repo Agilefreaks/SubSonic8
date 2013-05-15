@@ -21,7 +21,7 @@ namespace Client.Tests.Framework.ViewModel
 
             var coverArt = Subject.CoverArt;
 
-            coverArt.Should().Be(string.Empty);
+            coverArt.Should().Be("http://test.mock");
             subsonicService.GetCoverArtForIdCallCount.Should().Be(1);
         }
     }

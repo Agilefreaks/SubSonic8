@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Caliburn.Micro;
 using Client.Common.Results;
@@ -44,6 +45,14 @@ namespace Client.Common.Services
 
         public Func<string, ISearchResult> Search { get; set; }
 
+        public Func<int, IDeletePlaylistResult> DeletePlaylist { get; set; }
+
+        public Func<string, IEnumerable<int>, ICreatePlaylistResult> CreatePlaylist { get; set; }
+
+        public Func<int, IEnumerable<int>, IEnumerable<int>, IUpdatePlaylistResult> UpdatePlaylist { get; set; }
+
+        public Func<int, string, IRenamePlaylistResult> RenamePlaylist { get; set; }
+
         public virtual bool HasValidSubsonicUrl
         {
             get { return Configuration != null && !string.IsNullOrEmpty(Configuration.BaseUrl); }
@@ -60,6 +69,10 @@ namespace Client.Common.Services
             Search = SearchImpl;
             GetAllPlaylists = GetAllPlaylistsImpl;
             GetPlaylist = GetPlaylistImpl;
+            DeletePlaylist = DeletePlaylistImpl;
+            CreatePlaylist = CreatePlaylistImpl;
+            UpdatePlaylist = UpdatePlaylistResultImpl;
+            RenamePlaylist = RenamePlaylistImpl;
         }
 
         public virtual Uri GetUriForFileWithId(int id)
@@ -154,6 +167,26 @@ namespace Client.Common.Services
         private IGetPlaylistResult GetPlaylistImpl(int id)
         {
             return new GetPlaylistResult(_configuration, id);
+        }
+
+        private IDeletePlaylistResult DeletePlaylistImpl(int id)
+        {
+            return new DeletePlaylistResult(Configuration, id);
+        }
+
+        private ICreatePlaylistResult CreatePlaylistImpl(string name, IEnumerable<int> songIds)
+        {
+            return new CreatePlaylistResult(Configuration, name, songIds);
+        }
+
+        private IUpdatePlaylistResult UpdatePlaylistResultImpl(int id, IEnumerable<int> songIdsToAdd, IEnumerable<int> songIndexesToRemove)
+        {
+            return new UpdatePlaylistResult(Configuration, id, songIdsToAdd, songIndexesToRemove);
+        }
+
+        private IRenamePlaylistResult RenamePlaylistImpl(int id, string name)
+        {
+            return new RenamePlaylistResult(Configuration, id, name);
         }
     }
 }

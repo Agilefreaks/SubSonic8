@@ -78,10 +78,7 @@ namespace Subsonic8.BottomBar
             EventAggregator.Subscribe(this);
             PlaylistManagementService = playlistManagementService;
             HookPlaylistManagementService();
-
-
             SelectedItems = new ObservableCollection<object>();
-            SelectedItems.CollectionChanged += OnSelectedItemsChanged;
         }
 
         public virtual void Handle(PlaylistStateChangedMessage message)

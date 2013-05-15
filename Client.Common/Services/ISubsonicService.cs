@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Client.Common.Results;
 using Client.Common.Services.DataStructures.SubsonicService;
 
@@ -26,7 +27,15 @@ namespace Client.Common.Services
 
         Func<int, IGetPlaylistResult> GetPlaylist { get; set; }
 
+        Func<string, IEnumerable<int>, ICreatePlaylistResult> CreatePlaylist { get; set; }
+
+        Func<int, IEnumerable<int>, IEnumerable<int>, IUpdatePlaylistResult> UpdatePlaylist { get; set; }
+
+        Func<int, string, IRenamePlaylistResult> RenamePlaylist { get; set; }
+
         bool HasValidSubsonicUrl { get; }
+
+        Func<int, IDeletePlaylistResult> DeletePlaylist { get; set; }
 
         Uri GetUriForFileWithId(int id);
 

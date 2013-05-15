@@ -2,13 +2,11 @@
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using Client.Common.Results;
-using Client.Common.Services;
 using Client.Common.Services.DataStructures.SubsonicService;
 
 namespace Client.Tests.Mocks
 {
     public abstract class MockServiceResultBase<T> : IServiceResultBase<T>
-        where T : class
     {
         private Action<T> _onSuccess;
         private IErrorHandler _errorHandler;
@@ -47,7 +45,7 @@ namespace Client.Tests.Mocks
         {
             ExecuteCallCount++;
             var taskCompletionSource = new TaskCompletionSource<T>();
-            Result = GetResultFunc != null ? GetResultFunc() : null;
+            Result = GetResultFunc != null ? GetResultFunc() : default(T);
             Error = GetErrorFunc != null ? GetErrorFunc() : null;
             taskCompletionSource.SetResult(Result);
             if (_errorHandler != null && Error != null)

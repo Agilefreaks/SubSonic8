@@ -20,6 +20,7 @@ using Subsonic8.Framework.ViewModel;
 using Subsonic8.Playlists;
 using Subsonic8.VideoPlayback;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Data;
 
 namespace Subsonic8.Playback
 {
@@ -271,6 +272,11 @@ namespace Subsonic8.Playback
             {
                 await WinRTWrappersService.SaveToFile(storageFile, PlaylistItems);
             }
+        }
+
+        public void SaveRemotePlaylist()
+        {
+            NavigationService.NavigateToViewModel<SavePlaylistViewModel>();
         }
 
         public void Handle(StartPlaybackMessage message)

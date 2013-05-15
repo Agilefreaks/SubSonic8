@@ -12,7 +12,7 @@ namespace Subsonic8.Framework.ViewModel
         private ISubsonicModel _item;
         private ISubsonicService _subsonicService;
 
-        public ISubsonicService SubsonicService 
+        public ISubsonicService SubsonicService
         {
             get
             {

@@ -19,9 +19,16 @@
         <Setter Property="Width" Value="270"/>
     </Style>
     
+    <Style x:Key="PopupTextBoxStyle" TargetType="TextBox">
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="Width" Value="200"/>
+    </Style>
+    
     <Style x:Key="PasswordTextBoxStyle" TargetType="PasswordBox">
         <Setter Property="BorderBrush" Value="Black"/>
         <Setter Property="BorderThickness" Value="2"/>
         <Setter Property="Width" Value="270"/>
     </Style>
+
+    <SolidColorBrush x:Name="SaveButtonBackgroundBrush" Color="#FF632F00"></SolidColorBrush>
 </ResourceDictionary>

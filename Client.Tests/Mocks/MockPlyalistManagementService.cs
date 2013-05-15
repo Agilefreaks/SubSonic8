@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Caliburn.Micro;
 using Client.Common.EventAggregatorMessages;
 using Client.Common.Models;
@@ -19,9 +20,14 @@ namespace Client.Tests.Mocks
 
         public int ClearCallCount { get; set; }
 
+        public int LoadPlaylistCallCOunt { get; set; }
+
+        public Dictionary<string, object> MethodCalls { get; set; }
+
         public MockPlyalistManagementService()
         {
             Items = new PlaylistItemCollection();
+            MethodCalls = new Dictionary<string, object>();
         }
 
         public void Clear()
@@ -31,6 +37,8 @@ namespace Client.Tests.Mocks
 
         public void LoadPlaylist(PlaylistItemCollection playlistItemCollection)
         {
+            LoadPlaylistCallCOunt++;
+            MethodCalls.Add("LoadPlaylist", playlistItemCollection);
         }
 
         public void Handle(PlayNextMessage message)
