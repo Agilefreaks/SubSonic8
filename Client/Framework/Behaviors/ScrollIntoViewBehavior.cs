@@ -7,16 +7,12 @@ namespace Subsonic8.Framework.Behaviors
 {
     public class ScrollIntoViewBehavior : Behavior<ListView>
     {
-        private const int SelectedItemOffset = 8;
-
         public static readonly DependencyProperty ActiveItemProviderProperty = DependencyProperty.Register(
             "ActiveItemProvider", typeof(object),
             typeof(ScrollIntoViewBehavior),
             new PropertyMetadata(null, ActiveItemProviderChangedCallback));
 
         private IActiveItemProvider _provider;
-        private ScrollViewer _scrollViewer;
-        private ItemCollection _itemsCollection;
 
         public object ActiveItemProvider
         {
@@ -58,23 +54,10 @@ namespace Subsonic8.Framework.Behaviors
             }
         }
 
-
-        private static bool LowerThanViewPort(ScrollViewer scrollViewer, double targetLocation)
-        {
-            return (scrollViewer.VerticalOffset + scrollViewer.ActualHeight < targetLocation);
-        }
-
-        private static bool HigherThanViewPort(ScrollViewer scrollViewer, double targetLocation)
-        {
-            return scrollViewer.VerticalOffset >= targetLocation;
-        }
-
         private void StartFollowing(INotifyPropertyChanged activeItemProvider)
         {
             _provider = ActiveItemProvider as IActiveItemProvider;
-            _scrollViewer = AssociatedObject.Parent as ScrollViewer;
             if (!CanStartWatchingActiveItem()) return;
-            _itemsCollection = AssociatedObject.Items;
             activeItemProvider.PropertyChanged += ActiveItemProviderOnPropertyChanged;
         }
 
@@ -86,32 +69,12 @@ namespace Subsonic8.Framework.Behaviors
         private void ActiveItemProviderOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
             if (propertyChangedEventArgs.PropertyName != "ActiveItem") return;
-            var verticalOffset = GetActiveItemVerticalOffset();
-            if (NotInViewPort(verticalOffset))
-            {
-                _scrollViewer.ScrollToVerticalOffset(verticalOffset);
-            }
-        }
-
-        private double GetActiveItemVerticalOffset()
-        {
-            var indexOfActiveItem = _itemsCollection.IndexOf(_provider.ActiveItem);
-            return indexOfActiveItem * ItemSize() - SelectedItemOffset;
+            AssociatedObject.ScrollIntoView(_provider.ActiveItem);
         }
 
         private bool CanStartWatchingActiveItem()
         {
-            return _provider != null && _scrollViewer != null && AssociatedObject.Items != null;
-        }
-
-        private double ItemSize()
-        {
-            return AssociatedObject.ActualHeight / _itemsCollection.Count;
-        }
-
-        private bool NotInViewPort(double targetLocation)
-        {
-            return HigherThanViewPort(_scrollViewer, targetLocation) || LowerThanViewPort(_scrollViewer, targetLocation);
+            return _provider != null && AssociatedObject.Items != null;
         }
     }
 }
