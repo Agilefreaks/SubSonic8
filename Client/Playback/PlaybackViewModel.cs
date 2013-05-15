@@ -20,7 +20,6 @@ using Subsonic8.Framework.ViewModel;
 using Subsonic8.Playlists;
 using Subsonic8.VideoPlayback;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Data;
 
 namespace Subsonic8.Playback
 {

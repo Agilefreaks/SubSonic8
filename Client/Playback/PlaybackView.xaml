@@ -5,17 +5,16 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:cal="using:Caliburn.Micro"
-    xmlns:common="using:Subsonic8.Common" xmlns:playlistItem="using:Subsonic8.PlaylistItem"
+    xmlns:common="using:Subsonic8.Common"
     xmlns:playback="using:Subsonic8.Playback.Playback" xmlns:converters="using:Subsonic8.Converters"
     xmlns:behaviors="using:Subsonic8.Framework.Behaviors" xmlns:framework="using:Subsonic8.Framework"
     xmlns:i="using:Windows.UI.Interactivity" xmlns:videoPlayback="using:Subsonic8.VideoPlayback"
+    xmlns:playlistItem="using:Subsonic8.PlaylistItem.PlaylistItem"
     mc:Ignorable="d">
 
     <Page.Resources>
-        <DataTemplate x:Key="PlaylistItemTemplate">
-            <playlistItem:PlaylistItemView cal:Bind.Model="{Binding}" HorizontalContentAlignment="Stretch"/>
-        </DataTemplate>
         <converters:PlaybackStateToVisibilityConverter x:Name="PlaybackStateToVisibilityConverter"/>
+        <converters:PlayingStateToVisibilityConverter x:Name="PlayingStateToVisibilityConverter"/>
     </Page.Resources>
 
     <Grid>
@@ -62,29 +61,32 @@
                             <Button Style="{StaticResource SaveRemoteAppBarButtonStyle}" x:Name="SaveRemotePlaylist"/>
                         </StackPanel>
                     </Grid>
-                    <ScrollViewer Grid.Row="1" Margin="0,0,46,46">
-                        <ListView
-                        ItemsSource = "{Binding PlaylistItems}" ItemTemplate="{StaticResource PlaylistItemTemplate}"
+                    <ListView Grid.Row="1" Margin="0,0,46,46"
+                        ItemsSource = "{Binding PlaylistItems}"
                         SelectionMode = "Multiple"
                         behaviors:MultipleSelectBehavior.SelectedItems="{Binding SelectedItems, Mode=TwoWay}"
                         CanDragItems = "False" CanReorderItems = "False" AllowDrop = "False"
                         IsItemClickEnabled = "True"
                         cal:Message.Attach = "[Event ItemClick] = [Action StartPlayback($eventArgs)]">
-                            <i:Interaction.Behaviors>
-                                <behaviors:ScrollIntoViewBehavior ActiveItemProvider="{Binding}"/>
-                            </i:Interaction.Behaviors>
-                            <ListView.ItemContainerStyle>
-                                <Style TargetType="ListViewItem">
-                                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                                </Style>
-                            </ListView.ItemContainerStyle>
-                            <ListView.Template>
-                                <ControlTemplate>
-                                    <ItemsPresenter/>
-                                </ControlTemplate>
-                            </ListView.Template>
-                        </ListView>
-                    </ScrollViewer>
+                        <i:Interaction.Behaviors>
+                            <behaviors:ScrollIntoViewBehavior ActiveItemProvider="{Binding}"/>
+                        </i:Interaction.Behaviors>
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ContentControl HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" DataContext="{Binding}">
+                                    <Grid HorizontalAlignment="Stretch">
+                                        <playlistItem:Playing Visibility="{Binding Path=PlayingState, Converter={StaticResource PlayingStateToVisibilityConverter}, ConverterParameter='Playing'}"/>
+                                        <playlistItem:NotPlaying Visibility="{Binding Path=PlayingState, Converter={StaticResource PlayingStateToVisibilityConverter}, ConverterParameter='NotPlaying'}"/>
+                                    </Grid>
+                                </ContentControl>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
                 </Grid>
             </Grid>
         </Grid>
