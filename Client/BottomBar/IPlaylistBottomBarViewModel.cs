@@ -1,9 +1,10 @@
 ﻿using System;
+using Client.Common.Results;
 
 namespace Subsonic8.BottomBar
 {
-    public interface IPlaylistBottomBarViewModel : IBottomBarViewModel
+    public interface IPlaylistBottomBarViewModel : IBottomBarViewModel, IErrorHandler
     {
-        Action<int> DeletePlaylistAction { get; set; }
+        Action OnPlaylistDeleted { get; set; }
     }
 }

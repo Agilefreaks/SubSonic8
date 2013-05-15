@@ -10,11 +10,6 @@ namespace Subsonic8.Playlists
 {
     public abstract class PlaylistViewModelBase : CollectionViewModelBase<object, PlaylistCollection>, IPlaylistViewModel
     {
-        public async void DeletePlaylist(int id)
-        {
-            await SubsonicService.DeletePlaylist(id).WithErrorHandler(this).OnSuccess(result => Populate()).Execute();
-        }
-
         protected override IServiceResultBase<PlaylistCollection> GetResult(object parameter)
         {
             return SubsonicService.GetAllPlaylists();
@@ -45,7 +40,7 @@ namespace Subsonic8.Playlists
         private IPlaylistBottomBarViewModel GetPlaylistBottomBar()
         {
             var playlistBottomBarViewModel = IoCService.Get<IPlaylistBottomBarViewModel>();
-            playlistBottomBarViewModel.DeletePlaylistAction = DeletePlaylist;
+            playlistBottomBarViewModel.OnPlaylistDeleted = Populate;
 
             return playlistBottomBarViewModel;
         }

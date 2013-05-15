@@ -4,8 +4,6 @@ using System.Threading.Tasks;
 using Client.Common.EventAggregatorMessages;
 using Client.Common.Models;
 using Client.Common.Models.Subsonic;
-using Client.Common.Results;
-using Client.Common.Services.DataStructures.SubsonicService;
 using Client.Tests.Framework.ViewModel;
 using Client.Tests.Mocks;
 using FluentAssertions;
@@ -89,23 +87,6 @@ namespace Client.Tests.Playlists
             playlistItemCollection.Count.Should().Be(1);
             playlistItemCollection[0].Title.Should().Be("test");
             playlistItemCollection[0].Duration.Should().Be(123);
-        }
-
-        [TestMethod]
-        public void DeletePlaylist_Always_CallsSubsonicServiceDeletePlaylistWithTheGivenId()
-        {
-            var callCount = 0;
-            MockSubsonicService.DeletePlaylist = i =>
-                {
-                    callCount++;
-                    i.Should().Be(1);
-
-                    return new DeletePlaylistResult(new SubsonicServiceConfiguration(), i);
-                };
-
-            Subject.DeletePlaylist(1);
-
-            callCount.Should().Be(1);
-        }
+        }        
     }
 }

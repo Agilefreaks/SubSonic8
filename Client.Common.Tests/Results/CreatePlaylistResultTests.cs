@@ -39,9 +39,9 @@ namespace Client.Common.Tests.Results
         }
 
         [TestMethod]
-        public void ViewNameShouldBesavePlaylist()
+        public void ViewNameShouldBecreatePlaylist()
         {
-            _subject.ViewName.Should().Be("savePlaylist.view");
+            _subject.ViewName.Should().Be("createPlaylist.view");
         }
 
         [TestMethod]

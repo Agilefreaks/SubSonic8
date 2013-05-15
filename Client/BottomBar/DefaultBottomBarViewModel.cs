@@ -67,18 +67,18 @@ namespace Subsonic8.BottomBar
             NavigationService.NavigateToViewModel<PlaybackViewModel>();
         }
 
+        public async void HandleError(Exception error)
+        {
+            await NotificationService.Show(new DialogNotificationOptions
+                {
+                    Message = error.ToString(),
+                });
+        }
+
         protected override void OnSelectedItemsChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
         {
             base.OnSelectedItemsChanged(sender, notifyCollectionChangedEventArgs);
             NotifyOfPropertyChange(() => CanAddToPlaylist);
-        }
-
-        public async void HandleError(Exception error)
-        {
-            await NotificationService.Show(new DialogNotificationOptions
-            {
-                Message = error.ToString(),
-            });
         }
 
         private async Task AddItemToPlaylist(ISubsonicModel item)
