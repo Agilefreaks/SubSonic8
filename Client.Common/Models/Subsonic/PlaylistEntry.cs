@@ -12,6 +12,7 @@ namespace Client.Common.Models.Subsonic
         [XmlAttribute("title")]
         public string Title { get; set; }
 
+        [XmlAttribute("name")]
         public override string Name
         {
             get { return Title; }

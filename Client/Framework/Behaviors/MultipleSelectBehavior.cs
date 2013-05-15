@@ -101,12 +101,12 @@ namespace Subsonic8.Framework.Behaviors
 
         private static void UpdateCollection(ICollection<object> collection, IEnumerable toRemove, IEnumerable toAdd)
         {
-            foreach (var item in toRemove)
+            foreach (var item in toRemove.Cast<object>().Where(collection.Contains))
             {
                 collection.Remove(item);
             }
 
-            foreach (var item in toAdd)
+            foreach (var item in toAdd.Cast<object>().Where(item => !collection.Contains(item)))
             {
                 collection.Add(item);
             }

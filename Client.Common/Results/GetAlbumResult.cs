@@ -7,12 +7,7 @@ namespace Client.Common.Results
 {
     public class GetAlbumResult : ServiceResultBase<Album>, IGetAlbumResult
     {
-        private readonly int _id;
-
-        public int Id
-        {
-            get { return _id; }
-        }
+        public int Id { get; private set; }
 
         public override string ViewName { get { return "getAlbum.view"; } }
 
@@ -27,7 +22,7 @@ namespace Client.Common.Results
         public GetAlbumResult(ISubsonicServiceConfiguration configuration, int id)
             : base(configuration)
         {
-            _id = id;
+            Id = id;
         }
 
         protected override void HandleResponse(XDocument xDocument)

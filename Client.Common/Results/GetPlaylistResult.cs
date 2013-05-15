@@ -30,8 +30,7 @@ namespace Client.Common.Results
 
         protected override void HandleResponse(XDocument xDocument)
         {
-            var xmlSerializer = new XmlSerializer(typeof (Playlist), PlaylistEntry.GetXmlAttributeOverrides(),
-                                                  new[] {typeof (PlaylistEntry)}, null, Namespace.NamespaceName);
+            var xmlSerializer = new XmlSerializer(typeof(Playlist), new[] { typeof(PlaylistEntry) });
             var xElement = xDocument.Element(Namespace + "subsonic-response").Element(Namespace + "playlist");
             using (var reader = xElement.CreateReader())
             {

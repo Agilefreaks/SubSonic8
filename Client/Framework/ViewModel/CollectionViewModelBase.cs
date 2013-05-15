@@ -8,6 +8,7 @@ using Client.Common.Results;
 using MugenInjection.Attributes;
 using Subsonic8.BottomBar;
 using Subsonic8.Framework.Extensions;
+using Subsonic8.Framework.Services;
 using Subsonic8.MenuItem;
 using Windows.UI.Xaml.Controls;
 
@@ -16,8 +17,9 @@ namespace Subsonic8.Framework.ViewModel
     public abstract class CollectionViewModelBase<TParameter, TResult> : ViewModelBase, ICollectionViewModel<TParameter>
     {
         private TParameter _parameter;
-        private IDefaultBottomBarViewModel _bottomBar;
+        private IBottomBarViewModel _bottomBar;
         private BindableCollection<MenuItemViewModel> _menuItems;
+        private IIoCService _ioCService;
 
         public TParameter Parameter
         {
@@ -59,18 +61,30 @@ namespace Subsonic8.Framework.ViewModel
             }
         }
 
-        [Inject]
-        public IDefaultBottomBarViewModel BottomBar
+        public IBottomBarViewModel BottomBar
         {
             get
             {
                 return _bottomBar;
             }
-
             set
             {
                 _bottomBar = value;
                 NotifyOfPropertyChange();
+            }
+        }
+
+        [Inject]
+        public IIoCService IoCService
+        {
+            get
+            {
+                return _ioCService;
+            }
+            set
+            {
+                _ioCService = value;
+                LoadBottomBar();
             }
         }
 
@@ -118,6 +132,11 @@ namespace Subsonic8.Framework.ViewModel
             MenuItems.Clear();
             var children = GetItemsToDisplay(result);
             MenuItems.AddRange(children.Select(s => s.AsMenuItemViewModel()));
+        }
+
+        protected virtual void LoadBottomBar()
+        {
+            BottomBar = IoCService.Get<IDefaultBottomBarViewModel>();
         }
 
         private void SetAppBottomBar()

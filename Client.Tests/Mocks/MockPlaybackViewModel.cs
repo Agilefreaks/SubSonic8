@@ -9,7 +9,6 @@ using Client.Common.Models;
 using Client.Common.Services;
 using Subsonic8.BottomBar;
 using Subsonic8.Framework.Services;
-using Subsonic8.Messages;
 using Subsonic8.Playback;
 using Action = System.Action;
 

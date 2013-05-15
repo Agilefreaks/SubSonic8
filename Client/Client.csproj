@@ -120,17 +120,25 @@
     <Compile Include="Artist\IArtistViewModel.cs" />
     <Compile Include="BottomBar\BottomBarViewModelBase.cs" />
     <Compile Include="BottomBar\ChangeBottomBarMessage.cs" />
+    <Compile Include="BottomBar\PlaylistBottomBarView.xaml.cs">
+      <DependentUpon>PlaylistBottomBarView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="BottomBar\DefaultBottomBarView.xaml.cs">
       <DependentUpon>DefaultBottomBarView.xaml</DependentUpon>
     </Compile>
     <Compile Include="BottomBar\DefaultBottomBarViewModel.cs" />
     <Compile Include="BottomBar\IPlaybackBottomBarViewModel.cs" />
+    <Compile Include="BottomBar\IPlaylistBottomBarViewModel.cs" />
     <Compile Include="BottomBar\PlaybackBottomBarView.xaml.cs">
       <DependentUpon>PlaybackBottomBarView.xaml</DependentUpon>
     </Compile>
     <Compile Include="BottomBar\PlaybackBottomBarViewModel.cs" />
     <Compile Include="BottomBar\PlaybackControlsView.xaml.cs">
       <DependentUpon>PlaybackControlsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="BottomBar\PlaylistBottomBarViewModel.cs" />
+    <Compile Include="BottomBar\RenamePlaylistDialog.xaml.cs">
+      <DependentUpon>RenamePlaylistDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="ClientModule.cs" />
     <Compile Include="Common\PageHeader.xaml.cs">
@@ -154,6 +162,8 @@
     <Compile Include="Framework\Extensions\NotificationExtensions.cs" />
     <Compile Include="Framework\Interfaces\ISettingsHelper.cs" />
     <Compile Include="Framework\Extensions\SettingsPaneExtensionMethods.cs" />
+    <Compile Include="Framework\Services\IIoCService.cs" />
+    <Compile Include="Framework\Services\IoCService.cs" />
     <Compile Include="Framework\Services\ITileNotificationService.cs" />
     <Compile Include="Framework\Services\TileNotificationService.cs" />
     <Compile Include="Framework\SettingsHelper.cs" />
@@ -180,7 +190,6 @@
     <Compile Include="Framework\ViewModel\ItemViewModelBase.cs" />
     <Compile Include="Framework\ViewModel\PlaybackControlsViewModelBase.cs" />
     <Compile Include="Framework\ViewModel\ScreenWithStateBase.cs" />
-    <Compile Include="Messages\NotificationMessage.cs" />
     <Compile Include="PlaylistItem\PlaylistItemView.xaml.cs">
       <DependentUpon>PlaylistItemView.xaml</DependentUpon>
     </Compile>
@@ -190,11 +199,18 @@
     <Compile Include="PlaylistItem\PlaylistItem\Playing.xaml.cs">
       <DependentUpon>Playing.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Playlists\IPlaylistViewModel.cs" />
+    <Compile Include="Playlists\ISavePlaylistViewModel.cs" />
+    <Compile Include="Playlists\PlaylistViewModelBase.cs" />
+    <Compile Include="Playlists\SavePlaylistView.xaml.cs">
+      <DependentUpon>SavePlaylistView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Playlists\IManagePlaylistsViewModel.cs" />
     <Compile Include="Playlists\ManagePlaylistsViewModel.cs" />
     <Compile Include="Playlists\ManagePlaylistView.xaml.cs">
       <DependentUpon>ManagePlaylistView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Playlists\SavePlaylistViewModel.cs" />
     <Compile Include="Search\SearchResultState.cs" />
     <Compile Include="Search\Search\Busy.xaml.cs">
       <DependentUpon>Busy.xaml</DependentUpon>
@@ -314,6 +330,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="BottomBar\PlaylistBottomBarView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="BottomBar\DefaultBottomBarView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -323,6 +343,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="BottomBar\PlaybackControlsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="BottomBar\RenamePlaylistDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -383,6 +407,10 @@
     <Page Include="PlaylistItem\PlaylistItem\Playing.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Playlists\SavePlaylistView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Playlists\ManagePlaylistView.xaml">
       <SubType>Designer</SubType>
@@ -463,7 +491,9 @@
       <Name>Microsoft Player Framework</Name>
     </SDKReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Messages\" />
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '11.0' ">
     <VisualStudioVersion>11.0</VisualStudioVersion>
   </PropertyGroup>

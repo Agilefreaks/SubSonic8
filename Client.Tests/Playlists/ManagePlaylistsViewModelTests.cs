@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Client.Common.EventAggregatorMessages;
+using Client.Common.Models;
 using Client.Common.Models.Subsonic;
 using Client.Tests.Framework.ViewModel;
 using Client.Tests.Mocks;
@@ -8,7 +10,7 @@ using FluentAssertions;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using Subsonic8.Playlists;
 
-namespace Client.Tests.ManagePlaylists
+namespace Client.Tests.Playlists
 {
     [TestClass]
     public class ManagePlaylistsViewModelTests : ViewModelBaseTests<ManagePlaylistsViewModel>
@@ -62,5 +64,29 @@ namespace Client.Tests.ManagePlaylists
 
             _mockPlyalistManagementService.ClearCallCount.Should().Be(1);
         }
+
+        [TestMethod]
+        public void LoadPlaylist_Always_ShouldGoBack()
+        {
+            Subject.LoadPlaylist(new Playlist());
+
+            MockNavigationService.GoBackCallCount.Should().Be(1);
+        }
+
+        [TestMethod]
+        public void LoadPlaylist_Always_CallsPlaylistManagementServiceLoadPlaylistWithAListOfEquivalentPlaylistItems()
+        {
+            var playlist = new Playlist { Entries = new List<PlaylistEntry> { new PlaylistEntry { Title = "test", Duration = 123 } } };
+
+            Subject.LoadPlaylist(playlist);
+
+            var methodCall = _mockPlyalistManagementService.MethodCalls.First();
+            methodCall.Key.Should().Be("LoadPlaylist");
+            var playlistItemCollection = methodCall.Value as PlaylistItemCollection;
+            Assert.IsNotNull(playlistItemCollection);
+            playlistItemCollection.Count.Should().Be(1);
+            playlistItemCollection[0].Title.Should().Be("test");
+            playlistItemCollection[0].Duration.Should().Be(123);
+        }        
     }
 }
