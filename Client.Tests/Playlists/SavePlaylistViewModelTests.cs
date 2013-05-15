@@ -44,11 +44,21 @@ namespace Client.Tests.Playlists
         }
 
         [TestMethod]
-        public void CanSave_PlaylistNameIsNotEmpty_ReturnsTrue()
+        public void CanSave_PlaylistNameIsNotEmptyAndCanEdit_ReturnsTrue()
         {
+            Subject.CanEdit = true;
             Subject.PlaylistName = "asda";
 
             Subject.CanSave.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void CanSave_PlaylistNameIsNotEmptyAndCannotEdit_ReturnsFalse()
+        {
+            Subject.CanEdit = false;
+            Subject.PlaylistName = "asda";
+
+            Subject.CanSave.Should().BeFalse();
         }
 
         [TestMethod]
