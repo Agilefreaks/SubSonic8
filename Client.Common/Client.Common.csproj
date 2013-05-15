@@ -120,7 +120,9 @@
     <Compile Include="Results\IGetAllPlaylistsResult.cs" />
     <Compile Include="Results\IGetPlaylistResult.cs" />
     <Compile Include="Results\ICreatePlaylistResult.cs" />
+    <Compile Include="Results\IRenamePlaylistResult.cs" />
     <Compile Include="Results\IUpdatePlaylistResult.cs" />
+    <Compile Include="Results\RenamePlaylistResult.cs" />
     <Compile Include="Results\UpdatePlaylistResult.cs" />
     <Compile Include="Services\DataStructures\PlayerManagementService\IPlayer.cs" />
     <Compile Include="Services\DataStructures\PlayerManagementService\PlayerType.cs" />

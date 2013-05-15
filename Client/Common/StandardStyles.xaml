@@ -499,6 +499,13 @@
         <Setter Property="AutomationProperties.Name" Value="Save Remote"/>
         <Setter Property="Content" Value="&#xE183;"/>
     </Style>
+
+    <Style x:Key="RenameAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
+        <Setter Property="AutomationProperties.AutomationId" Value="RenameAppBarButton"/>
+        <Setter Property="AutomationProperties.Name" Value="Rename"/>
+        <Setter Property="Content" Value="&#xE13E;"/>
+    </Style>
+
     <!-- 
         Standard AppBarButton Styles for use with Button and ToggleButton
     

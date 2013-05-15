@@ -137,6 +137,9 @@
       <DependentUpon>PlaybackControlsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="BottomBar\PlaylistBottomBarViewModel.cs" />
+    <Compile Include="BottomBar\RenamePlaylistDialog.xaml.cs">
+      <DependentUpon>RenamePlaylistDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ClientModule.cs" />
     <Compile Include="Common\PageHeader.xaml.cs">
       <DependentUpon>PageHeader.xaml</DependentUpon>
@@ -340,6 +343,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="BottomBar\PlaybackControlsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="BottomBar\RenamePlaylistDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

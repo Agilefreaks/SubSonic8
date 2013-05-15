@@ -43,5 +43,24 @@ namespace Client.Tests.PlaylistBottomBar
 
             callCount.Should().Be(1);
         }
+
+        [TestMethod]
+        public void RenamePlaylist_Always_CallRenamePlaylistWithTheFirstSelectedItemsId()
+        {
+            var callCount = 0;
+            _subject.SelectedItems.Add(new MenuItemViewModel { Item = new Playlist { Id = 5 } });
+            _mockSubsonicService.RenamePlaylist = (playlistId, playlistName) =>
+                {
+                    callCount++;
+                    playlistId.Should().Be(5);
+                    playlistName.Should().Be("test");
+
+                    return new MockRenamePlaylistResult();
+                };
+
+            _subject.RenamePlaylist("test");
+
+            callCount.Should().Be(1);
+        }
     }
 }

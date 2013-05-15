@@ -2,18 +2,29 @@
 using System.Collections.Specialized;
 using System.Linq;
 using Caliburn.Micro;
+using Callisto.Controls;
 using Client.Common.Services;
 using MugenInjection.Attributes;
 using Subsonic8.Framework.Services;
 using Subsonic8.MenuItem;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
 
 namespace Subsonic8.BottomBar
 {
     public class PlaylistBottomBarViewModel : BottomBarViewModelBase, IPlaylistBottomBarViewModel
     {
+        private Flyout _renamePlaylistFlyout;
+
         public bool CanDeletePlaylist
         {
             get { return SelectedItems.Any(); }
+        }
+
+        public MenuItemViewModel SelectedItem
+        {
+            get { return (MenuItemViewModel)SelectedItems[0]; }
         }
 
         public System.Action OnPlaylistDeleted { get; set; }
@@ -29,6 +40,14 @@ namespace Subsonic8.BottomBar
         {
         }
 
+        public async void HandleError(Exception error)
+        {
+            await NotificationService.Show(new DialogNotificationOptions
+            {
+                Message = error.ToString(),
+            });
+        }
+
         public async void DeletePlaylist()
         {
             var playlistId = ((MenuItemViewModel)SelectedItems[0]).Item.Id;
@@ -38,19 +57,66 @@ namespace Subsonic8.BottomBar
                                  .Execute();
         }
 
-        public async void HandleError(Exception error)
+        public void ShowRenameDialog(object sender)
         {
-            await NotificationService.Show(new DialogNotificationOptions
-            {
-                Message = error.ToString(),
-            });
+            var view = GetView() as PlaylistBottomBarView;
+            if (view == null) return;
+            var layoutRoot = view.GetLayoutRoot();
+            _renamePlaylistFlyout = GenerateFlyout(sender);
+            HookupFlyout(layoutRoot, _renamePlaylistFlyout);
+            layoutRoot.Children.Add(_renamePlaylistFlyout.HostPopup);
         }
 
+        public async void RenamePlaylist(string newName)
+        {
+            var playlistId = SelectedItem.Item.Id;
+            await SubsonicService.RenamePlaylist(playlistId, newName)
+                               .WithErrorHandler(this)
+                               .OnSuccess(result => HandleRenameFinished(newName, result))
+                               .Execute();
+        }
 
         protected override void OnSelectedItemsChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
         {
             base.OnSelectedItemsChanged(sender, notifyCollectionChangedEventArgs);
             NotifyOfPropertyChange(() => CanDeletePlaylist);
+        }
+
+        private static void HookupFlyout(Grid layoutRoot, Flyout flyout)
+        {
+            EventHandler<object> eventHandler = null;
+            eventHandler = (s, e) =>
+                {
+                    layoutRoot.Children.Remove(flyout);
+                    flyout.Closed -= eventHandler;
+                };
+            flyout.Closed += eventHandler;
+        }
+
+        private Flyout GenerateFlyout(object sender)
+        {
+            var renamePlaylistDialog = new RenamePlaylistDialog
+            {
+                OnOkClick = RenamePlaylist,
+                PlaylistName = SelectedItem.Title
+            };
+            var flyout = new Flyout
+            {
+                Placement = PlacementMode.Top,
+                PlacementTarget = (UIElement)sender,
+                Content = renamePlaylistDialog,
+                IsOpen = true
+            };
+
+            return flyout;
+        }
+
+        private void HandleRenameFinished(string newName, bool result)
+        {
+            if (result)
+            {
+                SelectedItem.Title = newName;
+            }
         }
     }
 }

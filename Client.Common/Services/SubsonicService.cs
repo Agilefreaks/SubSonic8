@@ -51,6 +51,8 @@ namespace Client.Common.Services
 
         public Func<int, IEnumerable<int>, IEnumerable<int>, IUpdatePlaylistResult> UpdatePlaylist { get; set; }
 
+        public Func<int, string, IRenamePlaylistResult> RenamePlaylist { get; set; }
+
         public virtual bool HasValidSubsonicUrl
         {
             get { return Configuration != null && !string.IsNullOrEmpty(Configuration.BaseUrl); }
@@ -70,6 +72,7 @@ namespace Client.Common.Services
             DeletePlaylist = DeletePlaylistImpl;
             CreatePlaylist = CreatePlaylistImpl;
             UpdatePlaylist = UpdatePlaylistResultImpl;
+            RenamePlaylist = RenamePlaylistImpl;
         }
 
         public virtual Uri GetUriForFileWithId(int id)
@@ -179,6 +182,11 @@ namespace Client.Common.Services
         private IUpdatePlaylistResult UpdatePlaylistResultImpl(int id, IEnumerable<int> songIdsToAdd, IEnumerable<int> songIndexesToRemove)
         {
             return new UpdatePlaylistResult(Configuration, id, songIdsToAdd, songIndexesToRemove);
+        }
+
+        private IRenamePlaylistResult RenamePlaylistImpl(int id, string name)
+        {
+            return new RenamePlaylistResult(Configuration, id, name);
         }
     }
 }

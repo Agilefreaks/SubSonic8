@@ -9,9 +9,10 @@
         <cal:BooleanToVisibilityConverter x:Key="VisibilityConverter"/>
     </UserControl.Resources>
 
-    <Grid>
+    <Grid x:Name="LayoutRoot">
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
             <Button Style="{StaticResource RemoveAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action DeletePlaylist()]" Visibility="{Binding CanDeletePlaylist, Converter={StaticResource VisibilityConverter}}"/>
+            <Button Style="{StaticResource RenameAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action ShowRenameDialog($source)]" Visibility="{Binding CanDeletePlaylist, Converter={StaticResource VisibilityConverter}}"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
             <bottomBar:PlaybackControlsView/>

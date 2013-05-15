@@ -31,6 +31,8 @@ namespace Client.Common.Services
 
         Func<int, IEnumerable<int>, IEnumerable<int>, IUpdatePlaylistResult> UpdatePlaylist { get; set; }
 
+        Func<int, string, IRenamePlaylistResult> RenamePlaylist { get; set; }
+
         bool HasValidSubsonicUrl { get; }
 
         Func<int, IDeletePlaylistResult> DeletePlaylist { get; set; }
