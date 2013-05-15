@@ -14,6 +14,7 @@ namespace Subsonic8.Playlists
     public class SavePlaylistViewModel : PlaylistViewModelBase, ISavePlaylistViewModel
     {
         private string _playlistName;
+        private bool _canEdit;
 
         public string PlaylistName
         {
@@ -32,7 +33,22 @@ namespace Subsonic8.Playlists
 
         public bool CanSave
         {
-            get { return !string.IsNullOrWhiteSpace(PlaylistName); }
+            get { return !string.IsNullOrWhiteSpace(PlaylistName) && CanEdit; }
+        }
+
+        public bool CanEdit
+        {
+            get
+            {
+                return _canEdit;
+            }
+            set
+            {
+                if (value.Equals(_canEdit)) return;
+                _canEdit = value;
+                NotifyOfPropertyChange();
+                NotifyOfPropertyChange(() => CanSave);
+            }
         }
 
         [Inject]
@@ -58,6 +74,7 @@ namespace Subsonic8.Playlists
 
         public async void Save()
         {
+            CanEdit = false;
             var existingEntry = MenuItems.FirstOrDefault(item => item.Item.Name == PlaylistName);
             if (existingEntry != null)
             {
@@ -74,6 +91,12 @@ namespace Subsonic8.Playlists
                                      .OnSuccess(OnSaveFinished)
                                      .Execute();
             }
+        }
+
+        protected override void OnActivate()
+        {
+            base.OnActivate();
+            CanEdit = true;
         }
 
         private static int ExtractId(Client.Common.Models.PlaylistItem item)
@@ -95,6 +118,7 @@ namespace Subsonic8.Playlists
 
         private void OnSaveFinished(bool result)
         {
+            CanEdit = true;
             if (!result)
             {
                 DialogNotificationService.Show(new DialogNotificationOptions
