@@ -93,6 +93,11 @@ namespace Subsonic8.Playlists
             }
         }
 
+        public void PlaylistNameChanged(TextBox sender)
+        {
+            PlaylistName = sender.Text;
+        }
+
         protected override void OnActivate()
         {
             base.OnActivate();
