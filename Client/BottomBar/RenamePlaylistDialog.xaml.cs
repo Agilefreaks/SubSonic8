@@ -31,5 +31,10 @@ namespace Subsonic8.BottomBar
                 flyout.IsOpen = false;
             }
         }
+
+        private void PlaylistNameTextBox_OnGotFocus(object sender, RoutedEventArgs e)
+        {
+            PlaylistNameTextBox.SelectionStart = PlaylistNameTextBox.Text.Length;
+        }
     }
 }

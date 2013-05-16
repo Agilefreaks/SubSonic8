@@ -9,7 +9,7 @@
     d:DesignWidth="400">
     
     <StackPanel Orientation="Horizontal">
-        <TextBox x:Name="PlaylistNameTextBox" Style="{StaticResource PopupTextBoxStyle}"/>
+        <TextBox x:Name="PlaylistNameTextBox" Style="{StaticResource PopupTextBoxStyle}" GotFocus="PlaylistNameTextBox_OnGotFocus"/>
         <Button x:Name="OkButton" Click="Ok_OnClick" Content="Ok" Style="{StaticResource LightButton}"/>
     </StackPanel>
 </UserControl>
