@@ -4,7 +4,7 @@ A simple client app for the popular "Subsonic":http://www.subsonic.org media ser
 
 h1. Requirments
 
-# Windows 8 works on WinRT devise
+# Windows 8 works on WinRT devices
 # Subsonic server premium version >= 4.7
 
 h1. Note
