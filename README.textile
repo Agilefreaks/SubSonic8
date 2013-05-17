@@ -2,6 +2,11 @@ h1. Welcome to Subsonic8
 
 A simple client app for the popular "Subsonic":http://www.subsonic.org media server. Written for WinRT (latest and greates from Microsoft).
 
+h1. Requirments
+
+# Windows 8 works on WinRT devise
+# Subsonic server premium version >= 4.7
+
 h1. Note
 
 If you install the app and when switching away to another app the sound volume lowers automatically, and you are annoyed by this follow these steps:
