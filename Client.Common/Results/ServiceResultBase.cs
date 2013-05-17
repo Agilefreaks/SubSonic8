@@ -41,21 +41,27 @@ namespace Client.Common.Results
 
         public virtual void HandleStreamResponse(Stream stream)
         {
-            XDocument xDocument = null;
+            bool failed;
             try
             {
-                xDocument = XDocument.Load(stream);
+                var xDocument = XDocument.Load(stream);
+                HandleResponse(xDocument);
             }
             catch (Exception exception)
             {
+                failed = true;
                 OnError(exception);
-                HandleError();
             }
-
-            if (xDocument != null)
+            finally
             {
-                HandleResponse(xDocument);
-                OnSuccess();
+                if (failed)
+                {
+                    HandleError();
+                }
+                else
+                {
+                    OnSuccess();
+                }
             }
         }
 
