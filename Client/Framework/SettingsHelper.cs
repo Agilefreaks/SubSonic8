@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using Client.Common;
 using Client.Common.Services;
-using Client.Common.Services.DataStructures.SubsonicService;
 using MugenInjection.Attributes;
 using Subsonic8.Framework.Interfaces;
 using Subsonic8.Framework.Services;
@@ -15,7 +14,7 @@ namespace Subsonic8.Framework
 {
     public class SettingsHelper : ISettingsHelper
     {
-        private const string PasswordVaultResourceName = "Subsonic8";
+        public const string PasswordVaultResourceName = "Subsonic8";
 
         [Inject]
         public ISubsonicService SubsonicService { get; set; }
@@ -33,6 +32,24 @@ namespace Subsonic8.Framework
             SubsonicService.Configuration = subsonic8Configuration.SubsonicServiceConfiguration;
 
             ToastNotificationService.UseSound = subsonic8Configuration.ToastsUseSound;
+        }
+
+        public void UpdateCredentialsInVault(PasswordCredential passwordCredential)
+        {
+            var vault = new PasswordVault();
+            var credentials = GetCredentialsFromVault(vault);
+            if (credentials != null)
+            {
+                vault.Remove(credentials);
+            }
+
+            vault.Add(passwordCredential);
+        }
+
+        public PasswordCredential GetCredentialsFromVault()
+        {
+            var vault = new PasswordVault();
+            return GetCredentialsFromVault(vault);
         }
 
         private async Task<Subsonic8Configuration> GetSubsonic8Configuration()

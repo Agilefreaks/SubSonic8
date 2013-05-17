@@ -21,6 +21,7 @@ namespace Client.Common.Services.DataStructures.SubsonicService
 
             set
             {
+                if (_username == value) return;
                 _username = value;
                 NotifyOfPropertyChange();
             }
@@ -36,6 +37,7 @@ namespace Client.Common.Services.DataStructures.SubsonicService
 
             set
             {
+                if (_password == value) return;
                 _password = value;
                 NotifyOfPropertyChange();
             }

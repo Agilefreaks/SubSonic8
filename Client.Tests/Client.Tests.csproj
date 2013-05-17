@@ -128,6 +128,7 @@
     <Compile Include="Mocks\MockCreatePlaylistResult.cs" />
     <Compile Include="Mocks\MockGetPlaylistResult.cs" />
     <Compile Include="Mocks\MockRenamePlaylistResult.cs" />
+    <Compile Include="Mocks\MockSettingsHelper.cs" />
     <Compile Include="Mocks\MockUpdatePlaylistResult.cs" />
     <Compile Include="PlaylistBottomBar\PlaylistBottomBarViewModelTests.cs" />
     <Compile Include="Playlists\ManagePlaylistsViewModelTests.cs" />
