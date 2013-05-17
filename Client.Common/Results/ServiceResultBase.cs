@@ -41,7 +41,7 @@ namespace Client.Common.Results
 
         public virtual void HandleStreamResponse(Stream stream)
         {
-            bool failed;
+            var failed = false;
             try
             {
                 var xDocument = XDocument.Load(stream);
