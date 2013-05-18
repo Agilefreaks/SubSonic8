@@ -115,10 +115,12 @@
     <Compile Include="Results\CreatePlaylistResult.cs" />
     <Compile Include="Results\DeletePlaylistResult.cs" />
     <Compile Include="Results\EmptyResponseResultBase.cs" />
+    <Compile Include="Results\ExtendedResultBase.cs" />
     <Compile Include="Results\GetAllPlaylistsResult.cs" />
     <Compile Include="Results\GetPlaylistResult.cs" />
     <Compile Include="Results\IDeletePlaylistResult.cs" />
     <Compile Include="Results\IEmptyResponseResult.cs" />
+    <Compile Include="Results\IExtendedResult.cs" />
     <Compile Include="Results\IGetAllPlaylistsResult.cs" />
     <Compile Include="Results\IGetPlaylistResult.cs" />
     <Compile Include="Results\ICreatePlaylistResult.cs" />

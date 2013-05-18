@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Net.Http;
 using System.ServiceModel;
 using System.Threading.Tasks;
@@ -9,7 +8,7 @@ using Client.Common.Services.DataStructures.SubsonicService;
 
 namespace Client.Common.Results
 {
-    public abstract class ServiceResultBase<T> : ResultBase, IServiceResultBase<T>
+    public abstract class ServiceResultBase<T> : ExtendedResultBase, IServiceResultBase<T>
     {
         protected readonly XNamespace Namespace = "http://subsonic.org/restapi";
 
@@ -30,45 +29,12 @@ namespace Client.Common.Results
         }
 
         protected readonly HttpClient Client = new HttpClient();
-        private IErrorHandler _errorHandler;
         private Action<T> _onSuccess;
 
         protected ServiceResultBase(ISubsonicServiceConfiguration configuration)
         {
             Configuration = configuration;
             Response = ResponseFunc;
-        }
-
-        public virtual void HandleStreamResponse(Stream stream)
-        {
-            Exception detectedException = null;
-            try
-            {
-                var xDocument = XDocument.Load(stream);
-                HandleResponse(xDocument);
-            }
-            catch (Exception exception)
-            {
-                detectedException = exception;
-            }
-            finally
-            {
-                if (detectedException != null)
-                {
-                    OnError(detectedException);
-                }
-                else
-                {
-                    OnSuccess();
-                }
-            }
-        }
-
-        public IServiceResultBase<T> WithErrorHandler(IErrorHandler errorHandler)
-        {
-            _errorHandler = errorHandler;
-
-            return this;
         }
 
         public IServiceResultBase<T> OnSuccess(Action<T> onSuccess)
@@ -90,30 +56,35 @@ namespace Client.Common.Results
             return this;
         }
 
+        public new IServiceResultBase<T> WithErrorHandler(IErrorHandler errorHandler)
+        {
+            ErrorHandler = errorHandler;
+
+            return this;
+        }
+
+
         protected abstract void HandleResponse(XDocument xDocument);
 
         protected override async Task ExecuteCore(ActionExecutionContext context = null)
         {
-            await new VisualStateResult("Loading").Execute();
-
             var response = await Response();
-
             if (response.Exception != null)
             {
-                OnError(new CommunicationException("Could not connect to the server. Please check the values in the settings panel.\r\n", response.Exception));
-            }
-            else
-            {
-                HandleStreamResponse(response.Stream);
+                throw new CommunicationException("Could not complete request.\r\n", response.Exception);
             }
 
-            await new VisualStateResult("LoadingComplete").Execute();
+            var xDocument = XDocument.Load(response.Stream);
+            HandleResponse(xDocument);
         }
 
-        protected override void OnError(Exception error)
+        protected override void ExecuteOnSuccessAction()
         {
-            base.OnError(error);
-            HandleError();
+            base.ExecuteOnSuccessAction();
+            if (_onSuccess != null)
+            {
+                _onSuccess(Result);
+            }
         }
 
         private async Task<HttpStreamResult> ResponseFunc()
@@ -124,7 +95,16 @@ namespace Client.Common.Results
                 var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, RequestUrl);
                 httpRequestMessage.Headers.Add("Authorization", string.Format("Basic {0}", Configuration.EncodedCredentials));
                 var response = await Client.SendAsync(httpRequestMessage);
-                result.Stream = await response.Content.ReadAsStreamAsync();
+                if (response.IsSuccessStatusCode)
+                {
+                    result.Stream = await response.Content.ReadAsStreamAsync();
+                }
+                else
+                {
+                    throw new CommunicationException(
+                        string.Format("Response was:\r\nStatus Code:{0}\r\nReason:{1}", response.StatusCode,
+                                      response.ReasonPhrase));
+                }
             }
             catch (Exception exception)
             {
@@ -132,22 +112,6 @@ namespace Client.Common.Results
             }
 
             return result;
-        }
-
-        private void HandleError()
-        {
-            if (_errorHandler != null)
-            {
-                _errorHandler.HandleError(Error);
-            }
-        }
-
-        private void OnSuccess()
-        {
-            if (_onSuccess != null)
-            {
-                _onSuccess(Result);
-            }
         }
     }
 }

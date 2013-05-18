@@ -3,13 +3,15 @@ using System.Threading.Tasks;
 using Caliburn.Micro;
 using Client.Common.Results;
 using Client.Common.Services.DataStructures.SubsonicService;
+using Action = System.Action;
 
 namespace Client.Tests.Mocks
 {
     public abstract class MockServiceResultBase<T> : IServiceResultBase<T>
     {
-        private Action<T> _onSuccess;
+        private Action<T> _extendedOnSuccess;
         private IErrorHandler _errorHandler;
+        private Action _onSuccess;
 
         public int ExecuteCallCount { get; protected set; }
 
@@ -29,6 +31,12 @@ namespace Client.Tests.Mocks
 
         public string RequestUrl { get; protected set; }
 
+        IExtendedResult IExtendedResult.WithErrorHandler(IErrorHandler errorHandler)
+        {
+            _errorHandler = errorHandler;
+            return this;
+        }
+
         public IServiceResultBase<T> WithErrorHandler(IErrorHandler errorHandler)
         {
             _errorHandler = errorHandler;
@@ -36,6 +44,12 @@ namespace Client.Tests.Mocks
         }
 
         public IServiceResultBase<T> OnSuccess(Action<T> onSuccess)
+        {
+            _extendedOnSuccess = onSuccess;
+            return this;
+        }
+
+        public IExtendedResult OnSuccess(Action onSuccess)
         {
             _onSuccess = onSuccess;
             return this;
@@ -53,9 +67,14 @@ namespace Client.Tests.Mocks
                 _errorHandler.HandleError(Error);
             }
 
+            if (_extendedOnSuccess != null)
+            {
+                _extendedOnSuccess(Result);
+            }
+
             if (_onSuccess != null)
             {
-                _onSuccess(Result);
+                _onSuccess();
             }
 
             return taskCompletionSource.Task;
