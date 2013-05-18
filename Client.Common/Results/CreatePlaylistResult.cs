@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Xml.Linq;
 using Client.Common.Services.DataStructures.SubsonicService;
 
 namespace Client.Common.Results
 {
-    public class CreatePlaylistResult : ServiceResultBase<bool>, ICreatePlaylistResult
+    public class CreatePlaylistResult : EmptyResponseResultBase, ICreatePlaylistResult
     {
         public string Name { get; private set; }
 
@@ -31,12 +30,6 @@ namespace Client.Common.Results
         {
             Name = name;
             SongIds = songIds;
-        }
-
-        protected override void HandleResponse(XDocument xDocument)
-        {
-            var xElement = xDocument.Element(Namespace + "subsonic-response");
-            Result = !xElement.HasElements;
         }
     }
 }

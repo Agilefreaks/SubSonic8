@@ -2,7 +2,7 @@
 
 namespace Client.Common.Results
 {
-    public interface ICreatePlaylistResult : IServiceResultBase<bool>
+    public interface ICreatePlaylistResult : IEmptyResponseResult
     {
         string Name { get; }
 

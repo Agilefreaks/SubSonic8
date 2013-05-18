@@ -1,12 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Xml.Linq;
 using Client.Common.Services.DataStructures.SubsonicService;
 
 namespace Client.Common.Results
 {
-    public class UpdatePlaylistResult : ServiceResultBase<bool>, IUpdatePlaylistResult
+    public class UpdatePlaylistResult : EmptyResponseResultBase, IUpdatePlaylistResult
     {
         public int Id { get; private set; }
 
@@ -38,12 +36,6 @@ namespace Client.Common.Results
             Id = id;
             SongIdsToAdd = songIdsToAdd;
             SongIndexesToRemove = songIndexesToRemove;
-        }
-
-        protected override void HandleResponse(XDocument xDocument)
-        {
-            var xElement = xDocument.Element(Namespace + "subsonic-response");
-            Result = !xElement.HasElements;
         }
     }
 }
