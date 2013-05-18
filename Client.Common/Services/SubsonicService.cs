@@ -55,6 +55,8 @@ namespace Client.Common.Services
 
         public Func<IPingResult> Ping { get; set; }
 
+        public Func<IDiagnosticsResult> RunDiagnostics { get; set; }
+
         public virtual bool HasValidSubsonicUrl
         {
             get { return Configuration != null && !string.IsNullOrEmpty(Configuration.BaseUrl); }
@@ -76,6 +78,7 @@ namespace Client.Common.Services
             UpdatePlaylist = UpdatePlaylistResultImpl;
             RenamePlaylist = RenamePlaylistImpl;
             Ping = PingFunc;
+            RunDiagnostics = RunDiagnosticsImpl;
         }
 
         public virtual Uri GetUriForFileWithId(int id)
@@ -197,5 +200,9 @@ namespace Client.Common.Services
             return new PingResult(Configuration);
         }
 
+        private IDiagnosticsResult RunDiagnosticsImpl()
+        {
+            return new DiagnosticsResult(Configuration);
+        }
     }
 }

@@ -114,8 +114,8 @@ namespace Client.Common.Tests.Services
 
             var expectedUri = new Uri("http://google.com/stream/stream.ts?id=30437&hls=true&timeOffset=100&duration=10&maxBitRate=50");
             uriForVideoStartingAt.Should().Be(expectedUri);
-        }        
-        
+        }
+
         [TestMethod]
         public void GetUriForVideoStartingAt_Always_ReturnsTheOriginalUriModifiedToHaveTheGivenTimeOffsetParameterRoundedToTheClosestSmallerInteger()
         {
@@ -133,6 +133,18 @@ namespace Client.Common.Tests.Services
             var result = _subject.GetIndex(5);
 
             result.Should().BeOfType<GetIndexResult>();
+        }
+
+        [TestMethod]
+        public void Ping_Always_ReturnsAPingResult()
+        {
+            _subject.Ping().Should().BeOfType<PingResult>();
+        }
+
+        [TestMethod]
+        public void RunDiagnostics_Always_ReturnsADiagnosticsResult()
+        {
+            _subject.RunDiagnostics().Should().BeOfType<DiagnosticsResult>();
         }
     }
 }

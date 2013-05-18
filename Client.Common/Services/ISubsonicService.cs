@@ -37,6 +37,8 @@ namespace Client.Common.Services
 
         Func<IPingResult> Ping { get; set; }
 
+        Func<IDiagnosticsResult> RunDiagnostics { get; set; }
+
         bool HasValidSubsonicUrl { get; }
 
         Uri GetUriForFileWithId(int id);

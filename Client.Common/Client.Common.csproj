@@ -114,12 +114,16 @@
     <Compile Include="Models\Subsonic\PlaylistEntry.cs" />
     <Compile Include="Results\CreatePlaylistResult.cs" />
     <Compile Include="Results\DeletePlaylistResult.cs" />
+    <Compile Include="Results\DiagnosticsResult.cs" />
     <Compile Include="Results\DiagnosticStepEnum.cs" />
+    <Compile Include="Results\DiagnosticStepResultBase.cs" />
     <Compile Include="Results\EmptyResponseResultBase.cs" />
     <Compile Include="Results\ExtendedResultBase.cs" />
     <Compile Include="Results\GetAllPlaylistsResult.cs" />
     <Compile Include="Results\GetPlaylistResult.cs" />
     <Compile Include="Results\IDeletePlaylistResult.cs" />
+    <Compile Include="Results\IDiagnosticsResult.cs" />
+    <Compile Include="Results\IDiagnosticStepResult.cs" />
     <Compile Include="Results\IEmptyResponseResult.cs" />
     <Compile Include="Results\IExtendedResult.cs" />
     <Compile Include="Results\IGetAllPlaylistsResult.cs" />
