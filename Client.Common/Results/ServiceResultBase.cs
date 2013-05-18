@@ -41,7 +41,7 @@ namespace Client.Common.Results
 
         public virtual void HandleStreamResponse(Stream stream)
         {
-            var failed = false;
+            Exception detectedException = null;
             try
             {
                 var xDocument = XDocument.Load(stream);
@@ -49,14 +49,13 @@ namespace Client.Common.Results
             }
             catch (Exception exception)
             {
-                failed = true;
-                OnError(exception);
+                detectedException = exception;
             }
             finally
             {
-                if (failed)
+                if (detectedException != null)
                 {
-                    HandleError();
+                    OnError(detectedException);
                 }
                 else
                 {
@@ -102,7 +101,6 @@ namespace Client.Common.Results
             if (response.Exception != null)
             {
                 OnError(new CommunicationException("Could not connect to the server. Please check the values in the settings panel.\r\n", response.Exception));
-                HandleError();
             }
             else
             {
@@ -110,6 +108,12 @@ namespace Client.Common.Results
             }
 
             await new VisualStateResult("LoadingComplete").Execute();
+        }
+
+        protected override void OnError(Exception error)
+        {
+            base.OnError(error);
+            HandleError();
         }
 
         private async Task<HttpStreamResult> ResponseFunc()
