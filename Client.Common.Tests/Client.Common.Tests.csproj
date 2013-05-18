@@ -132,6 +132,7 @@
     <Compile Include="Results\GetPlaylistResultTests.cs" />
     <Compile Include="Results\GetRootResultTests.cs" />
     <Compile Include="Results\GetSongResultTests.cs" />
+    <Compile Include="Results\PingResultTests.cs" />
     <Compile Include="Results\RenamePlaylistResultTests.cs" />
     <Compile Include="Results\UpdatePlaylistResultTests.cs" />
     <Compile Include="Services\PlayerManagementServiceTests.cs" />

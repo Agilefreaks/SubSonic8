@@ -33,9 +33,11 @@ namespace Client.Common.Services
 
         Func<int, string, IRenamePlaylistResult> RenamePlaylist { get; set; }
 
-        bool HasValidSubsonicUrl { get; }
-
         Func<int, IDeletePlaylistResult> DeletePlaylist { get; set; }
+
+        Func<IPingResult> Ping { get; set; }
+
+        bool HasValidSubsonicUrl { get; }
 
         Uri GetUriForFileWithId(int id);
 
