@@ -1,6 +1,9 @@
-﻿namespace Client.Common.Results
+﻿using Client.Common.Models.Subsonic;
+
+namespace Client.Common.Results
 {
-    public interface IPingResult : IDiagnosticStepResult
+    public interface IPingResult : IEmptyResponseResult
     {
+        Error ApiError { get; }
     }
 }

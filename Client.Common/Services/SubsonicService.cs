@@ -55,8 +55,6 @@ namespace Client.Common.Services
 
         public Func<IPingResult> Ping { get; set; }
 
-        public Func<IDiagnosticsResult> RunDiagnostics { get; set; }
-
         public virtual bool HasValidSubsonicUrl
         {
             get { return Configuration != null && !string.IsNullOrEmpty(Configuration.BaseUrl); }
@@ -77,8 +75,7 @@ namespace Client.Common.Services
             CreatePlaylist = CreatePlaylistImpl;
             UpdatePlaylist = UpdatePlaylistResultImpl;
             RenamePlaylist = RenamePlaylistImpl;
-            Ping = PingFunc;
-            RunDiagnostics = RunDiagnosticsImpl;
+            Ping = PinImpl;
         }
 
         public virtual Uri GetUriForFileWithId(int id)
@@ -195,14 +192,9 @@ namespace Client.Common.Services
             return new RenamePlaylistResult(Configuration, id, name);
         }
 
-        private IPingResult PingFunc()
+        private PingResult PinImpl()
         {
             return new PingResult(Configuration);
-        }
-
-        private IDiagnosticsResult RunDiagnosticsImpl()
-        {
-            return new DiagnosticsResult(Configuration);
         }
     }
 }

@@ -63,7 +63,6 @@ namespace Client.Common.Results
             return this;
         }
 
-
         protected abstract void HandleResponse(XDocument xDocument);
 
         protected override async Task ExecuteCore(ActionExecutionContext context = null)

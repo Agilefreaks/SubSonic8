@@ -140,11 +140,5 @@ namespace Client.Common.Tests.Services
         {
             _subject.Ping().Should().BeOfType<PingResult>();
         }
-
-        [TestMethod]
-        public void RunDiagnostics_Always_ReturnsADiagnosticsResult()
-        {
-            _subject.RunDiagnostics().Should().BeOfType<DiagnosticsResult>();
-        }
     }
 }

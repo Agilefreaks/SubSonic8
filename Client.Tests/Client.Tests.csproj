@@ -127,6 +127,7 @@
     <Compile Include="Framework\ViewModel\ItemViewModelBaseTests.cs" />
     <Compile Include="Mocks\MockCreatePlaylistResult.cs" />
     <Compile Include="Mocks\MockGetPlaylistResult.cs" />
+    <Compile Include="Mocks\MockPingResult.cs" />
     <Compile Include="Mocks\MockRenamePlaylistResult.cs" />
     <Compile Include="Mocks\MockSettingsHelper.cs" />
     <Compile Include="Mocks\MockUpdatePlaylistResult.cs" />
