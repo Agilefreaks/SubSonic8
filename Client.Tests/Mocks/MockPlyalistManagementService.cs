@@ -20,7 +20,7 @@ namespace Client.Tests.Mocks
 
         public int ClearCallCount { get; set; }
 
-        public int LoadPlaylistCallCOunt { get; set; }
+        public int LoadPlaylistCallCount { get; set; }
 
         public Dictionary<string, object> MethodCalls { get; set; }
 
@@ -37,7 +37,7 @@ namespace Client.Tests.Mocks
 
         public void LoadPlaylist(PlaylistItemCollection playlistItemCollection)
         {
-            LoadPlaylistCallCOunt++;
+            LoadPlaylistCallCount++;
             MethodCalls.Add("LoadPlaylist", playlistItemCollection);
         }
 

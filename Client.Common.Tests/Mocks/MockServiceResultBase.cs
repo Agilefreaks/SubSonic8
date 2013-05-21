@@ -5,13 +5,14 @@ using Client.Common.Results;
 using Client.Common.Services.DataStructures.SubsonicService;
 using Action = System.Action;
 
-namespace Client.Tests.Mocks
+namespace Client.Common.Tests.Mocks
 {
     public abstract class MockServiceResultBase<T> : IServiceResultBase<T>
     {
         private Action<T> _extendedOnSuccess;
-        private IErrorHandler _errorHandler;
         private Action _onSuccess;
+
+        public IErrorHandler ErrorHandler { get; private set; }
 
         public int ExecuteCallCount { get; protected set; }
 
@@ -33,13 +34,13 @@ namespace Client.Tests.Mocks
 
         IExtendedResult IExtendedResult.WithErrorHandler(IErrorHandler errorHandler)
         {
-            _errorHandler = errorHandler;
+            ErrorHandler = errorHandler;
             return this;
         }
 
         public IServiceResultBase<T> WithErrorHandler(IErrorHandler errorHandler)
         {
-            _errorHandler = errorHandler;
+            ErrorHandler = errorHandler;
             return this;
         }
 
@@ -62,23 +63,27 @@ namespace Client.Tests.Mocks
             Result = GetResultFunc != null ? GetResultFunc() : default(T);
             Error = GetErrorFunc != null ? GetErrorFunc() : null;
             taskCompletionSource.SetResult(Result);
-            if (_errorHandler != null && Error != null)
+            if (Error != null)
             {
-                _errorHandler.HandleError(Error);
+                if (ErrorHandler != null)
+                {
+                    ErrorHandler.HandleError(Error);
+                }
             }
-
-            if (_extendedOnSuccess != null)
+            else
             {
-                _extendedOnSuccess(Result);
-            }
+                if (_extendedOnSuccess != null)
+                {
+                    _extendedOnSuccess(Result);
+                }
 
-            if (_onSuccess != null)
-            {
-                _onSuccess();
+                if (_onSuccess != null)
+                {
+                    _onSuccess();
+                }
             }
 
             return taskCompletionSource.Task;
-
         }
     }
 }

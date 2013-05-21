@@ -86,13 +86,13 @@ namespace Client.Tests.Playback
         public async Task ParameterWhenSetShouldAddAnItemToThePlaylist()
         {
             MockLoadModel();
+            var itemsCount = _mockPlaylistManagementService.Items.Count;
             await Task.Run(() =>
                 {
                     Subject.Parameter = 1;
                 });
 
-            MockEventAggregator.Messages.Any(
-                m => m.GetType() == typeof(AddItemsMessage) && ItemMatches(((AddItemsMessage)m).Queue[0])).Should().BeTrue();
+            _mockPlaylistManagementService.Items.Count.Should().Be(itemsCount + 1);
         }
 
         [TestMethod]
@@ -106,20 +106,19 @@ namespace Client.Tests.Playback
                 });
 
             MockEventAggregator.Messages.Any(
-                m => m.GetType() == typeof(PlayItemAtIndexMessage) && ((PlayItemAtIndexMessage)m).Index == 0).Should().BeTrue();
+                m =>
+                m.GetType() == typeof(PlayItemAtIndexMessage) &&
+                ((PlayItemAtIndexMessage)m).Index == _mockPlaylistManagementService.Items.Count - 1).Should().BeTrue();
         }
 
         [TestMethod]
-        public async Task HandleWithPlayFileOfTypeSongShouldPublishAAddItemMessage()
+        public async Task HandleWithPlayFileOfTypeSongShouldAddAnItemToThePlaylist()
         {
             MockLoadModel();
 
             await Task.Run(() => Subject.AddToPlaylistAndPlay(new Song { IsVideo = false }));
 
-            MockEventAggregator.Messages.Any(
-                m =>
-                m.GetType() == typeof(AddItemsMessage) && ItemMatches(((AddItemsMessage)m).Queue[0]))
-                                .Should().BeTrue();
+            _mockPlaylistManagementService.Items.Count.Should().Be(1);
         }
 
         [TestMethod]
@@ -131,7 +130,9 @@ namespace Client.Tests.Playback
             await Task.Run(() => Subject.AddToPlaylistAndPlay(new Song { IsVideo = false }));
 
             MockEventAggregator.Messages.Any(
-                m => m.GetType() == typeof(PlayItemAtIndexMessage) && ((PlayItemAtIndexMessage)m).Index == 0).Should().BeTrue();
+                m =>
+                m.GetType() == typeof(PlayItemAtIndexMessage) &&
+                ((PlayItemAtIndexMessage)m).Index == _mockPlaylistManagementService.Items.Count - 1).Should().BeTrue();
         }
 
         [TestMethod]
@@ -198,11 +199,6 @@ namespace Client.Tests.Playback
                         });
                     return tcr.Task;
                 };
-        }
-
-        private static bool ItemMatches(PlaylistItem itemToCheck)
-        {
-            return itemToCheck.Uri.ToString() == "http://test-uri/";
         }
     }
 }

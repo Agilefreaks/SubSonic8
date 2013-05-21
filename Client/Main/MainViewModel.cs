@@ -17,6 +17,8 @@ namespace Subsonic8.Main
     {
         public BindableCollection<MenuItemViewModel> MenuItems { get; private set; }
 
+        public bool Parameter { get; set; }
+
         public MainViewModel()
         {
             MenuItems = new BindableCollection<MenuItemViewModel>();
@@ -33,10 +35,25 @@ namespace Subsonic8.Main
         {
             if (SubsonicService.HasValidSubsonicUrl)
             {
-                await SubsonicService.GetMusicFolders().WithErrorHandler(this).OnSuccess(SetMenuItems).Execute();
-                if (MenuItems.Count == 1)
+                var populate = true;
+                if (Parameter)
                 {
-                    NavigationService.NavigateToViewModel<IndexViewModel>(MenuItems[0].Item.Id);
+                    var diagnosticsResult = SubsonicService.Ping();
+                    await diagnosticsResult.WithErrorHandler(this).Execute();
+                    if (diagnosticsResult.ApiError != null)
+                    {
+                        populate = false;
+                        await NotificationService.Show(new DialogNotificationOptions { Message = diagnosticsResult.ApiError.Message });
+                    }
+                }
+
+                if (populate)
+                {
+                    await SubsonicService.GetMusicFolders().WithErrorHandler(this).OnSuccess(SetMenuItems).Execute();
+                    if (MenuItems.Count == 1)
+                    {
+                        NavigationService.NavigateToViewModel<IndexViewModel>(MenuItems[0].Item.Id);
+                    }
                 }
             }
             else

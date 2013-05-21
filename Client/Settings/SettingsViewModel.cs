@@ -66,7 +66,7 @@ namespace Subsonic8.Settings
         public async void SaveChanges()
         {
             await SaveSettings();
-            _navigationService.NavigateToViewModel<MainViewModel>();
+            _navigationService.NavigateToViewModel<MainViewModel>(true);
         }
 
         public void UsernameChanged(TextBox textBox)

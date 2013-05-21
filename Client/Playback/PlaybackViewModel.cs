@@ -320,10 +320,7 @@ namespace Subsonic8.Playback
         public async Task AddToPlaylistAndPlay(Song model)
         {
             var playlistItem = await LoadModel(model);
-            EventAggregator.Publish(new AddItemsMessage
-                {
-                    Queue = new List<Client.Common.Models.PlaylistItem>(new[] { playlistItem })
-                });
+            PlaylistManagementService.Items.Add(playlistItem);
             EventAggregator.Publish(new PlayItemAtIndexMessage(PlaylistItems.Count - 1));
         }
 
@@ -364,7 +361,7 @@ namespace Subsonic8.Playback
         {
             await SubsonicService.GetSong(songId)
                                  .WithErrorHandler(this)
-                                 .OnSuccess(song => AddToPlaylistAndPlay(song))
+                                 .OnSuccess(async song => await AddToPlaylistAndPlay(song))
                                  .Execute();
         }
 

@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Client.Common.Services;
 using Client.Common.Services.DataStructures.SubsonicService;
 
 namespace Client.Common.Results
 {
-    public interface IServiceResultBase<out T> : IResultBase
+    public interface IServiceResultBase<out T> : IExtendedResult
     {
         ISubsonicServiceConfiguration Configuration { get; }
 
@@ -17,8 +16,8 @@ namespace Client.Common.Results
 
         string RequestUrl { get; }
 
-        IServiceResultBase<T> WithErrorHandler(IErrorHandler errorHandler);
-
         IServiceResultBase<T> OnSuccess(Action<T> onSuccess);
+
+        new IServiceResultBase<T> WithErrorHandler(IErrorHandler errorHandler);
     }
 }
