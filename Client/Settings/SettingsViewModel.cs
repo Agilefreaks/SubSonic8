@@ -1,22 +1,58 @@
-using System.Threading.Tasks;
-using Caliburn.Micro;
-using Client.Common.Services;
-using MugenInjection.Attributes;
-using Subsonic8.Framework.Interfaces;
-using Subsonic8.Framework.Services;
-using Subsonic8.Main;
-using Windows.Security.Credentials;
-using Windows.UI.Xaml.Controls;
-
 namespace Subsonic8.Settings
 {
+    using System.Threading.Tasks;
+    using Caliburn.Micro;
+    using Client.Common.Services;
+    using MugenInjection.Attributes;
+    using Subsonic8.Framework.Interfaces;
+    using Subsonic8.Framework.Services;
+    using Subsonic8.Main;
+    using Windows.Security.Credentials;
+    using Windows.UI.Xaml.Controls;
+
     public class SettingsViewModel : Screen
     {
-        private readonly ISubsonicService _subsonicService;
-        private readonly IToastNotificationService _notificationService;
-        private readonly IStorageService _storageService;
+        #region Fields
+
         private readonly ICustomFrameAdapter _navigationService;
+
+        private readonly IToastNotificationService _notificationService;
+
+        private readonly IStorageService _storageService;
+
+        private readonly ISubsonicService _subsonicService;
+
         private Subsonic8Configuration _configuration;
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        public SettingsViewModel(
+            ISubsonicService subsonicService, 
+            IToastNotificationService notificationService, 
+            IStorageService storageService, 
+            ICustomFrameAdapter navigationService)
+        {
+            _subsonicService = subsonicService;
+            _notificationService = notificationService;
+            _storageService = storageService;
+            _navigationService = navigationService;
+        }
+
+        #endregion
+
+        #region Public Properties
+
+        public bool CanSaveChanges
+        {
+            get
+            {
+                return Configuration != null
+                       && !string.IsNullOrWhiteSpace(Configuration.SubsonicServiceConfiguration.Username)
+                       && !string.IsNullOrWhiteSpace(Configuration.SubsonicServiceConfiguration.Password);
+            }
+        }
 
         public Subsonic8Configuration Configuration
         {
@@ -33,19 +69,6 @@ namespace Subsonic8.Settings
             }
         }
 
-        public bool CanSaveChanges
-        {
-            get
-            {
-                return Configuration != null &&
-                       !string.IsNullOrWhiteSpace(Configuration.SubsonicServiceConfiguration.Username) &&
-                       !string.IsNullOrWhiteSpace(Configuration.SubsonicServiceConfiguration.Password);
-            }
-        }
-
-        [Inject]
-        public ISettingsHelper SettingsHelper { get; set; }
-
         public override string DisplayName
         {
             get
@@ -54,26 +77,12 @@ namespace Subsonic8.Settings
             }
         }
 
-        public SettingsViewModel(ISubsonicService subsonicService, IToastNotificationService notificationService,
-            IStorageService storageService, ICustomFrameAdapter navigationService)
-        {
-            _subsonicService = subsonicService;
-            _notificationService = notificationService;
-            _storageService = storageService;
-            _navigationService = navigationService;
-        }
+        [Inject]
+        public ISettingsHelper SettingsHelper { get; set; }
 
-        public async void SaveChanges()
-        {
-            await SaveSettings();
-            _navigationService.NavigateToViewModel<MainViewModel>(true);
-        }
+        #endregion
 
-        public void UsernameChanged(TextBox textBox)
-        {
-            Configuration.SubsonicServiceConfiguration.Username = textBox.Text;
-            NotifyOfPropertyChange(() => CanSaveChanges);
-        }
+        #region Public Methods and Operators
 
         public void PasswordChanged(PasswordBox passwordBox)
         {
@@ -83,10 +92,16 @@ namespace Subsonic8.Settings
 
         public async Task Populate()
         {
-            var configuration = await _storageService.Load<Subsonic8Configuration>() ??
-                                new Subsonic8Configuration { ToastsUseSound = false };
+            var configuration = await _storageService.Load<Subsonic8Configuration>()
+                                ?? new Subsonic8Configuration { ToastsUseSound = false };
             PopulateCredentials(configuration);
             Configuration = configuration;
+        }
+
+        public async void SaveChanges()
+        {
+            await SaveSettings();
+            _navigationService.NavigateToViewModel<MainViewModel>(true);
         }
 
         public async Task SaveSettings()
@@ -98,7 +113,17 @@ namespace Subsonic8.Settings
             _notificationService.UseSound = Configuration.ToastsUseSound;
         }
 
-        protected async override void OnActivate()
+        public void UsernameChanged(TextBox textBox)
+        {
+            Configuration.SubsonicServiceConfiguration.Username = textBox.Text;
+            NotifyOfPropertyChange(() => CanSaveChanges);
+        }
+
+        #endregion
+
+        #region Methods
+
+        protected override async void OnActivate()
         {
             base.OnActivate();
 
@@ -108,7 +133,11 @@ namespace Subsonic8.Settings
         private void PopulateCredentials(Subsonic8Configuration configuration)
         {
             var credentialsFromVault = SettingsHelper.GetCredentialsFromVault();
-            if (credentialsFromVault == null) return;
+            if (credentialsFromVault == null)
+            {
+                return;
+            }
+
             configuration.SubsonicServiceConfiguration.Username = credentialsFromVault.UserName;
             configuration.SubsonicServiceConfiguration.Password = credentialsFromVault.Password;
         }
@@ -116,13 +145,18 @@ namespace Subsonic8.Settings
         private void UpdateCredentials()
         {
             var passwordCredential = new PasswordCredential
-                {
-                    UserName = Configuration.SubsonicServiceConfiguration.Username,
-                    Password = Configuration.SubsonicServiceConfiguration.Password,
-                    Resource = Framework.SettingsHelper.PasswordVaultResourceName
-                };
+                                         {
+                                             UserName =
+                                                 Configuration.SubsonicServiceConfiguration.Username, 
+                                             Password =
+                                                 Configuration.SubsonicServiceConfiguration.Password, 
+                                             Resource =
+                                                 Framework.SettingsHelper.PasswordVaultResourceName
+                                         };
 
             SettingsHelper.UpdateCredentialsInVault(passwordCredential);
         }
+
+        #endregion
     }
 }

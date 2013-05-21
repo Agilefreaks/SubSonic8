@@ -1,47 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Linq;
-using System.Threading.Tasks;
-using Caliburn.Micro;
-using Client.Common.EventAggregatorMessages;
-using Client.Common.Models;
-using Client.Common.Models.Subsonic;
-using Client.Common.Services;
-using MugenInjection.Attributes;
-using Subsonic8.Framework.Extensions;
-using Subsonic8.Framework.Services;
-using Subsonic8.MenuItem;
-using Subsonic8.Playback;
-using Action = System.Action;
-
-namespace Subsonic8.BottomBar
+﻿namespace Subsonic8.BottomBar
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.Specialized;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using Caliburn.Micro;
+    using Client.Common.EventAggregatorMessages;
+    using Client.Common.Models;
+    using Client.Common.Models.Subsonic;
+    using Client.Common.Services;
+    using MugenInjection.Attributes;
+    using Subsonic8.Framework.Extensions;
+    using Subsonic8.Framework.Services;
+    using Subsonic8.MenuItem;
+    using Subsonic8.Playback;
+    using Action = System.Action;
+
     public class DefaultBottomBarViewModel : BottomBarViewModelBase, IDefaultBottomBarViewModel
     {
+        #region Fields
+
         private bool _playNextItem;
 
-        public bool CanAddToPlaylist
-        {
-            get { return SelectedItems.Any() && SelectedItems.All(x => x.GetType() == typeof(MenuItemViewModel)); }
-        }
+        #endregion
 
-        public Action NavigateOnPlay { get; set; }
+        #region Constructors and Destructors
 
-        public Func<IId, Task<Client.Common.Models.PlaylistItem>> LoadModel { get; set; }
-
-        [Inject]
-        public IDialogNotificationService NotificationService { get; set; }
-
-        [Inject]
-        public ISubsonicService SubsonicService { get; set; }
-
-        private IEnumerable<ISubsonicModel> SelectedSubsonicItems
-        {
-            get { return SelectedItems.Cast<IMenuItemViewModel>().Select(vm => vm.Item); }
-        }
-
-        public DefaultBottomBarViewModel(ICustomFrameAdapter navigationService, IEventAggregator eventAggregator,
+        public DefaultBottomBarViewModel(
+            ICustomFrameAdapter navigationService, 
+            IEventAggregator eventAggregator, 
             IPlaylistManagementService playlistManagementService)
             : base(navigationService, eventAggregator, playlistManagementService)
         {
@@ -49,10 +37,58 @@ namespace Subsonic8.BottomBar
             NavigateOnPlay = () => NavigationService.NavigateToViewModel<PlaybackViewModel>();
         }
 
+        #endregion
+
+        #region Public Properties
+
+        public bool CanAddToPlaylist
+        {
+            get
+            {
+                return SelectedItems.Any() && SelectedItems.All(x => x.GetType() == typeof(MenuItemViewModel));
+            }
+        }
+
+        public Func<IId, Task<PlaylistItem>> LoadModel { get; set; }
+
+        public Action NavigateOnPlay { get; set; }
+
+        [Inject]
+        public IDialogNotificationService NotificationService { get; set; }
+
+        [Inject]
+        public ISubsonicService SubsonicService { get; set; }
+
+        #endregion
+
+        #region Properties
+
+        private IEnumerable<ISubsonicModel> SelectedSubsonicItems
+        {
+            get
+            {
+                return SelectedItems.Cast<IMenuItemViewModel>().Select(vm => vm.Item);
+            }
+        }
+
+        #endregion
+
+        #region Public Methods and Operators
+
         public void AddToPlaylist()
         {
             AddToPlaylist(SelectedSubsonicItems.ToList());
             SelectedItems.Clear();
+        }
+
+        public async void HandleError(Exception error)
+        {
+            await NotificationService.Show(new DialogNotificationOptions { Message = error.ToString(), });
+        }
+
+        public void NavigateToPlaylist()
+        {
+            NavigationService.NavigateToViewModel<PlaybackViewModel>();
         }
 
         public void PlayAll()
@@ -62,20 +98,12 @@ namespace Subsonic8.BottomBar
             NavigateOnPlay();
         }
 
-        public void NavigateToPlaylist()
-        {
-            NavigationService.NavigateToViewModel<PlaybackViewModel>();
-        }
+        #endregion
 
-        public async void HandleError(Exception error)
-        {
-            await NotificationService.Show(new DialogNotificationOptions
-                {
-                    Message = error.ToString(),
-                });
-        }
+        #region Methods
 
-        protected override void OnSelectedItemsChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
+        protected override void OnSelectedItemsChanged(
+            object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
         {
             base.OnSelectedItemsChanged(sender, notifyCollectionChangedEventArgs);
             NotifyOfPropertyChange(() => CanAddToPlaylist);
@@ -85,7 +113,12 @@ namespace Subsonic8.BottomBar
         {
             if (item.Type == SubsonicModelTypeEnum.Song || item.Type == SubsonicModelTypeEnum.Video)
             {
-                var addItemsMessage = new AddItemsMessage { Queue = new List<Client.Common.Models.PlaylistItem>(new[] { await LoadModel(item) }) };
+                var addItemsMessage = new AddItemsMessage
+                                          {
+                                              Queue =
+                                                  new List<PlaylistItem>(
+                                                  new[] { await LoadModel(item) })
+                                          };
                 EventAggregator.Publish(addItemsMessage);
                 if (_playNextItem)
                 {
@@ -100,30 +133,40 @@ namespace Subsonic8.BottomBar
                 {
                     case SubsonicModelTypeEnum.Album:
                         {
-                            await SubsonicService.GetAlbum(item.Id)
-                                                 .WithErrorHandler(this)
-                                                 .OnSuccess(result => children.AddRange(result.Songs))
-                                                 .Execute();
+                            await
+                                SubsonicService.GetAlbum(item.Id)
+                                               .WithErrorHandler(this)
+                                               .OnSuccess(result => children.AddRange(result.Songs))
+                                               .Execute();
+                        }
 
-                        } break;
+                        break;
                     case SubsonicModelTypeEnum.Artist:
                         {
-                            await SubsonicService.GetArtist(item.Id)
-                                                 .WithErrorHandler(this)
-                                                 .OnSuccess(result => children.AddRange(result.Albums))
-                                                 .Execute();
-                        } break;
+                            await
+                                SubsonicService.GetArtist(item.Id)
+                                               .WithErrorHandler(this)
+                                               .OnSuccess(result => children.AddRange(result.Albums))
+                                               .Execute();
+                        }
+
+                        break;
                     case SubsonicModelTypeEnum.MusicDirectory:
                         {
-                            await SubsonicService.GetMusicDirectory(item.Id)
-                                                 .WithErrorHandler(this)
-                                                 .OnSuccess(result => children.AddRange(result.Children))
-                                                 .Execute();
-                        } break;
+                            await
+                                SubsonicService.GetMusicDirectory(item.Id)
+                                               .WithErrorHandler(this)
+                                               .OnSuccess(result => children.AddRange(result.Children))
+                                               .Execute();
+                        }
+
+                        break;
                     case SubsonicModelTypeEnum.Index:
                         {
                             children.AddRange(((IndexItem)item).Artists);
-                        } break;
+                        }
+
+                        break;
                 }
 
                 foreach (var subsonicModel in children)
@@ -147,5 +190,7 @@ namespace Subsonic8.BottomBar
                 await AddItemToPlaylist(item);
             }
         }
+
+        #endregion
     }
 }

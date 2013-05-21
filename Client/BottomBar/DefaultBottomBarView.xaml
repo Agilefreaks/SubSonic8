@@ -6,18 +6,24 @@
     xmlns:bottomBar="using:Subsonic8.BottomBar" mc:Ignorable="d">
 
     <Page.Resources>
-        <cal:BooleanToVisibilityConverter x:Key="VisibilityConverter"/>
+        <cal:BooleanToVisibilityConverter x:Key="VisibilityConverter" />
     </Page.Resources>
     <Grid>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-            <Button Style="{StaticResource AddAllAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action AddToPlaylist()]" Visibility="{Binding CanAddToPlaylist, Converter={StaticResource VisibilityConverter}}" />
-            <Button Style="{StaticResource PlayAllAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action PlayAll()]" Visibility="{Binding CanAddToPlaylist, Converter={StaticResource VisibilityConverter}}" />
+            <Button Style="{StaticResource AddAllAppBarButtonStyle}"
+                    cal:Message.Attach="[Event Click] = [Action AddToPlaylist()]"
+                    Visibility="{Binding CanAddToPlaylist, Converter={StaticResource VisibilityConverter}}" />
+            <Button Style="{StaticResource PlayAllAppBarButtonStyle}"
+                    cal:Message.Attach="[Event Click] = [Action PlayAll()]"
+                    Visibility="{Binding CanAddToPlaylist, Converter={StaticResource VisibilityConverter}}" />
         </StackPanel>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-            <bottomBar:PlaybackControlsView/>
+            <bottomBar:PlaybackControlsView />
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Style="{StaticResource ListAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action NavigateToPlaylist()]"/>
-                <Button Style="{StaticResource HomeAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action NavigateToRoot()]"/>
+                <Button Style="{StaticResource ListAppBarButtonStyle}"
+                        cal:Message.Attach="[Event Click] = [Action NavigateToPlaylist()]" />
+                <Button Style="{StaticResource HomeAppBarButtonStyle}"
+                        cal:Message.Attach="[Event Click] = [Action NavigateToRoot()]" />
             </StackPanel>
         </StackPanel>
     </Grid>

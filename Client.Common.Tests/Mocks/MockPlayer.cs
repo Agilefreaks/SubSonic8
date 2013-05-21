@@ -1,16 +1,18 @@
-﻿using System.Collections.Generic;
-using Client.Common.Models;
-using Client.Common.Services.DataStructures.PlayerManagementService;
-
-namespace Client.Common.Tests.Mocks
+﻿namespace Client.Common.Tests.Mocks
 {
+    using System.Collections.Generic;
+    using Client.Common.Models;
+    using Client.Common.Services.DataStructures.PlayerManagementService;
+
     public class MockPlayer : IPlayer
     {
+        #region Fields
+
         private readonly List<PlaylistItem> _playCallArguments;
 
-        public int PlayCount { get; set; }
+        #endregion
 
-        public IEnumerable<PlaylistItem> PlayCallArguments { get; private set; }
+        #region Constructors and Destructors
 
         public MockPlayer()
         {
@@ -18,14 +20,26 @@ namespace Client.Common.Tests.Mocks
             PlayCallArguments = _playCallArguments;
         }
 
+        #endregion
+
+        #region Public Properties
+
+        public IEnumerable<PlaylistItem> PlayCallArguments { get; private set; }
+
+        public int PlayCount { get; set; }
+
+        #endregion
+
+        #region Public Methods and Operators
+
+        public void Pause()
+        {
+        }
+
         public void Play(PlaylistItem item, object options = null)
         {
             PlayCount++;
             _playCallArguments.Add(item);
-        }
-
-        public void Pause()
-        {
         }
 
         public void Resume()
@@ -35,5 +49,7 @@ namespace Client.Common.Tests.Mocks
         public void Stop()
         {
         }
+
+        #endregion
     }
 }

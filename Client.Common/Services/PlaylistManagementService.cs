@@ -1,24 +1,123 @@
-﻿using System;
-using System.Collections.Specialized;
-using System.Linq;
-using Caliburn.Micro;
-using Client.Common.EventAggregatorMessages;
-using Client.Common.Models;
-using Action = System.Action;
-
-namespace Client.Common.Services
+﻿namespace Client.Common.Services
 {
+    using System;
+    using System.Collections.Specialized;
+    using System.Linq;
+    using Caliburn.Micro;
+    using Client.Common.EventAggregatorMessages;
+    using Client.Common.Models;
+    using Action = System.Action;
+
     public class PlaylistManagementService : PropertyChangedBase, IPlaylistManagementService
     {
+        #region Fields
+
         private readonly IEventAggregator _eventAggregator;
+
         private readonly Random _randomNumberGenerator;
-        private bool _shuffleOn;
-        private bool _wasEmpty;
-        private PlaylistItemCollection _items;
-        private bool _isPlaying;
+
         private bool _isPaused;
 
-        public PlaylistHistoryStack PlaylistHistory { get; private set; }
+        private bool _isPlaying;
+
+        private PlaylistItemCollection _items;
+
+        private bool _shuffleOn;
+
+        private bool _wasEmpty;
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        public PlaylistManagementService(IEventAggregator eventAggregator)
+        {
+            _eventAggregator = eventAggregator;
+            _eventAggregator.Subscribe(this);
+
+            StartPlaybackAction = StartPlayback;
+            StopPlaybackAction = StopPlayback;
+            GetNextTrackNumberFunc = GetNextTrackNumber;
+            GetPreviousTrackNumberFunc = GetPreviousTrackNumber;
+
+            Items = new PlaylistItemCollection();
+            PlaylistHistory = new PlaylistHistoryStack();
+            _randomNumberGenerator = new Random();
+
+            CurrentItem = null;
+            _wasEmpty = true;
+        }
+
+        #endregion
+
+        #region Public Properties
+
+        public PlaylistItem CurrentItem { get; private set; }
+
+        public int CurrentTrackNumber
+        {
+            get
+            {
+                return Items != null && CurrentItem != null && Items.Contains(CurrentItem)
+                           ? Items.IndexOf(CurrentItem)
+                           : -1;
+            }
+        }
+
+        public Func<int> GetNextTrackNumberFunc { get; set; }
+
+        public Func<int> GetPreviousTrackNumberFunc { get; set; }
+
+        public bool HasElements
+        {
+            get
+            {
+                return Items.Any();
+            }
+        }
+
+        public bool IsPaused
+        {
+            get
+            {
+                return _isPaused;
+            }
+
+            private set
+            {
+                _isPaused = value;
+                if (_isPaused)
+                {
+                    IsPlaying = false;
+                }
+
+                NotifyOfPropertyChange(() => IsPaused);
+            }
+        }
+
+        public bool IsPlaying
+        {
+            get
+            {
+                return _isPlaying;
+            }
+
+            private set
+            {
+                if (value.Equals(_isPlaying))
+                {
+                    return;
+                }
+
+                _isPlaying = value;
+                if (_isPlaying)
+                {
+                    IsPaused = false;
+                }
+
+                NotifyOfPropertyChange();
+            }
+        }
 
         public PlaylistItemCollection Items
         {
@@ -37,28 +136,7 @@ namespace Client.Common.Services
             }
         }
 
-        public void Clear()
-        {
-            Items.Clear();
-        }
-
-        public void LoadPlaylist(PlaylistItemCollection playlistItemCollection)
-        {
-            if (playlistItemCollection == null) return;
-            StopPlaybackAction();
-            Items.Clear();
-            Items.AddRange(playlistItemCollection);
-        }
-
-        public PlaylistItem CurrentItem { get; private set; }
-
-        public bool HasElements
-        {
-            get
-            {
-                return Items.Any();
-            }
-        }
+        public PlaylistHistoryStack PlaylistHistory { get; private set; }
 
         public bool ShuffleOn
         {
@@ -69,7 +147,11 @@ namespace Client.Common.Services
 
             private set
             {
-                if (value.Equals(_shuffleOn)) return;
+                if (value.Equals(_shuffleOn))
+                {
+                    return;
+                }
+
                 _shuffleOn = value;
                 NotifyOfPropertyChange();
             }
@@ -79,66 +161,25 @@ namespace Client.Common.Services
 
         public Action StopPlaybackAction { get; set; }
 
-        public Func<int> GetNextTrackNumberFunc { get; set; }
+        #endregion
 
-        public Func<int> GetPreviousTrackNumberFunc { get; set; }
+        #region Public Methods and Operators
 
-        public int CurrentTrackNumber
+        public void Clear()
         {
-            get
-            {
-                return Items != null && CurrentItem != null && Items.Contains(CurrentItem)
-                           ? Items.IndexOf(CurrentItem)
-                           : -1;
-            }
+            Items.Clear();
         }
 
-        public bool IsPlaying
+        public int GetNextTrackNumber()
         {
-            get
-            {
-                return _isPlaying;
-            }
-
-            private set
-            {
-                if (value.Equals(_isPlaying)) return;
-                _isPlaying = value;
-                if (_isPlaying) IsPaused = false;
-                NotifyOfPropertyChange();
-            }
+            return ShuffleOn
+                       ? _randomNumberGenerator.Next(Items.Count - 1)
+                       : CurrentTrackNumber == (Items.Count - 1) ? 0 : CurrentTrackNumber + 1;
         }
 
-        public bool IsPaused
+        public int GetPreviousTrackNumber()
         {
-            get
-            {
-                return _isPaused;
-            }
-            private set
-            {
-                _isPaused = value;
-                if (_isPaused) IsPlaying = false;
-                NotifyOfPropertyChange(() => IsPaused);
-            }
-        }
-
-        public PlaylistManagementService(IEventAggregator eventAggregator)
-        {
-            _eventAggregator = eventAggregator;
-            _eventAggregator.Subscribe(this);
-
-            StartPlaybackAction = StartPlayback;
-            StopPlaybackAction = StopPlayback;
-            GetNextTrackNumberFunc = GetNextTrackNumber;
-            GetPreviousTrackNumberFunc = GetPreviousTrackNumber;
-
-            Items = new PlaylistItemCollection();
-            PlaylistHistory = new PlaylistHistoryStack();
-            _randomNumberGenerator = new Random();
-
-            CurrentItem = null;
-            _wasEmpty = true;
+            return ShuffleOn ? PlaylistHistory.Count == 0 ? -1 : PlaylistHistory.Pop() : (CurrentTrackNumber - 1);
         }
 
         public void Handle(PlayNextMessage message)
@@ -207,16 +248,27 @@ namespace Client.Common.Services
             Play(message.Options);
         }
 
-        public void PlayPause()
+        public void LoadPlaylist(PlaylistItemCollection playlistItemCollection)
         {
-            if (IsPlaying)
+            if (playlistItemCollection == null)
             {
-                Pause();
+                return;
             }
-            else
+
+            StopPlaybackAction();
+            Items.Clear();
+            Items.AddRange(playlistItemCollection);
+        }
+
+        public void Pause()
+        {
+            if (!IsPlaying)
             {
-                Play();
+                return;
             }
+
+            _eventAggregator.Publish(new PausePlaybackMessage(CurrentItem));
+            IsPaused = true;
         }
 
         public void Play(object options = null)
@@ -238,11 +290,16 @@ namespace Client.Common.Services
             }
         }
 
-        public void Pause()
+        public void PlayPause()
         {
-            if (!IsPlaying) return;
-            _eventAggregator.Publish(new PausePlaybackMessage(CurrentItem));
-            IsPaused = true;
+            if (IsPlaying)
+            {
+                Pause();
+            }
+            else
+            {
+                Play();
+            }
         }
 
         public void Resume()
@@ -258,40 +315,29 @@ namespace Client.Common.Services
             StartPlayback();
         }
 
-        private void StartPlayback(object options = null)
-        {
-            _eventAggregator.Publish(new StartPlaybackMessage(CurrentItem) { Options = options });
-            CurrentItem.PlayingState = PlaylistItemState.Playing;
-            IsPlaying = true;
-        }
-
         public void StopPlayback()
         {
-            if (CurrentItem == null) return;
+            if (CurrentItem == null)
+            {
+                return;
+            }
+
             _eventAggregator.Publish(new StopPlaybackMessage(CurrentItem));
             CurrentItem.PlayingState = PlaylistItemState.NotPlaying;
             IsPlaying = false;
             IsPaused = false;
         }
 
-        public int GetNextTrackNumber()
-        {
-            return ShuffleOn
-                       ? _randomNumberGenerator.Next(Items.Count - 1)
-                       : CurrentTrackNumber == (Items.Count - 1) ? 0 : CurrentTrackNumber + 1;
-        }
+        #endregion
 
-        public int GetPreviousTrackNumber()
-        {
-            return ShuffleOn ? PlaylistHistory.Count == 0 ? -1 : PlaylistHistory.Pop() : (CurrentTrackNumber - 1);
-        }
+        #region Methods
 
         private void PlaylistChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             var totalElements = Items.Count;
 
-            var becameNotEmpty = (totalElements > 0 && _wasEmpty);
-            var becameEmpty = (totalElements == 0 && !_wasEmpty);
+            var becameNotEmpty = totalElements > 0 && _wasEmpty;
+            var becameEmpty = totalElements == 0 && !_wasEmpty;
 
             if (becameNotEmpty || becameEmpty)
             {
@@ -299,5 +345,14 @@ namespace Client.Common.Services
                 _wasEmpty = !Items.Any();
             }
         }
+
+        private void StartPlayback(object options = null)
+        {
+            _eventAggregator.Publish(new StartPlaybackMessage(CurrentItem) { Options = options });
+            CurrentItem.PlayingState = PlaylistItemState.Playing;
+            IsPlaying = true;
+        }
+
+        #endregion
     }
 }

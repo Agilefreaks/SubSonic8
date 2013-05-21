@@ -1,12 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Xml.Serialization;
-
-namespace Client.Common.Models.Subsonic
+﻿namespace Client.Common.Models.Subsonic
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Xml.Serialization;
+
     [XmlRoot(ElementName = "album", Namespace = "http://subsonic.org/restapi")]
     public class Album : MediaModelBase
     {
+        #region Constructors and Destructors
+
+        public Album()
+        {
+            Songs = new List<Song>();
+        }
+
+        #endregion
+
+        #region Public Properties
+
         [XmlAttribute("artist")]
         public string Artist { get; set; }
 
@@ -21,17 +32,21 @@ namespace Client.Common.Models.Subsonic
 
         public override SubsonicModelTypeEnum Type
         {
-            get { return SubsonicModelTypeEnum.Album; }
+            get
+            {
+                return SubsonicModelTypeEnum.Album;
+            }
         }
 
-        public Album()
-        {
-            Songs = new List<Song>();
-        }
+        #endregion
+
+        #region Public Methods and Operators
 
         public override Tuple<string, string> GetDescription()
         {
             return new Tuple<string, string>(Name, string.Format("{0} tracks", SongCount));
         }
+
+        #endregion
     }
 }

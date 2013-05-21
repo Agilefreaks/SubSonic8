@@ -1,18 +1,26 @@
-﻿using System;
-
-namespace Subsonic8.Framework.Services
+﻿namespace Subsonic8.Framework.Services
 {
+    using System;
+
     public class PossibleAction
     {
-        public string ActionName { get; private set; }
-
-        public Action Action { get; private set; }
+        #region Constructors and Destructors
 
         public PossibleAction(string name, Action action)
         {
             ActionName = name;
 
             Action = action;
-        }    
+        }
+
+        #endregion
+
+        #region Public Properties
+
+        public Action Action { get; private set; }
+
+        public string ActionName { get; private set; }
+
+        #endregion
     }
 }

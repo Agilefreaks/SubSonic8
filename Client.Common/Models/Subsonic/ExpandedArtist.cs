@@ -1,12 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Xml.Serialization;
-
-namespace Client.Common.Models.Subsonic
+﻿namespace Client.Common.Models.Subsonic
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Xml.Serialization;
+
     [XmlRoot(ElementName = "artist", Namespace = "http://subsonic.org/restapi")]
     public class ExpandedArtist : Artist
     {
+        #region Constructors and Destructors
+
+        public ExpandedArtist()
+        {
+            Albums = new List<Album>();
+        }
+
+        #endregion
+
+        #region Public Properties
+
         [XmlAttribute("albumCount")]
         public int AlbumCount { get; set; }
 
@@ -27,16 +38,6 @@ namespace Client.Common.Models.Subsonic
             }
         }
 
-        public ExpandedArtist()
-        {
-            Albums = new List<Album>();
-        }
-
-        public override Tuple<string, string> GetDescription()
-        {
-            return new Tuple<string, string>(Name, string.Format("{0} albums", AlbumCount));
-        }
-
         public override SubsonicModelTypeEnum Type
         {
             get
@@ -44,5 +45,16 @@ namespace Client.Common.Models.Subsonic
                 return SubsonicModelTypeEnum.Artist;
             }
         }
+
+        #endregion
+
+        #region Public Methods and Operators
+
+        public override Tuple<string, string> GetDescription()
+        {
+            return new Tuple<string, string>(Name, string.Format("{0} albums", AlbumCount));
+        }
+
+        #endregion
     }
 }

@@ -1,20 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
-using System.Xml.Serialization;
-
-namespace Client.Common.Models.Subsonic
+﻿namespace Client.Common.Models.Subsonic
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Runtime.Serialization;
+    using System.Xml.Serialization;
+
     [XmlRoot(ElementName = "index", Namespace = "http://subsonic.org/restapi")]
     [DataContract]
     public class IndexItem : SerializableModelBase<IndexItem>
     {
+        #region Static Fields
+
         private static readonly Type[] TypesOfChildren = new[] { typeof(Artist) };
 
-        public new static IndexItem Deserialize(string data)
+        #endregion
+
+        #region Constructors and Destructors
+
+        public IndexItem()
         {
-            return Deserialize(data, TypesOfChildren);
+            Artists = new List<Artist>();
         }
+
+        #endregion
+
+        #region Public Properties
 
         [XmlElement(ElementName = "artist", Namespace = "http://subsonic.org/restapi")]
         [DataMember]
@@ -22,17 +32,26 @@ namespace Client.Common.Models.Subsonic
 
         public override SubsonicModelTypeEnum Type
         {
-            get { return SubsonicModelTypeEnum.Index; }
+            get
+            {
+                return SubsonicModelTypeEnum.Index;
+            }
         }
 
-        public IndexItem()
+        #endregion
+
+        #region Public Methods and Operators
+
+        public static new IndexItem Deserialize(string data)
         {
-            Artists = new List<Artist>();
+            return Deserialize(data, TypesOfChildren);
         }
 
         public override Tuple<string, string> GetDescription()
         {
             return new Tuple<string, string>(Name, string.Format("{0} artists", Artists.Count));
         }
+
+        #endregion
     }
 }

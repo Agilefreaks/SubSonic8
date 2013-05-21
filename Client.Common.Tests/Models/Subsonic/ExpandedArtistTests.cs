@@ -1,14 +1,20 @@
-﻿using Client.Common.Models;
-using Client.Common.Models.Subsonic;
-using FluentAssertions;
-using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
-
-namespace Client.Common.Tests.Models.Subsonic
+﻿namespace Client.Common.Tests.Models.Subsonic
 {
+    using Client.Common.Models;
+    using Client.Common.Models.Subsonic;
+    using FluentAssertions;
+    using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+
     [TestClass]
     public class ExpandedArtistTests
     {
-        ExpandedArtist _subject;
+        #region Fields
+
+        private ExpandedArtist _subject;
+
+        #endregion
+
+        #region Public Methods and Operators
 
         [TestInitialize]
         public void Setup()
@@ -21,5 +27,7 @@ namespace Client.Common.Tests.Models.Subsonic
         {
             _subject.Type.Should().Be(SubsonicModelTypeEnum.Artist);
         }
+
+        #endregion
     }
 }

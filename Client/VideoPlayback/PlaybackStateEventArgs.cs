@@ -1,13 +1,17 @@
-﻿using System;
-
-namespace Subsonic8.VideoPlayback
+﻿namespace Subsonic8.VideoPlayback
 {
+    using System;
+
     public class PlaybackStateEventArgs
     {
-        public TimeSpan TimeRemaining { get; set; }
+        #region Public Properties
+
+        public TimeSpan EndTime { get; set; }
 
         public TimeSpan StartTime { get; set; }
 
-        public TimeSpan EndTime { get; set; }
+        public TimeSpan TimeRemaining { get; set; }
+
+        #endregion
     }
 }

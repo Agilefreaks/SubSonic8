@@ -1,17 +1,57 @@
-﻿using System;
-using Caliburn.Micro;
-using Client.Common.Services;
-using MugenInjection.Attributes;
-using Subsonic8.Framework.Services;
-using Action = System.Action;
-
-namespace Subsonic8.Framework.ViewModel
+﻿namespace Subsonic8.Framework.ViewModel
 {
+    using System;
+    using Caliburn.Micro;
+    using Client.Common.Services;
+    using MugenInjection.Attributes;
+    using Subsonic8.Framework.Services;
+    using Action = System.Action;
+
     public abstract class ViewModelBase : Screen, IViewModel
     {
-        private ICustomFrameAdapter _navigationService;
-        private ISubsonicService _subsonicService;
+        #region Fields
+
         private IEventAggregator _eventAggregator;
+
+        private ICustomFrameAdapter _navigationService;
+
+        private ISubsonicService _subsonicService;
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        protected ViewModelBase()
+        {
+            UpdateDisplayName = () => DisplayName = "Subsonic8";
+        }
+
+        #endregion
+
+        #region Public Properties
+
+        public bool CanGoBack
+        {
+            get
+            {
+                return NavigationService != null && NavigationService.CanGoBack;
+            }
+        }
+
+        [Inject]
+        public IEventAggregator EventAggregator
+        {
+            get
+            {
+                return _eventAggregator;
+            }
+
+            set
+            {
+                _eventAggregator = value;
+                OnEventAggregatorSet();
+            }
+        }
 
         [Inject]
         public ICustomFrameAdapter NavigationService
@@ -30,6 +70,9 @@ namespace Subsonic8.Framework.ViewModel
         }
 
         [Inject]
+        public IDialogNotificationService NotificationService { get; set; }
+
+        [Inject]
         public ISubsonicService SubsonicService
         {
             get
@@ -44,55 +87,25 @@ namespace Subsonic8.Framework.ViewModel
             }
         }
 
-        [Inject]
-        public IDialogNotificationService NotificationService { get; set; }
+        public Action UpdateDisplayName { get; set; }
 
-        [Inject]
-        public IEventAggregator EventAggregator
-        {
-            get
-            {
-                return _eventAggregator;
-            }
+        #endregion
 
-            set
-            {
-                _eventAggregator = value;
-                OnEventAggregatorSet();
-            }
-        }
-
-        public bool CanGoBack
-        {
-            get
-            {
-                return NavigationService != null && NavigationService.CanGoBack;
-            }
-        }
+        #region Public Methods and Operators
 
         public void GoBack()
         {
             NavigationService.GoBack();
         }
 
-        public Action UpdateDisplayName { get; set; }
-
-        protected ViewModelBase()
-        {
-            UpdateDisplayName = () => DisplayName = "Subsonic8";
-        }
-
         public async void HandleError(Exception error)
         {
-            await NotificationService.Show(new DialogNotificationOptions
-                {
-                    Message = error.ToString(),
-                });
+            await NotificationService.Show(new DialogNotificationOptions { Message = error.ToString(), });
         }
 
-        protected virtual void OnEventAggregatorSet()
-        {
-        }
+        #endregion
+
+        #region Methods
 
         protected override void OnActivate()
         {
@@ -100,5 +113,11 @@ namespace Subsonic8.Framework.ViewModel
 
             UpdateDisplayName();
         }
+
+        protected virtual void OnEventAggregatorSet()
+        {
+        }
+
+        #endregion
     }
 }

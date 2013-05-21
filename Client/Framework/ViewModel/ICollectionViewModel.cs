@@ -1,21 +1,29 @@
-﻿using System.Collections.ObjectModel;
-using Caliburn.Micro;
-using Subsonic8.BottomBar;
-using Subsonic8.MenuItem;
-using Windows.UI.Xaml.Controls;
-
-namespace Subsonic8.Framework.ViewModel
+﻿namespace Subsonic8.Framework.ViewModel
 {
+    using System.Collections.ObjectModel;
+    using Caliburn.Micro;
+    using Subsonic8.BottomBar;
+    using Subsonic8.MenuItem;
+    using Windows.UI.Xaml.Controls;
+
     public interface ICollectionViewModel<TParameter> : IViewModel
     {
+        #region Public Properties
+
+        IBottomBarViewModel BottomBar { get; set; }
+
+        BindableCollection<MenuItemViewModel> MenuItems { get; set; }
+
         TParameter Parameter { get; set; }
 
         ObservableCollection<object> SelectedItems { get; }
 
-        BindableCollection<MenuItemViewModel> MenuItems { get; set; }
+        #endregion
 
-        IBottomBarViewModel BottomBar { get; set; }
+        #region Public Methods and Operators
 
         void ChildClick(ItemClickEventArgs eventArgs);
+
+        #endregion
     }
 }

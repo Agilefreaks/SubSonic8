@@ -1,28 +1,22 @@
-﻿using System;
-using System.IO;
-using System.Threading.Tasks;
-using WinRtUtility;
-using Windows.Security.Cryptography;
-using Windows.Storage;
-using Windows.Storage.Streams;
-
-namespace Client.Common.Services
+﻿namespace Client.Common.Services
 {
+    using System;
+    using System.IO;
+    using System.Threading.Tasks;
+    using Windows.Security.Cryptography;
+    using Windows.Storage;
+    using Windows.Storage.Streams;
+    using WinRtUtility;
+
     public class StorageService : IStorageService
     {
+        #region Constants
+
         private const StorageType UsedStorageType = StorageType.Roaming;
 
-        public async Task Save<T>(T data)
-        {
-            var objectStorageHelper = new ObjectStorageHelper<T>(UsedStorageType);
-            await objectStorageHelper.SaveAsync(data);
-        }
+        #endregion
 
-        public async Task<T> Load<T>()
-        {
-            var objectStorageHelper = new ObjectStorageHelper<T>(UsedStorageType);
-            return await objectStorageHelper.LoadAsync();
-        }
+        #region Public Methods and Operators
 
         public async Task Delete<T>()
         {
@@ -48,6 +42,22 @@ namespace Client.Common.Services
             return data;
         }
 
+        public async Task<T> Load<T>()
+        {
+            var objectStorageHelper = new ObjectStorageHelper<T>(UsedStorageType);
+            return await objectStorageHelper.LoadAsync();
+        }
+
+        public async Task Save<T>(T data)
+        {
+            var objectStorageHelper = new ObjectStorageHelper<T>(UsedStorageType);
+            await objectStorageHelper.SaveAsync(data);
+        }
+
+        #endregion
+
+        #region Methods
+
         private static string GetFileName<T>(string handle = "")
         {
             var typeName = typeof(T).FullName;
@@ -71,5 +81,7 @@ namespace Client.Common.Services
 
             return file;
         }
+
+        #endregion
     }
 }

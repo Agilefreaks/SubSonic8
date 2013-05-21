@@ -1,27 +1,43 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Caliburn.Micro;
-using Client.Common.Models.Subsonic;
-using Subsonic8.Framework.Extensions;
-using Subsonic8.Framework.Services;
-using Subsonic8.Framework.ViewModel;
-using Subsonic8.Index;
-using Subsonic8.MenuItem;
-using Subsonic8.Settings;
-using Windows.UI.Xaml.Controls;
-
-namespace Subsonic8.Main
+﻿namespace Subsonic8.Main
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using Caliburn.Micro;
+    using Client.Common.Models.Subsonic;
+    using Subsonic8.Framework.Extensions;
+    using Subsonic8.Framework.Services;
+    using Subsonic8.Framework.ViewModel;
+    using Subsonic8.Index;
+    using Subsonic8.MenuItem;
+    using Subsonic8.Settings;
+    using Windows.ApplicationModel.Resources.Core;
+    using Windows.UI.Xaml.Controls;
+
     public class MainViewModel : ViewModelBase, IMainViewModel
     {
-        public BindableCollection<MenuItemViewModel> MenuItems { get; private set; }
-
-        public bool Parameter { get; set; }
+        #region Constructors and Destructors
 
         public MainViewModel()
         {
             MenuItems = new BindableCollection<MenuItemViewModel>();
+        }
+
+        #endregion
+
+        #region Public Properties
+
+        public BindableCollection<MenuItemViewModel> MenuItems { get; private set; }
+
+        public bool Parameter { get; set; }
+
+        #endregion
+
+        #region Public Methods and Operators
+
+        public void HandleSuccess(IList<MusicFolder> result)
+        {
+            SetMenuItems(result);
         }
 
         public void IndexClick(ItemClickEventArgs eventArgs)
@@ -43,7 +59,9 @@ namespace Subsonic8.Main
                     if (diagnosticsResult.ApiError != null)
                     {
                         populate = false;
-                        await NotificationService.Show(new DialogNotificationOptions { Message = diagnosticsResult.ApiError.Message });
+                        await
+                            NotificationService.Show(
+                                new DialogNotificationOptions { Message = diagnosticsResult.ApiError.Message });
                     }
                 }
 
@@ -63,15 +81,14 @@ namespace Subsonic8.Main
             }
         }
 
-        public void HandleSuccess(IList<MusicFolder> result)
-        {
-            SetMenuItems(result);
-        }
-
         public void SetMenuItems(IList<MusicFolder> items)
         {
             MenuItems.AddRange(items.Select(s => s.AsMenuItemViewModel()));
         }
+
+        #endregion
+
+        #region Methods
 
         protected override void OnInitialize()
         {
@@ -81,12 +98,11 @@ namespace Subsonic8.Main
 
         private async Task ShowSettingsNotFoundDialog()
         {
-            var resMap = Windows.ApplicationModel.Resources.Core.ResourceManager.Current.MainResourceMap;
+            var resMap = ResourceManager.Current.MainResourceMap;
             var message = resMap.GetValue("ShellStrings/NotConfigured").ValueAsString;
-            await NotificationService.Show(new DialogNotificationOptions
-            {
-                Message = message
-            });
+            await NotificationService.Show(new DialogNotificationOptions { Message = message });
         }
+
+        #endregion
     }
 }

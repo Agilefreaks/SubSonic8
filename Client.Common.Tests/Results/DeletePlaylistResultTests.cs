@@ -1,31 +1,45 @@
-﻿using System.IO;
-using System.Xml.Linq;
-using Client.Common.Results;
-using Client.Common.Services.DataStructures.SubsonicService;
-using FluentAssertions;
-using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
-
-namespace Client.Common.Tests.Results
+﻿namespace Client.Common.Tests.Results
 {
+    using System.IO;
+    using System.Xml.Linq;
+    using Client.Common.Results;
+    using Client.Common.Services.DataStructures.SubsonicService;
+    using FluentAssertions;
+    using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+
     [TestClass]
     public class DeletePlaylistResultTests
     {
-        internal class DeletePlaylistResultWrapper : DeletePlaylistResult
-        {
-            public DeletePlaylistResultWrapper(ISubsonicServiceConfiguration configuration, int id)
-                : base(configuration, id)
-            {
-            }
+        #region Constants
 
-            public void CallHandleResponse(XDocument xDocument)
-            {
-                HandleResponse(xDocument);
-            }
-        }
-
-        private DeletePlaylistResultWrapper _subject;
         private const string Data =
             "<subsonic-response xmlns=\"http://subsonic.org/restapi\" status=\"ok\" version=\"1.8.0\"></subsonic-response>";
+
+        #endregion
+
+        #region Fields
+
+        private DeletePlaylistResultWrapper _subject;
+
+        #endregion
+
+        #region Public Methods and Operators
+
+        [TestMethod]
+        public void HandleResponse_ResponseIsEmpty_ReturnsTrue()
+        {
+            var result = new DeletePlaylistResultWrapper(new SubsonicServiceConfiguration(), 1);
+
+            result.CallHandleResponse(XDocument.Load(new StringReader(Data)));
+
+            result.Result.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void RequestUrlShouldBeCorrect()
+        {
+            _subject.RequestUrl.Should().EndWith("&id=1");
+        }
 
         [TestInitialize]
         public void Setup()
@@ -39,20 +53,27 @@ namespace Client.Common.Tests.Results
             _subject.ViewName.Should().Be("deletePlaylist.view");
         }
 
-        [TestMethod]
-        public void RequestUrlShouldBeCorrect()
+        #endregion
+
+        internal class DeletePlaylistResultWrapper : DeletePlaylistResult
         {
-            _subject.RequestUrl.Should().EndWith("&id=1");
-        }
+            #region Constructors and Destructors
 
-        [TestMethod]
-        public void HandleResponse_ResponseIsEmpty_ReturnsTrue()
-        {
-            var result = new DeletePlaylistResultWrapper(new SubsonicServiceConfiguration(), 1);
+            public DeletePlaylistResultWrapper(ISubsonicServiceConfiguration configuration, int id)
+                : base(configuration, id)
+            {
+            }
 
-            result.CallHandleResponse(XDocument.Load(new StringReader(Data)));
+            #endregion
 
-            result.Result.Should().BeTrue();
+            #region Public Methods and Operators
+
+            public void CallHandleResponse(XDocument xDocument)
+            {
+                HandleResponse(xDocument);
+            }
+
+            #endregion
         }
     }
 }

@@ -1,20 +1,31 @@
-﻿using Client.Common.Results;
-using Client.Common.Services;
-using Client.Common.Services.DataStructures.SubsonicService;
-using FluentAssertions;
-using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
-
-namespace Client.Common.Tests.Results
+﻿namespace Client.Common.Tests.Results
 {
+    using Client.Common.Results;
+    using Client.Common.Services.DataStructures.SubsonicService;
+    using FluentAssertions;
+    using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+
     [TestClass]
     public class GetSongResultTests
     {
+        #region Fields
+
         private IGetSongResult _subject;
+
+        #endregion
+
+        #region Public Methods and Operators
+
+        [TestMethod]
+        public void RequestUrlShouldBeCorrect()
+        {
+            _subject.RequestUrl.Should().EndWith("&id=12");
+        }
 
         [TestInitialize]
         public void TestInitialize()
         {
-            _subject = new GetSongResult(new SubsonicServiceConfiguration { BaseUrl = "http://test"}, 12);
+            _subject = new GetSongResult(new SubsonicServiceConfiguration { BaseUrl = "http://test" }, 12);
         }
 
         [TestMethod]
@@ -23,10 +34,6 @@ namespace Client.Common.Tests.Results
             _subject.ViewName.Should().Be("getSong.view");
         }
 
-        [TestMethod]
-        public void RequestUrlShouldBeCorrect()
-        {
-            _subject.RequestUrl.Should().EndWith("&id=12");
-        }
+        #endregion
     }
 }

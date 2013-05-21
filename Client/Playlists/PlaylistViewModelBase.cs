@@ -1,23 +1,26 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Client.Common.Models;
-using Client.Common.Models.Subsonic;
-using Client.Common.Results;
-using Subsonic8.BottomBar;
-using Subsonic8.Framework.ViewModel;
-
-namespace Subsonic8.Playlists
+﻿namespace Subsonic8.Playlists
 {
-    public abstract class PlaylistViewModelBase : CollectionViewModelBase<object, PlaylistCollection>, IPlaylistViewModel
+    using System.Collections.Generic;
+    using System.Linq;
+    using Client.Common.Models;
+    using Client.Common.Models.Subsonic;
+    using Client.Common.Results;
+    using Subsonic8.BottomBar;
+    using Subsonic8.Framework.ViewModel;
+
+    public abstract class PlaylistViewModelBase : CollectionViewModelBase<object, PlaylistCollection>, 
+                                                  IPlaylistViewModel
     {
-        protected override IServiceResultBase<PlaylistCollection> GetResult(object parameter)
-        {
-            return SubsonicService.GetAllPlaylists();
-        }
+        #region Methods
 
         protected override IEnumerable<IMediaModel> GetItemsToDisplay(PlaylistCollection result)
         {
             return result.Playlists.Select(x => new GenericMediaModel(x));
+        }
+
+        protected override IServiceResultBase<PlaylistCollection> GetResult(object parameter)
+        {
+            return SubsonicService.GetAllPlaylists();
         }
 
         protected override void LoadBottomBar()
@@ -25,16 +28,16 @@ namespace Subsonic8.Playlists
             BottomBar = BottomBar ?? GetPlaylistBottomBar();
         }
 
-        protected override void OnViewLoaded(object view)
-        {
-            MenuItems.Clear();
-            base.OnViewLoaded(view);
-        }
-
         protected override void OnActivate()
         {
             base.OnActivate();
             Populate();
+        }
+
+        protected override void OnViewLoaded(object view)
+        {
+            MenuItems.Clear();
+            base.OnViewLoaded(view);
         }
 
         private IPlaylistBottomBarViewModel GetPlaylistBottomBar()
@@ -44,5 +47,7 @@ namespace Subsonic8.Playlists
 
             return playlistBottomBarViewModel;
         }
+
+        #endregion
     }
 }

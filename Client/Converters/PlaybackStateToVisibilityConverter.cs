@@ -1,12 +1,14 @@
-﻿using System;
-using Subsonic8.Playback;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Data;
-
-namespace Subsonic8.Converters
+﻿namespace Subsonic8.Converters
 {
+    using System;
+    using Subsonic8.Playback;
+    using Windows.UI.Xaml;
+    using Windows.UI.Xaml.Data;
+
     public class PlaybackStateToVisibilityConverter : IValueConverter
     {
+        #region Public Methods and Operators
+
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             var result = Visibility.Collapsed;
@@ -23,5 +25,7 @@ namespace Subsonic8.Converters
         {
             throw new NotImplementedException();
         }
+
+        #endregion
     }
 }

@@ -1,21 +1,21 @@
-﻿using Client.Tests.Mocks;
-using FluentAssertions;
-using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
-using Subsonic8.Framework.ViewModel;
-
-namespace Client.Tests.Framework.ViewModel
+﻿namespace Client.Tests.Framework.ViewModel
 {
+    using Client.Tests.Mocks;
+    using FluentAssertions;
+    using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+    using Subsonic8.Framework.ViewModel;
+
     [TestClass]
     public abstract class CollectionViewModelBaseTests<TViewModel, TParameter> : ViewModelBaseTests<TViewModel>
         where TViewModel : ICollectionViewModel<TParameter>, new()
     {
-        protected MockDefaultBottomBarViewModel MockDefaultBottomBar;
+        #region Properties
 
-        protected override void TestInitializeExtensions()
-        {
-            MockDefaultBottomBar = new MockDefaultBottomBarViewModel();
-            Subject.BottomBar = MockDefaultBottomBar;
-        }
+        protected MockDefaultBottomBarViewModel MockDefaultBottomBar { get; set; }
+
+        #endregion
+
+        #region Public Methods and Operators
 
         [TestMethod]
         public void SelectedItemWhenBottomBarIsNillShouldNotThrowException()
@@ -24,5 +24,17 @@ namespace Client.Tests.Framework.ViewModel
 
             Subject.SelectedItems.Should().NotBeNull();
         }
+
+        #endregion
+
+        #region Methods
+
+        protected override void TestInitializeExtensions()
+        {
+            MockDefaultBottomBar = new MockDefaultBottomBarViewModel();
+            Subject.BottomBar = MockDefaultBottomBar;
+        }
+
+        #endregion
     }
 }

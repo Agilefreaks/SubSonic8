@@ -7,22 +7,26 @@
     mc:Ignorable="d">
 
     <Page.Resources>
-        <cal:BooleanToVisibilityConverter x:Name="boolToVisibilityConverter"/>
+        <cal:BooleanToVisibilityConverter x:Name="boolToVisibilityConverter" />
     </Page.Resources>
-    
+
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Image Source="{Binding CoverArt}" Stretch="Uniform" MinHeight="400"/>
-        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0" Visibility="{Binding Path=PlaybackControlsVisible, Converter={StaticResource boolToVisibilityConverter}}">
-            <Button Style="{StaticResource PreviousAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action Previous]"/>
-            <ic:AppBarToggleButton Style="{StaticResource PlayAppBarButtonStyle}" CheckedStyle="{StaticResource PauseAppBarButtonStyle}" 
-                                   cal:Message.Attach="[Event Click] = [Action PlayPause()]" AutoToggle="False" IsChecked="{Binding IsPlaying}"/>
-            <Button Style="{StaticResource StopAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action Stop]"/>
-            <Button Style="{StaticResource NextAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action Next]"/>
+        <Image Source="{Binding CoverArt}" Stretch="Uniform" MinHeight="400" />
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0"
+                    Visibility="{Binding Path=PlaybackControlsVisible, Converter={StaticResource boolToVisibilityConverter}}">
+            <Button Style="{StaticResource PreviousAppBarButtonStyle}"
+                    cal:Message.Attach="[Event Click] = [Action Previous]" />
+            <ic:AppBarToggleButton Style="{StaticResource PlayAppBarButtonStyle}"
+                                   CheckedStyle="{StaticResource PauseAppBarButtonStyle}"
+                                   cal:Message.Attach="[Event Click] = [Action PlayPause()]" AutoToggle="False"
+                                   IsChecked="{Binding IsPlaying}" />
+            <Button Style="{StaticResource StopAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action Stop]" />
+            <Button Style="{StaticResource NextAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action Next]" />
         </StackPanel>
     </Grid>
 </Page>

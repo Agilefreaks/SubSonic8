@@ -1,11 +1,18 @@
-using Subsonic8.Framework.ViewModel;
-
 namespace Subsonic8.MenuItem
 {
+    using Subsonic8.Framework.ViewModel;
+
     public class MenuItemViewModel : ItemViewModelBase, IMenuItemViewModel
     {
+        #region Fields
+
         private string _subtitle;
+
         private string _type;
+
+        #endregion
+
+        #region Public Properties
 
         public string Subtitle
         {
@@ -27,11 +34,14 @@ namespace Subsonic8.MenuItem
             {
                 return _type;
             }
+
             set
             {
                 _type = value;
                 NotifyOfPropertyChange(() => Type);
             }
         }
+
+        #endregion
     }
 }

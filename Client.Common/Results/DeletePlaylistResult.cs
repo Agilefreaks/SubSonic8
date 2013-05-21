@@ -1,15 +1,22 @@
-﻿using Client.Common.Services.DataStructures.SubsonicService;
-
-namespace Client.Common.Results
+﻿namespace Client.Common.Results
 {
+    using Client.Common.Services.DataStructures.SubsonicService;
+
     public class DeletePlaylistResult : EmptyResponseResultBase, IDeletePlaylistResult
     {
-        public int Id { get; private set; }
+        #region Constructors and Destructors
 
-        public override string ViewName
+        public DeletePlaylistResult(ISubsonicServiceConfiguration configuration, int id)
+            : base(configuration)
         {
-            get { return "deletePlaylist.view"; }
+            Id = id;
         }
+
+        #endregion
+
+        #region Public Properties
+
+        public int Id { get; private set; }
 
         public override string RequestUrl
         {
@@ -19,10 +26,14 @@ namespace Client.Common.Results
             }
         }
 
-        public DeletePlaylistResult(ISubsonicServiceConfiguration configuration, int id)
-            : base(configuration)
+        public override string ViewName
         {
-            Id = id;
+            get
+            {
+                return "deletePlaylist.view";
+            }
         }
+
+        #endregion
     }
 }

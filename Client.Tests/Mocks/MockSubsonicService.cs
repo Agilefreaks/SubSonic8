@@ -1,23 +1,53 @@
-﻿using System;
-using Client.Common.Models.Subsonic;
-using Client.Common.Services;
-using Client.Common.Services.DataStructures.SubsonicService;
-
-namespace Client.Tests.Mocks
+﻿namespace Client.Tests.Mocks
 {
+    using System;
+    using Client.Common.Models.Subsonic;
+    using Client.Common.Services;
+    using Client.Common.Services.DataStructures.SubsonicService;
+
     public class MockSubsonicService : SubsonicService
     {
+        #region Fields
+
         private bool _hasValidSubsonicUrl;
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        public MockSubsonicService()
+        {
+            GetSong = id => new MockGetSongResult(id);
+            Search = s => new MockSearchResult { GetResultFunc = () => new SearchResultCollection() };
+        }
+
+        #endregion
+
+        #region Public Properties
+
+        public int GetCoverArtForIdCallCount { get; set; }
 
         public int GetUriForFileWithIdCallCount { get; set; }
 
         public int GetUriForVideoWithIdCallCount { get; set; }
 
-        public int GetCoverArtForIdCallCount { get; set; }
-
         public override bool HasValidSubsonicUrl
         {
-            get { return _hasValidSubsonicUrl; }
+            get
+            {
+                return _hasValidSubsonicUrl;
+            }
+        }
+
+        #endregion
+
+        #region Public Methods and Operators
+
+        public override string GetCoverArtForId(string coverArt, ImageType imageType)
+        {
+            GetCoverArtForIdCallCount++;
+
+            return "http://test.mock";
         }
 
         public override Uri GetUriForFileWithId(int id)
@@ -34,25 +64,11 @@ namespace Client.Tests.Mocks
             return new Uri("http://test.mock");
         }
 
-        public override string GetCoverArtForId(string coverArt, ImageType imageType)
-        {
-            GetCoverArtForIdCallCount++;
-
-            return "http://test.mock";
-        }
-
         public void SetHasValidSubsonicUrl(bool value)
         {
             _hasValidSubsonicUrl = value;
         }
 
-        public MockSubsonicService()
-        {
-            GetSong = id => new MockGetSongResult(id);
-            Search = s => new MockSearchResult
-                {
-                    GetResultFunc = () => new SearchResultCollection()
-                };
-        }
+        #endregion
     }
 }

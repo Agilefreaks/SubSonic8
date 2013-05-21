@@ -1,14 +1,19 @@
-﻿using Windows.Foundation;
-
-namespace Client.Common
+﻿namespace Client.Common
 {
+    using System;
+    using Windows.Foundation;
+
     public static class UriExtensionMethods
     {
-        public static string ExtractParamterFromQuery(this System.Uri uri, string parameterName)
+        #region Public Methods and Operators
+
+        public static string ExtractParamterFromQuery(this Uri uri, string parameterName)
         {
             var urlDecoder = new WwwFormUrlDecoder(uri.Query);
 
             return urlDecoder.GetFirstValueByName(parameterName);
         }
+
+        #endregion
     }
 }

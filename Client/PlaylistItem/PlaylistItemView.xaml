@@ -8,13 +8,15 @@
     mc:Ignorable="d">
 
     <UserControl.Resources>
-        <converters:PlayingStateToVisibilityConverter x:Name="PlayingStateToVisibilityConverter"/>
+        <converters:PlayingStateToVisibilityConverter x:Name="PlayingStateToVisibilityConverter" />
     </UserControl.Resources>
 
     <ContentControl HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
         <Grid HorizontalAlignment="Stretch">
-            <playlistItem:Playing Visibility="{Binding Path=PlayingState, Converter={StaticResource PlayingStateToVisibilityConverter}, ConverterParameter='Playing'}"/>
-            <playlistItem:NotPlaying Visibility="{Binding Path=PlayingState, Converter={StaticResource PlayingStateToVisibilityConverter}, ConverterParameter='NotPlaying'}"/>
+            <playlistItem:Playing
+                Visibility="{Binding Path=PlayingState, Converter={StaticResource PlayingStateToVisibilityConverter}, ConverterParameter='Playing'}" />
+            <playlistItem:NotPlaying
+                Visibility="{Binding Path=PlayingState, Converter={StaticResource PlayingStateToVisibilityConverter}, ConverterParameter='NotPlaying'}" />
         </Grid>
     </ContentControl>
 </UserControl>

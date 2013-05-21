@@ -1,19 +1,19 @@
-﻿using FluentAssertions;
-using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
-using Subsonic8.Framework.Services;
-
-namespace Client.Tests.Framework.Services
+﻿namespace Client.Tests.Framework.Services
 {
+    using FluentAssertions;
+    using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+    using Subsonic8.Framework.Services;
+
     [TestClass]
     public class DialogNotificationOptionsTests
     {
+        #region Fields
+
         private DialogNotificationOptions _subject;
 
-        [TestInitialize]
-        public void TestInitialize()
-        {
-            _subject = new DialogNotificationOptions();    
-        }
+        #endregion
+
+        #region Public Methods and Operators
 
         [TestMethod]
         public void CtorShouldInitializePossibleActions()
@@ -26,5 +26,13 @@ namespace Client.Tests.Framework.Services
         {
             _subject.PossibleActions.Count.Should().Be(1);
         }
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            _subject = new DialogNotificationOptions();
+        }
+
+        #endregion
     }
 }

@@ -1,8 +1,9 @@
-﻿using Subsonic8.Framework.ViewModel;
-
-namespace Subsonic8.Index
+﻿namespace Subsonic8.Index
 {
-    public interface IIndexViewModel : IDetailViewModel<Client.Common.Models.Subsonic.IndexItem>
+    using Client.Common.Models.Subsonic;
+    using Subsonic8.Framework.ViewModel;
+
+    public interface IIndexViewModel : IDetailViewModel<IndexItem>
     {
     }
 }

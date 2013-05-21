@@ -1,13 +1,21 @@
-﻿using System;
-
-namespace Client.Common.Models
+﻿namespace Client.Common.Models
 {
+    using System;
+
     public interface ISubsonicModel : IId
     {
-        SubsonicModelTypeEnum Type { get; }
+        #region Public Properties
 
         string Name { get; }
 
+        SubsonicModelTypeEnum Type { get; }
+
+        #endregion
+
+        #region Public Methods and Operators
+
         Tuple<string, string> GetDescription();
+
+        #endregion
     }
 }

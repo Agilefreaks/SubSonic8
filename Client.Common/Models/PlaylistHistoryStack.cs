@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-
-namespace Client.Common.Models
+﻿namespace Client.Common.Models
 {
+    using System.Collections.Generic;
+
     public class PlaylistHistoryStack : Stack<int>
     {
     }

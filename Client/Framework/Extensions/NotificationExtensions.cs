@@ -1,30 +1,39 @@
-﻿using Subsonic8.Framework.Interfaces;
-using Subsonic8.Framework.Services;
-
-namespace Subsonic8.Framework.Extensions
+﻿namespace Subsonic8.Framework.Extensions
 {
-    static class NotificationExtensions
+    using Client.Common.Models;
+    using Subsonic8.Framework.Interfaces;
+    using Subsonic8.Framework.Services;
+
+    internal static class NotificationExtensions
     {
-        public static async void ShowToast<T>(this T notificationServiceOwner, Client.Common.Models.PlaylistItem model)
+        #region Public Methods and Operators
+
+        public static async void ShowToast<T>(this T notificationServiceOwner, PlaylistItem model)
             where T : IToastNotificationCapable
         {
             await notificationServiceOwner.ToastNotificationService.Show(GetNotificationOptionsFromPlaylistItem(model));
         }
 
-        public static async void UpdateTile<T>(this T notificationServiceOwner, Client.Common.Models.PlaylistItem model)
+        public static async void UpdateTile<T>(this T notificationServiceOwner, PlaylistItem model)
             where T : ITileNotificationCapable
         {
             await notificationServiceOwner.TileNotificationService.Show(GetNotificationOptionsFromPlaylistItem(model));
         }
 
-        private static PlaybackNotificationOptions GetNotificationOptionsFromPlaylistItem(Client.Common.Models.PlaylistItem model)
+        #endregion
+
+        #region Methods
+
+        private static PlaybackNotificationOptions GetNotificationOptionsFromPlaylistItem(PlaylistItem model)
         {
             return new PlaybackNotificationOptions
-                {
-                    ImageUrl = model.OriginalCoverArtUrl,
-                    Title = model.Title,
-                    Subtitle = model.Artist
-                };
+                       {
+                           ImageUrl = model.OriginalCoverArtUrl, 
+                           Title = model.Title, 
+                           Subtitle = model.Artist
+                       };
         }
+
+        #endregion
     }
 }

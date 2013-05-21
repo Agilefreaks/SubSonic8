@@ -2,7 +2,8 @@
 {
     public enum PlaylistItemTypeEnum
     {
-        Audio,
+        Audio, 
+
         Video
     }
 }

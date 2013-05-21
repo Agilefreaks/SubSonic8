@@ -1,8 +1,9 @@
-﻿using Client.Common.Results;
-
-namespace Client.Tests.Mocks
+﻿namespace Client.Tests.Mocks
 {
-    public class MockGetMusicDirectoryResult : MockServiceResultBase<Common.Models.Subsonic.MusicDirectory>, IGetMusicDirectoryResult
+    using Client.Common.Models.Subsonic;
+    using Client.Common.Results;
+
+    public class MockGetMusicDirectoryResult : MockServiceResultBase<MusicDirectory>, IGetMusicDirectoryResult
     {
     }
 }

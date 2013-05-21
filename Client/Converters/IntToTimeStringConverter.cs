@@ -1,13 +1,15 @@
-﻿using System;
-using Windows.UI.Xaml.Data;
-
-namespace Subsonic8.Converters
+﻿namespace Subsonic8.Converters
 {
+    using System;
+    using Windows.UI.Xaml.Data;
+
     public class IntToTimeStringConverter : IValueConverter
     {
+        #region Public Methods and Operators
+
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            var result = "";
+            var result = string.Empty;
             if (value is int)
             {
                 var intValue = (int)value;
@@ -34,5 +36,7 @@ namespace Subsonic8.Converters
         {
             throw new NotImplementedException();
         }
+
+        #endregion
     }
 }

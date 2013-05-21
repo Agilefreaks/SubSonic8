@@ -2,21 +2,44 @@
 {
     public class PlaybackNotificationOptions
     {
-        private string _title;
+        #region Fields
+
         private string _subtitle;
 
-        public string Title
-        {
-            get { return string.IsNullOrEmpty(_title) ? "Unknown" : _title; }
-            set { _title = value; }
-        }
+        private string _title;
+
+        #endregion
+
+        #region Public Properties
+
+        public string ImageUrl { get; set; }
 
         public string Subtitle
         {
-            get { return string.IsNullOrEmpty(_subtitle) ? "Unknown" : _subtitle; }
-            set { _subtitle = value; }
+            get
+            {
+                return string.IsNullOrEmpty(_subtitle) ? "Unknown" : _subtitle;
+            }
+
+            set
+            {
+                _subtitle = value;
+            }
         }
 
-        public string ImageUrl { get; set; }
+        public string Title
+        {
+            get
+            {
+                return string.IsNullOrEmpty(_title) ? "Unknown" : _title;
+            }
+
+            set
+            {
+                _title = value;
+            }
+        }
+
+        #endregion
     }
 }

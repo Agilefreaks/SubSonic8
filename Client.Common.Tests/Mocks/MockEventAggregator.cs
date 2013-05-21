@@ -1,24 +1,49 @@
-﻿using System;
-using System.Collections.Generic;
-using Caliburn.Micro;
-using Action = System.Action;
-
-namespace Client.Common.Tests.Mocks
+﻿namespace Client.Common.Tests.Mocks
 {
+    using System;
+    using System.Collections.Generic;
+    using Caliburn.Micro;
+    using Action = System.Action;
+
     public class MockEventAggregator : IEventAggregator
     {
-        public object Subscriber { get; private set; }
-
-        public List<object> Messages { get; set; }
-
-        public int PublishCallCount
-        {
-            get { return Messages.Count; }
-        }
+        #region Constructors and Destructors
 
         public MockEventAggregator()
         {
             Messages = new List<object>();
+        }
+
+        #endregion
+
+        #region Public Properties
+
+        public List<object> Messages { get; set; }
+
+        public Action<Action> PublicationThreadMarshaller { get; set; }
+
+        public int PublishCallCount
+        {
+            get
+            {
+                return Messages.Count;
+            }
+        }
+
+        public object Subscriber { get; private set; }
+
+        #endregion
+
+        #region Public Methods and Operators
+
+        public void Publish(object message)
+        {
+            Messages.Add(message);
+        }
+
+        public void Publish(object message, Action<Action> marshal)
+        {
+            throw new NotImplementedException();
         }
 
         public void Subscribe(object instance)
@@ -31,16 +56,6 @@ namespace Client.Common.Tests.Mocks
             throw new NotImplementedException();
         }
 
-        public void Publish(object message)
-        {
-            Messages.Add(message);
-        }
-
-        public void Publish(object message, Action<Action> marshal)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Action<Action> PublicationThreadMarshaller { get; set; }
+        #endregion
     }
 }

@@ -1,14 +1,10 @@
-﻿using Windows.UI.Popups;
-
-namespace Subsonic8.Framework.Services
+﻿namespace Subsonic8.Framework.Services
 {
+    using Windows.UI.Popups;
+
     public class UICommandAdapter : IUICommand
     {
-        public object Id { get; set; }
-
-        public UICommandInvokedHandler Invoked { get; set; }
-
-        public string Label { get; set; }
+        #region Constructors and Destructors
 
         public UICommandAdapter(PossibleAction possibleAction)
         {
@@ -16,5 +12,17 @@ namespace Subsonic8.Framework.Services
 
             Invoked = command => possibleAction.Action();
         }
+
+        #endregion
+
+        #region Public Properties
+
+        public object Id { get; set; }
+
+        public UICommandInvokedHandler Invoked { get; set; }
+
+        public string Label { get; set; }
+
+        #endregion
     }
 }

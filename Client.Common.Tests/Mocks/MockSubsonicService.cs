@@ -1,17 +1,30 @@
-﻿using System;
-using Client.Common.Services;
-using Client.Common.Services.DataStructures.SubsonicService;
-
-namespace Client.Common.Tests.Mocks
+﻿namespace Client.Common.Tests.Mocks
 {
+    using System;
+    using Client.Common.Services;
+    using Client.Common.Services.DataStructures.SubsonicService;
+
     public class MockSubsonicService : SubsonicService
     {
+        #region Public Properties
+
+        public int GetCoverArtForIdCallCount { get; set; }
+
         public int GetUriForFileWithIdCallCount { get; set; }
 
         public int GetUriForVideoWithIdCallCount { get; set; }
 
-        public int GetCoverArtForIdCallCount { get; set; }
-     
+        #endregion
+
+        #region Public Methods and Operators
+
+        public override string GetCoverArtForId(string coverArt, ImageType imageType)
+        {
+            GetCoverArtForIdCallCount++;
+
+            return coverArt;
+        }
+
         public override Uri GetUriForFileWithId(int id)
         {
             GetUriForFileWithIdCallCount++;
@@ -26,11 +39,6 @@ namespace Client.Common.Tests.Mocks
             return new Uri(string.Format("http://test.mock/{0}", id));
         }
 
-        public override string GetCoverArtForId(string coverArt, ImageType imageType)
-        {
-            GetCoverArtForIdCallCount++;
-
-            return coverArt;
-        }
+        #endregion
     }
 }

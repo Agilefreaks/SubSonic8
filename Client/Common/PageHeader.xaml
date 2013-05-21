@@ -11,10 +11,10 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Button Style="{StaticResource BackButtonStyle}" cal:Message.Attach="[Event Click] = [Action GoBack]"/>
-        <TextBlock Style="{StaticResource PageHeaderTextStyle}" Grid.Column="1" Text="{Binding Path=DisplayName}"/>
+        <Button Style="{StaticResource BackButtonStyle}" cal:Message.Attach="[Event Click] = [Action GoBack]" />
+        <TextBlock Style="{StaticResource PageHeaderTextStyle}" Grid.Column="1" Text="{Binding Path=DisplayName}" />
     </Grid>
 </UserControl>

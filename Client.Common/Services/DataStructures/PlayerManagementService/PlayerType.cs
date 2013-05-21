@@ -2,7 +2,8 @@
 {
     public enum PlayerType
     {
-        Audio,
+        Audio, 
+
         Video
     }
 }

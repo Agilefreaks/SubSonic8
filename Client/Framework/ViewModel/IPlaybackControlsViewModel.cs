@@ -2,12 +2,16 @@
 {
     public interface IPlaybackControlsViewModel
     {
-        void Next();
+        #region Public Methods and Operators
 
-        void Previous();
+        void Next();
 
         void PlayPause();
 
+        void Previous();
+
         void Stop();
+
+        #endregion
     }
 }

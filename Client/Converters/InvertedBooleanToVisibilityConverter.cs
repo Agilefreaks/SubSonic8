@@ -1,11 +1,13 @@
-﻿using System;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Data;
-
-namespace Subsonic8.Converters
+﻿namespace Subsonic8.Converters
 {
+    using System;
+    using Windows.UI.Xaml;
+    using Windows.UI.Xaml.Data;
+
     public class InvertedBooleanToVisibilityConverter : IValueConverter
     {
+        #region Public Methods and Operators
+
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             var flag = false;
@@ -27,7 +29,7 @@ namespace Subsonic8.Converters
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
-            var back = ((value is Visibility) && (((Visibility)value) == Visibility.Visible));
+            var back = (value is Visibility) && (((Visibility)value) == Visibility.Visible);
             if (parameter != null)
             {
                 if ((bool)parameter)
@@ -35,7 +37,10 @@ namespace Subsonic8.Converters
                     back = !back;
                 }
             }
+
             return back;
         }
+
+        #endregion
     }
 }

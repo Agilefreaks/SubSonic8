@@ -1,23 +1,13 @@
-﻿using System;
-using Microsoft.PlayerFramework;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-
-namespace Subsonic8.VideoPlayback
+﻿namespace Subsonic8.VideoPlayback
 {
+    using System;
+    using Microsoft.PlayerFramework;
+    using Windows.UI.Xaml;
+    using Windows.UI.Xaml.Controls;
+
     public abstract class VideoPlaybackView : Page, IVideoPlayerView
     {
-        public Action StopAction { get; private set; }
-
-        public Action PlayAction { get; private set; }
-
-        public Action PauseAction { get; private set; }
-
-        public Action<TimeSpan> SetStartTimeAction { get; private set; }
-
-        public Action<TimeSpan> SetEndTimeAction { get; private set; }
-
-        protected abstract MediaPlayer GetMediaPlayer { get; }
+        #region Constructors and Destructors
 
         protected VideoPlaybackView()
         {
@@ -28,16 +18,40 @@ namespace Subsonic8.VideoPlayback
             SetEndTimeAction = SetEndTime;
         }
 
-        protected void MediaPlayer_OnMediaEnded(object sender, MediaPlayerActionEventArgs e)
-        {
-            // TODO: Replace with something nicer | It may be bug in Windows.Interactivity
-            ((IVidePlaybackViewModel)DataContext).Next();
-        }
+        #endregion
+
+        #region Public Properties
+
+        public Action PauseAction { get; private set; }
+
+        public Action PlayAction { get; private set; }
+
+        public Action<TimeSpan> SetEndTimeAction { get; private set; }
+
+        public Action<TimeSpan> SetStartTimeAction { get; private set; }
+
+        public Action StopAction { get; private set; }
+
+        #endregion
+
+        #region Properties
+
+        protected abstract MediaPlayer GetMediaPlayer { get; }
+
+        #endregion
+
+        #region Methods
 
         protected void MediaPlayer_OnIsFullScreenChanged(object sender, RoutedPropertyChangedEventArgs<bool> e)
         {
             // TODO: Replace with something nicer | It may be bug in Windows.Interactivity
             ((IVidePlaybackViewModel)DataContext).OnFullScreenChanged(GetMediaPlayer);
+        }
+
+        protected void MediaPlayer_OnMediaEnded(object sender, MediaPlayerActionEventArgs e)
+        {
+            // TODO: Replace with something nicer | It may be bug in Windows.Interactivity
+            ((IVidePlaybackViewModel)DataContext).Next();
         }
 
         private void Pause()
@@ -52,11 +66,9 @@ namespace Subsonic8.VideoPlayback
             mediaPlayer.Play();
         }
 
-        private void Stop()
+        private void SetEndTime(TimeSpan endTime)
         {
-            var mediaPlayer = GetMediaPlayer;
-            mediaPlayer.AutoPlay = false;
-            mediaPlayer.Stop();
+            GetMediaPlayer.EndTime = endTime;
         }
 
         private void SetStartTime(TimeSpan startTime)
@@ -64,9 +76,13 @@ namespace Subsonic8.VideoPlayback
             GetMediaPlayer.StartTime = startTime;
         }
 
-        private void SetEndTime(TimeSpan endTime)
+        private void Stop()
         {
-            GetMediaPlayer.EndTime = endTime;
+            var mediaPlayer = GetMediaPlayer;
+            mediaPlayer.AutoPlay = false;
+            mediaPlayer.Stop();
         }
+
+        #endregion
     }
 }

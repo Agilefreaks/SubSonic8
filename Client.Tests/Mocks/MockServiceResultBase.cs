@@ -1,59 +1,47 @@
-﻿using System;
-using System.Threading.Tasks;
-using Caliburn.Micro;
-using Client.Common.Results;
-using Client.Common.Services.DataStructures.SubsonicService;
-using Action = System.Action;
-
-namespace Client.Tests.Mocks
+﻿namespace Client.Tests.Mocks
 {
+    using System;
+    using System.Threading.Tasks;
+    using Caliburn.Micro;
+    using Client.Common.Results;
+    using Client.Common.Services.DataStructures.SubsonicService;
+    using Action = System.Action;
+
     public abstract class MockServiceResultBase<T> : IServiceResultBase<T>
     {
-        private Action<T> _extendedOnSuccess;
+        #region Fields
+
         private IErrorHandler _errorHandler;
+
+        private Action<T> _extendedOnSuccess;
+
         private Action _onSuccess;
 
-        public int ExecuteCallCount { get; protected set; }
+        #endregion
 
-        public Exception Error { get; set; }
+        #region Public Properties
 
         public ISubsonicServiceConfiguration Configuration { get; protected set; }
 
-        public Func<Task<HttpStreamResult>> Response { get; set; }
+        public Exception Error { get; set; }
+
+        public int ExecuteCallCount { get; protected set; }
+
+        public Func<Exception> GetErrorFunc { get; set; }
 
         public Func<T> GetResultFunc { get; set; }
 
-        public Func<Exception> GetErrorFunc { get; set; }
+        public string RequestUrl { get; protected set; }
+
+        public Func<Task<HttpStreamResult>> Response { get; set; }
 
         public T Result { get; protected set; }
 
         public string ViewName { get; protected set; }
 
-        public string RequestUrl { get; protected set; }
+        #endregion
 
-        IExtendedResult IExtendedResult.WithErrorHandler(IErrorHandler errorHandler)
-        {
-            _errorHandler = errorHandler;
-            return this;
-        }
-
-        public IServiceResultBase<T> WithErrorHandler(IErrorHandler errorHandler)
-        {
-            _errorHandler = errorHandler;
-            return this;
-        }
-
-        public IServiceResultBase<T> OnSuccess(Action<T> onSuccess)
-        {
-            _extendedOnSuccess = onSuccess;
-            return this;
-        }
-
-        public IExtendedResult OnSuccess(Action onSuccess)
-        {
-            _onSuccess = onSuccess;
-            return this;
-        }
+        #region Public Methods and Operators
 
         public Task Execute(ActionExecutionContext context = null)
         {
@@ -78,7 +66,36 @@ namespace Client.Tests.Mocks
             }
 
             return taskCompletionSource.Task;
-
         }
+
+        public IServiceResultBase<T> OnSuccess(Action<T> onSuccess)
+        {
+            _extendedOnSuccess = onSuccess;
+            return this;
+        }
+
+        public IExtendedResult OnSuccess(Action onSuccess)
+        {
+            _onSuccess = onSuccess;
+            return this;
+        }
+
+        public IServiceResultBase<T> WithErrorHandler(IErrorHandler errorHandler)
+        {
+            _errorHandler = errorHandler;
+            return this;
+        }
+
+        #endregion
+
+        #region Explicit Interface Methods
+
+        IExtendedResult IExtendedResult.WithErrorHandler(IErrorHandler errorHandler)
+        {
+            _errorHandler = errorHandler;
+            return this;
+        }
+
+        #endregion
     }
 }

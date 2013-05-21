@@ -1,15 +1,21 @@
-﻿using System;
-using System.Reflection;
-using MugenInjection.Interface;
-
-namespace Client.Common.MugenExtensions
+﻿namespace Client.Common.MugenExtensions
 {
+    using System;
+    using System.Reflection;
+    using MugenInjection.Interface;
+
     public abstract class InterfaceToImplementationBaseConvention : MugenConvetion
     {
-        protected InterfaceToImplementationBaseConvention(IInjector injector) 
+        #region Constructors and Destructors
+
+        protected InterfaceToImplementationBaseConvention(IInjector injector)
             : base(injector)
         {
         }
+
+        #endregion
+
+        #region Public Methods and Operators
 
         public override Type GetTargetType(Type type)
         {
@@ -19,5 +25,7 @@ namespace Client.Common.MugenExtensions
 
             return typeInfo.Assembly.GetType(implementationTypeFullName);
         }
+
+        #endregion
     }
 }

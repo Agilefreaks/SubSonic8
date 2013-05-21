@@ -1,16 +1,18 @@
-﻿using System;
-
-namespace Client.Common.Models.Subsonic
+﻿namespace Client.Common.Models.Subsonic
 {
+    using System;
+
     public sealed class GenericMediaModel : MediaModelBase
     {
-        private readonly SubsonicModelTypeEnum _type;
+        #region Fields
+
         private readonly Tuple<string, string> _description;
 
-        public override SubsonicModelTypeEnum Type
-        {
-            get { return _type; }
-        }
+        private readonly SubsonicModelTypeEnum _type;
+
+        #endregion
+
+        #region Constructors and Destructors
 
         public GenericMediaModel(SubsonicModelTypeEnum type)
         {
@@ -25,9 +27,27 @@ namespace Client.Common.Models.Subsonic
             _description = subsonicModel.GetDescription();
         }
 
+        #endregion
+
+        #region Public Properties
+
+        public override SubsonicModelTypeEnum Type
+        {
+            get
+            {
+                return _type;
+            }
+        }
+
+        #endregion
+
+        #region Public Methods and Operators
+
         public override Tuple<string, string> GetDescription()
         {
             return _description;
         }
+
+        #endregion
     }
 }

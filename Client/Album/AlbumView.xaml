@@ -17,10 +17,10 @@
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <Button x:Name="GoBack" Style="{StaticResource BackButtonStyle}"/>
+            <Button x:Name="GoBack" Style="{StaticResource BackButtonStyle}" />
             <TextBlock Text="SubSonic8" Style="{StaticResource PageHeaderTextStyle}" Grid.Column="1" />
         </Grid>
 

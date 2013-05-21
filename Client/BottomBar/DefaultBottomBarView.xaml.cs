@@ -2,9 +2,13 @@
 {
     public sealed partial class DefaultBottomBarView
     {
+        #region Constructors and Destructors
+
         public DefaultBottomBarView()
         {
             InitializeComponent();
         }
+
+        #endregion
     }
 }

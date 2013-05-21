@@ -1,12 +1,16 @@
-﻿using System;
-using System.IO;
-
-namespace Client.Common.Results
+﻿namespace Client.Common.Results
 {
+    using System;
+    using System.IO;
+
     public class HttpStreamResult
     {
-        public Stream Stream { get; set; }
+        #region Public Properties
 
         public Exception Exception { get; set; }
+
+        public Stream Stream { get; set; }
+
+        #endregion
     }
 }

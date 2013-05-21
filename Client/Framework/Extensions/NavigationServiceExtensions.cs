@@ -1,14 +1,16 @@
-﻿using Caliburn.Micro;
-using Client.Common.Models;
-using Subsonic8.Album;
-using Subsonic8.Artist;
-using Subsonic8.MusicDirectory;
-using Subsonic8.Playback;
-
-namespace Subsonic8.Framework.Extensions
+﻿namespace Subsonic8.Framework.Extensions
 {
+    using Caliburn.Micro;
+    using Client.Common.Models;
+    using Subsonic8.Album;
+    using Subsonic8.Artist;
+    using Subsonic8.MusicDirectory;
+    using Subsonic8.Playback;
+
     public static class NavigationServiceExtensions
     {
+        #region Public Methods and Operators
+
         public static void NavigateByModelType<T>(this T navigationService, ISubsonicModel subsonicModel)
             where T : INavigationService
         {
@@ -30,5 +32,7 @@ namespace Subsonic8.Framework.Extensions
                     break;
             }
         }
+
+        #endregion
     }
 }

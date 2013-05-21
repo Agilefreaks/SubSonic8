@@ -1,12 +1,16 @@
-﻿using System;
-using System.Threading.Tasks;
-using Client.Common.Services.DataStructures.SubsonicService;
-
-namespace Client.Common.Results
+﻿namespace Client.Common.Results
 {
+    using System;
+    using System.Threading.Tasks;
+    using Client.Common.Services.DataStructures.SubsonicService;
+
     public interface IServiceResultBase<out T> : IExtendedResult
     {
+        #region Public Properties
+
         ISubsonicServiceConfiguration Configuration { get; }
+
+        string RequestUrl { get; }
 
         Func<Task<HttpStreamResult>> Response { get; set; }
 
@@ -14,10 +18,14 @@ namespace Client.Common.Results
 
         string ViewName { get; }
 
-        string RequestUrl { get; }
+        #endregion
+
+        #region Public Methods and Operators
 
         IServiceResultBase<T> OnSuccess(Action<T> onSuccess);
 
         new IServiceResultBase<T> WithErrorHandler(IErrorHandler errorHandler);
+
+        #endregion
     }
 }

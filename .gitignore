@@ -50,3 +50,6 @@ Client/Subsonic8Key.pfx
 Client/Package.StoreAssociation.xml
 Client/Package.appxmanifest
 PublishAssets/*
+
+#StyleCop
+*StyleCop.cache

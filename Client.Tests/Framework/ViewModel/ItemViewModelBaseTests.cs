@@ -1,17 +1,23 @@
-using Caliburn.Micro;
-using Client.Common.Services;
-using Client.Tests.Mocks;
-using FluentAssertions;
-using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
-using Subsonic8.Framework.ViewModel;
-
 namespace Client.Tests.Framework.ViewModel
 {
+    using Caliburn.Micro;
+    using Client.Common.Services;
+    using Client.Tests.Mocks;
+    using FluentAssertions;
+    using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+    using Subsonic8.Framework.ViewModel;
+
     [TestClass]
     public class ItemViewModelBaseTests<TViewModel> : ClientTestBase
         where TViewModel : ItemViewModelBase
     {
-        protected TViewModel Subject;
+        #region Properties
+
+        protected TViewModel Subject { get; set; }
+
+        #endregion
+
+        #region Public Methods and Operators
 
         [TestMethod]
         public void CoverArtShouldCallSubsonicServiceGetCoverArtForId()
@@ -24,5 +30,7 @@ namespace Client.Tests.Framework.ViewModel
             coverArt.Should().Be("http://test.mock");
             subsonicService.GetCoverArtForIdCallCount.Should().Be(1);
         }
+
+        #endregion
     }
 }

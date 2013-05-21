@@ -1,19 +1,19 @@
-﻿using Client.Common.Models.Subsonic;
-using FluentAssertions;
-using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
-
-namespace Client.Common.Tests.Models.Subsonic
+﻿namespace Client.Common.Tests.Models.Subsonic
 {
+    using Client.Common.Models.Subsonic;
+    using FluentAssertions;
+    using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+
     [TestClass]
-    class SearchResultCollectionTests
+    internal class SearchResultCollectionTests
     {
+        #region Fields
+
         private SearchResultCollection _subject;
 
-        [TestInitialize]
-        public void TestInitialize()
-        {
-            _subject = new SearchResultCollection();
-        }
+        #endregion
+
+        #region Public Methods and Operators
 
         [TestMethod]
         public void CtorAlwaysInitializesAlbumsProperty()
@@ -32,5 +32,13 @@ namespace Client.Common.Tests.Models.Subsonic
         {
             _subject.Songs.Should().NotBeNull();
         }
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            _subject = new SearchResultCollection();
+        }
+
+        #endregion
     }
 }

@@ -1,57 +1,55 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Caliburn.Micro;
-using Client.Common.EventAggregatorMessages;
-using Client.Common.Models;
-using Client.Common.Services.DataStructures.PlayerManagementService;
-
-namespace Client.Common.Services
+﻿namespace Client.Common.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Caliburn.Micro;
+    using Client.Common.EventAggregatorMessages;
+    using Client.Common.Models;
+    using Client.Common.Services.DataStructures.PlayerManagementService;
+
     public class PlayerManagementService : IPlayerManagementService
     {
-        private readonly IEventAggregator _eventAggregator;
-        private static readonly Dictionary<IPlayer, PlayerType> Players = new Dictionary<IPlayer, PlayerType>();
+        #region Static Fields
+
         private static readonly Dictionary<PlayerType, IPlayer> DefaultPlayers = new Dictionary<PlayerType, IPlayer>();
+
+        private static readonly Dictionary<IPlayer, PlayerType> Players = new Dictionary<IPlayer, PlayerType>();
+
+        #endregion
+
+        #region Fields
+
+        private readonly IEventAggregator _eventAggregator;
+
         private IPlayer _currnetPlayer;
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        public PlayerManagementService(IEventAggregator eventAggregator)
+        {
+            _eventAggregator = eventAggregator;
+            _eventAggregator.Subscribe(this);
+        }
+
+        #endregion
+
+        #region Public Events
 
         public event EventHandler<EventArgs> CurrentPlayerChanged;
 
-        public IEnumerable<IPlayer> RegisteredPlayers
-        {
-            get { return Players.Keys; }
-        }
+        #endregion
 
-        public IEnumerable<IPlayer> RegisteredAudioPlayers
-        {
-            get { return GetPlayersByType(PlayerType.Audio); }
-        }
-
-        public IEnumerable<IPlayer> RegisteredVideoPlayers
-        {
-            get { return GetPlayersByType(PlayerType.Video); }
-        }
-
-        public IPlayer DefaultVideoPlayer
-        {
-            get { return GetDefaultPlayerByType(PlayerType.Video); }
-            set { DefaultPlayers[PlayerType.Video] = value; }
-        }
-
-        public IPlayer DefaultAudioPlayer
-        {
-            get { return GetDefaultPlayerByType(PlayerType.Audio); }
-            set { DefaultPlayers[PlayerType.Audio] = value; }
-        }
-
-        public IPlayer VideoPlayer
-        {
-            get { return DefaultVideoPlayer ?? RegisteredVideoPlayers.FirstOrDefault(); }
-        }
+        #region Public Properties
 
         public IPlayer AudioPlayer
         {
-            get { return DefaultAudioPlayer ?? RegisteredAudioPlayers.FirstOrDefault(); }
+            get
+            {
+                return DefaultAudioPlayer ?? RegisteredAudioPlayers.FirstOrDefault();
+            }
         }
 
         public IPlayer CurrentPlayer
@@ -60,9 +58,14 @@ namespace Client.Common.Services
             {
                 return _currnetPlayer;
             }
+
             set
             {
-                if (_currnetPlayer == value) return;
+                if (_currnetPlayer == value)
+                {
+                    return;
+                }
+
                 _currnetPlayer = value;
                 RaiseCurrentPlayerChanged();
             }
@@ -70,23 +73,84 @@ namespace Client.Common.Services
 
         public PlayerType CurrentPlayerType
         {
-            get { return Players[CurrentPlayer]; }
+            get
+            {
+                return Players[CurrentPlayer];
+            }
         }
 
-        public PlayerManagementService(IEventAggregator eventAggregator)
+        public IPlayer DefaultAudioPlayer
         {
-            _eventAggregator = eventAggregator;
-            _eventAggregator.Subscribe(this);
+            get
+            {
+                return GetDefaultPlayerByType(PlayerType.Audio);
+            }
+
+            set
+            {
+                DefaultPlayers[PlayerType.Audio] = value;
+            }
         }
 
-        public void RegisterVideoPlayer(IPlayer player)
+        public IPlayer DefaultVideoPlayer
         {
-            Players.Add(player, PlayerType.Video);
+            get
+            {
+                return GetDefaultPlayerByType(PlayerType.Video);
+            }
+
+            set
+            {
+                DefaultPlayers[PlayerType.Video] = value;
+            }
         }
 
-        public void RegisterAudioPlayer(IPlayer player)
+        public IEnumerable<IPlayer> RegisteredAudioPlayers
         {
-            Players.Add(player, PlayerType.Audio);
+            get
+            {
+                return GetPlayersByType(PlayerType.Audio);
+            }
+        }
+
+        public IEnumerable<IPlayer> RegisteredPlayers
+        {
+            get
+            {
+                return Players.Keys;
+            }
+        }
+
+        public IEnumerable<IPlayer> RegisteredVideoPlayers
+        {
+            get
+            {
+                return GetPlayersByType(PlayerType.Video);
+            }
+        }
+
+        public IPlayer VideoPlayer
+        {
+            get
+            {
+                return DefaultVideoPlayer ?? RegisteredVideoPlayers.FirstOrDefault();
+            }
+        }
+
+        #endregion
+
+        #region Public Methods and Operators
+
+        public void ClearPlayers()
+        {
+            Players.Clear();
+        }
+
+        public IPlayer GetPlayerFor(PlaylistItem item)
+        {
+            var player = item.Type == PlaylistItemTypeEnum.Audio ? AudioPlayer : VideoPlayer;
+
+            return player;
         }
 
         public void Handle(StartPlaybackMessage message)
@@ -114,26 +178,28 @@ namespace Client.Common.Services
             player.Resume();
         }
 
-        public IPlayer GetPlayerFor(PlaylistItem item)
+        public void RegisterAudioPlayer(IPlayer player)
         {
-            var player = item.Type == PlaylistItemTypeEnum.Audio ? AudioPlayer : VideoPlayer;
-
-            return player;
+            Players.Add(player, PlayerType.Audio);
         }
 
-        public void ClearPlayers()
+        public void RegisterVideoPlayer(IPlayer player)
         {
-            Players.Clear();
+            Players.Add(player, PlayerType.Video);
+        }
+
+        #endregion
+
+        #region Methods
+
+        private static IPlayer GetDefaultPlayerByType(PlayerType playerType)
+        {
+            return DefaultPlayers.Where(kvp => kvp.Key == playerType).Select(kvp => kvp.Value).SingleOrDefault();
         }
 
         private static IEnumerable<IPlayer> GetPlayersByType(PlayerType playerType)
         {
             return Players.Where(kvp => kvp.Value == playerType).Select(kvp => kvp.Key);
-        }
-
-        private static IPlayer GetDefaultPlayerByType(PlayerType playerType)
-        {
-            return DefaultPlayers.Where(kvp => kvp.Key == playerType).Select(kvp => kvp.Value).SingleOrDefault();
         }
 
         private void RaiseCurrentPlayerChanged()
@@ -143,5 +209,7 @@ namespace Client.Common.Services
                 CurrentPlayerChanged(this, new EventArgs());
             }
         }
+
+        #endregion
     }
 }

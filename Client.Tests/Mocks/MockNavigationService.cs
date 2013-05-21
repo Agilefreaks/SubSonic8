@@ -1,25 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using Caliburn.Micro;
-using Client.Common.Services;
-using Subsonic8.Framework.ViewModel;
-using Windows.UI.Xaml.Navigation;
-
-namespace Client.Tests.Mocks
+﻿namespace Client.Tests.Mocks
 {
+    using System;
+    using System.Collections.Generic;
+    using Caliburn.Micro;
+    using Client.Common.Services;
+    using Subsonic8.Framework.ViewModel;
+    using Windows.UI.Xaml.Navigation;
+
     public class MockNavigationService : ICustomFrameAdapter
     {
-        public Dictionary<Type, object> NavigateToViewModelCalls { get; private set; }
+        #region Constructors and Destructors
 
-        public Type SourcePageType { get; set; }
+        public MockNavigationService()
+        {
+            NavigateToViewModelCalls = new Dictionary<Type, object>();
+        }
 
-        public Type CurrentSourcePageType { get; private set; }
+        #endregion
 
-        public bool CanGoForward { get; private set; }
-
-        public bool CanGoBack { get; private set; }
-
-        public int GoBackCallCount { get; set; }
+        #region Public Events
 
         public event NavigatedEventHandler Navigated;
 
@@ -29,15 +28,39 @@ namespace Client.Tests.Mocks
 
         public event NavigationStoppedEventHandler NavigationStopped;
 
-        public void NavigateToViewModel<T>(object parameter = null)
-            where T : Screen
+        #endregion
+
+        #region Public Properties
+
+        public bool CanGoBack { get; private set; }
+
+        public bool CanGoForward { get; private set; }
+
+        public Type CurrentSourcePageType { get; private set; }
+
+        public int GoBackCallCount { get; set; }
+
+        public Dictionary<Type, object> NavigateToViewModelCalls { get; private set; }
+
+        public Type SourcePageType { get; set; }
+
+        #endregion
+
+        #region Public Methods and Operators
+
+        public void DoNavigate()
         {
-            NavigateToViewModelCalls.Add(typeof(T), parameter);
+            NavigateToViewModelCalls.Add(typeof(IViewModel), null);
         }
 
-        public MockNavigationService()
+        public void GoBack()
         {
-            NavigateToViewModelCalls = new Dictionary<Type, object>();
+            GoBackCallCount++;
+        }
+
+        public void GoForward()
+        {
+            throw new NotImplementedException();
         }
 
         public bool Navigate(Type sourcePageType)
@@ -52,19 +75,11 @@ namespace Client.Tests.Mocks
             return true;
         }
 
-        public void GoForward()
+        public void NavigateToViewModel<T>(object parameter = null) where T : Screen
         {
-            throw new NotImplementedException();
+            NavigateToViewModelCalls.Add(typeof(T), parameter);
         }
 
-        public void GoBack()
-        {
-            GoBackCallCount++;
-        }
-
-        public void DoNavigate()
-        {
-            NavigateToViewModelCalls.Add(typeof(IViewModel), null);
-        }
+        #endregion
     }
 }

@@ -1,56 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Caliburn.Micro;
-using Client.Common.EventAggregatorMessages;
-using Client.Common.Models;
-using Client.Common.Models.Subsonic;
-using Client.Tests.Mocks;
-using FluentAssertions;
-using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
-using Subsonic8.Framework.ViewModel;
-
-namespace Client.Tests.Framework.ViewModel
+﻿namespace Client.Tests.Framework.ViewModel
 {
+    using System;
+    using Caliburn.Micro;
+    using Client.Tests.Mocks;
+    using FluentAssertions;
+    using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+    using Subsonic8.Framework.ViewModel;
+
     [TestClass]
     public abstract class ViewModelBaseTests<TViewModel> : ClientTestBase
         where TViewModel : IViewModel, new()
     {
-        protected MockSubsonicService MockSubsonicService;
-        protected MockNavigationService MockNavigationService;
-        protected MockDialogNotificationService MockDialogNotificationService;
-        protected MockEventAggregator MockEventAggregator;
+        #region Properties
+
+        protected MockDialogNotificationService MockDialogNotificationService { get; set; }
+
+        protected MockEventAggregator MockEventAggregator { get; set; }
+
+        protected MockNavigationService MockNavigationService { get; set; }
+
+        protected MockSubsonicService MockSubsonicService { get; set; }
 
         protected abstract TViewModel Subject { get; set; }
 
-        [TestInitialize]
-        public void TestInitialize()
-        {
-            MockSubsonicService = new MockSubsonicService();
-            MockNavigationService = new MockNavigationService();
-            MockDialogNotificationService = new MockDialogNotificationService();
-            MockEventAggregator = new MockEventAggregator();
-            Subject = new TViewModel
-                {
-                    EventAggregator = MockEventAggregator,
-                    SubsonicService = MockSubsonicService,
-                    NavigationService = MockNavigationService,
-                    NotificationService = MockDialogNotificationService,
-                    UpdateDisplayName = () => Subject.DisplayName = ""
-                };
-            TestInitializeExtensions();
-        }
+        #endregion
 
-        [TestMethod]
-        public void OnActivateShouldSetDiplayName()
-        {
-            Subject.UpdateDisplayName = () => Subject.DisplayName = "42";
-
-            ((IActivate)Subject).Activate();
-
-            Subject.DisplayName.Should().Be("42");
-        }
+        #region Public Methods and Operators
 
         [TestMethod]
         public void HandleErrorCallsNotificationServiceShow()
@@ -64,8 +39,42 @@ namespace Client.Tests.Framework.ViewModel
             mockDialogNotificationService.Showed.Count.Should().Be(1);
         }
 
+        [TestMethod]
+        public void OnActivateShouldSetDiplayName()
+        {
+            Subject.UpdateDisplayName = () => Subject.DisplayName = "42";
+
+            ((IActivate)Subject).Activate();
+
+            Subject.DisplayName.Should().Be("42");
+        }
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            MockSubsonicService = new MockSubsonicService();
+            MockNavigationService = new MockNavigationService();
+            MockDialogNotificationService = new MockDialogNotificationService();
+            MockEventAggregator = new MockEventAggregator();
+            Subject = new TViewModel
+                          {
+                              EventAggregator = MockEventAggregator, 
+                              SubsonicService = MockSubsonicService, 
+                              NavigationService = MockNavigationService, 
+                              NotificationService = MockDialogNotificationService, 
+                              UpdateDisplayName = () => Subject.DisplayName = string.Empty
+                          };
+            TestInitializeExtensions();
+        }
+
+        #endregion
+
+        #region Methods
+
         protected virtual void TestInitializeExtensions()
         {
         }
+
+        #endregion
     }
 }

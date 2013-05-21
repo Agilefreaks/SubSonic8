@@ -1,13 +1,21 @@
-﻿using System;
-using System.Threading.Tasks;
-using Caliburn.Micro;
-
-namespace Client.Common.Results
+﻿namespace Client.Common.Results
 {
+    using System;
+    using System.Threading.Tasks;
+    using Caliburn.Micro;
+    using Action = System.Action;
+
     public abstract class ExtendedResultBase : ResultBase, IExtendedResult
     {
-        protected IErrorHandler ErrorHandler;
-        protected System.Action OnSuccessAction;
+        #region Properties
+
+        protected IErrorHandler ErrorHandler { get; set; }
+
+        protected Action OnSuccessAction { get; set; }
+
+        #endregion
+
+        #region Public Methods and Operators
 
         public override async Task Execute(ActionExecutionContext context = null)
         {
@@ -37,23 +45,16 @@ namespace Client.Common.Results
             }
         }
 
-        public IExtendedResult WithErrorHandler(IErrorHandler errorHandler)
-        {
-            ErrorHandler = errorHandler;
-
-            return this;
-        }
-
-        public IExtendedResult OnSuccess(System.Action onSuccess)
+        public IExtendedResult OnSuccess(Action onSuccess)
         {
             if (OnSuccessAction != null)
             {
                 var oldOnSuccess = OnSuccessAction;
                 OnSuccessAction = () =>
-                {
-                    oldOnSuccess();
-                    onSuccess();
-                };
+                    {
+                        oldOnSuccess();
+                        onSuccess();
+                    };
             }
             else
             {
@@ -62,6 +63,17 @@ namespace Client.Common.Results
 
             return this;
         }
+
+        public IExtendedResult WithErrorHandler(IErrorHandler errorHandler)
+        {
+            ErrorHandler = errorHandler;
+
+            return this;
+        }
+
+        #endregion
+
+        #region Methods
 
         protected virtual void ExecuteOnSuccessAction()
         {
@@ -84,5 +96,7 @@ namespace Client.Common.Results
                 ErrorHandler.HandleError(Error);
             }
         }
+
+        #endregion
     }
 }

@@ -1,14 +1,16 @@
-﻿using System;
-using System.IO;
-using System.Runtime.Serialization;
-using System.Text;
-
-namespace Client.Common.Models.Subsonic
+﻿namespace Client.Common.Models.Subsonic
 {
+    using System;
+    using System.IO;
+    using System.Runtime.Serialization;
+    using System.Text;
+
     [DataContract]
     public abstract class SerializableModelBase<T> : MediaModelBase
         where T : MediaModelBase
     {
+        #region Public Methods and Operators
+
         public string Serialize()
         {
             var dataContractSerializer = new DataContractSerializer(typeof(T));
@@ -24,6 +26,10 @@ namespace Client.Common.Models.Subsonic
 
             return data;
         }
+
+        #endregion
+
+        #region Methods
 
         protected static T Deserialize(string data)
         {
@@ -51,5 +57,7 @@ namespace Client.Common.Models.Subsonic
 
             return result;
         }
+
+        #endregion
     }
 }

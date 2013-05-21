@@ -1,9 +1,15 @@
 ﻿namespace Client.Common.Results
 {
+    using System;
+
     public interface IExtendedResult : IResultBase
     {
+        #region Public Methods and Operators
+
+        IExtendedResult OnSuccess(Action onSuccess);
+
         IExtendedResult WithErrorHandler(IErrorHandler errorHandler);
 
-        IExtendedResult OnSuccess(System.Action onSuccess);
+        #endregion
     }
 }

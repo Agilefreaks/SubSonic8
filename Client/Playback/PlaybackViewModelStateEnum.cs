@@ -2,8 +2,10 @@
 {
     public enum PlaybackViewModelStateEnum
     {
-        Audio,
-        Video,
+        Audio, 
+
+        Video, 
+
         FullScreen
     }
 }

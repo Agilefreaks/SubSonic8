@@ -1,12 +1,16 @@
-﻿using System;
-using Subsonic8.Framework.Interfaces;
-
-namespace Subsonic8.VideoPlayback
+﻿namespace Subsonic8.VideoPlayback
 {
+    using System;
+    using Subsonic8.Framework.Interfaces;
+
     public interface IVideoPlayerView : IPlayerControls
     {
-        Action<TimeSpan> SetStartTimeAction { get; }
+        #region Public Properties
 
         Action<TimeSpan> SetEndTimeAction { get; }
+
+        Action<TimeSpan> SetStartTimeAction { get; }
+
+        #endregion
     }
 }

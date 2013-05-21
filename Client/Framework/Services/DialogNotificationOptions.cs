@@ -1,11 +1,26 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-namespace Subsonic8.Framework.Services
+﻿namespace Subsonic8.Framework.Services
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
     public class DialogNotificationOptions
     {
+        #region Fields
+
         private List<PossibleAction> _possibleActions;
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        public DialogNotificationOptions()
+        {
+            _possibleActions = new List<PossibleAction>();
+        }
+
+        #endregion
+
+        #region Public Properties
 
         public string Message { get; set; }
 
@@ -13,17 +28,17 @@ namespace Subsonic8.Framework.Services
         {
             get
             {
-                return _possibleActions.Any() 
-                    ? _possibleActions 
-                    : new List<PossibleAction> { new PossibleAction("Ok", () => {})};
+                return _possibleActions.Any()
+                           ? _possibleActions
+                           : new List<PossibleAction> { new PossibleAction("Ok", () => { }) };
             }
 
-            set { _possibleActions = value; }
+            set
+            {
+                _possibleActions = value;
+            }
         }
 
-        public DialogNotificationOptions()
-        {
-            _possibleActions = new List<PossibleAction>();
-        }
+        #endregion
     }
 }

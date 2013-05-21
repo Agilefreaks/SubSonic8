@@ -1,16 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using MugenInjection;
-using MugenInjection.Core;
-
-namespace Client.Common.MugenExtensions
+﻿namespace Client.Common.MugenExtensions
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
+    using MugenInjection;
+    using MugenInjection.Core;
+
     public abstract class MugenModuleWithAutoDiscoveryBase : InjectorModule
     {
+        #region Fields
+
         protected readonly List<MugenConvetion> Convetions = new List<MugenConvetion>();
+
         protected readonly List<Tuple<Type[], Type>> Singletons = new List<Tuple<Type[], Type>>();
+
+        #endregion
+
+        #region Public Methods and Operators
 
         public override void Load()
         {
@@ -25,15 +32,24 @@ namespace Client.Common.MugenExtensions
             }
         }
 
+        #endregion
+
+        #region Methods
+
         protected abstract void PrepareForLoad();
 
         private void ApplyConventions(IEnumerable<Type> types)
         {
-            foreach (var result in types.SelectMany(type => Convetions.Select(c => new { type, convention = c, isMatch = c.ConditionMet(type) }))
-                .Where(result => result.isMatch))
+            foreach (
+                var result in
+                    types.SelectMany(
+                        type => Convetions.Select(c => new { type, convention = c, isMatch = c.ConditionMet(type) }))
+                         .Where(result => result.isMatch))
             {
                 result.convention.CreateBinding(result.type);
             }
         }
+
+        #endregion
     }
 }

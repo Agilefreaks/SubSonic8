@@ -1,28 +1,14 @@
-using System.Collections.Generic;
-using Caliburn.Micro;
-using Client.Common.EventAggregatorMessages;
-using Client.Common.Models;
-using Client.Common.Services;
-
 namespace Client.Tests.Mocks
 {
+    using System.Collections.Generic;
+    using Caliburn.Micro;
+    using Client.Common.EventAggregatorMessages;
+    using Client.Common.Models;
+    using Client.Common.Services;
+
     public class MockPlyalistManagementService : PropertyChangedBase, IPlaylistManagementService
     {
-        public PlaylistItem CurrentItem { get; set; }
-
-        public bool HasElements { get; set; }
-
-        public bool ShuffleOn { get; set; }
-
-        public bool IsPlaying { get; set; }
-
-        public PlaylistItemCollection Items { get; set; }
-
-        public int ClearCallCount { get; set; }
-
-        public int LoadPlaylistCallCount { get; set; }
-
-        public Dictionary<string, object> MethodCalls { get; set; }
+        #region Constructors and Destructors
 
         public MockPlyalistManagementService()
         {
@@ -30,15 +16,33 @@ namespace Client.Tests.Mocks
             MethodCalls = new Dictionary<string, object>();
         }
 
+        #endregion
+
+        #region Public Properties
+
+        public int ClearCallCount { get; set; }
+
+        public PlaylistItem CurrentItem { get; set; }
+
+        public bool HasElements { get; set; }
+
+        public bool IsPlaying { get; set; }
+
+        public PlaylistItemCollection Items { get; set; }
+
+        public int LoadPlaylistCallCount { get; set; }
+
+        public Dictionary<string, object> MethodCalls { get; set; }
+
+        public bool ShuffleOn { get; set; }
+
+        #endregion
+
+        #region Public Methods and Operators
+
         public void Clear()
         {
             ClearCallCount++;
-        }
-
-        public void LoadPlaylist(PlaylistItemCollection playlistItemCollection)
-        {
-            LoadPlaylistCallCount++;
-            MethodCalls.Add("LoadPlaylist", playlistItemCollection);
         }
 
         public void Handle(PlayNextMessage message)
@@ -80,5 +84,13 @@ namespace Client.Tests.Mocks
         public void Handle(PlayMessage message)
         {
         }
+
+        public void LoadPlaylist(PlaylistItemCollection playlistItemCollection)
+        {
+            LoadPlaylistCallCount++;
+            MethodCalls.Add("LoadPlaylist", playlistItemCollection);
+        }
+
+        #endregion
     }
 }

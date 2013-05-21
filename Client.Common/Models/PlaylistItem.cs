@@ -1,21 +1,43 @@
-﻿using System;
-using System.Text.RegularExpressions;
-using System.Xml.Serialization;
-using Caliburn.Micro;
-using Client.Common.Services;
-using Client.Common.Services.DataStructures.SubsonicService;
-
-namespace Client.Common.Models
+﻿namespace Client.Common.Models
 {
+    using System;
+    using System.Text.RegularExpressions;
+    using System.Xml.Serialization;
+    using Caliburn.Micro;
+    using Client.Common.Services;
+    using Client.Common.Services.DataStructures.SubsonicService;
+
     public class PlaylistItem : PropertyChangedBase
     {
-        private Uri _uri;
-        private PlaylistItemState _playingState;
-        private int _duration;
+        #region Fields
+
         private string _artist;
+
         private string _coverArtUrl;
+
+        private int _duration;
+
+        private PlaylistItemState _playingState;
+
         private string _title;
+
         private PlaylistItemTypeEnum _type;
+
+        private Uri _uri;
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        public PlaylistItem()
+        {
+            PlayingState = PlaylistItemState.NotPlaying;
+            CoverArtUrl = SubsonicService.CoverArtPlaceholder;
+        }
+
+        #endregion
+
+        #region Public Properties
 
         public string Artist
         {
@@ -31,16 +53,21 @@ namespace Client.Common.Models
             }
         }
 
-        public string Title
+        public string CoverArtUrl
         {
             get
             {
-                return _title;
+                return _coverArtUrl;
             }
 
             set
             {
-                _title = value;
+                if (value == _coverArtUrl)
+                {
+                    return;
+                }
+
+                _coverArtUrl = value;
                 NotifyOfPropertyChange();
             }
         }
@@ -55,42 +82,6 @@ namespace Client.Common.Models
             set
             {
                 _duration = value;
-                NotifyOfPropertyChange();
-            }
-        }
-
-        [XmlIgnore]
-        public Uri Uri
-        {
-            get
-            {
-                return _uri;
-            }
-
-            set
-            {
-                _uri = value;
-                NotifyOfPropertyChange();
-            }
-        }
-
-        public string UriAsString
-        {
-            get { return Uri.ToString(); }
-            set { Uri = new Uri(value); }
-        }
-
-        public string CoverArtUrl
-        {
-            get
-            {
-                return _coverArtUrl;
-            }
-
-            set
-            {
-                if (value == _coverArtUrl) return;
-                _coverArtUrl = value;
                 NotifyOfPropertyChange();
             }
         }
@@ -113,21 +104,6 @@ namespace Client.Common.Models
             }
         }
 
-        public PlaylistItemTypeEnum Type
-        {
-            get
-            {
-                return _type;
-            }
-
-            set
-            {
-                if (value == _type) return;
-                _type = value;
-                NotifyOfPropertyChange();
-            }
-        }
-
         [XmlIgnore]
         public PlaylistItemState PlayingState
         {
@@ -143,10 +119,67 @@ namespace Client.Common.Models
             }
         }
 
-        public PlaylistItem()
+        public string Title
         {
-            PlayingState = PlaylistItemState.NotPlaying;
-            CoverArtUrl = SubsonicService.CoverArtPlaceholder;
+            get
+            {
+                return _title;
+            }
+
+            set
+            {
+                _title = value;
+                NotifyOfPropertyChange();
+            }
         }
+
+        public PlaylistItemTypeEnum Type
+        {
+            get
+            {
+                return _type;
+            }
+
+            set
+            {
+                if (value == _type)
+                {
+                    return;
+                }
+
+                _type = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
+        [XmlIgnore]
+        public Uri Uri
+        {
+            get
+            {
+                return _uri;
+            }
+
+            set
+            {
+                _uri = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
+        public string UriAsString
+        {
+            get
+            {
+                return Uri.ToString();
+            }
+
+            set
+            {
+                Uri = new Uri(value);
+            }
+        }
+
+        #endregion
     }
 }

@@ -1,27 +1,26 @@
-﻿using System.Net.Http;
-using System.ServiceModel;
-using System.Threading.Tasks;
-using Caliburn.Micro;
-using Client.Common.Results;
-using Client.Common.Services;
-using Client.Common.Services.DataStructures.SubsonicService;
-using FluentAssertions;
-using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
-
-namespace Client.Common.Tests.Results
+﻿namespace Client.Common.Tests.Results
 {
+    using System.Net.Http;
+    using System.ServiceModel;
+    using System.Threading.Tasks;
+    using Caliburn.Micro;
+    using Client.Common.Results;
+    using Client.Common.Services.DataStructures.SubsonicService;
+    using FluentAssertions;
+    using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+
     [TestClass]
     public class GetRootResultTests
     {
+        #region Fields
+
         private GetRootResult _subject;
+
         private ISubsonicServiceConfiguration _subsonicServiceConfiguration;
 
-        [TestInitialize]
-        public void Setup()
-        {
-            _subsonicServiceConfiguration = new SubsonicServiceConfiguration();
-            _subject = new GetRootResult(_subsonicServiceConfiguration);
-        }
+        #endregion
+
+        #region Public Methods and Operators
 
         [TestMethod]
         public void CtorShouldSetConfiguration()
@@ -30,21 +29,15 @@ namespace Client.Common.Tests.Results
         }
 
         [TestMethod]
-        public void ViewNameShoulBeCorrect()
-        {
-            _subject.ViewName.Should().Be("getMusicFolders.view");
-        }
-
-        [TestMethod]
         public async Task ExecuteShouldHandleHttpRequestException()
         {
             _subject.Response = () =>
-                                    {
-                                        var tcr = new TaskCompletionSource<HttpStreamResult>();
-                                        tcr.SetResult(new HttpStreamResult { Exception = new HttpRequestException() });
+                {
+                    var tcr = new TaskCompletionSource<HttpStreamResult>();
+                    tcr.SetResult(new HttpStreamResult { Exception = new HttpRequestException() });
 
-                                        return tcr.Task;
-                                    };
+                    return tcr.Task;
+                };
 
             await Task.Run(() => _subject.Execute(new ActionExecutionContext()));
 
@@ -56,5 +49,20 @@ namespace Client.Common.Tests.Results
         {
             // TODO: pending
         }
+
+        [TestInitialize]
+        public void Setup()
+        {
+            _subsonicServiceConfiguration = new SubsonicServiceConfiguration();
+            _subject = new GetRootResult(_subsonicServiceConfiguration);
+        }
+
+        [TestMethod]
+        public void ViewNameShoulBeCorrect()
+        {
+            _subject.ViewName.Should().Be("getMusicFolders.view");
+        }
+
+        #endregion
     }
 }

@@ -2,7 +2,8 @@
 {
     public enum PlaylistItemState
     {
-        Playing,
+        Playing, 
+
         NotPlaying
     }
 }

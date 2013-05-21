@@ -1,28 +1,29 @@
-﻿using System.ComponentModel;
-using Caliburn.Micro;
-using Client.Common.Services.DataStructures.SubsonicService;
-
-namespace Subsonic8.Settings
+﻿namespace Subsonic8.Settings
 {
+    using System.ComponentModel;
+    using Caliburn.Micro;
+    using Client.Common.Services.DataStructures.SubsonicService;
+
     public class Subsonic8Configuration : PropertyChangedBase
     {
+        #region Fields
+
         private SubsonicServiceConfiguration _subsonicServiceConfiguration;
+
         private bool _toastsUseSound;
 
-        public bool ToastsUseSound
-        {
-            get
-            {
-                return _toastsUseSound;
-            }
+        #endregion
 
-            set
-            {
-                if (value.Equals(_toastsUseSound)) return;
-                _toastsUseSound = value;
-                NotifyOfPropertyChange();
-            }
+        #region Constructors and Destructors
+
+        public Subsonic8Configuration()
+        {
+            SubsonicServiceConfiguration = new SubsonicServiceConfiguration();
         }
+
+        #endregion
+
+        #region Public Properties
 
         public SubsonicServiceConfiguration SubsonicServiceConfiguration
         {
@@ -33,17 +34,39 @@ namespace Subsonic8.Settings
 
             set
             {
-                if (Equals(value, _subsonicServiceConfiguration)) return;
+                if (Equals(value, _subsonicServiceConfiguration))
+                {
+                    return;
+                }
+
                 HookChildObject(value, _subsonicServiceConfiguration);
                 _subsonicServiceConfiguration = value;
                 NotifyOfPropertyChange();
             }
         }
 
-        public Subsonic8Configuration()
+        public bool ToastsUseSound
         {
-            SubsonicServiceConfiguration = new SubsonicServiceConfiguration();
+            get
+            {
+                return _toastsUseSound;
+            }
+
+            set
+            {
+                if (value.Equals(_toastsUseSound))
+                {
+                    return;
+                }
+
+                _toastsUseSound = value;
+                NotifyOfPropertyChange();
+            }
         }
+
+        #endregion
+
+        #region Methods
 
         private void HookChildObject(INotifyPropertyChanged newValue, INotifyPropertyChanged oldValue)
         {
@@ -58,9 +81,12 @@ namespace Subsonic8.Settings
             }
         }
 
-        private void SubsonicServiceConfigurationChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
+        private void SubsonicServiceConfigurationChanged(
+            object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
             NotifyOfPropertyChange(() => SubsonicServiceConfiguration);
         }
+
+        #endregion
     }
 }

@@ -1,8 +1,9 @@
-﻿using Subsonic8.Framework.ViewModel;
-
-namespace Subsonic8.MusicDirectory
+﻿namespace Subsonic8.MusicDirectory
 {
-    public interface IMusicDirectoryViewModel : IDetailViewModel<Client.Common.Models.Subsonic.MusicDirectory>
+    using Client.Common.Models.Subsonic;
+    using Subsonic8.Framework.ViewModel;
+
+    public interface IMusicDirectoryViewModel : IDetailViewModel<MusicDirectory>
     {
     }
 }

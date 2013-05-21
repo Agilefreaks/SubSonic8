@@ -1,35 +1,51 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Xml.Linq;
-using Client.Common.Results;
-using Client.Common.Services.DataStructures.SubsonicService;
-using FluentAssertions;
-using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
-
-namespace Client.Common.Tests.Results
+﻿namespace Client.Common.Tests.Results
 {
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Xml.Linq;
+    using Client.Common.Results;
+    using Client.Common.Services.DataStructures.SubsonicService;
+    using FluentAssertions;
+    using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+
     [TestClass]
     public class CreatePlaylistResultTests
     {
-        internal class CreatePlaylistResultWrapper : CreatePlaylistResult
-        {
-            public CreatePlaylistResultWrapper(ISubsonicServiceConfiguration configuration, string name, IEnumerable<int> songIds)
-                : base(configuration, name, songIds)
-            {
-            }
-
-            public void CallHandleResponse(XDocument xDocument)
-            {
-                HandleResponse(xDocument);
-            }
-        }
+        #region Constants
 
         private const string Data =
             "<subsonic-response xmlns=\"http://subsonic.org/restapi\" status=\"ok\" version=\"1.8.0\"></subsonic-response>";
 
-        private CreatePlaylistResultWrapper _subject;
+        #endregion
+
+        #region Fields
+
         private List<int> _songIds;
+
+        private CreatePlaylistResultWrapper _subject;
+
+        #endregion
+
+        #region Public Methods and Operators
+
+        [TestMethod]
+        public void HandleResponse_ResponseIsEmpty_ReturnsTrue()
+        {
+            var result = new CreatePlaylistResultWrapper(new SubsonicServiceConfiguration(), string.Empty, new int[0]);
+
+            result.CallHandleResponse(XDocument.Load(new StringReader(Data)));
+
+            result.Result.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void RequestUrlShouldBeCorrect()
+        {
+            _songIds.AddRange(Enumerable.Range(0, 5));
+
+            _subject.RequestUrl.Should().EndWith("&name=test+playlist&songId=0&songId=1&songId=2&songId=3&songId=4");
+        }
 
         [TestInitialize]
         public void Setup()
@@ -44,22 +60,28 @@ namespace Client.Common.Tests.Results
             _subject.ViewName.Should().Be("createPlaylist.view");
         }
 
-        [TestMethod]
-        public void RequestUrlShouldBeCorrect()
+        #endregion
+
+        internal class CreatePlaylistResultWrapper : CreatePlaylistResult
         {
-            _songIds.AddRange(Enumerable.Range(0, 5));
+            #region Constructors and Destructors
 
-            _subject.RequestUrl.Should().EndWith("&name=test+playlist&songId=0&songId=1&songId=2&songId=3&songId=4");
-        }
+            public CreatePlaylistResultWrapper(
+                ISubsonicServiceConfiguration configuration, string name, IEnumerable<int> songIds)
+                : base(configuration, name, songIds)
+            {
+            }
 
-        [TestMethod]
-        public void HandleResponse_ResponseIsEmpty_ReturnsTrue()
-        {
-            var result = new CreatePlaylistResultWrapper(new SubsonicServiceConfiguration(), string.Empty, new int[0]);
+            #endregion
 
-            result.CallHandleResponse(XDocument.Load(new StringReader(Data)));
+            #region Public Methods and Operators
 
-            result.Result.Should().BeTrue();
+            public void CallHandleResponse(XDocument xDocument)
+            {
+                HandleResponse(xDocument);
+            }
+
+            #endregion
         }
     }
 }

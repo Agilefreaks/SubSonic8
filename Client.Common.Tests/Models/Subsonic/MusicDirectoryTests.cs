@@ -1,19 +1,19 @@
-﻿using Client.Common.Models.Subsonic;
-using FluentAssertions;
-using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
-
-namespace Client.Common.Tests.Models.Subsonic
+﻿namespace Client.Common.Tests.Models.Subsonic
 {
+    using Client.Common.Models.Subsonic;
+    using FluentAssertions;
+    using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+
     [TestClass]
     public class MusicDirectoryTests
     {
+        #region Fields
+
         private MusicDirectory _subject;
 
-        [TestInitialize]
-         public void Setup()
-        {
-            _subject = new MusicDirectory();
-        }
+        #endregion
+
+        #region Public Methods and Operators
 
         [TestMethod]
         public void GetDescription_Always_ReturnsTheCorrectValue()
@@ -26,5 +26,13 @@ namespace Client.Common.Tests.Models.Subsonic
             description.Item1.Should().Be("test");
             description.Item2.Should().Be("2");
         }
+
+        [TestInitialize]
+        public void Setup()
+        {
+            _subject = new MusicDirectory();
+        }
+
+        #endregion
     }
 }

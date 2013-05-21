@@ -1,39 +1,35 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Client.Common.Models.Subsonic;
-using Client.Tests.Framework.ViewModel;
-using Client.Tests.Mocks;
-using FluentAssertions;
-using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
-using Subsonic8.Main;
-
-namespace Client.Tests.Main
+﻿namespace Client.Tests.Main
 {
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using Client.Common.Models.Subsonic;
+    using Client.Tests.Framework.ViewModel;
+    using Client.Tests.Mocks;
+    using FluentAssertions;
+    using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+    using Subsonic8.Main;
+
     [TestClass]
     public class MainViewModelTests : ViewModelBaseTests<MainViewModel>
     {
+        #region Fields
+
         private MockGetRootResult _mockGetRootResult;
+
+        #endregion
+
+        #region Properties
 
         protected override MainViewModel Subject { get; set; }
 
-        protected override void TestInitializeExtensions()
-        {
-            _mockGetRootResult = new MockGetRootResult();
-            MockSubsonicService.GetMusicFolders = () => _mockGetRootResult;
-        }
+        #endregion
+
+        #region Public Methods and Operators
 
         [TestMethod]
         public void CtorShouldInstantiateMenuItems()
         {
             Subject.MenuItems.Should().NotBeNull();
-        }
-
-        [TestMethod]
-        public void SetMenuItemsShouldAddMenuItems()
-        {
-            Subject.SetMenuItems(new List<MusicFolder> { new MusicFolder(), new MusicFolder() });
-
-            Subject.MenuItems.Should().HaveCount(2);
         }
 
         [TestMethod]
@@ -48,16 +44,17 @@ namespace Client.Tests.Main
         }
 
         [TestMethod]
-        public async Task Populate_WhenServiceIsNotConfigured_ShouldShowANotification()
+        public async Task Populate_PingResultHasAPIError_ShowsADialogMessageWithTheObtainedInformation()
         {
-            MockSubsonicService.SetHasValidSubsonicUrl(false);
+            MockSubsonicService.SetHasValidSubsonicUrl(true);
+            Subject.Parameter = true;
+            var mockPingResult = new MockPingResult { ApiError = new Error { Message = "test_m" } };
+            MockSubsonicService.Ping = () => mockPingResult;
 
             await Task.Run(() => Subject.Populate());
 
             MockDialogNotificationService.Showed.Count.Should().Be(1);
-            const string expectedMessage =
-                "You did not set up your connection. Please fill in you server address, username and password to start browsing.";
-            MockDialogNotificationService.Showed[0].Message.Should().Be(expectedMessage);
+            MockDialogNotificationService.Showed[0].Message.Should().Be("test_m");
         }
 
         [TestMethod]
@@ -80,17 +77,36 @@ namespace Client.Tests.Main
         }
 
         [TestMethod]
-        public async Task Populate_PingResultHasAPIError_ShowsADialogMessageWithTheObtainedInformation()
+        public async Task Populate_WhenServiceIsNotConfigured_ShouldShowANotification()
         {
-            MockSubsonicService.SetHasValidSubsonicUrl(true);
-            Subject.Parameter = true;
-            var mockPingResult = new MockPingResult { ApiError = new Error { Message = "test_m" } };
-            MockSubsonicService.Ping = () => mockPingResult;
+            MockSubsonicService.SetHasValidSubsonicUrl(false);
 
             await Task.Run(() => Subject.Populate());
 
             MockDialogNotificationService.Showed.Count.Should().Be(1);
-            MockDialogNotificationService.Showed[0].Message.Should().Be("test_m");
+            const string ExpectedMessage =
+                "You did not set up your connection. Please fill in you server address, username and password to start browsing.";
+            MockDialogNotificationService.Showed[0].Message.Should().Be(ExpectedMessage);
         }
+
+        [TestMethod]
+        public void SetMenuItemsShouldAddMenuItems()
+        {
+            Subject.SetMenuItems(new List<MusicFolder> { new MusicFolder(), new MusicFolder() });
+
+            Subject.MenuItems.Should().HaveCount(2);
+        }
+
+        #endregion
+
+        #region Methods
+
+        protected override void TestInitializeExtensions()
+        {
+            _mockGetRootResult = new MockGetRootResult();
+            MockSubsonicService.GetMusicFolders = () => _mockGetRootResult;
+        }
+
+        #endregion
     }
 }

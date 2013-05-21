@@ -2,7 +2,7 @@
 {
     public class PlayItemAtIndexMessage
     {
-        public int Index { get; set; }
+        #region Constructors and Destructors
 
         public PlayItemAtIndexMessage()
         {
@@ -12,5 +12,13 @@
         {
             Index = index;
         }
+
+        #endregion
+
+        #region Public Properties
+
+        public int Index { get; set; }
+
+        #endregion
     }
 }

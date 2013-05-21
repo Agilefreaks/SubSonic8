@@ -1,21 +1,34 @@
-﻿using System.Xml.Linq;
-using System.Xml.Serialization;
-using Client.Common.Models.Subsonic;
-using Client.Common.Services.DataStructures.SubsonicService;
-
-namespace Client.Common.Results
+﻿namespace Client.Common.Results
 {
+    using System.Xml.Linq;
+    using System.Xml.Serialization;
+    using Client.Common.Models.Subsonic;
+    using Client.Common.Services.DataStructures.SubsonicService;
+
     public class GetAllPlaylistsResult : ServiceResultBase<PlaylistCollection>, IGetAllPlaylistsResult
     {
-        public override string ViewName
-        {
-            get { return "getPlaylists.view"; }
-        }
+        #region Constructors and Destructors
 
         public GetAllPlaylistsResult(ISubsonicServiceConfiguration configuration)
             : base(configuration)
         {
         }
+
+        #endregion
+
+        #region Public Properties
+
+        public override string ViewName
+        {
+            get
+            {
+                return "getPlaylists.view";
+            }
+        }
+
+        #endregion
+
+        #region Methods
 
         protected override void HandleResponse(XDocument xDocument)
         {
@@ -26,5 +39,7 @@ namespace Client.Common.Results
                 Result = (PlaylistCollection)xmlSerializer.Deserialize(reader);
             }
         }
+
+        #endregion
     }
 }

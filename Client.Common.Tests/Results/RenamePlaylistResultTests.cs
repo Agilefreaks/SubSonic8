@@ -1,35 +1,51 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Xml.Linq;
-using Client.Common.Results;
-using Client.Common.Services.DataStructures.SubsonicService;
-using FluentAssertions;
-using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
-
-namespace Client.Common.Tests.Results
+﻿namespace Client.Common.Tests.Results
 {
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Xml.Linq;
+    using Client.Common.Results;
+    using Client.Common.Services.DataStructures.SubsonicService;
+    using FluentAssertions;
+    using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+
     [TestClass]
     public class RenamePlaylistResultTests
     {
-        internal class RenamePlaylistResultWrapper : RenamePlaylistResult
-        {
-            public RenamePlaylistResultWrapper(ISubsonicServiceConfiguration configuration, int id, string name)
-                : base(configuration, id, name)
-            {
-            }
-
-            public void CallHandleResponse(XDocument xDocument)
-            {
-                HandleResponse(xDocument);
-            }
-        }
+        #region Constants
 
         private const string Data =
             "<subsonic-response xmlns=\"http://subsonic.org/restapi\" status=\"ok\" version=\"1.8.0\"></subsonic-response>";
 
-        private RenamePlaylistResultWrapper _subject;
+        #endregion
+
+        #region Fields
+
         private List<int> _songIdsToAdd;
+
         private List<int> _songIndexesToRemove;
+
+        private RenamePlaylistResultWrapper _subject;
+
+        #endregion
+
+        #region Public Methods and Operators
+
+        [TestMethod]
+        public void HandleResponse_ResponseIsEmpty_ReturnsTrue()
+        {
+            var result = new UpdatePlaylistResultTests.UpdatePlaylistResultWrapper(
+                new SubsonicServiceConfiguration(), 1, _songIdsToAdd, _songIndexesToRemove);
+
+            result.CallHandleResponse(XDocument.Load(new StringReader(Data)));
+
+            result.Result.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void RequestUrlShouldBeCorrect()
+        {
+            _subject.RequestUrl.Should().EndWith("&playlistId=1&name=test+a");
+        }
 
         [TestInitialize]
         public void Setup()
@@ -45,20 +61,27 @@ namespace Client.Common.Tests.Results
             _subject.ViewName.Should().Be("updatePlaylist.view");
         }
 
-        [TestMethod]
-        public void RequestUrlShouldBeCorrect()
+        #endregion
+
+        internal class RenamePlaylistResultWrapper : RenamePlaylistResult
         {
-            _subject.RequestUrl.Should().EndWith("&playlistId=1&name=test+a");
-        }
+            #region Constructors and Destructors
 
-        [TestMethod]
-        public void HandleResponse_ResponseIsEmpty_ReturnsTrue()
-        {
-            var result = new UpdatePlaylistResultTests.UpdatePlaylistResultWrapper(new SubsonicServiceConfiguration(), 1, _songIdsToAdd, _songIndexesToRemove);
+            public RenamePlaylistResultWrapper(ISubsonicServiceConfiguration configuration, int id, string name)
+                : base(configuration, id, name)
+            {
+            }
 
-            result.CallHandleResponse(XDocument.Load(new StringReader(Data)));
+            #endregion
 
-            result.Result.Should().BeTrue();
+            #region Public Methods and Operators
+
+            public void CallHandleResponse(XDocument xDocument)
+            {
+                HandleResponse(xDocument);
+            }
+
+            #endregion
         }
     }
 }

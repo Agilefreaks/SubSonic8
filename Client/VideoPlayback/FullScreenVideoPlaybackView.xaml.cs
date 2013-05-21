@@ -1,17 +1,28 @@
-﻿using Microsoft.PlayerFramework;
-
-namespace Subsonic8.VideoPlayback
+﻿namespace Subsonic8.VideoPlayback
 {
+    using Microsoft.PlayerFramework;
+
     public sealed partial class FullScreenVideoPlaybackView
     {
-        protected override MediaPlayer GetMediaPlayer
-        {
-            get { return MediaPlayer; }
-        }
+        #region Constructors and Destructors
 
         public FullScreenVideoPlaybackView()
         {
             InitializeComponent();
         }
+
+        #endregion
+
+        #region Properties
+
+        protected override MediaPlayer GetMediaPlayer
+        {
+            get
+            {
+                return MediaPlayer;
+            }
+        }
+
+        #endregion
     }
 }

@@ -1,51 +1,61 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Client.Common.EventAggregatorMessages;
-using Client.Common.Models;
-using Client.Common.Models.Subsonic;
-using Client.Tests.Framework.ViewModel;
-using Client.Tests.Mocks;
-using FluentAssertions;
-using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
-using Subsonic8.Playlists;
-
-namespace Client.Tests.Playlists
+﻿namespace Client.Tests.Playlists
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using Client.Common.EventAggregatorMessages;
+    using Client.Common.Models;
+    using Client.Common.Models.Subsonic;
+    using Client.Tests.Framework.ViewModel;
+    using Client.Tests.Mocks;
+    using FluentAssertions;
+    using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+    using Subsonic8.Playlists;
+
     [TestClass]
     public class ManagePlaylistsViewModelTests : ViewModelBaseTests<ManagePlaylistsViewModel>
     {
+        #region Fields
+
         private MockGetAllPlaylistsResult _mockGetAllPlaylistsResult;
+
         private MockPlyalistManagementService _mockPlyalistManagementService;
+
+        #endregion
+
+        #region Properties
 
         protected override ManagePlaylistsViewModel Subject { get; set; }
 
-        protected override void TestInitializeExtensions()
-        {
-            base.TestInitializeExtensions();
-            _mockGetAllPlaylistsResult = new MockGetAllPlaylistsResult();
-            MockSubsonicService.GetAllPlaylists = () => _mockGetAllPlaylistsResult;
-            _mockPlyalistManagementService = new MockPlyalistManagementService();
-            Subject.PlaylistManagementService = _mockPlyalistManagementService;
-        }
+        #endregion
+
+        #region Public Methods and Operators
 
         [TestMethod]
-        public async Task Populate_Always_ShouldExecuteAGetAllPlaylistsResult()
+        public void LoadPlaylist_Always_CallsPlaylistManagementServiceLoadPlaylistWithAListOfEquivalentPlaylistItems()
         {
-            await Task.Run(() => Subject.Populate());
+            var playlist = new Playlist
+                               {
+                                   Entries =
+                                       new List<PlaylistEntry>
+                                           {
+                                               new PlaylistEntry
+                                                   {
+                                                       Title = "test", 
+                                                       Duration = 123
+                                                   }
+                                           }
+                               };
 
-            _mockGetAllPlaylistsResult.ExecuteCallCount.Should().Be(1);
-        }
+            Subject.LoadPlaylist(playlist);
 
-        [TestMethod]
-        public async Task Populate_ShouldSetMenuItemsForEachPlaylist()
-        {
-            var playlistCollection = new PlaylistCollection { Playlists = new List<Playlist> { new Playlist(), new Playlist() } };
-            _mockGetAllPlaylistsResult.GetResultFunc = () => playlistCollection;
-
-            await Task.Run(() => Subject.Populate());
-
-            Subject.MenuItems.Count.Should().Be(2);
+            var methodCall = _mockPlyalistManagementService.MethodCalls.First();
+            methodCall.Key.Should().Be("LoadPlaylist");
+            var playlistItemCollection = methodCall.Value as PlaylistItemCollection;
+            Assert.IsNotNull(playlistItemCollection);
+            playlistItemCollection.Count.Should().Be(1);
+            playlistItemCollection[0].Title.Should().Be("test");
+            playlistItemCollection[0].Duration.Should().Be(123);
         }
 
         [TestMethod]
@@ -74,19 +84,45 @@ namespace Client.Tests.Playlists
         }
 
         [TestMethod]
-        public void LoadPlaylist_Always_CallsPlaylistManagementServiceLoadPlaylistWithAListOfEquivalentPlaylistItems()
+        public async Task Populate_Always_ShouldExecuteAGetAllPlaylistsResult()
         {
-            var playlist = new Playlist { Entries = new List<PlaylistEntry> { new PlaylistEntry { Title = "test", Duration = 123 } } };
+            await Task.Run(() => Subject.Populate());
 
-            Subject.LoadPlaylist(playlist);
+            _mockGetAllPlaylistsResult.ExecuteCallCount.Should().Be(1);
+        }
 
-            var methodCall = _mockPlyalistManagementService.MethodCalls.First();
-            methodCall.Key.Should().Be("LoadPlaylist");
-            var playlistItemCollection = methodCall.Value as PlaylistItemCollection;
-            Assert.IsNotNull(playlistItemCollection);
-            playlistItemCollection.Count.Should().Be(1);
-            playlistItemCollection[0].Title.Should().Be("test");
-            playlistItemCollection[0].Duration.Should().Be(123);
-        }        
+        [TestMethod]
+        public async Task Populate_ShouldSetMenuItemsForEachPlaylist()
+        {
+            var playlistCollection = new PlaylistCollection
+                                         {
+                                             Playlists =
+                                                 new List<Playlist>
+                                                     {
+                                                         new Playlist(), 
+                                                         new Playlist()
+                                                     }
+                                         };
+            _mockGetAllPlaylistsResult.GetResultFunc = () => playlistCollection;
+
+            await Task.Run(() => Subject.Populate());
+
+            Subject.MenuItems.Count.Should().Be(2);
+        }
+
+        #endregion
+
+        #region Methods
+
+        protected override void TestInitializeExtensions()
+        {
+            base.TestInitializeExtensions();
+            _mockGetAllPlaylistsResult = new MockGetAllPlaylistsResult();
+            MockSubsonicService.GetAllPlaylists = () => _mockGetAllPlaylistsResult;
+            _mockPlyalistManagementService = new MockPlyalistManagementService();
+            Subject.PlaylistManagementService = _mockPlyalistManagementService;
+        }
+
+        #endregion
     }
 }

@@ -16,7 +16,7 @@
 
         <common:PageHeader DataContext="{Binding}" />
 
-        <GridView x:Name="MenuItems" Grid.Row="1" Margin="0,-3,0,0" Padding="116,0,116,46" SelectionMode="Multiple" 
+        <GridView x:Name="MenuItems" Grid.Row="1" Margin="0,-3,0,0" Padding="116,0,116,46" SelectionMode="Multiple"
                   behaviors:MultipleSelectBehavior.SelectedItems="{Binding SelectedItems, Mode=TwoWay}"
                   IsItemClickEnabled="True" caliburn:Message.Attach="[Event ItemClick] = [ChildClick($eventArgs)]" />
     </Grid>

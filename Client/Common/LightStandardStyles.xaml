@@ -1,30 +1,50 @@
 ﻿<ResourceDictionary
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <SolidColorBrush x:Key="LightToggleSwitchCurtainBackgroundThemeBrush" Color="{StaticResource SystemColorHighlightColor}" />
-    <SolidColorBrush x:Key="LightToggleSwitchCurtainDisabledBackgroundThemeBrush" Color="{StaticResource SystemColorButtonFaceColor}" />
-    <SolidColorBrush x:Key="LightToggleSwitchCurtainPointerOverBackgroundThemeBrush" Color="{StaticResource SystemColorHighlightColor}" />
-    <SolidColorBrush x:Key="LightToggleSwitchCurtainPressedBackgroundThemeBrush" Color="{StaticResource SystemColorHighlightColor}" />
-    <SolidColorBrush x:Key="LightToggleSwitchDisabledForegroundThemeBrush" Color="{StaticResource SystemColorGrayTextColor}" />
+    <SolidColorBrush x:Key="LightToggleSwitchCurtainBackgroundThemeBrush"
+                     Color="{StaticResource SystemColorHighlightColor}" />
+    <SolidColorBrush x:Key="LightToggleSwitchCurtainDisabledBackgroundThemeBrush"
+                     Color="{StaticResource SystemColorButtonFaceColor}" />
+    <SolidColorBrush x:Key="LightToggleSwitchCurtainPointerOverBackgroundThemeBrush"
+                     Color="{StaticResource SystemColorHighlightColor}" />
+    <SolidColorBrush x:Key="LightToggleSwitchCurtainPressedBackgroundThemeBrush"
+                     Color="{StaticResource SystemColorHighlightColor}" />
+    <SolidColorBrush x:Key="LightToggleSwitchDisabledForegroundThemeBrush"
+                     Color="{StaticResource SystemColorGrayTextColor}" />
     <SolidColorBrush x:Key="LightToggleSwitchForegroundThemeBrush" Color="{StaticResource SystemColorButtonTextColor}" />
-    <SolidColorBrush x:Key="LightToggleSwitchHeaderDisabledForegroundThemeBrush" Color="{StaticResource SystemColorGrayTextColor}" />
-    <SolidColorBrush x:Key="LightToggleSwitchHeaderForegroundThemeBrush" Color="{StaticResource SystemColorButtonTextColor}" />
-    <SolidColorBrush x:Key="LightToggleSwitchOuterBorderBorderThemeBrush" Color="{StaticResource SystemColorButtonTextColor}" />
-    <SolidColorBrush x:Key="LightToggleSwitchOuterBorderDisabledBorderThemeBrush" Color="{StaticResource SystemColorGrayTextColor}" />
-    <SolidColorBrush x:Key="LightToggleSwitchThumbBackgroundThemeBrush" Color="{StaticResource SystemColorButtonTextColor}" />
+    <SolidColorBrush x:Key="LightToggleSwitchHeaderDisabledForegroundThemeBrush"
+                     Color="{StaticResource SystemColorGrayTextColor}" />
+    <SolidColorBrush x:Key="LightToggleSwitchHeaderForegroundThemeBrush"
+                     Color="{StaticResource SystemColorButtonTextColor}" />
+    <SolidColorBrush x:Key="LightToggleSwitchOuterBorderBorderThemeBrush"
+                     Color="{StaticResource SystemColorButtonTextColor}" />
+    <SolidColorBrush x:Key="LightToggleSwitchOuterBorderDisabledBorderThemeBrush"
+                     Color="{StaticResource SystemColorGrayTextColor}" />
+    <SolidColorBrush x:Key="LightToggleSwitchThumbBackgroundThemeBrush"
+                     Color="{StaticResource SystemColorButtonTextColor}" />
     <SolidColorBrush x:Key="LightToggleSwitchThumbBorderThemeBrush" Color="{StaticResource SystemColorButtonTextColor}" />
-    <SolidColorBrush x:Key="LightToggleSwitchThumbDisabledBackgroundThemeBrush" Color="{StaticResource SystemColorGrayTextColor}" />
-    <SolidColorBrush x:Key="LightToggleSwitchThumbDisabledBorderThemeBrush" Color="{StaticResource SystemColorGrayTextColor}" />
-    <SolidColorBrush x:Key="LightToggleSwitchThumbPointerOverBackgroundThemeBrush" Color="{StaticResource SystemColorHighlightColor}" />
-    <SolidColorBrush x:Key="LightToggleSwitchThumbPointerOverBorderThemeBrush" Color="{StaticResource SystemColorButtonTextColor}" />
-    <SolidColorBrush x:Key="LightToggleSwitchThumbPressedBackgroundThemeBrush" Color="{StaticResource SystemColorButtonFaceColor}" />
-    <SolidColorBrush x:Key="LightToggleSwitchThumbPressedForegroundThemeBrush" Color="{StaticResource SystemColorButtonTextColor}" />
-    <SolidColorBrush x:Key="LightToggleSwitchTrackBackgroundThemeBrush" Color="{StaticResource SystemColorButtonFaceColor}" />
+    <SolidColorBrush x:Key="LightToggleSwitchThumbDisabledBackgroundThemeBrush"
+                     Color="{StaticResource SystemColorGrayTextColor}" />
+    <SolidColorBrush x:Key="LightToggleSwitchThumbDisabledBorderThemeBrush"
+                     Color="{StaticResource SystemColorGrayTextColor}" />
+    <SolidColorBrush x:Key="LightToggleSwitchThumbPointerOverBackgroundThemeBrush"
+                     Color="{StaticResource SystemColorHighlightColor}" />
+    <SolidColorBrush x:Key="LightToggleSwitchThumbPointerOverBorderThemeBrush"
+                     Color="{StaticResource SystemColorButtonTextColor}" />
+    <SolidColorBrush x:Key="LightToggleSwitchThumbPressedBackgroundThemeBrush"
+                     Color="{StaticResource SystemColorButtonFaceColor}" />
+    <SolidColorBrush x:Key="LightToggleSwitchThumbPressedForegroundThemeBrush"
+                     Color="{StaticResource SystemColorButtonTextColor}" />
+    <SolidColorBrush x:Key="LightToggleSwitchTrackBackgroundThemeBrush"
+                     Color="{StaticResource SystemColorButtonFaceColor}" />
     <SolidColorBrush x:Key="LightToggleSwitchTrackBorderThemeBrush" Color="Transparent" />
-    <SolidColorBrush x:Key="LightToggleSwitchTrackDisabledBackgroundThemeBrush" Color="{StaticResource SystemColorButtonFaceColor}" />
-    <SolidColorBrush x:Key="LightToggleSwitchTrackPointerOverBackgroundThemeBrush" Color="{StaticResource SystemColorButtonFaceColor}" />
-    <SolidColorBrush x:Key="LightToggleSwitchTrackPressedBackgroundThemeBrush" Color="{StaticResource SystemColorButtonFaceColor}" />
+    <SolidColorBrush x:Key="LightToggleSwitchTrackDisabledBackgroundThemeBrush"
+                     Color="{StaticResource SystemColorButtonFaceColor}" />
+    <SolidColorBrush x:Key="LightToggleSwitchTrackPointerOverBackgroundThemeBrush"
+                     Color="{StaticResource SystemColorButtonFaceColor}" />
+    <SolidColorBrush x:Key="LightToggleSwitchTrackPressedBackgroundThemeBrush"
+                     Color="{StaticResource SystemColorButtonFaceColor}" />
     <SolidColorBrush x:Key="LightButtonBackgroundThemeBrush" Color="#B3B6B6B6" />
     <SolidColorBrush x:Key="LightButtonForegroundThemeBrush" Color="#FF000000" />
     <SolidColorBrush x:Key="LightButtonBorderThemeBrush" Color="#33000000" />
@@ -37,7 +57,7 @@
     <SolidColorBrush x:Key="LightButtonDisabledForegroundThemeBrush" Color="#66000000" />
     <SolidColorBrush x:Key="LightFocusVisualBlackStrokeThemeBrush" Color="Black" />
     <SolidColorBrush x:Key="LightFocusVisualWhiteStrokeThemeBrush" Color="White" />
-    
+
     <Thickness x:Key="LightButtonBorderThemeThickness">0</Thickness>
 
     <Style TargetType="ToggleSwitch" x:Name="LightToggleSwitch">
@@ -63,19 +83,23 @@
                                     <Storyboard>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="SwitchCurtain"
                                                                        Storyboard.TargetProperty="Fill">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource LightToggleSwitchCurtainPointerOverBackgroundThemeBrush}" />
+                                            <DiscreteObjectKeyFrame KeyTime="0"
+                                                                    Value="{StaticResource LightToggleSwitchCurtainPointerOverBackgroundThemeBrush}" />
                                         </ObjectAnimationUsingKeyFrames>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="InnerBorder"
                                                                        Storyboard.TargetProperty="Background">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource LightToggleSwitchTrackPointerOverBackgroundThemeBrush}" />
+                                            <DiscreteObjectKeyFrame KeyTime="0"
+                                                                    Value="{StaticResource LightToggleSwitchTrackPointerOverBackgroundThemeBrush}" />
                                         </ObjectAnimationUsingKeyFrames>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="SwitchKnob"
                                                                        Storyboard.TargetProperty="Fill">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource LightToggleSwitchThumbPointerOverBackgroundThemeBrush}" />
+                                            <DiscreteObjectKeyFrame KeyTime="0"
+                                                                    Value="{StaticResource LightToggleSwitchThumbPointerOverBackgroundThemeBrush}" />
                                         </ObjectAnimationUsingKeyFrames>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="SwitchKnob"
                                                                        Storyboard.TargetProperty="Stroke">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource LightToggleSwitchThumbPointerOverBorderThemeBrush}" />
+                                            <DiscreteObjectKeyFrame KeyTime="0"
+                                                                    Value="{StaticResource LightToggleSwitchThumbPointerOverBorderThemeBrush}" />
                                         </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
@@ -83,19 +107,23 @@
                                     <Storyboard>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="SwitchCurtain"
                                                                        Storyboard.TargetProperty="Fill">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource LightToggleSwitchCurtainPressedBackgroundThemeBrush}" />
+                                            <DiscreteObjectKeyFrame KeyTime="0"
+                                                                    Value="{StaticResource LightToggleSwitchCurtainPressedBackgroundThemeBrush}" />
                                         </ObjectAnimationUsingKeyFrames>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="InnerBorder"
                                                                        Storyboard.TargetProperty="Background">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource LightToggleSwitchTrackPressedBackgroundThemeBrush}" />
+                                            <DiscreteObjectKeyFrame KeyTime="0"
+                                                                    Value="{StaticResource LightToggleSwitchTrackPressedBackgroundThemeBrush}" />
                                         </ObjectAnimationUsingKeyFrames>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="SwitchKnob"
                                                                        Storyboard.TargetProperty="Fill">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource LightToggleSwitchThumbPressedBackgroundThemeBrush}" />
+                                            <DiscreteObjectKeyFrame KeyTime="0"
+                                                                    Value="{StaticResource LightToggleSwitchThumbPressedBackgroundThemeBrush}" />
                                         </ObjectAnimationUsingKeyFrames>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="SwitchKnob"
                                                                        Storyboard.TargetProperty="Stroke">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource LightToggleSwitchThumbPressedForegroundThemeBrush}" />
+                                            <DiscreteObjectKeyFrame KeyTime="0"
+                                                                    Value="{StaticResource LightToggleSwitchThumbPressedForegroundThemeBrush}" />
                                         </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
@@ -103,35 +131,43 @@
                                     <Storyboard>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderContentPresenter"
                                                                        Storyboard.TargetProperty="Foreground">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource LightToggleSwitchHeaderDisabledForegroundThemeBrush}" />
+                                            <DiscreteObjectKeyFrame KeyTime="0"
+                                                                    Value="{StaticResource LightToggleSwitchHeaderDisabledForegroundThemeBrush}" />
                                         </ObjectAnimationUsingKeyFrames>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="OffContentPresenter"
                                                                        Storyboard.TargetProperty="Foreground">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource LightToggleSwitchDisabledForegroundThemeBrush}" />
+                                            <DiscreteObjectKeyFrame KeyTime="0"
+                                                                    Value="{StaticResource LightToggleSwitchDisabledForegroundThemeBrush}" />
                                         </ObjectAnimationUsingKeyFrames>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="OnContentPresenter"
                                                                        Storyboard.TargetProperty="Foreground">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource LightToggleSwitchDisabledForegroundThemeBrush}" />
+                                            <DiscreteObjectKeyFrame KeyTime="0"
+                                                                    Value="{StaticResource LightToggleSwitchDisabledForegroundThemeBrush}" />
                                         </ObjectAnimationUsingKeyFrames>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="OuterBorder"
                                                                        Storyboard.TargetProperty="BorderBrush">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource LightToggleSwitchOuterBorderDisabledBorderThemeBrush}" />
+                                            <DiscreteObjectKeyFrame KeyTime="0"
+                                                                    Value="{StaticResource LightToggleSwitchOuterBorderDisabledBorderThemeBrush}" />
                                         </ObjectAnimationUsingKeyFrames>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="InnerBorder"
                                                                        Storyboard.TargetProperty="Background">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource LightToggleSwitchTrackDisabledBackgroundThemeBrush}" />
+                                            <DiscreteObjectKeyFrame KeyTime="0"
+                                                                    Value="{StaticResource LightToggleSwitchTrackDisabledBackgroundThemeBrush}" />
                                         </ObjectAnimationUsingKeyFrames>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="SwitchKnob"
                                                                        Storyboard.TargetProperty="Fill">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource LightToggleSwitchThumbDisabledBackgroundThemeBrush}" />
+                                            <DiscreteObjectKeyFrame KeyTime="0"
+                                                                    Value="{StaticResource LightToggleSwitchThumbDisabledBackgroundThemeBrush}" />
                                         </ObjectAnimationUsingKeyFrames>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="SwitchKnob"
                                                                        Storyboard.TargetProperty="Stroke">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource LightToggleSwitchThumbDisabledBorderThemeBrush}" />
+                                            <DiscreteObjectKeyFrame KeyTime="0"
+                                                                    Value="{StaticResource LightToggleSwitchThumbDisabledBorderThemeBrush}" />
                                         </ObjectAnimationUsingKeyFrames>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="SwitchCurtain"
                                                                        Storyboard.TargetProperty="Fill">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource LightToggleSwitchCurtainDisabledBackgroundThemeBrush}" />
+                                            <DiscreteObjectKeyFrame KeyTime="0"
+                                                                    Value="{StaticResource LightToggleSwitchCurtainDisabledBackgroundThemeBrush}" />
                                         </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
@@ -143,8 +179,10 @@
                                                       To="On"
                                                       GeneratedDuration="0">
                                         <Storyboard>
-                                            <RepositionThemeAnimation TargetName="SwitchKnob" FromHorizontalOffset="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.KnobCurrentToOnOffset}" />
-                                            <RepositionThemeAnimation TargetName="SwitchCurtain" FromHorizontalOffset="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.CurtainCurrentToOnOffset}" />
+                                            <RepositionThemeAnimation TargetName="SwitchKnob"
+                                                                      FromHorizontalOffset="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.KnobCurrentToOnOffset}" />
+                                            <RepositionThemeAnimation TargetName="SwitchCurtain"
+                                                                      FromHorizontalOffset="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.CurtainCurrentToOnOffset}" />
                                         </Storyboard>
                                     </VisualTransition>
                                     <VisualTransition x:Name="DraggingToOffTransition"
@@ -152,8 +190,10 @@
                                                       To="Off"
                                                       GeneratedDuration="0">
                                         <Storyboard>
-                                            <RepositionThemeAnimation TargetName="SwitchKnob" FromHorizontalOffset="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.KnobCurrentToOffOffset}" />
-                                            <RepositionThemeAnimation TargetName="SwitchCurtain" FromHorizontalOffset="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.CurtainCurrentToOffOffset}" />
+                                            <RepositionThemeAnimation TargetName="SwitchKnob"
+                                                                      FromHorizontalOffset="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.KnobCurrentToOffOffset}" />
+                                            <RepositionThemeAnimation TargetName="SwitchCurtain"
+                                                                      FromHorizontalOffset="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.CurtainCurrentToOffOffset}" />
                                         </Storyboard>
                                     </VisualTransition>
                                     <VisualTransition x:Name="OnToOffTransition"
@@ -161,8 +201,10 @@
                                                       To="Off"
                                                       GeneratedDuration="0">
                                         <Storyboard>
-                                            <RepositionThemeAnimation TargetName="SwitchKnob" FromHorizontalOffset="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.KnobOnToOffOffset}" />
-                                            <RepositionThemeAnimation TargetName="SwitchCurtain" FromHorizontalOffset="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.CurtainOnToOffOffset}" />
+                                            <RepositionThemeAnimation TargetName="SwitchKnob"
+                                                                      FromHorizontalOffset="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.KnobOnToOffOffset}" />
+                                            <RepositionThemeAnimation TargetName="SwitchCurtain"
+                                                                      FromHorizontalOffset="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.CurtainOnToOffOffset}" />
                                         </Storyboard>
                                     </VisualTransition>
                                     <VisualTransition x:Name="OffToOnTransition"
@@ -170,8 +212,10 @@
                                                       To="On"
                                                       GeneratedDuration="0">
                                         <Storyboard>
-                                            <RepositionThemeAnimation TargetName="SwitchKnob" FromHorizontalOffset="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.KnobOffToOnOffset}" />
-                                            <RepositionThemeAnimation TargetName="SwitchCurtain" FromHorizontalOffset="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.CurtainOffToOnOffset}" />
+                                            <RepositionThemeAnimation TargetName="SwitchKnob"
+                                                                      FromHorizontalOffset="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.KnobOffToOnOffset}" />
+                                            <RepositionThemeAnimation TargetName="SwitchCurtain"
+                                                                      FromHorizontalOffset="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.CurtainOffToOnOffset}" />
                                         </Storyboard>
                                     </VisualTransition>
                                 </VisualStateGroup.Transitions>
@@ -204,7 +248,8 @@
                                                          Storyboard.TargetProperty="Opacity"
                                                          To="1"
                                                          Duration="0" />
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="IsHitTestVisible" Storyboard.TargetName="OffContentPresenter">
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="IsHitTestVisible"
+                                                                       Storyboard.TargetName="OffContentPresenter">
                                             <DiscreteObjectKeyFrame KeyTime="0">
                                                 <DiscreteObjectKeyFrame.Value>
                                                     <x:Boolean>True</x:Boolean>
@@ -219,7 +264,8 @@
                                                          Storyboard.TargetProperty="Opacity"
                                                          To="1"
                                                          Duration="0" />
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="IsHitTestVisible" Storyboard.TargetName="OnContentPresenter">
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="IsHitTestVisible"
+                                                                       Storyboard.TargetName="OnContentPresenter">
                                             <DiscreteObjectKeyFrame KeyTime="0">
                                                 <DiscreteObjectKeyFrame.Value>
                                                     <x:Boolean>True</x:Boolean>
@@ -297,7 +343,8 @@
                                                                    Fill="{StaticResource LightToggleSwitchCurtainBackgroundThemeBrush}"
                                                                    Width="44">
                                                             <Rectangle.RenderTransform>
-                                                                <TranslateTransform x:Name="CurtainTranslateTransform" X="-44" />
+                                                                <TranslateTransform x:Name="CurtainTranslateTransform"
+                                                                                    X="-44" />
                                                             </Rectangle.RenderTransform>
                                                         </Rectangle>
                                                     </ContentPresenter>
@@ -347,7 +394,7 @@
 
     <Style TargetType="Button" x:Name="LightButton">
         <Setter Property="Background" Value="{StaticResource LightButtonBackgroundThemeBrush}" />
-        <Setter Property="Foreground" Value="{StaticResource LightButtonForegroundThemeBrush}"/>
+        <Setter Property="Foreground" Value="{StaticResource LightButtonForegroundThemeBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource LightButtonBorderThemeBrush}" />
         <Setter Property="BorderThickness" Value="{StaticResource LightButtonBorderThemeThickness}" />
         <Setter Property="Padding" Value="12,4,12,4" />
@@ -367,11 +414,13 @@
                                     <Storyboard>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Border"
                                                                        Storyboard.TargetProperty="Background">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource LightButtonPointerOverBackgroundThemeBrush}" />
+                                            <DiscreteObjectKeyFrame KeyTime="0"
+                                                                    Value="{StaticResource LightButtonPointerOverBackgroundThemeBrush}" />
                                         </ObjectAnimationUsingKeyFrames>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter"
                                                                        Storyboard.TargetProperty="Foreground">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource LightButtonPointerOverForegroundThemeBrush}" />
+                                            <DiscreteObjectKeyFrame KeyTime="0"
+                                                                    Value="{StaticResource LightButtonPointerOverForegroundThemeBrush}" />
                                         </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
@@ -379,11 +428,13 @@
                                     <Storyboard>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Border"
                                                                        Storyboard.TargetProperty="Background">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource LightButtonPressedBackgroundThemeBrush}" />
+                                            <DiscreteObjectKeyFrame KeyTime="0"
+                                                                    Value="{StaticResource LightButtonPressedBackgroundThemeBrush}" />
                                         </ObjectAnimationUsingKeyFrames>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter"
                                                                        Storyboard.TargetProperty="Foreground">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource LightButtonPressedForegroundThemeBrush}" />
+                                            <DiscreteObjectKeyFrame KeyTime="0"
+                                                                    Value="{StaticResource LightButtonPressedForegroundThemeBrush}" />
                                         </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
@@ -391,15 +442,18 @@
                                     <Storyboard>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Border"
                                                                        Storyboard.TargetProperty="Background">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource LightButtonDisabledBackgroundThemeBrush}" />
+                                            <DiscreteObjectKeyFrame KeyTime="0"
+                                                                    Value="{StaticResource LightButtonDisabledBackgroundThemeBrush}" />
                                         </ObjectAnimationUsingKeyFrames>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Border"
                                                                        Storyboard.TargetProperty="BorderBrush">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource LightButtonDisabledBorderThemeBrush}" />
+                                            <DiscreteObjectKeyFrame KeyTime="0"
+                                                                    Value="{StaticResource LightButtonDisabledBorderThemeBrush}" />
                                         </ObjectAnimationUsingKeyFrames>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter"
                                                                        Storyboard.TargetProperty="Foreground">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource LightButtonDisabledForegroundThemeBrush}" />
+                                            <DiscreteObjectKeyFrame KeyTime="0"
+                                                                    Value="{StaticResource LightButtonDisabledForegroundThemeBrush}" />
                                         </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>

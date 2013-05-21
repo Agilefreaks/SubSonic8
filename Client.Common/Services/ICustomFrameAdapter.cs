@@ -1,10 +1,13 @@
-﻿using Caliburn.Micro;
-
-namespace Client.Common.Services
+﻿namespace Client.Common.Services
 {
+    using Caliburn.Micro;
+
     public interface ICustomFrameAdapter : INavigationService
     {
-        void NavigateToViewModel<T>(object parameter = null)
-            where T : Screen;
+        #region Public Methods and Operators
+
+        void NavigateToViewModel<T>(object parameter = null) where T : Screen;
+
+        #endregion
     }
 }

@@ -1,34 +1,43 @@
-﻿using System.Threading.Tasks;
-using Client.Common.Models;
-using Client.Common.Models.Subsonic;
-using Client.Common.Services;
-using Subsonic8.Framework.ViewModel;
-
-namespace Subsonic8.Framework.Extensions
+﻿namespace Subsonic8.Framework.Extensions
 {
+    using System.Threading.Tasks;
+    using Client.Common.Models;
+    using Client.Common.Models.Subsonic;
+    using Client.Common.Services;
+    using Subsonic8.Framework.ViewModel;
+
     public static class ModelLoaderExtensionMethods
     {
-        public static async Task<Client.Common.Models.PlaylistItem> LoadSong(this ISongLoader modelLoader, IId model)
+        #region Public Methods and Operators
+
+        public static async Task<PlaylistItem> LoadSong(this ISongLoader modelLoader, IId model)
         {
-            Client.Common.Models.PlaylistItem playlistItem = null;
+            PlaylistItem playlistItem = null;
             if (model != null)
             {
-                await modelLoader.SubsonicService.GetSong(model.Id)
-                                 .WithErrorHandler(modelLoader)
-                                 .OnSuccess(
-                                     result =>
-                                     playlistItem = CreatePlaylistItemFromSong(result, modelLoader.SubsonicService))
-                                 .Execute();
+                await
+                    modelLoader.SubsonicService.GetSong(model.Id)
+                               .WithErrorHandler(modelLoader)
+                               .OnSuccess(
+                                   result =>
+                                   playlistItem = CreatePlaylistItemFromSong(result, modelLoader.SubsonicService))
+                               .Execute();
             }
 
             return playlistItem;
         }
 
-        private static Client.Common.Models.PlaylistItem CreatePlaylistItemFromSong(Song result, ISubsonicService subsonicService)
+        #endregion
+
+        #region Methods
+
+        private static PlaylistItem CreatePlaylistItemFromSong(Song result, ISubsonicService subsonicService)
         {
             var playlistItem = result.AsPlaylistItem(subsonicService);
 
             return playlistItem;
         }
+
+        #endregion
     }
 }

@@ -1,18 +1,26 @@
-﻿using Client.Common.Services.DataStructures.SubsonicService;
-using FluentAssertions;
-using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
-
-namespace Client.Common.Tests.Services
+﻿namespace Client.Common.Tests.Services
 {
+    using Client.Common.Services.DataStructures.SubsonicService;
+    using FluentAssertions;
+    using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+
     [TestClass]
     public class SubsonicServiceConfigurationTests
     {
-        SubsonicServiceConfiguration _subject;
+        #region Fields
 
-        [TestInitialize]
-        public void Setup()
+        private SubsonicServiceConfiguration _subject;
+
+        #endregion
+
+        #region Public Methods and Operators
+
+        [TestMethod]
+        public void BaseUrl_IfDoesNotHaveEndingSlash_WillAddEndingSlash()
         {
-            _subject = new SubsonicServiceConfiguration();
+            _subject.BaseUrl = "http://localhost:4040";
+
+            _subject.BaseUrl.Should().Be("http://localhost:4040/");
         }
 
         [TestMethod]
@@ -25,19 +33,19 @@ namespace Client.Common.Tests.Services
         }
 
         [TestMethod]
-        public void BaseUrl_IfDoesNotHaveEndingSlash_WillAddEndingSlash()
-        {
-            _subject.BaseUrl = "http://localhost:4040";
-
-            _subject.BaseUrl.Should().Be("http://localhost:4040/");
-        }
-
-        [TestMethod]
         public void EncodedPassword_Always_ReturnsThePasswordHexEncoded()
         {
             _subject.Password = "sesame";
 
             _subject.EncodedPassword.Should().Be("enc:736573616d65");
         }
+
+        [TestInitialize]
+        public void Setup()
+        {
+            _subject = new SubsonicServiceConfiguration();
+        }
+
+        #endregion
     }
 }

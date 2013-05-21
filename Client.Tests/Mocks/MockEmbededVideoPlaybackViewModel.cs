@@ -1,35 +1,68 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using Caliburn.Micro;
-using Client.Common.Services;
-using Microsoft.PlayerFramework;
-using Subsonic8.BottomBar;
-using Subsonic8.Framework.Services;
-using Subsonic8.VideoPlayback;
-using Action = System.Action;
-using PlaylistItem = Client.Common.Models.PlaylistItem;
-
-namespace Client.Tests.Mocks
+﻿namespace Client.Tests.Mocks
 {
+    using System;
+    using System.Collections.ObjectModel;
+    using System.ComponentModel;
+    using Caliburn.Micro;
+    using Client.Common.Services;
+    using Microsoft.PlayerFramework;
+    using Subsonic8.BottomBar;
+    using Subsonic8.Framework.Services;
+    using Subsonic8.VideoPlayback;
+    using Action = System.Action;
+    using PlaylistItem = Client.Common.Models.PlaylistItem;
+
     public class MockEmbededVideoPlaybackViewModel : IEmbededVideoPlaybackViewModel
     {
-        public string DisplayName { get; set; }
-        public void Activate()
-        {
-            throw new NotImplementedException();
-        }
+        #region Public Events
 
-        public bool IsActive { get; private set; }
         public event EventHandler<ActivationEventArgs> Activated;
-        public void Deactivate(bool close)
-        {
-            throw new NotImplementedException();
-        }
 
         public event EventHandler<DeactivationEventArgs> AttemptingDeactivation;
+
         public event EventHandler<DeactivationEventArgs> Deactivated;
-        public void TryClose()
+
+        public event EventHandler<PlaybackStateEventArgs> FullScreenChanged;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        #endregion
+
+        #region Public Properties
+
+        public IDefaultBottomBarViewModel BottomBar { get; set; }
+
+        public bool CanGoBack { get; private set; }
+
+        public string DisplayName { get; set; }
+
+        public TimeSpan EndTime { get; set; }
+
+        public IEventAggregator EventAggregator { get; set; }
+
+        public bool IsActive { get; private set; }
+
+        public bool IsNotifying { get; set; }
+
+        public ICustomFrameAdapter NavigationService { get; set; }
+
+        public IDialogNotificationService NotificationService { get; set; }
+
+        public ObservableCollection<object> SelectedItems { get; private set; }
+
+        public TimeSpan StartTime { get; set; }
+
+        public ISubsonicService SubsonicService { get; set; }
+
+        public IToastNotificationService ToastNotificationService { get; private set; }
+
+        public Action UpdateDisplayName { get; set; }
+
+        #endregion
+
+        #region Public Methods and Operators
+
+        public void Activate()
         {
             throw new NotImplementedException();
         }
@@ -39,37 +72,44 @@ namespace Client.Tests.Mocks
             throw new NotImplementedException();
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void NotifyOfPropertyChange(string propertyName)
+        public void Deactivate(bool close)
         {
             throw new NotImplementedException();
         }
 
-        public void Refresh()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool IsNotifying { get; set; }
-        public void HandleError(Exception error)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEventAggregator EventAggregator { get; set; }
-        public ICustomFrameAdapter NavigationService { get; set; }
-        public ISubsonicService SubsonicService { get; set; }
-        public IDialogNotificationService NotificationService { get; set; }
-        public IDefaultBottomBarViewModel BottomBar { get; set; }
-        public ObservableCollection<object> SelectedItems { get; private set; }
-        public bool CanGoBack { get; private set; }
         public void GoBack()
         {
             throw new NotImplementedException();
         }
 
-        public Action UpdateDisplayName { get; set; }
+        public void HandleError(Exception error)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Next()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void NotifyOfPropertyChange(string propertyName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnFullScreenChanged(MediaPlayer mediaPlayer)
+        {
+        }
+
+        public void Pause()
+        {
+        }
+
+        public void Play(PlaylistItem item, object options = null)
+        {
+        }
+
+        public void PlayPause()
         {
             throw new NotImplementedException();
         }
@@ -79,17 +119,9 @@ namespace Client.Tests.Mocks
             throw new NotImplementedException();
         }
 
-        public void PlayPause()
+        public void Refresh()
         {
             throw new NotImplementedException();
-        }
-
-        public void Play(PlaylistItem item, object options = null)
-        {
-        }
-
-        public void Pause()
-        {
         }
 
         public void Resume()
@@ -101,16 +133,11 @@ namespace Client.Tests.Mocks
             throw new NotImplementedException();
         }
 
-        public IToastNotificationService ToastNotificationService { get; private set; }
-
-        public event EventHandler<PlaybackStateEventArgs> FullScreenChanged;
-
-        public TimeSpan StartTime { get; set; }
-
-        public TimeSpan EndTime { get; set; }
-
-        public void OnFullScreenChanged(MediaPlayer mediaPlayer)
+        public void TryClose()
         {
+            throw new NotImplementedException();
         }
+
+        #endregion
     }
 }

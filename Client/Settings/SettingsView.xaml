@@ -8,24 +8,30 @@
     d:DesignWidth="400">
 
     <StackPanel HorizontalAlignment="Stretch">
-        <TextBlock Text="Subsonic Url" Style="{StaticResource SettingsTextStyle}"/>
-        <TextBox x:Name="Configuration_SubsonicServiceConfiguration_BaseUrl" Style="{StaticResource SettingsTextBoxStyle}"/>
+        <TextBlock Text="Subsonic Url" Style="{StaticResource SettingsTextStyle}" />
+        <TextBox x:Name="Configuration_SubsonicServiceConfiguration_BaseUrl"
+                 Style="{StaticResource SettingsTextBoxStyle}" />
 
-        <TextBlock Text="Username" Style="{StaticResource SettingsTextStyle}"/>
-        <TextBox Text="{Binding Path=Configuration.SubsonicServiceConfiguration.Username}" Style="{StaticResource SettingsTextBoxStyle}" cal:Message.Attach="[Event TextChanged]=[Action UsernameChanged($source)]"/>
+        <TextBlock Text="Username" Style="{StaticResource SettingsTextStyle}" />
+        <TextBox Text="{Binding Path=Configuration.SubsonicServiceConfiguration.Username}"
+                 Style="{StaticResource SettingsTextBoxStyle}"
+                 cal:Message.Attach="[Event TextChanged]=[Action UsernameChanged($source)]" />
 
-        <TextBlock Text="Password" Style="{StaticResource SettingsTextStyle}"/>
-        <PasswordBox Password="{Binding Path=Configuration.SubsonicServiceConfiguration.Password}"  Style="{StaticResource PasswordTextBoxStyle}" cal:Message.Attach="[Event PasswordChanged]=[Action PasswordChanged($source)]"/>
+        <TextBlock Text="Password" Style="{StaticResource SettingsTextStyle}" />
+        <PasswordBox Password="{Binding Path=Configuration.SubsonicServiceConfiguration.Password}"
+                     Style="{StaticResource PasswordTextBoxStyle}"
+                     cal:Message.Attach="[Event PasswordChanged]=[Action PasswordChanged($source)]" />
 
         <ToggleSwitch Header="Sound For Notifications" IsOn="{Binding Path=Configuration.ToastsUseSound, Mode=TwoWay}"
                       Margin="0,10" OffContent="Off" OnContent="On" Style="{StaticResource LightToggleSwitch}">
             <ToggleSwitch.HeaderTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding}" Style="{StaticResource SettingsTextStyle}"/>
+                    <TextBlock Text="{Binding}" Style="{StaticResource SettingsTextStyle}" />
                 </DataTemplate>
             </ToggleSwitch.HeaderTemplate>
         </ToggleSwitch>
 
-        <Button x:Name="SaveChanges" Style="{StaticResource LightButton}" Width="100" Content="Save" HorizontalAlignment="Right"/>
+        <Button x:Name="SaveChanges" Style="{StaticResource LightButton}" Width="100" Content="Save"
+                HorizontalAlignment="Right" />
     </StackPanel>
 </UserControl>

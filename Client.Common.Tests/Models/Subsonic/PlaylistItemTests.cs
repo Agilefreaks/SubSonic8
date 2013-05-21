@@ -1,43 +1,27 @@
-﻿using Client.Common.Models;
-using Client.Common.Services;
-using FluentAssertions;
-using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
-
-namespace Client.Common.Tests.Models.Subsonic
+﻿namespace Client.Common.Tests.Models.Subsonic
 {
+    using Client.Common.Models;
+    using Client.Common.Services;
+    using FluentAssertions;
+    using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+
     [TestClass]
     public class PlaylistItemTests
     {
-        PlaylistItem _subject;
+        #region Fields
 
-        [TestInitialize]
-        public void Setup()
-        {
-            _subject = new PlaylistItem();
-        }
+        private PlaylistItem _subject;
 
-        [TestMethod]
-        public void OriginalCoverArtUrl_CoverArtUrlIsRemoteUrlAndHasASizeAttribute_ReturnsTheUrlWithTheSizeAttribute500()
-        {
-            _subject.CoverArtUrl = "http://asda.com?as=1&size=70";
+        #endregion
 
-            _subject.OriginalCoverArtUrl.Should().Be("http://asda.com?as=1&size=500");
-        }
+        #region Public Methods and Operators
 
         [TestMethod]
-        public void OriginalCoverArtUrl_CoverArtUrlIsRemoteUrlAndDoesNotHaveASizeAttribute_ReturnsTheUrlWithTheSizeAttribute500()
+        public void Ctor_Always_SetsCoverArtUrlToPlaceholder()
         {
-            _subject.CoverArtUrl = "https://asda.com?as=1";
+            var playlistItem = new PlaylistItem();
 
-            _subject.OriginalCoverArtUrl.Should().Be("https://asda.com?as=1&size=500");
-        }
-
-        [TestMethod]
-        public void OriginalCoverArtUrl_CoverArtUrlIsLocalFile_ReturnsTheLocalFileUrl()
-        {
-            _subject.CoverArtUrl = SubsonicService.CoverArtPlaceholder;
-
-            _subject.OriginalCoverArtUrl.Should().Be(SubsonicService.CoverArtPlaceholder);
+            playlistItem.CoverArtUrl.Should().Be(SubsonicService.CoverArtPlaceholder);
         }
 
         [TestMethod]
@@ -49,11 +33,36 @@ namespace Client.Common.Tests.Models.Subsonic
         }
 
         [TestMethod]
-        public void Ctor_Always_SetsCoverArtUrlToPlaceholder()
+        public void OriginalCoverArtUrl_CoverArtUrlIsLocalFile_ReturnsTheLocalFileUrl()
         {
-            var playlistItem = new PlaylistItem();
+            _subject.CoverArtUrl = SubsonicService.CoverArtPlaceholder;
 
-            playlistItem.CoverArtUrl.Should().Be(SubsonicService.CoverArtPlaceholder);
+            _subject.OriginalCoverArtUrl.Should().Be(SubsonicService.CoverArtPlaceholder);
         }
+
+        [TestMethod]
+        public void
+            OriginalCoverArtUrl_CoverArtUrlIsRemoteUrlAndDoesNotHaveASizeAttribute_ReturnsTheUrlWithTheSizeAttribute500()
+        {
+            _subject.CoverArtUrl = "https://asda.com?as=1";
+
+            _subject.OriginalCoverArtUrl.Should().Be("https://asda.com?as=1&size=500");
+        }
+
+        [TestMethod]
+        public void OriginalCoverArtUrl_CoverArtUrlIsRemoteUrlAndHasASizeAttribute_ReturnsTheUrlWithTheSizeAttribute500()
+        {
+            _subject.CoverArtUrl = "http://asda.com?as=1&size=70";
+
+            _subject.OriginalCoverArtUrl.Should().Be("http://asda.com?as=1&size=500");
+        }
+
+        [TestInitialize]
+        public void Setup()
+        {
+            _subject = new PlaylistItem();
+        }
+
+        #endregion
     }
 }

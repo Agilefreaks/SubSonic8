@@ -1,12 +1,17 @@
-﻿using Client.Common.Results;
-
-namespace Client.Tests.Mocks
+﻿namespace Client.Tests.Mocks
 {
-    public class MockGetAlbumResult : MockServiceResultBase<Common.Models.Subsonic.Album>, IGetAlbumResult
+    using Client.Common.Models.Subsonic;
+    using Client.Common.Results;
+
+    public class MockGetAlbumResult : MockServiceResultBase<Album>, IGetAlbumResult
     {
+        #region Constructors and Destructors
+
         public MockGetAlbumResult()
         {
-            GetResultFunc = () => new Common.Models.Subsonic.Album();
+            GetResultFunc = () => new Album();
         }
+
+        #endregion
     }
 }

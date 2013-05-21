@@ -1,22 +1,31 @@
-﻿using Client.Common.EventAggregatorMessages;
-using Client.Common.Helpers;
-using Client.Common.Tests.Mocks;
-using FluentAssertions;
-using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
-
-namespace Client.Common.Tests.Helpers
+﻿namespace Client.Common.Tests.Helpers
 {
+    using Client.Common.EventAggregatorMessages;
+    using Client.Common.Helpers;
+    using Client.Common.Tests.Mocks;
+    using FluentAssertions;
+    using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+
     [TestClass]
     public class MediaControlHandlerTests
     {
-        MediaControlHandler _subject;
+        #region Fields
+
         private MockEventAggregator _eventAggregator;
 
-        [TestInitialize]
-        public void Setup()
+        private MediaControlHandler _subject;
+
+        #endregion
+
+        #region Public Methods and Operators
+
+        [TestMethod]
+        public void PausePressed_Always_ShouldPublishANewPlayPuaseMessage()
         {
-            _eventAggregator = new MockEventAggregator();
-            _subject = new MediaControlHandler(_eventAggregator);
+            _subject.PausePressed(null, null);
+
+            _eventAggregator.PublishCallCount.Should().Be(1);
+            _eventAggregator.Messages[0].Should().BeOfType<PauseMessage>();
         }
 
         [TestMethod]
@@ -26,15 +35,6 @@ namespace Client.Common.Tests.Helpers
 
             _eventAggregator.PublishCallCount.Should().Be(1);
             _eventAggregator.Messages[0].Should().BeOfType<PlayNextMessage>();
-        }
-
-        [TestMethod]
-        public void PlayPreviousShouldCallPublishOnEventAggregator()
-        {
-            _subject.PlayPreviousTrackPressed(null, null);
-
-            _eventAggregator.PublishCallCount.Should().Be(1);
-            _eventAggregator.Messages[0].Should().BeOfType<PlayPreviousMessage>();
         }
 
         [TestMethod]
@@ -56,12 +56,19 @@ namespace Client.Common.Tests.Helpers
         }
 
         [TestMethod]
-        public void PausePressed_Always_ShouldPublishANewPlayPuaseMessage()
+        public void PlayPreviousShouldCallPublishOnEventAggregator()
         {
-            _subject.PausePressed(null, null);
+            _subject.PlayPreviousTrackPressed(null, null);
 
             _eventAggregator.PublishCallCount.Should().Be(1);
-            _eventAggregator.Messages[0].Should().BeOfType<PauseMessage>();
+            _eventAggregator.Messages[0].Should().BeOfType<PlayPreviousMessage>();
+        }
+
+        [TestInitialize]
+        public void Setup()
+        {
+            _eventAggregator = new MockEventAggregator();
+            _subject = new MediaControlHandler(_eventAggregator);
         }
 
         [TestMethod]
@@ -72,5 +79,7 @@ namespace Client.Common.Tests.Helpers
             _eventAggregator.PublishCallCount.Should().Be(1);
             _eventAggregator.Messages[0].Should().BeOfType<StopMessage>();
         }
+
+        #endregion
     }
 }

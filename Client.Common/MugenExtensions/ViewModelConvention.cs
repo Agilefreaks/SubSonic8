@@ -1,16 +1,22 @@
-﻿using System;
-using System.Reflection;
-using MugenInjection;
-using MugenInjection.Interface;
-
-namespace Client.Common.MugenExtensions
+﻿namespace Client.Common.MugenExtensions
 {
+    using System;
+    using System.Reflection;
+    using MugenInjection;
+    using MugenInjection.Interface;
+
     public class ViewModelConvention : InterfaceToImplementationBaseConvention
     {
+        #region Constructors and Destructors
+
         public ViewModelConvention(IInjector injector)
             : base(injector)
         {
         }
+
+        #endregion
+
+        #region Public Methods and Operators
 
         public override bool ConditionMet(Type type)
         {
@@ -25,5 +31,7 @@ namespace Client.Common.MugenExtensions
 
             Injector.Bind(type).To(targetType).InSingletonScope();
         }
+
+        #endregion
     }
 }

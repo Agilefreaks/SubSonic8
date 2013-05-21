@@ -1,7 +1,7 @@
-﻿using Subsonic8.Framework.ViewModel;
-
-namespace Subsonic8.Playlists
+﻿namespace Subsonic8.Playlists
 {
+    using Subsonic8.Framework.ViewModel;
+
     public interface IPlaylistViewModel : ICollectionViewModel<object>
     {
     }

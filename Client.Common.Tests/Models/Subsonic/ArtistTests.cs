@@ -1,20 +1,20 @@
-﻿using Client.Common.Models;
-using Client.Common.Models.Subsonic;
-using FluentAssertions;
-using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
-
-namespace Client.Common.Tests.Models.Subsonic
+﻿namespace Client.Common.Tests.Models.Subsonic
 {
+    using Client.Common.Models;
+    using Client.Common.Models.Subsonic;
+    using FluentAssertions;
+    using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+
     [TestClass]
     public class ArtistTests
     {
+        #region Fields
+
         private Artist _subject;
 
-        [TestInitialize]
-        public void TestInitialize()
-        {
-            _subject = new Artist();
-        }
+        #endregion
+
+        #region Public Methods and Operators
 
         [TestMethod]
         public void InstanceShouldImplementIIdentifiableEntity()
@@ -28,10 +28,18 @@ namespace Client.Common.Tests.Models.Subsonic
             _subject.Should().BeAssignableTo<ISubsonicModel>();
         }
 
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            _subject = new Artist();
+        }
+
         [TestMethod]
         public void TypePropertyAlwaysReturnsNavigableTypeEnumMusicDirectory()
         {
             _subject.Type.Should().Be(SubsonicModelTypeEnum.MusicDirectory);
         }
+
+        #endregion
     }
 }

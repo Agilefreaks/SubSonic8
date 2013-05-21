@@ -1,24 +1,34 @@
-﻿using System.Linq;
-using Client.Common.EventAggregatorMessages;
-using Client.Common.Models;
-using Client.Common.Models.Subsonic;
-using Client.Common.Services;
-using MugenInjection.Attributes;
-using Subsonic8.Framework.Extensions;
-using Subsonic8.MenuItem;
-using Windows.UI.Xaml.Controls;
-
-namespace Subsonic8.Playlists
+﻿namespace Subsonic8.Playlists
 {
+    using System.Linq;
+    using Client.Common.EventAggregatorMessages;
+    using Client.Common.Models;
+    using Client.Common.Models.Subsonic;
+    using Client.Common.Services;
+    using MugenInjection.Attributes;
+    using Subsonic8.Framework.Extensions;
+    using Subsonic8.MenuItem;
+    using Windows.UI.Xaml.Controls;
+
     public class ManagePlaylistsViewModel : PlaylistViewModelBase, IManagePlaylistsViewModel
     {
-        [Inject]
-        public IPlaylistManagementService PlaylistManagementService { get; set; }
+        #region Constructors and Destructors
 
         public ManagePlaylistsViewModel()
         {
             UpdateDisplayName = () => DisplayName = "Load remote playlist";
         }
+
+        #endregion
+
+        #region Public Properties
+
+        [Inject]
+        public IPlaylistManagementService PlaylistManagementService { get; set; }
+
+        #endregion
+
+        #region Public Methods and Operators
 
         public override async void ChildClick(ItemClickEventArgs eventArgs)
         {
@@ -35,5 +45,7 @@ namespace Subsonic8.Playlists
             playlistItemCollection.AddRange(playlist.Entries.Select(e => e.AsPlaylistItem(SubsonicService)));
             PlaylistManagementService.LoadPlaylist(playlistItemCollection);
         }
+
+        #endregion
     }
 }

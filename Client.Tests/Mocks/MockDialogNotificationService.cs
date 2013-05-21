@@ -1,18 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Subsonic8.Framework.Services;
-
-namespace Client.Tests.Mocks
+﻿namespace Client.Tests.Mocks
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using Subsonic8.Framework.Services;
+
     public class MockDialogNotificationService : IDialogNotificationService
     {
-        public List<DialogNotificationOptions> Showed { get; set; }
+        #region Constructors and Destructors
 
         public MockDialogNotificationService()
         {
             Showed = new List<DialogNotificationOptions>();
         }
+
+        #endregion
+
+        #region Public Properties
+
+        public List<DialogNotificationOptions> Showed { get; set; }
+
+        #endregion
+
+        #region Public Methods and Operators
 
         public Task Show(DialogNotificationOptions options)
         {
@@ -25,7 +35,9 @@ namespace Client.Tests.Mocks
         {
             Showed.Add(options);
 
-            return new Task(() => {});
+            return new Task(() => { });
         }
+
+        #endregion
     }
 }

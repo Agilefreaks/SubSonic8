@@ -1,16 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using Caliburn.Micro;
-using Client.Common.MugenExtensions;
-using Microsoft.Practices.ServiceLocation;
-using MugenInjection;
-using MugenInjection.Interface;
-
-namespace Subsonic8.Framework
+﻿namespace Subsonic8.Framework
 {
+    using System;
+    using System.Collections.Generic;
+    using Caliburn.Micro;
+    using Client.Common.MugenExtensions;
+    using Microsoft.Practices.ServiceLocation;
+    using MugenInjection;
+    using MugenInjection.Interface;
+
     public class CaliburnServiceLocatorApplication : CaliburnApplication
     {
+        #region Fields
+
         protected readonly MugenInjector Kernel = new MugenInjector();
+
+        #endregion
+
+        #region Constructors and Destructors
 
         public CaliburnServiceLocatorApplication()
         {
@@ -23,9 +29,13 @@ namespace Subsonic8.Framework
             Kernel.Bind<IServiceLocator>().ToConstant(locator);
         }
 
-        protected override object GetInstance(Type service, string key)
+        #endregion
+
+        #region Methods
+
+        protected override void BuildUp(object instance)
         {
-            return string.IsNullOrWhiteSpace(key) ? Kernel.Get(service) : Kernel.Get(service, key);
+            Kernel.Inject(instance);
         }
 
         protected override IEnumerable<object> GetAllInstances(Type service)
@@ -33,9 +43,11 @@ namespace Subsonic8.Framework
             return Kernel.GetAll(service);
         }
 
-        protected override void BuildUp(object instance)
+        protected override object GetInstance(Type service, string key)
         {
-            Kernel.Inject(instance);
+            return string.IsNullOrWhiteSpace(key) ? Kernel.Get(service) : Kernel.Get(service, key);
         }
+
+        #endregion
     }
 }

@@ -1,30 +1,43 @@
-﻿using System.Threading.Tasks;
-using Caliburn.Micro;
-using Client.Common;
-using Client.Common.Services;
-using Subsonic8.Framework;
-using Subsonic8.Framework.Interfaces;
-using Subsonic8.Main;
-using Subsonic8.Playback;
-using Subsonic8.Shell;
-using Subsonic8.VideoPlayback;
-using Windows.ApplicationModel.Activation;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using MugenInjection;
-
-namespace Subsonic8
+﻿namespace Subsonic8
 {
+    using System.Threading.Tasks;
+    using Caliburn.Micro;
+    using Client.Common;
+    using Client.Common.Services;
+    using MugenInjection;
+    using Subsonic8.Framework;
+    using Subsonic8.Framework.Interfaces;
+    using Subsonic8.Main;
+    using Subsonic8.Playback;
+    using Subsonic8.Shell;
+    using Subsonic8.VideoPlayback;
+    using Windows.ApplicationModel;
+    using Windows.ApplicationModel.Activation;
+    using Windows.UI.Xaml;
+    using Windows.UI.Xaml.Controls;
+
     public sealed partial class App
     {
-        private IShellViewModel _shellViewModel;
-        private ApplicationExecutionState _previousExecutionState;
+        #region Fields
+
         private CustomFrameAdapter _navigationService;
+
+        private ApplicationExecutionState _previousExecutionState;
+
+        private IShellViewModel _shellViewModel;
+
+        #endregion
+
+        #region Constructors and Destructors
 
         public App()
         {
             InitializeComponent();
         }
+
+        #endregion
+
+        #region Methods
 
         protected override void Configure()
         {
@@ -49,35 +62,34 @@ namespace Subsonic8
             _shellViewModel.SendSearchQueryMessage(args.QueryText);
         }
 
-        protected override async void OnSuspending(object sender, Windows.ApplicationModel.SuspendingEventArgs e)
+        protected override async void OnSuspending(object sender, SuspendingEventArgs e)
         {
             var deferral = e.SuspendingOperation.GetDeferral();
             await SuspensionManager.SaveAsync();
             deferral.Complete();
         }
 
-        private async void StartApplication()
+        private void BindShellViewModelToView(ShellView shellView)
         {
-            DisplayRootView<ShellView>();
+            _shellViewModel = Kernel.Get<IShellViewModel>();
 
-            var shellView = GetShellView();
-
-            RegisterNavigationService(shellView.ShellFrame);
-
-            BindShellViewModelToView(shellView);
-
-            RegisterPlayers();
-
-            InstantiateRequiredSingletons();
-
-            await LoadSettings();
-
-            await RestoreLastViewOrGoToMain(shellView);
+            ViewModelBinder.Bind(_shellViewModel, shellView, null);
         }
 
         private ShellView GetShellView()
         {
             return (ShellView)RootFrame.Content;
+        }
+
+        private void InstantiateRequiredSingletons()
+        {
+            Kernel.Get<IPlaybackViewModel>();
+            Kernel.Get<INotificationsHelper>();
+        }
+
+        private async Task LoadSettings()
+        {
+            await Kernel.Get<ISettingsHelper>().LoadSettings();
         }
 
         private void RegisterNavigationService(Frame shellFrame, bool treatViewAsLoaded = false)
@@ -93,24 +105,6 @@ namespace Subsonic8
             playerManagementService.RegisterAudioPlayer(_shellViewModel);
             playerManagementService.RegisterVideoPlayer(Kernel.Get<IEmbededVideoPlaybackViewModel>());
             playerManagementService.RegisterVideoPlayer(Kernel.Get<IFullScreenVideoPlaybackViewModel>());
-        }
-
-        private void InstantiateRequiredSingletons()
-        {
-            Kernel.Get<IPlaybackViewModel>();
-            Kernel.Get<INotificationsHelper>();
-        }
-
-        private void BindShellViewModelToView(ShellView shellView)
-        {
-            _shellViewModel = Kernel.Get<IShellViewModel>();
-
-            ViewModelBinder.Bind(_shellViewModel, shellView, null);
-        }
-
-        private async Task LoadSettings()
-        {
-            await Kernel.Get<ISettingsHelper>().LoadSettings();
         }
 
         private async Task RestoreLastViewOrGoToMain(ShellView shellView)
@@ -133,5 +127,26 @@ namespace Subsonic8
                 _navigationService.NavigateToViewModel<MainViewModel>();
             }
         }
+
+        private async void StartApplication()
+        {
+            DisplayRootView<ShellView>();
+
+            var shellView = GetShellView();
+
+            RegisterNavigationService(shellView.ShellFrame);
+
+            BindShellViewModelToView(shellView);
+
+            RegisterPlayers();
+
+            InstantiateRequiredSingletons();
+
+            await LoadSettings();
+
+            await RestoreLastViewOrGoToMain(shellView);
+        }
+
+        #endregion
     }
 }

@@ -1,13 +1,15 @@
-using System;
-using Caliburn.Micro;
-using Subsonic8.Framework.Services;
-using Windows.UI.ApplicationSettings;
-using Windows.UI.Xaml;
-
 namespace Subsonic8.Framework.Extensions
 {
+    using System;
+    using Caliburn.Micro;
+    using Subsonic8.Framework.Services;
+    using Windows.UI.ApplicationSettings;
+    using Windows.UI.Xaml;
+
     public static class SettingsPaneExtensionMethods
     {
+        #region Public Methods and Operators
+
         /// <summary>
         /// Adds an item to the Settings Pane
         /// </summary>
@@ -15,7 +17,10 @@ namespace Subsonic8.Framework.Extensions
         /// <param name="args">The settings pane commands requested event args</param>
         /// <param name="onInitialize">Method which is executed before the dialog is shown</param>
         /// <param name="onClosed">Method which is executed after the dialog has been closed</param>
-        public static void AddSetting<T>(this SettingsPaneCommandsRequestedEventArgs args, Action<T> onInitialize = null, Action<T, UIElement> onClosed = null) where T : Screen
+        public static void AddSetting<T>(
+            this SettingsPaneCommandsRequestedEventArgs args, 
+            Action<T> onInitialize = null, 
+            Action<T, UIElement> onClosed = null) where T : Screen
         {
             var header = IoC.Get<T>().DisplayName;
 
@@ -23,5 +28,7 @@ namespace Subsonic8.Framework.Extensions
 
             args.Request.ApplicationCommands.Add(cmd);
         }
+
+        #endregion
     }
 }

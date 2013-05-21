@@ -1,9 +1,11 @@
-﻿using System;
-
-namespace Subsonic8.Framework
+﻿namespace Subsonic8.Framework
 {
+    using System;
+
     public class SuspensionManagerException : Exception
     {
+        #region Constructors and Destructors
+
         public SuspensionManagerException()
         {
         }
@@ -12,5 +14,7 @@ namespace Subsonic8.Framework
             : base("SuspensionManager failed", e)
         {
         }
+
+        #endregion
     }
 }

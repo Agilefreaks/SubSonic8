@@ -2,12 +2,13 @@
 {
     public class PlaylistStateChangedMessage
     {
+        #region Fields
+
         private readonly bool _hasElements;
 
-        public bool HasElements
-        {
-            get { return _hasElements; }
-        }
+        #endregion
+
+        #region Constructors and Destructors
 
         public PlaylistStateChangedMessage()
         {
@@ -17,5 +18,19 @@
         {
             _hasElements = hasElements;
         }
+
+        #endregion
+
+        #region Public Properties
+
+        public bool HasElements
+        {
+            get
+            {
+                return _hasElements;
+            }
+        }
+
+        #endregion
     }
 }

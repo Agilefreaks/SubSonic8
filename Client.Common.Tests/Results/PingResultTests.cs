@@ -1,14 +1,20 @@
-﻿using Client.Common.Results;
-using Client.Common.Services.DataStructures.SubsonicService;
-using FluentAssertions;
-using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
-
-namespace Client.Common.Tests.Results
+﻿namespace Client.Common.Tests.Results
 {
+    using Client.Common.Results;
+    using Client.Common.Services.DataStructures.SubsonicService;
+    using FluentAssertions;
+    using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+
     [TestClass]
     public class PingResultTests
     {
-        PingResult _subject;
+        #region Fields
+
+        private PingResult _subject;
+
+        #endregion
+
+        #region Public Methods and Operators
 
         [TestInitialize]
         public void Setup()
@@ -21,5 +27,7 @@ namespace Client.Common.Tests.Results
         {
             _subject.ViewName.Should().Be("ping.view");
         }
+
+        #endregion
     }
 }

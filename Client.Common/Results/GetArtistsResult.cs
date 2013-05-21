@@ -1,18 +1,25 @@
-﻿using System.Xml.Linq;
-using System.Xml.Serialization;
-using Client.Common.Models.Subsonic;
-using Client.Common.Services.DataStructures.SubsonicService;
-
-namespace Client.Common.Results
+﻿namespace Client.Common.Results
 {
+    using System.Xml.Linq;
+    using System.Xml.Serialization;
+    using Client.Common.Models.Subsonic;
+    using Client.Common.Services.DataStructures.SubsonicService;
+
     public class GetArtistsResult : ServiceResultBase<ExpandedArtist>, IGetArtistResult
     {
-        public int Id { get; private set; }
+        #region Constructors and Destructors
 
-        public override string ViewName
+        public GetArtistsResult(ISubsonicServiceConfiguration configuration, int id)
+            : base(configuration)
         {
-            get { return "getArtist.view"; }
+            Id = id;
         }
+
+        #endregion
+
+        #region Public Properties
+
+        public int Id { get; private set; }
 
         public override string RequestUrl
         {
@@ -22,11 +29,17 @@ namespace Client.Common.Results
             }
         }
 
-        public GetArtistsResult(ISubsonicServiceConfiguration configuration, int id)
-            : base(configuration)
+        public override string ViewName
         {
-            Id = id;
+            get
+            {
+                return "getArtist.view";
+            }
         }
+
+        #endregion
+
+        #region Methods
 
         protected override void HandleResponse(XDocument xDocument)
         {
@@ -38,5 +51,7 @@ namespace Client.Common.Results
                 Result = (ExpandedArtist)xmlSerializer.Deserialize(xmlReader);
             }
         }
+
+        #endregion
     }
 }

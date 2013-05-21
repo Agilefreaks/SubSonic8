@@ -1,38 +1,26 @@
-﻿using Caliburn.Micro;
-using Client.Common.Models;
-using Client.Common.Services;
-
-namespace Subsonic8.Framework.ViewModel
+﻿namespace Subsonic8.Framework.ViewModel
 {
+    using Caliburn.Micro;
+    using Client.Common.Models;
+    using Client.Common.Services;
+
     public class ItemViewModelBase : PropertyChangedBase
     {
-        private string _title;
+        #region Fields
+
         private string _coverArt;
+
         private string _coverArtUrl;
+
         private ISubsonicModel _item;
+
         private ISubsonicService _subsonicService;
 
-        public ISubsonicService SubsonicService
-        {
-            get
-            {
-                return _subsonicService ?? (_subsonicService = IoC.Get<ISubsonicService>());
-            }
-        }
+        private string _title;
 
-        public string Title
-        {
-            get
-            {
-                return _title;
-            }
+        #endregion
 
-            set
-            {
-                _title = value;
-                NotifyOfPropertyChange();
-            }
-        }
+        #region Public Properties
 
         public string CoverArt
         {
@@ -70,5 +58,29 @@ namespace Subsonic8.Framework.ViewModel
                 NotifyOfPropertyChange();
             }
         }
+
+        public ISubsonicService SubsonicService
+        {
+            get
+            {
+                return _subsonicService ?? (_subsonicService = IoC.Get<ISubsonicService>());
+            }
+        }
+
+        public string Title
+        {
+            get
+            {
+                return _title;
+            }
+
+            set
+            {
+                _title = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
+        #endregion
     }
 }

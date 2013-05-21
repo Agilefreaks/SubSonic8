@@ -2,9 +2,13 @@
 {
     public sealed partial class SavePlaylistView
     {
+        #region Constructors and Destructors
+
         public SavePlaylistView()
         {
-            InitializeComponent();            
+            InitializeComponent();
         }
+
+        #endregion
     }
 }

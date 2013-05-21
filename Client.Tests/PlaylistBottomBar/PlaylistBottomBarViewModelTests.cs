@@ -1,30 +1,26 @@
-﻿using Client.Common.Models.Subsonic;
-using Client.Common.Results;
-using Client.Common.Services.DataStructures.SubsonicService;
-using Client.Tests.Mocks;
-using FluentAssertions;
-using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
-using Subsonic8.BottomBar;
-using Subsonic8.MenuItem;
-
-namespace Client.Tests.PlaylistBottomBar
+﻿namespace Client.Tests.PlaylistBottomBar
 {
+    using Client.Common.Models.Subsonic;
+    using Client.Common.Results;
+    using Client.Common.Services.DataStructures.SubsonicService;
+    using Client.Tests.Mocks;
+    using FluentAssertions;
+    using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+    using Subsonic8.BottomBar;
+    using Subsonic8.MenuItem;
+
     [TestClass]
     public class PlaylistBottomBarViewModelTests
     {
-        PlaylistBottomBarViewModel _subject;
+        #region Fields
+
         private MockSubsonicService _mockSubsonicService;
 
-        [TestInitialize]
-        public void Setup()
-        {
-            _mockSubsonicService = new MockSubsonicService();
-            _subject = new PlaylistBottomBarViewModel(new MockNavigationService(), new MockEventAggregator(),
-                                                      new MockPlyalistManagementService())
-                {
-                    SubsonicService = _mockSubsonicService
-                };
-        }
+        private PlaylistBottomBarViewModel _subject;
+
+        #endregion
+
+        #region Public Methods and Operators
 
         [TestMethod]
         public void DeletePlaylist_Always_CallsDeletePlaylistWithTheFirstSelectedItemsId()
@@ -62,5 +58,20 @@ namespace Client.Tests.PlaylistBottomBar
 
             callCount.Should().Be(1);
         }
+
+        [TestInitialize]
+        public void Setup()
+        {
+            _mockSubsonicService = new MockSubsonicService();
+            _subject = new PlaylistBottomBarViewModel(
+                new MockNavigationService(), new MockEventAggregator(), new MockPlyalistManagementService())
+                           {
+                               SubsonicService
+                                   =
+                                   _mockSubsonicService
+                           };
+        }
+
+        #endregion
     }
 }

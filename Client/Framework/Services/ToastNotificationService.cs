@@ -1,21 +1,33 @@
-﻿using System.Threading.Tasks;
-using NotificationsExtensions.TileContent;
-using NotificationsExtensions.ToastContent;
-using Windows.Data.Xml.Dom;
-using Windows.UI.Notifications;
-
-namespace Subsonic8.Framework.Services
+﻿namespace Subsonic8.Framework.Services
 {
+    using System.Threading.Tasks;
+    using NotificationsExtensions.ToastContent;
+    using Windows.UI.Notifications;
+
     public class ToastNotificationService : IToastNotificationService
     {
+        #region Fields
+
         private readonly ToastNotifier _toastNotifier;
 
-        public bool UseSound { get; set; }
+        #endregion
+
+        #region Constructors and Destructors
 
         public ToastNotificationService()
         {
             _toastNotifier = ToastNotificationManager.CreateToastNotifier();
         }
+
+        #endregion
+
+        #region Public Properties
+
+        public bool UseSound { get; set; }
+
+        #endregion
+
+        #region Public Methods and Operators
 
         public Task Show(PlaybackNotificationOptions options)
         {
@@ -24,6 +36,10 @@ namespace Subsonic8.Framework.Services
 
             return Task.Factory.StartNew(() => _toastNotifier.Show(toastNotification));
         }
+
+        #endregion
+
+        #region Methods
 
         private IToastImageAndText02 BuildToast(PlaybackNotificationOptions options)
         {
@@ -36,5 +52,7 @@ namespace Subsonic8.Framework.Services
 
             return toast;
         }
+
+        #endregion
     }
 }

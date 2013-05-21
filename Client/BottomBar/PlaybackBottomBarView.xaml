@@ -7,17 +7,20 @@
     xmlns:bottomBar="using:Subsonic8.BottomBar" mc:Ignorable="d">
 
     <UserControl.Resources>
-        <cal:BooleanToVisibilityConverter x:Key="VisibilityConverter"/>
+        <cal:BooleanToVisibilityConverter x:Key="VisibilityConverter" />
     </UserControl.Resources>
 
     <Grid>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-            <Button Style="{StaticResource RemoveAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action RemoveFromPlaylist()]" Visibility="{Binding CanRemoveFromPlaylist, Converter={StaticResource VisibilityConverter}}" />
+            <Button Style="{StaticResource RemoveAppBarButtonStyle}"
+                    cal:Message.Attach="[Event Click] = [Action RemoveFromPlaylist()]"
+                    Visibility="{Binding CanRemoveFromPlaylist, Converter={StaticResource VisibilityConverter}}" />
         </StackPanel>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-            <bottomBar:PlaybackControlsView/>
+            <bottomBar:PlaybackControlsView />
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Style="{StaticResource HomeAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action NavigateToRoot()]"/>
+                <Button Style="{StaticResource HomeAppBarButtonStyle}"
+                        cal:Message.Attach="[Event Click] = [Action NavigateToRoot()]" />
             </StackPanel>
         </StackPanel>
     </Grid>

@@ -1,19 +1,27 @@
-﻿using System.Net;
-using System.Xml.Linq;
-using Client.Common.Services.DataStructures.SubsonicService;
-
-namespace Client.Common.Results
+﻿namespace Client.Common.Results
 {
+    using System.Net;
+    using System.Xml.Linq;
+    using Client.Common.Services.DataStructures.SubsonicService;
+
     public class RenamePlaylistResult : ServiceResultBase<bool>, IRenamePlaylistResult
     {
+        #region Constructors and Destructors
+
+        public RenamePlaylistResult(ISubsonicServiceConfiguration configuration, int id, string name)
+            : base(configuration)
+        {
+            Id = id;
+            Name = name;
+        }
+
+        #endregion
+
+        #region Public Properties
+
         public int Id { get; private set; }
 
         public string Name { get; private set; }
-
-        public override string ViewName
-        {
-            get { return "updatePlaylist.view"; }
-        }
 
         public override string RequestUrl
         {
@@ -23,17 +31,24 @@ namespace Client.Common.Results
             }
         }
 
-        public RenamePlaylistResult(ISubsonicServiceConfiguration configuration, int id, string name)
-            : base(configuration)
+        public override string ViewName
         {
-            Id = id;
-            Name = name;
+            get
+            {
+                return "updatePlaylist.view";
+            }
         }
+
+        #endregion
+
+        #region Methods
 
         protected override void HandleResponse(XDocument xDocument)
         {
             var xElement = xDocument.Element(Namespace + "subsonic-response");
             Result = !xElement.HasElements;
         }
+
+        #endregion
     }
 }

@@ -7,6 +7,6 @@
     mc:Ignorable="d">
 
     <Grid>
-        <TextBlock Text="{Binding Path=Text}" Style="{StaticResource SettingsTextStyle}"/>
+        <TextBlock Text="{Binding Path=Text}" Style="{StaticResource SettingsTextStyle}" />
     </Grid>
 </Page>

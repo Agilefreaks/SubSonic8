@@ -1,39 +1,34 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Client.Common.Models;
-using Client.Common.Models.Subsonic;
-using Client.Tests.Framework.ViewModel;
-using Client.Tests.Mocks;
-using FluentAssertions;
-using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
-using Subsonic8.MenuItem;
-using Subsonic8.Playlists;
-
-namespace Client.Tests.Playlists
+﻿namespace Client.Tests.Playlists
 {
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using Client.Common.Models;
+    using Client.Common.Models.Subsonic;
+    using Client.Tests.Framework.ViewModel;
+    using Client.Tests.Mocks;
+    using FluentAssertions;
+    using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+    using Subsonic8.MenuItem;
+    using Subsonic8.Playlists;
+
     [TestClass]
     public class SavePlaylistViewModelTests : ViewModelBaseTests<SavePlaylistViewModel>
     {
+        #region Fields
+
         private MockDialogNotificationService _mockDialogNotificationService;
+
         private MockPlyalistManagementService _mockPlyalistManagementService;
+
+        #endregion
+
+        #region Properties
+
         protected override SavePlaylistViewModel Subject { get; set; }
 
-        protected override void TestInitializeExtensions()
-        {
-            base.TestInitializeExtensions();
-            _mockDialogNotificationService = new MockDialogNotificationService();
-            Subject.DialogNotificationService = _mockDialogNotificationService;
-            _mockPlyalistManagementService = new MockPlyalistManagementService();
-            Subject.PlaylistManagementService = _mockPlyalistManagementService;
-        }
+        #endregion
 
-        [TestMethod]
-        public void Cancel_Always_CallsNavigationServiceGoBack()
-        {
-            Subject.Cancel();
-
-            MockNavigationService.GoBackCallCount.Should().Be(1);
-        }
+        #region Public Methods and Operators
 
         [TestMethod]
         public void CanSave_PlaylistNameIsEmpty_ReturnsFalse()
@@ -62,33 +57,32 @@ namespace Client.Tests.Playlists
         }
 
         [TestMethod]
-        public async Task Save_MenuItemsContainsPlaylistWithSameNameAsPlaylistName_WillCallSubsonicServiceGetPlaylistWithThePlaylistId()
+        public void Cancel_Always_CallsNavigationServiceGoBack()
         {
-            Subject.MenuItems.Add(new MenuItemViewModel { Item = new Playlist { Name = "test", Id = 2 } });
-            Subject.PlaylistName = "test";
+            Subject.Cancel();
 
-            var callCount = 0;
-            MockSubsonicService.GetPlaylist = id =>
-                {
-                    callCount++;
-                    id.Should().Be(2);
-                    return new MockGetPlaylistResult();
-                };
-
-            await Task.Factory.StartNew(() => Subject.Save());
-
-            callCount.Should().Be(1);
+            MockNavigationService.GoBackCallCount.Should().Be(1);
         }
 
         [TestMethod]
-        public async Task Save_MenuItemsContainsPlaylistWithSameNameAsPlaylistName_CallsUpdatePlaylistWithTheExistingPlaylistIdAndSongDifferences()
+        public async Task
+            Save_MenuItemsContainsPlaylistWithSameNameAsPlaylistName_CallsUpdatePlaylistWithTheExistingPlaylistIdAndSongDifferences()
         {
             _mockPlyalistManagementService.Items.Add(new PlaylistItem { UriAsString = "http://view.view?id=1" });
             _mockPlyalistManagementService.Items.Add(new PlaylistItem { UriAsString = "http://view.view?id=2" });
             Subject.MenuItems.Add(new MenuItemViewModel { Item = new Playlist { Name = "test", Id = 2 } });
             Subject.PlaylistName = "test";
 
-            var existingPlaylist = new Playlist { Id = 3, Entries = new List<PlaylistEntry> { new PlaylistEntry { Id = 1 }, new PlaylistEntry { Id = 3 } } };
+            var existingPlaylist = new Playlist
+                                       {
+                                           Id = 3, 
+                                           Entries =
+                                               new List<PlaylistEntry>
+                                                   {
+                                                       new PlaylistEntry { Id = 1 }, 
+                                                       new PlaylistEntry { Id = 3 }
+                                                   }
+                                       };
 
             var callCount = 0;
             MockSubsonicService.GetPlaylist = id => new MockGetPlaylistResult { GetResultFunc = () => existingPlaylist };
@@ -107,7 +101,28 @@ namespace Client.Tests.Playlists
         }
 
         [TestMethod]
-        public async Task Save_MenuItemsDoesNotContainPlaylistWithSameNameAsPlaylistNamse_CallsCreatePlaylistWithThePlaylistNameAndCurrentPlaylistItemIds()
+        public async Task
+            Save_MenuItemsContainsPlaylistWithSameNameAsPlaylistName_WillCallSubsonicServiceGetPlaylistWithThePlaylistId()
+        {
+            Subject.MenuItems.Add(new MenuItemViewModel { Item = new Playlist { Name = "test", Id = 2 } });
+            Subject.PlaylistName = "test";
+
+            var callCount = 0;
+            MockSubsonicService.GetPlaylist = id =>
+                {
+                    callCount++;
+                    id.Should().Be(2);
+                    return new MockGetPlaylistResult();
+                };
+
+            await Task.Factory.StartNew(() => Subject.Save());
+
+            callCount.Should().Be(1);
+        }
+
+        [TestMethod]
+        public async Task
+            Save_MenuItemsDoesNotContainPlaylistWithSameNameAsPlaylistNamse_CallsCreatePlaylistWithThePlaylistNameAndCurrentPlaylistItemIds()
         {
             _mockPlyalistManagementService.Items.Add(new PlaylistItem { UriAsString = "http://view.view?id=1" });
             _mockPlyalistManagementService.Items.Add(new PlaylistItem { UriAsString = "http://view.view?id=2" });
@@ -116,16 +131,31 @@ namespace Client.Tests.Playlists
 
             var callCount = 0;
             MockSubsonicService.CreatePlaylist = (playlistName, songIdsToAdd) =>
-            {
-                callCount++;
-                playlistName.Should().Be("test2");
-                songIdsToAdd.Should().BeEquivalentTo(new List<int> { 2 });
-                return new MockCreatePlaylistResult();
-            };
+                {
+                    callCount++;
+                    playlistName.Should().Be("test2");
+                    songIdsToAdd.Should().BeEquivalentTo(new List<int> { 2 });
+                    return new MockCreatePlaylistResult();
+                };
 
             await Task.Factory.StartNew(() => Subject.Save());
 
             callCount.Should().Be(1);
         }
+
+        #endregion
+
+        #region Methods
+
+        protected override void TestInitializeExtensions()
+        {
+            base.TestInitializeExtensions();
+            _mockDialogNotificationService = new MockDialogNotificationService();
+            Subject.DialogNotificationService = _mockDialogNotificationService;
+            _mockPlyalistManagementService = new MockPlyalistManagementService();
+            Subject.PlaylistManagementService = _mockPlyalistManagementService;
+        }
+
+        #endregion
     }
 }

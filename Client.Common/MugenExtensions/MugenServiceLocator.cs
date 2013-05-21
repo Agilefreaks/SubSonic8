@@ -1,22 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Practices.ServiceLocation;
-using MugenInjection;
-
-namespace Client.Common.MugenExtensions
+﻿namespace Client.Common.MugenExtensions
 {
+    using System;
+    using System.Collections.Generic;
+    using Microsoft.Practices.ServiceLocation;
+    using MugenInjection;
+
     public class MugenServiceLocator : IServiceLocator
     {
+        #region Fields
+
         private readonly MugenInjector _kernel;
+
+        #endregion
+
+        #region Constructors and Destructors
 
         public MugenServiceLocator(MugenInjector kernel)
         {
             _kernel = kernel;
         }
 
-        public object GetService(Type serviceType)
+        #endregion
+
+        #region Public Methods and Operators
+
+        public IEnumerable<object> GetAllInstances(Type serviceType)
         {
-            return _kernel.Get(serviceType);
+            return _kernel.GetAll(serviceType);
+        }
+
+        public IEnumerable<TService> GetAllInstances<TService>()
+        {
+            return _kernel.GetAll<TService>();
         }
 
         public object GetInstance(Type serviceType)
@@ -29,11 +44,6 @@ namespace Client.Common.MugenExtensions
             return _kernel.Get(serviceType, key);
         }
 
-        public IEnumerable<object> GetAllInstances(Type serviceType)
-        {
-            return _kernel.GetAll(serviceType);
-        }
-
         public TService GetInstance<TService>()
         {
             return _kernel.Get<TService>();
@@ -44,9 +54,11 @@ namespace Client.Common.MugenExtensions
             return _kernel.Get<TService>(key);
         }
 
-        public IEnumerable<TService> GetAllInstances<TService>()
+        public object GetService(Type serviceType)
         {
-            return _kernel.GetAll<TService>();
+            return _kernel.Get(serviceType);
         }
+
+        #endregion
     }
 }

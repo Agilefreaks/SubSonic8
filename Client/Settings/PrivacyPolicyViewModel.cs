@@ -1,9 +1,20 @@
-﻿using Caliburn.Micro;
-
-namespace Subsonic8.Settings
+﻿namespace Subsonic8.Settings
 {
+    using Caliburn.Micro;
+
     public sealed class PrivacyPolicyViewModel : Screen
     {
+        #region Constructors and Destructors
+
+        public PrivacyPolicyViewModel()
+        {
+            DisplayName = "Privacy policy";
+        }
+
+        #endregion
+
+        #region Public Properties
+
         public string Text
         {
             get
@@ -22,9 +33,6 @@ This privacy policy was last updated on march 8 2013. If we make any material ch
             }
         }
 
-        public PrivacyPolicyViewModel()
-        {
-            DisplayName = "Privacy policy";
-        }
+        #endregion
     }
 }

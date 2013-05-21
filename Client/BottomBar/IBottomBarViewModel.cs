@@ -1,29 +1,37 @@
-using System.Collections.ObjectModel;
-using Caliburn.Micro;
-using Client.Common.EventAggregatorMessages;
-
 namespace Subsonic8.BottomBar
 {
+    using System.Collections.ObjectModel;
+    using Caliburn.Micro;
+    using Client.Common.EventAggregatorMessages;
+
     public interface IBottomBarViewModel : IHandle<PlaylistStateChangedMessage>
     {
-        ObservableCollection<object> SelectedItems { get; set; }
+        #region Public Properties
+
+        bool DisplayPlayControls { get; }
 
         bool IsOpened { get; set; }
 
         bool IsPlaying { get; }
 
-        bool DisplayPlayControls { get; }
+        ObservableCollection<object> SelectedItems { get; set; }
 
-        void PlayPrevious();
+        #endregion
+
+        #region Public Methods and Operators
+
+        void NavigateToRoot();
 
         void PlayNext();
 
         void PlayPause();
 
+        void PlayPrevious();
+
         void Stop();
 
         void ToggleShuffle();
 
-        void NavigateToRoot();
+        #endregion
     }
 }

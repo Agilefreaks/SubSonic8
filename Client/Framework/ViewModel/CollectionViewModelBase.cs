@@ -1,25 +1,93 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
-using Caliburn.Micro;
-using Client.Common.Models;
-using Client.Common.Results;
-using MugenInjection.Attributes;
-using Subsonic8.BottomBar;
-using Subsonic8.Framework.Extensions;
-using Subsonic8.Framework.Services;
-using Subsonic8.MenuItem;
-using Windows.UI.Xaml.Controls;
-
-namespace Subsonic8.Framework.ViewModel
+﻿namespace Subsonic8.Framework.ViewModel
 {
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using Caliburn.Micro;
+    using Client.Common.Models;
+    using Client.Common.Results;
+    using MugenInjection.Attributes;
+    using Subsonic8.BottomBar;
+    using Subsonic8.Framework.Extensions;
+    using Subsonic8.Framework.Services;
+    using Subsonic8.MenuItem;
+    using Windows.UI.Xaml.Controls;
+
     public abstract class CollectionViewModelBase<TParameter, TResult> : ViewModelBase, ICollectionViewModel<TParameter>
     {
-        private TParameter _parameter;
+        #region Fields
+
         private IBottomBarViewModel _bottomBar;
-        private BindableCollection<MenuItemViewModel> _menuItems;
+
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation", Justification = "Reviewed. Suppression is OK here.")]
         private IIoCService _ioCService;
+
+        private BindableCollection<MenuItemViewModel> _menuItems;
+
+        private TParameter _parameter;
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        protected CollectionViewModelBase()
+        {
+            MenuItems = new BindableCollection<MenuItemViewModel>();
+        }
+
+        #endregion
+
+        #region Public Properties
+
+        public IBottomBarViewModel BottomBar
+        {
+            get
+            {
+                return _bottomBar;
+            }
+
+            set
+            {
+                _bottomBar = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
+        [Inject]
+        public IIoCService IoCService
+        {
+            get
+            {
+                return _ioCService;
+            }
+
+            set
+            {
+                _ioCService = value;
+                LoadBottomBar();
+            }
+        }
+
+        public BindableCollection<MenuItemViewModel> MenuItems
+        {
+            get
+            {
+                return _menuItems;
+            }
+
+            set
+            {
+                if (Equals(value, _menuItems))
+                {
+                    return;
+                }
+
+                _menuItems = value;
+                NotifyOfPropertyChange(() => MenuItems);
+            }
+        }
 
         public TParameter Parameter
         {
@@ -30,7 +98,10 @@ namespace Subsonic8.Framework.ViewModel
 
             set
             {
-                if (Equals(value, _parameter)) return;
+                if (Equals(value, _parameter))
+                {
+                    return;
+                }
 
                 _parameter = value;
                 NotifyOfPropertyChange();
@@ -46,52 +117,9 @@ namespace Subsonic8.Framework.ViewModel
             }
         }
 
-        public BindableCollection<MenuItemViewModel> MenuItems
-        {
-            get
-            {
-                return _menuItems;
-            }
+        #endregion
 
-            set
-            {
-                if (Equals(value, _menuItems)) return;
-                _menuItems = value;
-                NotifyOfPropertyChange(() => MenuItems);
-            }
-        }
-
-        public IBottomBarViewModel BottomBar
-        {
-            get
-            {
-                return _bottomBar;
-            }
-            set
-            {
-                _bottomBar = value;
-                NotifyOfPropertyChange();
-            }
-        }
-
-        [Inject]
-        public IIoCService IoCService
-        {
-            get
-            {
-                return _ioCService;
-            }
-            set
-            {
-                _ioCService = value;
-                LoadBottomBar();
-            }
-        }
-
-        protected CollectionViewModelBase()
-        {
-            MenuItems = new BindableCollection<MenuItemViewModel>();
-        }
+        #region Public Methods and Operators
 
         public virtual void ChildClick(ItemClickEventArgs eventArgs)
         {
@@ -100,31 +128,40 @@ namespace Subsonic8.Framework.ViewModel
             NavigationService.NavigateByModelType(subsonicModel);
         }
 
-        public async virtual void Populate()
+        public virtual async void Populate()
         {
             await GetResult(Parameter).WithErrorHandler(this).OnSuccess(OnResultSuccessfull).Execute();
             await AfterPopulate(Parameter);
             UpdateDisplayName();
         }
 
-        protected abstract IServiceResultBase<TResult> GetResult(TParameter parameter);
+        #endregion
 
-        protected abstract IEnumerable<IMediaModel> GetItemsToDisplay(TResult result);
-
-        protected virtual void OnResultSuccessfull(TResult result)
-        {
-            PopulateMenuItems(result);
-        }
+        #region Methods
 
         protected virtual Task AfterPopulate(TParameter parameter)
         {
             return Task.Factory.StartNew(() => { });
         }
 
+        protected abstract IEnumerable<IMediaModel> GetItemsToDisplay(TResult result);
+
+        protected abstract IServiceResultBase<TResult> GetResult(TParameter parameter);
+
+        protected virtual void LoadBottomBar()
+        {
+            BottomBar = IoCService.Get<IDefaultBottomBarViewModel>();
+        }
+
         protected override void OnActivate()
         {
             base.OnActivate();
             SetAppBottomBar();
+        }
+
+        protected virtual void OnResultSuccessfull(TResult result)
+        {
+            PopulateMenuItems(result);
         }
 
         protected virtual void PopulateMenuItems(TResult result)
@@ -134,14 +171,11 @@ namespace Subsonic8.Framework.ViewModel
             MenuItems.AddRange(children.Select(s => s.AsMenuItemViewModel()));
         }
 
-        protected virtual void LoadBottomBar()
-        {
-            BottomBar = IoCService.Get<IDefaultBottomBarViewModel>();
-        }
-
         private void SetAppBottomBar()
         {
             EventAggregator.Publish(new ChangeBottomBarMessage { BottomBarViewModel = BottomBar });
         }
+
+        #endregion
     }
 }
