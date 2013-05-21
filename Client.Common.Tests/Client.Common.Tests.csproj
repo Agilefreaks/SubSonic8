@@ -113,6 +113,7 @@
   <ItemGroup>
     <Compile Include="Helpers\MediaControlHandlerTests.cs" />
     <Compile Include="Mocks\MockEventAggregator.cs" />
+    <Compile Include="Mocks\MockServiceResultBase.cs" />
     <Compile Include="Mocks\MockSubsonicService.cs" />
     <Compile Include="Mocks\MockPlayer.cs" />
     <Compile Include="Models\Subsonic\AlbumTests.cs" />
@@ -132,6 +133,7 @@
     <Compile Include="Results\GetPlaylistResultTests.cs" />
     <Compile Include="Results\GetRootResultTests.cs" />
     <Compile Include="Results\GetSongResultTests.cs" />
+    <Compile Include="Results\PingResultTests.cs" />
     <Compile Include="Results\RenamePlaylistResultTests.cs" />
     <Compile Include="Results\UpdatePlaylistResultTests.cs" />
     <Compile Include="Services\PlayerManagementServiceTests.cs" />

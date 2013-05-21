@@ -1,6 +1,6 @@
 ﻿namespace Client.Common.Results
 {
-    public interface IDeletePlaylistResult : IServiceResultBase<bool>
+    public interface IDeletePlaylistResult : IEmptyResponseResult
     {
         int Id { get; }
     }
