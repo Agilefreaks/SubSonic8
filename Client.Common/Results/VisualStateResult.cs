@@ -9,39 +9,23 @@
     {
         #region Fields
 
-        private readonly string _stateName;
-
-        private readonly bool _useTransitions;
-
         #endregion
 
         #region Constructors and Destructors
 
         public VisualStateResult(string stateName, bool useTransitions = true)
         {
-            _stateName = stateName;
-            _useTransitions = useTransitions;
+            StateName = stateName;
+            UseTransitions = useTransitions;
         }
 
         #endregion
 
         #region Public Properties
 
-        public string StateName
-        {
-            get
-            {
-                return _stateName;
-            }
-        }
+        public string StateName { get; private set; }
 
-        public bool UseTransitions
-        {
-            get
-            {
-                return _useTransitions;
-            }
-        }
+        public bool UseTransitions { get; private set; }
 
         #endregion
 
@@ -54,7 +38,7 @@
 
             VisualStateManager.GoToState(view, StateName, UseTransitions);
 
-            return null;
+            return Task.Factory.StartNew(() => { });
         }
 
         #endregion

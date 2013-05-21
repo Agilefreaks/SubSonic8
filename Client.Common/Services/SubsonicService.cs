@@ -38,7 +38,7 @@
             CreatePlaylist = CreatePlaylistImpl;
             UpdatePlaylist = UpdatePlaylistResultImpl;
             RenamePlaylist = RenamePlaylistImpl;
-            Ping = PinImpl;
+            Ping = PingImpl;
         }
 
         #endregion
@@ -211,7 +211,7 @@
             return new GetSongResult(_configuration, id);
         }
 
-        private PingResult PinImpl()
+        private PingResult PingImpl()
         {
             return new PingResult(Configuration);
         }

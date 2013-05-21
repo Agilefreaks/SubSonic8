@@ -35,11 +35,7 @@
 
             set
             {
-                if (value == _baseUrl)
-                {
-                    return;
-                }
-
+                if (value == _baseUrl) return;
                 _baseUrl = AddEndingSlashIfNotExisting(value);
                 NotifyOfPropertyChange();
             }
