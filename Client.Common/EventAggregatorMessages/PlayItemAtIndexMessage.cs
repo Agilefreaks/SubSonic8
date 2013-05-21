@@ -4,10 +4,6 @@
     {
         #region Constructors and Destructors
 
-        public PlayItemAtIndexMessage()
-        {
-        }
-
         public PlayItemAtIndexMessage(int index)
         {
             Index = index;

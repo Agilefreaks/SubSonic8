@@ -1,5 +1,6 @@
 ﻿namespace Client.Common.Tests.Models.Subsonic
 {
+    using System;
     using Client.Common.Models;
     using Client.Common.Models.Subsonic;
     using FluentAssertions;
@@ -38,6 +39,15 @@
         public void TypePropertyAlwaysReturnsNavigableTypeEnumMusicDirectory()
         {
             _subject.Type.Should().Be(SubsonicModelTypeEnum.MusicDirectory);
+        }
+
+        [TestMethod]
+        public void GetDescription_Always_ReturnsATupleWithBothItemsEqualToTheArtistName()
+        {
+            const string Name = "test_n";
+            _subject.Name = Name;
+
+            _subject.GetDescription().Should().Be(new Tuple<string, string>(Name, Name));
         }
 
         #endregion

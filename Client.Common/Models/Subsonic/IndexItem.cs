@@ -7,14 +7,8 @@
 
     [XmlRoot(ElementName = "index", Namespace = "http://subsonic.org/restapi")]
     [DataContract]
-    public class IndexItem : SerializableModelBase<IndexItem>
+    public class IndexItem : MediaModelBase
     {
-        #region Static Fields
-
-        private static readonly Type[] TypesOfChildren = new[] { typeof(Artist) };
-
-        #endregion
-
         #region Constructors and Destructors
 
         public IndexItem()
@@ -41,11 +35,6 @@
         #endregion
 
         #region Public Methods and Operators
-
-        public static new IndexItem Deserialize(string data)
-        {
-            return Deserialize(data, TypesOfChildren);
-        }
 
         public override Tuple<string, string> GetDescription()
         {

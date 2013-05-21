@@ -70,15 +70,6 @@
 
         #region Public Methods and Operators
 
-        public static XmlAttributeOverrides GetXmlAttributeOverrides()
-        {
-            var xmlAttributeOverrides = new XmlAttributeOverrides();
-            var xmlAttributes = new XmlAttributes { XmlAttribute = new XmlAttributeAttribute("title") };
-            xmlAttributeOverrides.Add(typeof(SubsonicModelBase), "Name", xmlAttributes);
-
-            return xmlAttributeOverrides;
-        }
-
         public override Tuple<string, string> GetDescription()
         {
             return new Tuple<string, string>(Name, string.Format("Artist: {0}, Album: {1}", Artist, Album));

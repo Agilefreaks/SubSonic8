@@ -29,9 +29,7 @@
 
         protected override async Task ExecuteCore(ActionExecutionContext context = null)
         {
-            var dialog = new MessageDialog(_content, _title);
-
-            await dialog.ShowAsync();
+            await new MessageDialog(_content, _title).ShowAsync();
         }
 
         #endregion

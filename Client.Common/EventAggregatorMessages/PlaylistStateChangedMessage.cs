@@ -10,10 +10,6 @@
 
         #region Constructors and Destructors
 
-        public PlaylistStateChangedMessage()
-        {
-        }
-
         public PlaylistStateChangedMessage(bool hasElements)
         {
             _hasElements = hasElements;

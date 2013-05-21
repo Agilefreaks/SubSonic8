@@ -144,6 +144,7 @@
         public void ClearPlayers()
         {
             Players.Clear();
+            DefaultPlayers.Clear();
         }
 
         public IPlayer GetPlayerFor(PlaylistItem item)
