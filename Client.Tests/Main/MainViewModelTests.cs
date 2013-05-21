@@ -16,6 +16,8 @@
 
         private MockGetRootResult _mockGetRootResult;
 
+        private MockResourcesService _mockResourcesService;
+
         #endregion
 
         #region Properties
@@ -80,12 +82,13 @@
         public async Task Populate_WhenServiceIsNotConfigured_ShouldShowANotification()
         {
             MockSubsonicService.SetHasValidSubsonicUrl(false);
+            const string ExpectedMessage =
+                "You did not set up your connection. Please fill in you server address, username and password to start browsing.";
+            _mockResourcesService.GetStringResourceFunc = s => ExpectedMessage;
 
             await Task.Run(() => Subject.Populate());
 
             MockDialogNotificationService.Showed.Count.Should().Be(1);
-            const string ExpectedMessage =
-                "You did not set up your connection. Please fill in you server address, username and password to start browsing.";
             MockDialogNotificationService.Showed[0].Message.Should().Be(ExpectedMessage);
         }
 
@@ -105,6 +108,8 @@
         {
             _mockGetRootResult = new MockGetRootResult();
             MockSubsonicService.GetMusicFolders = () => _mockGetRootResult;
+            _mockResourcesService = new MockResourcesService();
+            Subject.ResourceService = _mockResourcesService;
         }
 
         #endregion

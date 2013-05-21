@@ -5,13 +5,13 @@
     using System.Threading.Tasks;
     using Caliburn.Micro;
     using Client.Common.Models.Subsonic;
+    using MugenInjection.Attributes;
     using Subsonic8.Framework.Extensions;
     using Subsonic8.Framework.Services;
     using Subsonic8.Framework.ViewModel;
     using Subsonic8.Index;
     using Subsonic8.MenuItem;
     using Subsonic8.Settings;
-    using Windows.ApplicationModel.Resources.Core;
     using Windows.UI.Xaml.Controls;
 
     public class MainViewModel : ViewModelBase, IMainViewModel
@@ -30,6 +30,9 @@
         public BindableCollection<MenuItemViewModel> MenuItems { get; private set; }
 
         public bool Parameter { get; set; }
+
+        [Inject]
+        public IResourceService ResourceService { get; set; }
 
         #endregion
 
@@ -98,8 +101,7 @@
 
         private async Task ShowSettingsNotFoundDialog()
         {
-            var resMap = ResourceManager.Current.MainResourceMap;
-            var message = resMap.GetValue("ShellStrings/NotConfigured").ValueAsString;
+            var message = ResourceService.GetStringResource("ShellStrings/NotConfigured");
             await NotificationService.Show(new DialogNotificationOptions { Message = message });
         }
 
