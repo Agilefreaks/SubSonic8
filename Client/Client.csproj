@@ -166,7 +166,7 @@
     <Compile Include="Framework\Services\IoCService.cs" />
     <Compile Include="Framework\Services\IResourceService.cs" />
     <Compile Include="Framework\Services\ITileNotificationService.cs" />
-    <Compile Include="Framework\Services\ResourcesService.cs" />
+    <Compile Include="Framework\Services\ResourceService.cs" />
     <Compile Include="Framework\Services\TileNotificationService.cs" />
     <Compile Include="Framework\SettingsHelper.cs" />
     <Compile Include="Framework\ViewModel\CollectionViewModelBase.cs" />

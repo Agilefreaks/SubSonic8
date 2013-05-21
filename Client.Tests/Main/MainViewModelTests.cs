@@ -16,7 +16,7 @@
 
         private MockGetRootResult _mockGetRootResult;
 
-        private MockResourcesService _mockResourcesService;
+        private MockResourceService _mockResourceService;
 
         #endregion
 
@@ -84,7 +84,7 @@
             MockSubsonicService.SetHasValidSubsonicUrl(false);
             const string ExpectedMessage =
                 "You did not set up your connection. Please fill in you server address, username and password to start browsing.";
-            _mockResourcesService.GetStringResourceFunc = s => ExpectedMessage;
+            _mockResourceService.GetStringResourceFunc = s => ExpectedMessage;
 
             await Task.Run(() => Subject.Populate());
 
@@ -108,8 +108,8 @@
         {
             _mockGetRootResult = new MockGetRootResult();
             MockSubsonicService.GetMusicFolders = () => _mockGetRootResult;
-            _mockResourcesService = new MockResourcesService();
-            Subject.ResourceService = _mockResourcesService;
+            _mockResourceService = new MockResourceService();
+            Subject.ResourceService = _mockResourceService;
         }
 
         #endregion

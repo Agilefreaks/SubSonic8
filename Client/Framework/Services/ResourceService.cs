@@ -2,7 +2,7 @@
 {
     using Windows.ApplicationModel.Resources.Core;
 
-    public class ResourcesService : IResourceService
+    public class ResourceService : IResourceService
     {
         public string GetStringResource(string resourceName)
         {

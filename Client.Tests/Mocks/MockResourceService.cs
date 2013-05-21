@@ -3,7 +3,7 @@
     using System;
     using Subsonic8.Framework.Services;
 
-    public class MockResourcesService : IResourceService
+    public class MockResourceService : IResourceService
     {
         public Func<string, string> GetStringResourceFunc { get; set; }
 
