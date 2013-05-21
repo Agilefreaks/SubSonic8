@@ -8,7 +8,7 @@ namespace Client.Tests.Framework.ViewModel
     using Subsonic8.Framework.ViewModel;
 
     [TestClass]
-    public class ItemViewModelBaseTests<TViewModel> : ClientTestBase
+    public abstract class ItemViewModelBaseTests<TViewModel> : ClientTestBase
         where TViewModel : ItemViewModelBase
     {
         #region Properties
