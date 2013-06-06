@@ -9,8 +9,10 @@ namespace Client.Tests.Playback
     using Client.Common.Models.Subsonic;
     using Client.Tests.Framework.ViewModel;
     using Client.Tests.Mocks;
+    using global::Common.ListCollectionView;
     using FluentAssertions;
     using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+    using Microsoft.VisualStudio.TestPlatform.UnitTestFramework.AppContainer;
     using Subsonic8.Playback;
     using Subsonic8.Playlists;
 
@@ -134,16 +136,16 @@ namespace Client.Tests.Playback
         {
             var knownTypes = new List<Type>();
             var statePageState = new Dictionary<string, object>();
-            Subject.PlaylistItems.Add(new PlaylistItem { Artist = "test_a", UriAsString = "http://google.com/" });
+            _mockPlaylistManagementService.Items.Add(new PlaylistItem { Artist = "test_a", UriAsString = "http://google.com/" });
             Subject.SaveState(statePageState, knownTypes);
-            Subject.PlaylistItems.Clear();
-            Subject.PlaylistItems.Count.Should().Be(0);
+            _mockPlaylistManagementService.Items.Clear();
+            _mockPlaylistManagementService.Items.Count.Should().Be(0);
 
             Subject.LoadState(null, statePageState);
 
-            Subject.PlaylistItems.Count.Should().Be(1);
-            Subject.PlaylistItems[0].Artist.Should().Be("test_a");
-            Subject.PlaylistItems[0].UriAsString.Should().Be("http://google.com/");
+            _mockPlaylistManagementService.Items.Count.Should().Be(1);
+            _mockPlaylistManagementService.Items[0].Artist.Should().Be("test_a");
+            _mockPlaylistManagementService.Items[0].UriAsString.Should().Be("http://google.com/");
         }
 
         [TestMethod]
@@ -179,6 +181,99 @@ namespace Client.Tests.Playback
             _mockWinRTWrappersService.GetNewStorageFileCallCount.Should().Be(1);
         }
 
+        [TestMethod]
+        public void ShowFilter_Should_SetTheStateToFilter()
+        {
+            Subject.ShowFilter();
+
+            Subject.State.Should().Be(PlaybackViewModelStateEnum.Filter);
+        }
+
+        [TestMethod]
+        public void DoneFiltering_Should_SetTheStateToThePreviousStateBeforeStartingFiltering()
+        {
+            Subject.State = PlaybackViewModelStateEnum.Audio;
+            Subject.ShowFilter();
+
+            Subject.DoneFiltering();
+
+            Subject.State.Should().Be(PlaybackViewModelStateEnum.Audio);
+        }
+
+        [TestMethod]
+        public void DoneFiltering_Should_ClearTheFilterText()
+        {
+            Subject.FilterText = "asdads";
+
+            Subject.DoneFiltering();
+
+            Subject.FilterText.Should().BeEmpty();
+        }
+
+        [TestMethod]
+        public void PlaylistItems_Should_BeAListCollectionView()
+        {
+            Subject.PlaylistItems.Should().BeOfType<ListCollectionView>();
+        }
+
+        [UITestMethod]
+        public void SettingAFilter_Should_FilterThePlaylistItemsByArtist()
+        {
+            var playlistItem1 = new PlaylistItem { Artist = "test artist" };
+            var playlistItem2 = new PlaylistItem { Artist = "artist super" };
+            _mockPlaylistManagementService.Items.Add(playlistItem1);
+            _mockPlaylistManagementService.Items.Add(playlistItem2);
+
+            Subject.FilterText = "SuP";
+
+            Subject.PlaylistItems.Count.Should().Be(1);
+            Subject.PlaylistItems[0].Should().Be(playlistItem2);
+        }
+
+        [UITestMethod]
+        public void SettingAFilter_Should_FilterThePlaylistItemsByTitle()
+        {
+            var playlistItem1 = new PlaylistItem { Title = "test song" };
+            var playlistItem2 = new PlaylistItem { Title = "song1 super" };
+            _mockPlaylistManagementService.Items.Add(playlistItem1);
+            _mockPlaylistManagementService.Items.Add(playlistItem2);
+
+            Subject.FilterText = "SuP";
+
+            Subject.PlaylistItems.Count.Should().Be(1);
+            Subject.PlaylistItems[0].Should().Be(playlistItem2);
+        }
+
+        [UITestMethod]
+        public void SettingAEmptyFilter_Should_ClearTheFilter()
+        {
+            var playlistItem1 = new PlaylistItem { Title = "test song" };
+            var playlistItem2 = new PlaylistItem { Title = "song1 super" };
+            _mockPlaylistManagementService.Items.Add(playlistItem1);
+            _mockPlaylistManagementService.Items.Add(playlistItem2);
+
+            Subject.FilterText = string.Empty;
+
+            Subject.PlaylistItems.Count.Should().Be(2);
+            Subject.PlaylistItems[0].Should().Be(playlistItem1);
+            Subject.PlaylistItems[1].Should().Be(playlistItem2);
+        }
+
+        [UITestMethod]
+        public void SettingANullFilter_Should_ClearTheFilter()
+        {
+            var playlistItem1 = new PlaylistItem { Title = "test song" };
+            var playlistItem2 = new PlaylistItem { Title = "song1 super" };
+            _mockPlaylistManagementService.Items.Add(playlistItem1);
+            _mockPlaylistManagementService.Items.Add(playlistItem2);
+
+            Subject.FilterText = null;
+
+            Subject.PlaylistItems.Count.Should().Be(2);
+            Subject.PlaylistItems[0].Should().Be(playlistItem1);
+            Subject.PlaylistItems[1].Should().Be(playlistItem2);
+        }
+
         #endregion
 
         #region Methods
@@ -209,8 +304,8 @@ namespace Client.Tests.Playback
                     tcr.SetResult(
                         new PlaylistItem
                             {
-                                PlayingState = PlaylistItemState.NotPlaying, 
-                                Uri = new Uri("http://test-uri"), 
+                                PlayingState = PlaylistItemState.NotPlaying,
+                                Uri = new Uri("http://test-uri"),
                                 Artist = "test-artist"
                             });
                     return tcr.Task;

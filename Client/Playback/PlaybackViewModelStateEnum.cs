@@ -6,6 +6,8 @@
 
         Video, 
 
-        FullScreen
+        FullScreen,
+
+        Filter
     }
 }

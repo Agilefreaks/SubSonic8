@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
-    using System.Diagnostics;
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
@@ -14,6 +13,7 @@
     using Client.Common.Models.Subsonic;
     using Client.Common.Services;
     using global::Common.ExtensionsMethods;
+    using global::Common.ListCollectionView;
     using MugenInjection.Attributes;
     using Subsonic8.BottomBar;
     using Subsonic8.Framework.Extensions;
@@ -53,6 +53,14 @@
 
         private PlaybackViewModelStateEnum _state;
 
+        private PlaybackViewModelStateEnum _previousState;
+
+        private string _filterText;
+
+        private ListCollectionView _playlistItems;
+
+        private bool _isFiltering;
+
         #endregion
 
         #region Constructors and Destructors
@@ -76,6 +84,182 @@
             }
         }
 
+        public string CoverArt
+        {
+            get
+            {
+                return _coverArt;
+            }
+
+            set
+            {
+                _coverArt = value == Client.Common.Services.SubsonicService.CoverArtPlaceholder
+                                ? CoverArtPlaceholderLarge
+                                : value;
+                NotifyOfPropertyChange();
+            }
+        }
+
+        public bool IsPlaying
+        {
+            get
+            {
+                return _playlistManagementService.IsPlaying;
+            }
+        }
+
+        public int? Parameter
+        {
+            set
+            {
+                if (value.HasValue)
+                {
+                    LoadSongById(value.Value);
+                }
+            }
+        }
+
+        public bool PlaybackControlsVisible
+        {
+            get
+            {
+                return _playbackControlsVisible;
+            }
+
+            set
+            {
+                if (value.Equals(_playbackControlsVisible))
+                {
+                    return;
+                }
+
+                _playbackControlsVisible = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
+        public ListCollectionView PlaylistItems
+        {
+            get
+            {
+                return _playlistItems ?? (_playlistItems = new ListCollectionView(_playlistManagementService.Items));
+            }
+        }
+
+        public ObservableCollection<object> SelectedItems
+        {
+            get
+            {
+                return BottomBar != null ? BottomBar.SelectedItems : new ObservableCollection<object>();
+            }
+        }
+
+        public Uri Source
+        {
+            get
+            {
+                return _source;
+            }
+
+            set
+            {
+                try
+                {
+                    _source = value;
+                    NotifyOfPropertyChange();
+                }
+                catch (Exception exception)
+                {
+                    Client.Common.ObjectExtensionMethods.Log(this, exception);
+                }
+            }
+        }
+
+        public PlaybackViewModelStateEnum State
+        {
+            get
+            {
+                return _state;
+            }
+
+            set
+            {
+                if (value == _state)
+                {
+                    return;
+                }
+
+                _state = value;
+                NotifyOfPropertyChange(() => State);
+            }
+        }
+
+        public Func<IId, Task<PlaylistItem>> LoadModel { get; set; }
+
+        public string FilterText
+        {
+            get
+            {
+                return _filterText;
+            }
+
+            set
+            {
+                if (value == _filterText)
+                {
+                    return;
+                }
+
+                _filterText = value;
+                NotifyOfPropertyChange();
+                SetPlaylistFilter(_filterText);
+            }
+        }
+
+        [Inject]
+        public ITileNotificationService TileNotificationService { get; set; }
+
+        [Inject]
+        public IToastNotificationService ToastNotificationService { get; set; }
+
+        [Inject]
+        public IWinRTWrappersService WinRTWrappersService { get; set; }
+
+        [Inject]
+        public IPlayerManagementService PlayerManagementService
+        {
+            get
+            {
+                return _playerManagementService;
+            }
+
+            set
+            {
+                if (Equals(value, _playerManagementService))
+                {
+                    return;
+                }
+
+                _playerManagementService = value;
+                HookPlayerManagementService();
+            }
+        }
+
+        [Inject]
+        public IPlaylistManagementService PlaylistManagementService
+        {
+            get
+            {
+                return _playlistManagementService;
+            }
+
+            set
+            {
+                _playlistManagementService = value;
+                HookPlaylistManagementService();
+            }
+        }
+
         [Inject]
         public IPlaybackBottomBarViewModel BottomBar
         {
@@ -92,22 +276,6 @@
                 }
 
                 _bottomBar = value;
-                NotifyOfPropertyChange();
-            }
-        }
-
-        public string CoverArt
-        {
-            get
-            {
-                return _coverArt;
-            }
-
-            set
-            {
-                _coverArt = value == Client.Common.Services.SubsonicService.CoverArtPlaceholder
-                                ? CoverArtPlaceholderLarge
-                                : value;
                 NotifyOfPropertyChange();
             }
         }
@@ -154,146 +322,24 @@
             }
         }
 
-        public bool IsPlaying
+        #endregion
+
+        #region Properties
+
+        private bool IsFiltering
         {
             get
             {
-                return _playlistManagementService.IsPlaying;
-            }
-        }
-
-        public Func<IId, Task<PlaylistItem>> LoadModel { get; set; }
-
-        public int? Parameter
-        {
-            set
-            {
-                if (value.HasValue)
-                {
-                    LoadSongById(value.Value);
-                }
-            }
-        }
-
-        public bool PlaybackControlsVisible
-        {
-            get
-            {
-                return _playbackControlsVisible;
+                return _isFiltering;
             }
 
             set
             {
-                if (value.Equals(_playbackControlsVisible))
-                {
-                    return;
-                }
-
-                _playbackControlsVisible = value;
+                _isFiltering = value;
+                OnIsFilteringChanged();
                 NotifyOfPropertyChange();
             }
         }
-
-        [Inject]
-        public IPlayerManagementService PlayerManagementService
-        {
-            get
-            {
-                return _playerManagementService;
-            }
-
-            set
-            {
-                if (Equals(value, _playerManagementService))
-                {
-                    return;
-                }
-
-                _playerManagementService = value;
-                HookPlayerManagementService();
-            }
-        }
-
-        public PlaylistItemCollection PlaylistItems
-        {
-            get
-            {
-                return _playlistManagementService.Items;
-            }
-        }
-
-        [Inject]
-        public IPlaylistManagementService PlaylistManagementService
-        {
-            get
-            {
-                return _playlistManagementService;
-            }
-
-            set
-            {
-                _playlistManagementService = value;
-                HookPlaylistManagementService();
-            }
-        }
-
-        public ObservableCollection<object> SelectedItems
-        {
-            get
-            {
-                return BottomBar != null ? BottomBar.SelectedItems : new ObservableCollection<object>();
-            }
-        }
-
-        public Uri Source
-        {
-            get
-            {
-                return _source;
-            }
-
-            set
-            {
-                try
-                {
-                    _source = value;
-                    NotifyOfPropertyChange();
-                }
-                catch (Exception exception)
-                {
-                    // This is due to a bug in winrt sdk
-                    Debug.WriteLine(exception.ToString());
-                }
-            }
-        }
-
-        public PlaybackViewModelStateEnum State
-        {
-            get
-            {
-                return _state;
-            }
-
-            set
-            {
-                if (value == _state)
-                {
-                    return;
-                }
-
-                _state = value;
-                NotifyOfPropertyChange(() => State);
-            }
-        }
-
-        [Inject]
-        public ITileNotificationService TileNotificationService { get; set; }
-
-        [Inject]
-        public IToastNotificationService ToastNotificationService { get; set; }
-
-        [Inject]
-        public IWinRTWrappersService WinRTWrappersService { get; set; }
 
         #endregion
 
@@ -303,7 +349,7 @@
         {
             var playlistItem = await LoadModel(model);
             PlaylistManagementService.Items.Add(playlistItem);
-            EventAggregator.Publish(new PlayItemAtIndexMessage(PlaylistItems.Count - 1));
+            EventAggregator.Publish(new PlayItemAtIndexMessage(PlaylistManagementService.Items.Count - 1));
         }
 
         public void ClearPlaylist()
@@ -341,7 +387,7 @@
 
         public void LoadState(string parameter, Dictionary<string, object> statePageState)
         {
-            if (!statePageState.ContainsKey(StatePlaylistKey) || PlaylistItems.Any())
+            if (!statePageState.ContainsKey(StatePlaylistKey) || PlaylistManagementService.Items.Any())
             {
                 return;
             }
@@ -354,8 +400,8 @@
                 playlist = (PlaylistItemCollection)xmlSerializer.Deserialize(memoryStream);
             }
 
-            PlaylistItems.Clear();
-            PlaylistItems.AddRange(playlist);
+            PlaylistManagementService.Items.Clear();
+            PlaylistManagementService.Items.AddRange(playlist);
         }
 
         public async void SavePlaylist()
@@ -363,7 +409,7 @@
             var storageFile = await WinRTWrappersService.GetNewStorageFile();
             if (storageFile != null)
             {
-                await WinRTWrappersService.SaveToFile(storageFile, PlaylistItems);
+                await WinRTWrappersService.SaveToFile(storageFile, PlaylistManagementService.Items);
             }
         }
 
@@ -378,7 +424,7 @@
             var xmlSerializer = new XmlSerializer(typeof(PlaylistItemCollection));
             using (var memoryStream = new MemoryStream())
             {
-                xmlSerializer.Serialize(memoryStream, PlaylistItems);
+                xmlSerializer.Serialize(memoryStream, PlaylistManagementService.Items);
                 memoryStream.Flush();
                 statePageState.Add(StatePlaylistKey, Convert.ToBase64String(memoryStream.ToArray()));
             }
@@ -386,9 +432,29 @@
 
         public void StartPlayback(object e)
         {
+            if (State == PlaybackViewModelStateEnum.Filter)
+            {
+                IsFiltering = false;
+            }
+
             var pressedItem = (PlaylistItem)((ItemClickEventArgs)e).ClickedItem;
-            var pressedItemIndex = PlaylistItems.IndexOf(pressedItem);
+            var pressedItemIndex = PlaylistManagementService.Items.IndexOf(pressedItem);
             EventAggregator.Publish(new PlayItemAtIndexMessage(pressedItemIndex));
+        }
+
+        public void ShowFilter()
+        {
+            if (IsFiltering)
+            {
+                return;
+            }
+
+            IsFiltering = true;
+        }
+
+        public void DoneFiltering()
+        {
+            IsFiltering = false;
         }
 
         #endregion
@@ -449,11 +515,14 @@
 
         private void SetStateByCurrentPlayer()
         {
-            State = PlayerManagementService.CurrentPlayer == EmbededVideoPlaybackViewModel
-                        ? PlaybackViewModelStateEnum.Video
-                        : PlayerManagementService.CurrentPlayer == FullScreenVideoPlaybackViewModel
-                              ? PlaybackViewModelStateEnum.FullScreen
-                              : PlaybackViewModelStateEnum.Audio;
+            if (!IsFiltering)
+            {
+                State = PlayerManagementService.CurrentPlayer == EmbededVideoPlaybackViewModel
+                            ? PlaybackViewModelStateEnum.Video
+                            : PlayerManagementService.CurrentPlayer == FullScreenVideoPlaybackViewModel
+                                  ? PlaybackViewModelStateEnum.FullScreen
+                                  : PlaybackViewModelStateEnum.Audio;
+            }
         }
 
         private void SwitchToEmbededVideoPlayback(PlaybackStateEventArgs eventArgs)
@@ -468,6 +537,40 @@
             EventAggregator.Publish(new StopMessage());
             PlayerManagementService.DefaultVideoPlayer = FullScreenVideoPlaybackViewModel;
             EventAggregator.Publish(new PlayMessage { Options = eventArgs });
+        }
+
+        private void SetPlaylistFilter(string filterText)
+        {
+            if (string.IsNullOrWhiteSpace(filterText))
+            {
+                PlaylistItems.Filter = null;
+            }
+            else
+            {
+                filterText = filterText.ToLower();
+                Func<string, string> prepareValueForFilter =
+                    value => value == null ? string.Empty : value.ToLowerInvariant();
+                PlaylistItems.Filter = element =>
+                    {
+                        var playlistItem = (PlaylistItem)element;
+                        return prepareValueForFilter(playlistItem.Artist).Contains(filterText)
+                               || prepareValueForFilter(playlistItem.Title).Contains(filterText);
+                    };
+            }
+        }
+
+        private void OnIsFilteringChanged()
+        {
+            if (IsFiltering)
+            {
+                _previousState = State;
+                State = PlaybackViewModelStateEnum.Filter;
+            }
+            else
+            {
+                FilterText = string.Empty;
+                State = _previousState;
+            }
         }
 
         #endregion
