@@ -54,21 +54,7 @@
         {
             if (SubsonicService.HasValidSubsonicUrl)
             {
-                var populate = true;
-                if (Parameter)
-                {
-                    var diagnosticsResult = SubsonicService.Ping();
-                    await diagnosticsResult.WithErrorHandler(this).Execute();
-                    if (diagnosticsResult.ApiError != null)
-                    {
-                        populate = false;
-                        await
-                            NotificationService.Show(
-                                new DialogNotificationOptions { Message = diagnosticsResult.ApiError.Message });
-                    }
-                }
-
-                if (populate)
+                if (await ShouldPopulate())
                 {
                     await SubsonicService.GetMusicFolders().WithErrorHandler(this).OnSuccess(SetMenuItems).Execute();
                     if (MenuItems.Count == 1)
@@ -103,6 +89,29 @@
         {
             var message = ResourceService.GetStringResource("ShellStrings/NotConfigured");
             await NotificationService.Show(new DialogNotificationOptions { Message = message });
+        }
+
+        private async Task<bool> ShouldPopulate()
+        {
+            var populate = true;
+            var diagnosticsResult = SubsonicService.Ping();
+            await diagnosticsResult.WithErrorHandler(this).Execute();
+            if (diagnosticsResult.Error == null)
+            {
+                if (diagnosticsResult.ApiError != null)
+                {
+                    populate = false;
+                    await
+                        NotificationService.Show(
+                            new DialogNotificationOptions { Message = diagnosticsResult.ApiError.Message });
+                }
+            }
+            else
+            {
+                populate = false;
+            }
+
+            return populate;
         }
 
         #endregion
