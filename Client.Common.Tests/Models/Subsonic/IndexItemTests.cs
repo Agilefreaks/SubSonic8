@@ -9,15 +9,13 @@
     [TestClass]
     public class IndexItemTests
     {
-        #region Public Methods and Operators
+        #region Fields
 
         private IndexItem _subject;
 
-        [TestInitialize]
-        public void Setup()
-        {
-            _subject = new IndexItem();
-        }
+        #endregion
+
+        #region Public Methods and Operators
 
         [TestMethod]
         public void GetDescription_Always_ReturnsATupleWithTheNameAndArtistsCount()
@@ -26,6 +24,12 @@
             _subject.Name = "test_n";
 
             _subject.GetDescription().Should().Be(new Tuple<string, string>("test_n", "2 artists"));
+        }
+
+        [TestInitialize]
+        public void Setup()
+        {
+            _subject = new IndexItem();
         }
 
         #endregion

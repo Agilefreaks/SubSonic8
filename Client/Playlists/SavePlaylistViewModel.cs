@@ -3,15 +3,14 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using Client.Common;
     using Client.Common.Models;
     using Client.Common.Models.Subsonic;
     using Client.Common.Services;
+    using global::Common.ExtensionsMethods;
     using MugenInjection.Attributes;
     using Subsonic8.Framework.Services;
     using Subsonic8.MenuItem;
     using Windows.UI.Xaml.Controls;
-    using global::Common.ExtensionsMethods;
 
     public class SavePlaylistViewModel : PlaylistViewModelBase, ISavePlaylistViewModel
     {

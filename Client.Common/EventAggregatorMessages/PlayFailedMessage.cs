@@ -2,6 +2,8 @@
 {
     public class PlayFailedMessage
     {
+        #region Constructors and Destructors
+
         public PlayFailedMessage()
         {
         }
@@ -12,8 +14,14 @@
             OriginalSource = originalSource;
         }
 
+        #endregion
+
+        #region Public Properties
+
         public string ErrorMessage { get; set; }
 
         public object OriginalSource { get; set; }
+
+        #endregion
     }
 }

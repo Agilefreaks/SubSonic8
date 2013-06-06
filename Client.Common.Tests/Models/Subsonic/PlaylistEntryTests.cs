@@ -8,20 +8,22 @@
     [TestClass]
     public class PlaylistEntryTests
     {
+        #region Fields
+
         private PlaylistEntry _subject;
 
-        [TestInitialize]
-        public void Setup()
-        {
-            _subject = new PlaylistEntry();
-        }
+        #endregion
+
+        #region Public Methods and Operators
 
         [TestMethod]
-        public void SettingName_Always_SetsTitle()
+        public void GetDescription_Always_ReturnsATupleWithTheNameArtistAndAlbumValues()
         {
             _subject.Name = "test_n";
+            _subject.Artist = "test_a";
+            _subject.Album = "test_ab";
 
-            _subject.Title.Should().Be("test_n");
+            _subject.GetDescription().Should().Be(new Tuple<string, string>("test_n", "Artist: test_a, Album: test_ab"));
         }
 
         [TestMethod]
@@ -33,13 +35,19 @@
         }
 
         [TestMethod]
-        public void GetDescription_Always_ReturnsATupleWithTheNameArtistAndAlbumValues()
+        public void SettingName_Always_SetsTitle()
         {
             _subject.Name = "test_n";
-            _subject.Artist = "test_a";
-            _subject.Album = "test_ab";
 
-            _subject.GetDescription().Should().Be(new Tuple<string, string>("test_n", "Artist: test_a, Album: test_ab"));
+            _subject.Title.Should().Be("test_n");
         }
+
+        [TestInitialize]
+        public void Setup()
+        {
+            _subject = new PlaylistEntry();
+        }
+
+        #endregion
     }
 }

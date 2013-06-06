@@ -33,12 +33,12 @@
         #region Constructors and Destructors
 
         public ShellViewModel(
-            IEventAggregator eventAggregator,
-            ISubsonicService subsonicService,
-            ICustomFrameAdapter navigationService,
-            IToastNotificationService notificationService,
-            IDialogNotificationService dialogNotificationService,
-            IStorageService storageService,
+            IEventAggregator eventAggregator, 
+            ISubsonicService subsonicService, 
+            ICustomFrameAdapter navigationService, 
+            IToastNotificationService notificationService, 
+            IDialogNotificationService dialogNotificationService, 
+            IStorageService storageService, 
             IWinRTWrappersService winRTWrappersService)
         {
             _eventAggregator = eventAggregator;

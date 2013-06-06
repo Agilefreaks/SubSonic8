@@ -21,7 +21,8 @@
 
         private IBottomBarViewModel _bottomBar;
 
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation", Justification = "Reviewed. Suppression is OK here.")]
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation", 
+            Justification = "Reviewed. Suppression is OK here.")]
         private IIoCService _ioCService;
 
         private BindableCollection<MenuItemViewModel> _menuItems;

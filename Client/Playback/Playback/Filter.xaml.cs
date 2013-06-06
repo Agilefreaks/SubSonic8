@@ -8,10 +8,25 @@
 
     public sealed partial class Filter
     {
+        #region Constructors and Destructors
+
         public Filter()
         {
             InitializeComponent();
             this.RegisterDependencyPropertyChanged(() => Visibility, VisibilityChangedCallback);
+        }
+
+        #endregion
+
+        #region Methods
+
+        private void FilterTextBox_OnKeyUp(object sender, KeyRoutedEventArgs eventArgs)
+        {
+            if (eventArgs.Key == VirtualKey.Escape)
+            {
+                var buttonAutomationPeer = new ButtonAutomationPeer(DoneButton);
+                buttonAutomationPeer.Invoke();
+            }
         }
 
         private void VisibilityChangedCallback(DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
@@ -22,13 +37,6 @@
             }
         }
 
-        private void FilterTextBox_OnKeyUp(object sender, KeyRoutedEventArgs eventArgs)
-        {
-            if (eventArgs.Key == VirtualKey.Escape)
-            {
-                var buttonAutomationPeer = new ButtonAutomationPeer(DoneButton);
-                buttonAutomationPeer.Invoke();
-            }
-        }
+        #endregion
     }
 }

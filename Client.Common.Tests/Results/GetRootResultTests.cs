@@ -1,7 +1,6 @@
 ﻿namespace Client.Common.Tests.Results
 {
     using System.Net.Http;
-    using System.ServiceModel;
     using System.Threading.Tasks;
     using Caliburn.Micro;
     using Client.Common.Results;

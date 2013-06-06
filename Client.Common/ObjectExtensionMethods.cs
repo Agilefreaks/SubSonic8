@@ -5,6 +5,8 @@
 
     public static class ObjectExtensionMethods
     {
+        #region Public Methods and Operators
+
         public static void Log<T>(this T source, string message)
         {
             LogManagerFactory.DefaultLogManager.GetLogger<T>().Info(message);
@@ -14,5 +16,7 @@
         {
             LogManagerFactory.DefaultLogManager.GetLogger<T>().Error("Exception", exception);
         }
+
+        #endregion
     }
 }

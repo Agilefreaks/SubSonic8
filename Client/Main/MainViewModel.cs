@@ -85,12 +85,6 @@
             Populate();
         }
 
-        private async Task ShowSettingsNotFoundDialog()
-        {
-            var message = ResourceService.GetStringResource("ShellStrings/NotConfigured");
-            await NotificationService.Show(new DialogNotificationOptions { Message = message });
-        }
-
         private async Task<bool> ShouldPopulate()
         {
             var populate = true;
@@ -111,6 +105,12 @@
             }
 
             return populate;
+        }
+
+        private async Task ShowSettingsNotFoundDialog()
+        {
+            var message = ResourceService.GetStringResource("ShellStrings/NotConfigured");
+            await NotificationService.Show(new DialogNotificationOptions { Message = message });
         }
 
         #endregion

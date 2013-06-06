@@ -5,10 +5,14 @@
 
     public static class ObjectExtensionMethods
     {
-        public static string GetPropertyName<TTarget, TProperty>(this TTarget target, Expression<Func<TProperty>> property)
-            where TTarget : class
+        #region Public Methods and Operators
+
+        public static string GetPropertyName<TTarget, TProperty>(
+            this TTarget target, Expression<Func<TProperty>> property) where TTarget : class
         {
             return property.GetOperandName();
         }
+
+        #endregion
     }
 }

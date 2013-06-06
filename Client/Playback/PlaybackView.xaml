@@ -47,31 +47,33 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <StackPanel Grid.Column="1" Orientation="Horizontal">
-                        <Button Style="{StaticResource FilterAppBarButtonStyle}" x:Name="ShowFilter"/>
+                        <Button Style="{StaticResource FilterAppBarButtonStyle}" x:Name="ShowFilter" />
                         <Button Style="{StaticResource ClearPlaylistAppBarButtonStyle}" x:Name="ClearPlaylist" />
                         <Button Style="{StaticResource LoadPlaylistAppBarButtonStyle}" x:Name="LoadPlaylist" />
                         <Button Style="{StaticResource SaveAppBarButtonStyle}" x:Name="SavePlaylist" />
-                        <Button Style="{StaticResource LoadRemotePlaylistAppBarButtonStyle}" x:Name="LoadRemotePlaylist" />
+                        <Button Style="{StaticResource LoadRemotePlaylistAppBarButtonStyle}"
+                                x:Name="LoadRemotePlaylist" />
                         <Button Style="{StaticResource SaveRemoteAppBarButtonStyle}" x:Name="SaveRemotePlaylist" />
                     </StackPanel>
                 </Grid>
-                <ContentControl Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="116,0,116,46">
+                <ContentControl Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                Padding="116,0,116,46">
                     <Grid>
                         <playback:Audio cal:Bind.Model="{Binding}"
-                                    Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='Audio'}" />
+                                        Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='Audio'}" />
                         <playback:Video cal:Bind.Model="{Binding}"
-                                    Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='Video'}" />
+                                        Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='Video'}" />
                         <playback:Filter cal:Bind.Model="{Binding}"
-                                    Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='Filter'}" />
+                                         Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='Filter'}" />
                     </Grid>
                 </ContentControl>
                 <ListView Grid.Row="1" Grid.Column="1" Margin="0,0,46,46"
-                            ItemsSource="{Binding PlaylistItems}"
-                            SelectionMode="Multiple"
-                            behaviors:MultipleSelectBehavior.SelectedItems="{Binding SelectedItems, Mode=TwoWay}"
-                            CanDragItems="False" CanReorderItems="False" AllowDrop="False"
-                            IsItemClickEnabled="True"
-                            cal:Message.Attach="[Event ItemClick] = [Action StartPlayback($eventArgs)]">
+                          ItemsSource="{Binding PlaylistItems}"
+                          SelectionMode="Multiple"
+                          behaviors:MultipleSelectBehavior.SelectedItems="{Binding SelectedItems, Mode=TwoWay}"
+                          CanDragItems="False" CanReorderItems="False" AllowDrop="False"
+                          IsItemClickEnabled="True"
+                          cal:Message.Attach="[Event ItemClick] = [Action StartPlayback($eventArgs)]">
                     <i:Interaction.Behaviors>
                         <behaviors:ScrollIntoViewBehavior ActiveItemProvider="{Binding}" />
                     </i:Interaction.Behaviors>

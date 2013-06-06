@@ -15,29 +15,37 @@ namespace Common.FrameworkElementExtensions
 
     internal class FrameworkElementAttachedProperties : DependencyObject
     {
-        public static readonly DependencyProperty DependencyPropertyCallbacksProperty =
-    DependencyProperty.RegisterAttached(
-        "DependencyPropertyCallbacks",
-        typeof(DependencyPropertyChangedCallbacks),
-        typeof(FrameworkElementAttachedProperties),
-        new PropertyMetadata(null));
+        #region  Constants
 
         private const string ExtensionDPsNamePrefix = "DependencyPropertyEx";
+
+        #endregion
+
+        #region Static Fields
+
+        public static readonly DependencyProperty DependencyPropertyCallbacksProperty =
+            DependencyProperty.RegisterAttached(
+                "DependencyPropertyCallbacks",
+                typeof(DependencyPropertyChangedCallbacks),
+                typeof(FrameworkElementAttachedProperties),
+                new PropertyMetadata(null));
 
         private static readonly Dictionary<string, DependencyProperty> StaticExtensionDPs =
             new Dictionary<string, DependencyProperty>();
 
-        public static void SetDependencyPropertyCallbacks(DependencyObject dependencyObject, DependencyPropertyChangedCallbacks value)
-        {
-            dependencyObject.SetValue(DependencyPropertyCallbacksProperty, value);
-        }
+        #endregion
+
+        #region Public Methods and Operators
 
         public static DependencyPropertyChangedCallbacks GetDependencyPropertyCallbacks(DependencyObject d)
         {
             return (DependencyPropertyChangedCallbacks)d.GetValue(DependencyPropertyCallbacksProperty);
         }
 
-        public static void RegisterDependencyPropertyBinding<T>(FrameworkElement element, Expression<Func<T>> dependencyPropertyFunc, Action<DependencyPropertyChangedEventArgs> changedCallback)
+        public static void RegisterDependencyPropertyBinding<T>(
+            FrameworkElement element,
+            Expression<Func<T>> dependencyPropertyFunc,
+            Action<DependencyPropertyChangedEventArgs> changedCallback)
         {
             var propertyName = dependencyPropertyFunc.GetOperandName();
             var callbacks = GetCallbacksForElement(element);
@@ -47,17 +55,23 @@ namespace Common.FrameworkElementExtensions
             RegisterDependencyPropertyBinding(element, propertyName, attachedDependencyPropertyToBindTo);
         }
 
-        private static void RegisterDependencyPropertyBinding(FrameworkElement element, string dependencyPropertyToBind, DependencyProperty attachedDp)
+        public static void SetDependencyPropertyCallbacks(
+            DependencyObject dependencyObject, DependencyPropertyChangedCallbacks value)
         {
-            var dependencyPropertyExtensionBinding = new Binding
-                                                         {
-                                                             Path = new PropertyPath(dependencyPropertyToBind),
-                                                             RelativeSource = new RelativeSource
-                                                                                  {
-                                                                                      Mode = RelativeSourceMode.Self
-                                                                                  }
-                                                         };
-            element.SetBinding(attachedDp, dependencyPropertyExtensionBinding);
+            dependencyObject.SetValue(DependencyPropertyCallbacksProperty, value);
+        }
+
+        #endregion
+
+        #region Methods
+
+        private static void DependencyPropertyExPropertyChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            var callback = TryGetCallback((FrameworkElement)sender, e.Property);
+            if (callback != null)
+            {
+                callback(e);
+            }
         }
 
         private static DependencyPropertyChangedCallbacks GetCallbacksForElement(DependencyObject element)
@@ -72,15 +86,6 @@ namespace Common.FrameworkElementExtensions
             return callbacks;
         }
 
-        private static void DependencyPropertyExPropertyChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            var callback = TryGetCallback((FrameworkElement)sender, e.Property);
-            if (callback != null)
-            {
-                callback(e);
-            }
-        }
-
         private static DependencyProperty GetNextUnusedAttachedPropertyForFrameworkElement(string propertyName)
         {
             if (!StaticExtensionDPs.ContainsKey(propertyName))
@@ -90,14 +95,27 @@ namespace Common.FrameworkElementExtensions
                         ExtensionDPsNamePrefix + "_" + propertyName,
                         typeof(object),
                         typeof(FrameworkElementAttachedProperties),
-                    new PropertyMetadata(null, DependencyPropertyExPropertyChanged));
+                        new PropertyMetadata(null, DependencyPropertyExPropertyChanged));
                 StaticExtensionDPs.Add(propertyName, unusedDependencyProperty);
             }
 
             return StaticExtensionDPs[propertyName];
         }
 
-        private static Action<DependencyPropertyChangedEventArgs> TryGetCallback(FrameworkElement element, DependencyProperty boundAttachedDP)
+        private static void RegisterDependencyPropertyBinding(
+            FrameworkElement element, string dependencyPropertyToBind, DependencyProperty attachedDp)
+        {
+            var bindingSource = new RelativeSource { Mode = RelativeSourceMode.Self };
+            var dependencyPropertyExtensionBinding = new Binding
+                                                         {
+                                                             Path = new PropertyPath(dependencyPropertyToBind),
+                                                             RelativeSource = bindingSource
+                                                         };
+            element.SetBinding(attachedDp, dependencyPropertyExtensionBinding);
+        }
+
+        private static Action<DependencyPropertyChangedEventArgs> TryGetCallback(
+            FrameworkElement element, DependencyProperty boundAttachedDP)
         {
             Action<DependencyPropertyChangedEventArgs> callback = null;
             var callbacks = GetDependencyPropertyCallbacks(element);
@@ -108,5 +126,7 @@ namespace Common.FrameworkElementExtensions
 
             return callback;
         }
+
+        #endregion
     }
 }

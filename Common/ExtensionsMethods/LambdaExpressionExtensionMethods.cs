@@ -4,6 +4,8 @@
 
     public static class LambdaExpressionExtensionMethods
     {
+        #region Public Methods and Operators
+
         public static string GetOperandName(this LambdaExpression expression)
         {
             MemberExpression memberExpression;
@@ -20,5 +22,7 @@
 
             return memberExpression.Member.Name;
         }
+
+        #endregion
     }
 }

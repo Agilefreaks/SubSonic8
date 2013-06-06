@@ -18,6 +18,15 @@
         #region Public Methods and Operators
 
         [TestMethod]
+        public void GetDescription_Always_ReturnsATupleWithBothItemsEqualToTheArtistName()
+        {
+            const string Name = "test_n";
+            _subject.Name = Name;
+
+            _subject.GetDescription().Should().Be(new Tuple<string, string>(Name, Name));
+        }
+
+        [TestMethod]
         public void InstanceShouldImplementIIdentifiableEntity()
         {
             _subject.Should().BeAssignableTo<IId>();
@@ -39,15 +48,6 @@
         public void TypePropertyAlwaysReturnsNavigableTypeEnumMusicDirectory()
         {
             _subject.Type.Should().Be(SubsonicModelTypeEnum.MusicDirectory);
-        }
-
-        [TestMethod]
-        public void GetDescription_Always_ReturnsATupleWithBothItemsEqualToTheArtistName()
-        {
-            const string Name = "test_n";
-            _subject.Name = Name;
-
-            _subject.GetDescription().Should().Be(new Tuple<string, string>(Name, Name));
         }
 
         #endregion

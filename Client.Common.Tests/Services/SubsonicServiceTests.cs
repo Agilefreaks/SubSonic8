@@ -18,21 +18,6 @@
 
         #region Public Methods and Operators
 
-        [TestInitialize]
-        public void Setup()
-        {
-            _subject = new SubsonicService
-            {
-                Configuration =
-                    new SubsonicServiceConfiguration
-                    {
-                        BaseUrl = "http://test",
-                        Username = "test",
-                        Password = "test"
-                    }
-            };
-        }
-
         [TestMethod]
         public void CtorShouldInitializeFunctions()
         {
@@ -91,6 +76,39 @@
         }
 
         [TestMethod]
+        public void GetUriForFileWithId_Should_AccessTheStreamResource()
+        {
+            var uriForFileWithId = _subject.GetUriForFileWithId(1);
+
+            uriForFileWithId.ToString().Should().Contain("stream.view");
+        }
+
+        [TestMethod]
+        public void GetUriForFileWithId_Should_ReturnAUriPoitingAtTheBaseUrl()
+        {
+            var uriForFileWithId = _subject.GetUriForFileWithId(1);
+
+            uriForFileWithId.ToString().Should().StartWith(_subject.Configuration.BaseUrl);
+        }
+
+        [TestMethod]
+        public void GetUriForFileWithId_Should_SetTheUsernameAndPassword()
+        {
+            var uriForFileWithId = _subject.GetUriForFileWithId(1);
+
+            uriForFileWithId.ToString().Should().Contain("u=" + _subject.Configuration.Username);
+            uriForFileWithId.ToString().Should().Contain("p=" + _subject.Configuration.EncodedPassword);
+        }
+
+        [TestMethod]
+        public void GetUriForFileWithId_Should_TreyToGetTheFileWithTheGivenId()
+        {
+            var uriForFileWithId = _subject.GetUriForFileWithId(3);
+
+            uriForFileWithId.ToString().Should().Contain("id=3");
+        }
+
+        [TestMethod]
         public void GetUriForVideoStartingAt_Always_ReturnsTheOriginalUriModifiedToHaveTheGivenTimeOffsetParameter()
         {
             var input =
@@ -105,7 +123,8 @@
 
         [TestMethod]
         public void
-            GetUriForVideoStartingAt_Always_ReturnsTheOriginalUriModifiedToHaveTheGivenTimeOffsetParameterRoundedToTheClosestSmallerInteger()
+            GetUriForVideoStartingAt_Always_ReturnsTheOriginalUriModifiedToHaveTheGivenTimeOffsetParameterRoundedToTheClosestSmallerInteger
+            ()
         {
             var input =
                 new Uri("http://google.com/stream/stream.ts?id=30437&hls=true&timeOffset=0&duration=10&maxBitRate=50");
@@ -126,14 +145,6 @@
         }
 
         [TestMethod]
-        public void GetUriForVideoWithId_Always_ReturnsAUrlPointingToTheStreamResource()
-        {
-            var uriForVideoWithId = _subject.GetUriForVideoWithId(1);
-
-            uriForVideoWithId.ToString().Should().Contain("stream/stream.ts");
-        }
-
-        [TestMethod]
         public void GetUriForVideoWithId_Always_ReturnsAUrlContainingTheGivenId()
         {
             var uriForVideoWithId = _subject.GetUriForVideoWithId(3);
@@ -142,11 +153,27 @@
         }
 
         [TestMethod]
+        public void GetUriForVideoWithId_Always_ReturnsAUrlPointingToTheStreamResource()
+        {
+            var uriForVideoWithId = _subject.GetUriForVideoWithId(1);
+
+            uriForVideoWithId.ToString().Should().Contain("stream/stream.ts");
+        }
+
+        [TestMethod]
         public void GetUriForVideoWithId_Always_SpecifiesTheVideoShouldBeHls()
         {
             var uriForVideoWithId = _subject.GetUriForVideoWithId(3);
 
             uriForVideoWithId.ToString().Should().Contain("hls=true");
+        }
+
+        [TestMethod]
+        public void GetUriForVideoWithId_MaxBitRateGiven_ShouldSetMaxBitRate()
+        {
+            var uriForVideoWithId = _subject.GetUriForVideoWithId(3, 20, 200);
+
+            uriForVideoWithId.ToString().Should().Contain("maxBitRate=200");
         }
 
         [TestMethod]
@@ -163,47 +190,6 @@
             var uriForVideoWithId = _subject.GetUriForVideoWithId(3, 20);
 
             uriForVideoWithId.ToString().Should().Contain("timeOffset=20");
-        }
-
-        [TestMethod]
-        public void GetUriForVideoWithId_MaxBitRateGiven_ShouldSetMaxBitRate()
-        {
-            var uriForVideoWithId = _subject.GetUriForVideoWithId(3, 20, 200);
-
-            uriForVideoWithId.ToString().Should().Contain("maxBitRate=200");
-        }
-
-        [TestMethod]
-        public void GetUriForFileWithId_Should_ReturnAUriPoitingAtTheBaseUrl()
-        {
-            var uriForFileWithId = _subject.GetUriForFileWithId(1);
-
-            uriForFileWithId.ToString().Should().StartWith(_subject.Configuration.BaseUrl);
-        }
-
-        [TestMethod]
-        public void GetUriForFileWithId_Should_AccessTheStreamResource()
-        {
-            var uriForFileWithId = _subject.GetUriForFileWithId(1);
-
-            uriForFileWithId.ToString().Should().Contain("stream.view");
-        }
-
-        [TestMethod]
-        public void GetUriForFileWithId_Should_SetTheUsernameAndPassword()
-        {
-            var uriForFileWithId = _subject.GetUriForFileWithId(1);
-
-            uriForFileWithId.ToString().Should().Contain("u=" + _subject.Configuration.Username);
-            uriForFileWithId.ToString().Should().Contain("p=" + _subject.Configuration.EncodedPassword);
-        }
-
-        [TestMethod]
-        public void GetUriForFileWithId_Should_TreyToGetTheFileWithTheGivenId()
-        {
-            var uriForFileWithId = _subject.GetUriForFileWithId(3);
-
-            uriForFileWithId.ToString().Should().Contain("id=3");
         }
 
         [TestMethod]
@@ -234,6 +220,21 @@
         public void Ping_Always_ReturnsAPingResult()
         {
             _subject.Ping().Should().BeOfType<PingResult>();
+        }
+
+        [TestInitialize]
+        public void Setup()
+        {
+            _subject = new SubsonicService
+                           {
+                               Configuration =
+                                   new SubsonicServiceConfiguration
+                                       {
+                                           BaseUrl = "http://test", 
+                                           Username = "test", 
+                                           Password = "test"
+                                       }
+                           };
         }
 
         #endregion

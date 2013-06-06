@@ -130,8 +130,9 @@
                 var innerMessage = exception.InnerException != null
                                        ? exception.Message + "\r\n" + exception.InnerException.Message
                                        : exception.Message;
-                result.Exception = new CommunicationException(
-                    string.Format("Could not perform Http request.\r\nMessage:\r\n{0}", innerMessage), exception);
+                result.Exception =
+                    new CommunicationException(
+                        string.Format("Could not perform Http request.\r\nMessage:\r\n{0}", innerMessage), exception);
             }
             catch (Exception exception)
             {

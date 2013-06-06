@@ -8,11 +8,11 @@
     using System.Linq;
     using System.Threading.Tasks;
     using System.Xml.Serialization;
+    using Client.Common;
     using Client.Common.EventAggregatorMessages;
     using Client.Common.Models;
     using Client.Common.Models.Subsonic;
     using Client.Common.Services;
-    using global::Common.ExtensionsMethods;
     using global::Common.ListCollectionView;
     using MugenInjection.Attributes;
     using Subsonic8.BottomBar;
@@ -22,6 +22,7 @@
     using Subsonic8.Playlists;
     using Subsonic8.VideoPlayback;
     using Windows.UI.Xaml.Controls;
+    using ObjectExtensionMethods = global::Common.ExtensionsMethods.ObjectExtensionMethods;
 
     public class PlaybackViewModel : PlaybackControlsViewModelBase, IPlaybackViewModel
     {
@@ -41,25 +42,25 @@
 
         private IEmbededVideoPlaybackViewModel _embededVideoPlaybackViewModel;
 
+        private string _filterText;
+
         private IFullScreenVideoPlaybackViewModel _fullScreenVideoPlaybackViewModel;
+
+        private bool _isFiltering;
 
         private bool _playbackControlsVisible;
 
         private IPlayerManagementService _playerManagementService;
 
+        private ListCollectionView _playlistItems;
+
         private IPlaylistManagementService _playlistManagementService;
+
+        private PlaybackViewModelStateEnum _previousState;
 
         private Uri _source;
 
         private PlaybackViewModelStateEnum _state;
-
-        private PlaybackViewModelStateEnum _previousState;
-
-        private string _filterText;
-
-        private ListCollectionView _playlistItems;
-
-        private bool _isFiltering;
 
         #endregion
 
@@ -84,6 +85,26 @@
             }
         }
 
+        [Inject]
+        public IPlaybackBottomBarViewModel BottomBar
+        {
+            get
+            {
+                return _bottomBar;
+            }
+
+            set
+            {
+                if (Equals(value, _bottomBar))
+                {
+                    return;
+                }
+
+                _bottomBar = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
         public string CoverArt
         {
             get
@@ -100,6 +121,68 @@
             }
         }
 
+        [Inject]
+        public IEmbededVideoPlaybackViewModel EmbededVideoPlaybackViewModel
+        {
+            get
+            {
+                return _embededVideoPlaybackViewModel;
+            }
+
+            set
+            {
+                if (Equals(value, _embededVideoPlaybackViewModel))
+                {
+                    return;
+                }
+
+                _embededVideoPlaybackViewModel = value;
+                NotifyOfPropertyChange(() => EmbededVideoPlaybackViewModel);
+                HookEmbededVideoPlaybackViewModel();
+            }
+        }
+
+        public string FilterText
+        {
+            get
+            {
+                return _filterText;
+            }
+
+            set
+            {
+                if (value == _filterText)
+                {
+                    return;
+                }
+
+                _filterText = value;
+                NotifyOfPropertyChange();
+                SetPlaylistFilter(_filterText);
+            }
+        }
+
+        [Inject]
+        public IFullScreenVideoPlaybackViewModel FullScreenVideoPlaybackViewModel
+        {
+            get
+            {
+                return _fullScreenVideoPlaybackViewModel;
+            }
+
+            set
+            {
+                if (Equals(value, _fullScreenVideoPlaybackViewModel))
+                {
+                    return;
+                }
+
+                _fullScreenVideoPlaybackViewModel = value;
+                NotifyOfPropertyChange();
+                HookFullScreenVideoPlaybackViewModel();
+            }
+        }
+
         public bool IsPlaying
         {
             get
@@ -107,6 +190,8 @@
                 return _playlistManagementService.IsPlaying;
             }
         }
+
+        public Func<IId, Task<PlaylistItem>> LoadModel { get; set; }
 
         public int? Parameter
         {
@@ -138,11 +223,46 @@
             }
         }
 
+        [Inject]
+        public IPlayerManagementService PlayerManagementService
+        {
+            get
+            {
+                return _playerManagementService;
+            }
+
+            set
+            {
+                if (Equals(value, _playerManagementService))
+                {
+                    return;
+                }
+
+                _playerManagementService = value;
+                HookPlayerManagementService();
+            }
+        }
+
         public ListCollectionView PlaylistItems
         {
             get
             {
                 return _playlistItems ?? (_playlistItems = new ListCollectionView(_playlistManagementService.Items));
+            }
+        }
+
+        [Inject]
+        public IPlaylistManagementService PlaylistManagementService
+        {
+            get
+            {
+                return _playlistManagementService;
+            }
+
+            set
+            {
+                _playlistManagementService = value;
+                HookPlaylistManagementService();
             }
         }
 
@@ -170,7 +290,7 @@
                 }
                 catch (Exception exception)
                 {
-                    Client.Common.ObjectExtensionMethods.Log(this, exception);
+                    global::Client.Common.ObjectExtensionMethods.Log(this, exception);
                 }
             }
         }
@@ -194,28 +314,6 @@
             }
         }
 
-        public Func<IId, Task<PlaylistItem>> LoadModel { get; set; }
-
-        public string FilterText
-        {
-            get
-            {
-                return _filterText;
-            }
-
-            set
-            {
-                if (value == _filterText)
-                {
-                    return;
-                }
-
-                _filterText = value;
-                NotifyOfPropertyChange();
-                SetPlaylistFilter(_filterText);
-            }
-        }
-
         [Inject]
         public ITileNotificationService TileNotificationService { get; set; }
 
@@ -224,103 +322,6 @@
 
         [Inject]
         public IWinRTWrappersService WinRTWrappersService { get; set; }
-
-        [Inject]
-        public IPlayerManagementService PlayerManagementService
-        {
-            get
-            {
-                return _playerManagementService;
-            }
-
-            set
-            {
-                if (Equals(value, _playerManagementService))
-                {
-                    return;
-                }
-
-                _playerManagementService = value;
-                HookPlayerManagementService();
-            }
-        }
-
-        [Inject]
-        public IPlaylistManagementService PlaylistManagementService
-        {
-            get
-            {
-                return _playlistManagementService;
-            }
-
-            set
-            {
-                _playlistManagementService = value;
-                HookPlaylistManagementService();
-            }
-        }
-
-        [Inject]
-        public IPlaybackBottomBarViewModel BottomBar
-        {
-            get
-            {
-                return _bottomBar;
-            }
-
-            set
-            {
-                if (Equals(value, _bottomBar))
-                {
-                    return;
-                }
-
-                _bottomBar = value;
-                NotifyOfPropertyChange();
-            }
-        }
-
-        [Inject]
-        public IEmbededVideoPlaybackViewModel EmbededVideoPlaybackViewModel
-        {
-            get
-            {
-                return _embededVideoPlaybackViewModel;
-            }
-
-            set
-            {
-                if (Equals(value, _embededVideoPlaybackViewModel))
-                {
-                    return;
-                }
-
-                _embededVideoPlaybackViewModel = value;
-                NotifyOfPropertyChange(() => EmbededVideoPlaybackViewModel);
-                HookEmbededVideoPlaybackViewModel();
-            }
-        }
-
-        [Inject]
-        public IFullScreenVideoPlaybackViewModel FullScreenVideoPlaybackViewModel
-        {
-            get
-            {
-                return _fullScreenVideoPlaybackViewModel;
-            }
-
-            set
-            {
-                if (Equals(value, _fullScreenVideoPlaybackViewModel))
-                {
-                    return;
-                }
-
-                _fullScreenVideoPlaybackViewModel = value;
-                NotifyOfPropertyChange();
-                HookFullScreenVideoPlaybackViewModel();
-            }
-        }
 
         #endregion
 
@@ -355,6 +356,11 @@
         public void ClearPlaylist()
         {
             _playlistManagementService.Clear();
+        }
+
+        public void DoneFiltering()
+        {
+            IsFiltering = false;
         }
 
         public void Handle(StartPlaybackMessage message)
@@ -436,18 +442,6 @@
             }
         }
 
-        public void StartPlayback(object e)
-        {
-            if (State == PlaybackViewModelStateEnum.Filter)
-            {
-                IsFiltering = false;
-            }
-
-            var pressedItem = (PlaylistItem)((ItemClickEventArgs)e).ClickedItem;
-            var pressedItemIndex = PlaylistManagementService.Items.IndexOf(pressedItem);
-            EventAggregator.Publish(new PlayItemAtIndexMessage(pressedItemIndex));
-        }
-
         public void ShowFilter()
         {
             if (IsFiltering)
@@ -458,9 +452,16 @@
             IsFiltering = true;
         }
 
-        public void DoneFiltering()
+        public void StartPlayback(object e)
         {
-            IsFiltering = false;
+            if (State == PlaybackViewModelStateEnum.Filter)
+            {
+                IsFiltering = false;
+            }
+
+            var pressedItem = (PlaylistItem)((ItemClickEventArgs)e).ClickedItem;
+            var pressedItemIndex = PlaylistManagementService.Items.IndexOf(pressedItem);
+            EventAggregator.Publish(new PlayItemAtIndexMessage(pressedItemIndex));
         }
 
         #endregion
@@ -504,11 +505,26 @@
                                .Execute();
         }
 
+        private void OnIsFilteringChanged()
+        {
+            if (IsFiltering)
+            {
+                _previousState = State;
+                State = PlaybackViewModelStateEnum.Filter;
+            }
+            else
+            {
+                FilterText = string.Empty;
+                State = _previousState;
+            }
+        }
+
         private void PlaylistManagementServiceOnPropertyChanged(
             object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
             if (propertyChangedEventArgs.PropertyName
-                == _playlistManagementService.GetPropertyName(() => _playlistManagementService.IsPlaying))
+                == ObjectExtensionMethods.GetPropertyName(
+                    _playlistManagementService, () => _playlistManagementService.IsPlaying))
             {
                 NotifyOfPropertyChange(() => IsPlaying);
             }
@@ -517,6 +533,26 @@
         private void SetAppBottomBar()
         {
             EventAggregator.Publish(new ChangeBottomBarMessage { BottomBarViewModel = BottomBar });
+        }
+
+        private void SetPlaylistFilter(string filterText)
+        {
+            if (string.IsNullOrWhiteSpace(filterText))
+            {
+                PlaylistItems.Filter = null;
+            }
+            else
+            {
+                filterText = filterText.ToLower();
+                Func<string, string> prepareValueForFilter =
+                    value => value == null ? string.Empty : value.ToLowerInvariant();
+                PlaylistItems.Filter = element =>
+                    {
+                        var playlistItem = (PlaylistItem)element;
+                        return prepareValueForFilter(playlistItem.Artist).Contains(filterText)
+                               || prepareValueForFilter(playlistItem.Title).Contains(filterText);
+                    };
+            }
         }
 
         private void SetStateByCurrentPlayer()
@@ -543,40 +579,6 @@
             EventAggregator.Publish(new StopMessage());
             PlayerManagementService.DefaultVideoPlayer = FullScreenVideoPlaybackViewModel;
             EventAggregator.Publish(new PlayMessage { Options = eventArgs });
-        }
-
-        private void SetPlaylistFilter(string filterText)
-        {
-            if (string.IsNullOrWhiteSpace(filterText))
-            {
-                PlaylistItems.Filter = null;
-            }
-            else
-            {
-                filterText = filterText.ToLower();
-                Func<string, string> prepareValueForFilter =
-                    value => value == null ? string.Empty : value.ToLowerInvariant();
-                PlaylistItems.Filter = element =>
-                    {
-                        var playlistItem = (PlaylistItem)element;
-                        return prepareValueForFilter(playlistItem.Artist).Contains(filterText)
-                               || prepareValueForFilter(playlistItem.Title).Contains(filterText);
-                    };
-            }
-        }
-
-        private void OnIsFilteringChanged()
-        {
-            if (IsFiltering)
-            {
-                _previousState = State;
-                State = PlaybackViewModelStateEnum.Filter;
-            }
-            else
-            {
-                FilterText = string.Empty;
-                State = _previousState;
-            }
         }
 
         #endregion

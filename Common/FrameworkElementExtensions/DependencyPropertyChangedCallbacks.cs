@@ -10,7 +10,8 @@ namespace Common.FrameworkElementExtensions
     using System.Collections.Generic;
     using Windows.UI.Xaml;
 
-    internal class DependencyPropertyChangedCallbacks : Dictionary<DependencyProperty, Action<DependencyPropertyChangedEventArgs>>
+    internal class DependencyPropertyChangedCallbacks :
+        Dictionary<DependencyProperty, Action<DependencyPropertyChangedEventArgs>>
     {
     }
 }

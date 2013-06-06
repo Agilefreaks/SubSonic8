@@ -111,13 +111,13 @@
             throw new NotImplementedException();
         }
 
+        public void Handle(PlayFailedMessage message)
+        {
+        }
+
         public void HandleError(Exception error)
         {
             throw new NotImplementedException();
-        }
-
-        public void Handle(PlayFailedMessage message)
-        {
         }
 
         public void LoadState(string parameter, Dictionary<string, object> statePageState)

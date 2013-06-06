@@ -3,8 +3,6 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Client.Common.Models.Subsonic;
-    using Client.Common.Results;
-    using Client.Common.Services.DataStructures.SubsonicService;
     using Client.Tests.Framework.ViewModel;
     using Client.Tests.Mocks;
     using FluentAssertions;

@@ -7,10 +7,6 @@
 
     public class VisualStateResult : ResultBase
     {
-        #region Fields
-
-        #endregion
-
         #region Constructors and Destructors
 
         public VisualStateResult(string stateName, bool useTransitions = true)

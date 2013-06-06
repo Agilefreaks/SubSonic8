@@ -13,12 +13,17 @@ namespace Common.ExtensionsMethods
 
     public static class FrameworkElementExtensions
     {
+        #region Public Methods and Operators
+
         public static void RegisterDependencyPropertyChanged<T>(
-            this FrameworkElement element,
-            Expression<Func<T>> dependencyPropertyFunc,
+            this FrameworkElement element, 
+            Expression<Func<T>> dependencyPropertyFunc, 
             Action<DependencyPropertyChangedEventArgs> changedCallback)
         {
-            FrameworkElementAttachedProperties.RegisterDependencyPropertyBinding(element, dependencyPropertyFunc, changedCallback);
+            FrameworkElementAttachedProperties.RegisterDependencyPropertyBinding(
+                element, dependencyPropertyFunc, changedCallback);
         }
+
+        #endregion
     }
 }

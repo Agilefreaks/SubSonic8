@@ -102,10 +102,6 @@
         {
         }
 
-        public void SongFailed(ExceptionRoutedEventArgs eventArgs)
-        {
-        }
-
         public void Pause()
         {
         }
@@ -130,6 +126,10 @@
         }
 
         public void Resume()
+        {
+        }
+
+        public void SongFailed(ExceptionRoutedEventArgs eventArgs)
         {
         }
 

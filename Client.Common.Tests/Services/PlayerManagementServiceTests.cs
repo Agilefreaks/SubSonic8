@@ -19,12 +19,6 @@
 
         #region Public Methods and Operators
 
-        [TestInitialize]
-        public void Setup()
-        {
-            _subject = new PlayerManagementService(new MockEventAggregator());
-        }
-
         [TestCleanup]
         public void Cleanup()
         {
@@ -114,6 +108,12 @@
             _subject.RegisteredPlayers.Count().Should().Be(2);
             _subject.RegisteredPlayers.Should().Contain(mockPlayer1);
             _subject.RegisteredPlayers.Should().Contain(mockPlayer2);
+        }
+
+        [TestInitialize]
+        public void Setup()
+        {
+            _subject = new PlayerManagementService(new MockEventAggregator());
         }
 
         [TestMethod]

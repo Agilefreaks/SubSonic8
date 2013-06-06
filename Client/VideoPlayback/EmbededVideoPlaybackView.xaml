@@ -12,6 +12,6 @@
                            AutoPlay="False"
                            MediaEnded="MediaPlayer_OnMediaEnded"
                            IsFullScreenChanged="MediaPlayer_OnIsFullScreenChanged" x:Name="MediaPlayer"
-                           MediaFailed="MediaPlayer_OnMediaFailed"/>
+                           MediaFailed="MediaPlayer_OnMediaFailed" />
     </Grid>
 </videoPlayback:VideoPlaybackView>

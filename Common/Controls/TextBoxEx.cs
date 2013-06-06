@@ -11,15 +11,36 @@ namespace Common.Controls
 
     public static class TextBoxEx
     {
-        public static readonly DependencyProperty RealTimeTextProperty =
-    DependencyProperty.RegisterAttached("RealTimeText", typeof(string), typeof(TextBoxEx), new PropertyMetadata(string.Empty, RealTimeTextChangedCallback));
+        #region Static Fields
 
         public static readonly DependencyProperty IsAutoUpdateProperty =
-    DependencyProperty.RegisterAttached("IsAutoUpdate", typeof(bool), typeof(TextBoxEx), new PropertyMetadata(false, OnIsAutoUpdateChanged));
+            DependencyProperty.RegisterAttached(
+                "IsAutoUpdate", typeof(bool), typeof(TextBoxEx), new PropertyMetadata(false, OnIsAutoUpdateChanged));
+
+        public static readonly DependencyProperty RealTimeTextProperty =
+            DependencyProperty.RegisterAttached(
+                "RealTimeText", 
+                typeof(string), 
+                typeof(TextBoxEx), 
+                new PropertyMetadata(string.Empty, RealTimeTextChangedCallback));
+
+        #endregion
+
+        #region Public Methods and Operators
+
+        public static bool GetIsAutoUpdate(TextBox obj)
+        {
+            return (bool)obj.GetValue(IsAutoUpdateProperty);
+        }
 
         public static string GetRealTimeText(TextBox obj)
         {
             return (string)obj.GetValue(RealTimeTextProperty);
+        }
+
+        public static void SetIsAutoUpdate(TextBox obj, bool value)
+        {
+            obj.SetValue(IsAutoUpdateProperty, value);
         }
 
         public static void SetRealTimeText(TextBox obj, string value)
@@ -27,15 +48,9 @@ namespace Common.Controls
             obj.SetValue(RealTimeTextProperty, value);
         }
 
-        public static bool GetIsAutoUpdate(TextBox obj)
-        {
-            return (bool)obj.GetValue(IsAutoUpdateProperty);
-        }
+        #endregion
 
-        public static void SetIsAutoUpdate(TextBox obj, bool value)
-        {
-            obj.SetValue(IsAutoUpdateProperty, value);
-        }
+        #region Methods
 
         private static void OnIsAutoUpdateChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
@@ -52,16 +67,19 @@ namespace Common.Controls
             }
         }
 
+        private static void RealTimeTextChangedCallback(
+            DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
+        {
+            var textBox = (TextBox)dependencyObject;
+            textBox.Text = (string)dependencyPropertyChangedEventArgs.NewValue ?? string.Empty;
+        }
+
         private static void TextboxOnTextChanged(object sender, TextChangedEventArgs textChangedEventArgs)
         {
             var textBox = (TextBox)sender;
             textBox.SetValue(RealTimeTextProperty, textBox.Text);
         }
 
-        private static void RealTimeTextChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
-        {
-            var textBox = (TextBox)dependencyObject;
-            textBox.Text = (string)dependencyPropertyChangedEventArgs.NewValue ?? string.Empty;
-        }
+        #endregion
     }
 }

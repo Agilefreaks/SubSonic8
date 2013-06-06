@@ -64,6 +64,27 @@ namespace Client.Tests.Playback
         }
 
         [TestMethod]
+        public void DoneFiltering_Should_ClearTheFilterText()
+        {
+            Subject.FilterText = "asdads";
+
+            Subject.DoneFiltering();
+
+            Subject.FilterText.Should().BeEmpty();
+        }
+
+        [TestMethod]
+        public void DoneFiltering_Should_SetTheStateToThePreviousStateBeforeStartingFiltering()
+        {
+            Subject.State = PlaybackViewModelStateEnum.Audio;
+            Subject.ShowFilter();
+
+            Subject.DoneFiltering();
+
+            Subject.State.Should().Be(PlaybackViewModelStateEnum.Audio);
+        }
+
+        [TestMethod]
         public void HandleStartAudioPlayback_Alawys_SetsCoverArtToItemConverArtUrl()
         {
             Subject.Handle(new StartPlaybackMessage(new PlaylistItem { CoverArtUrl = "test" }));
@@ -106,6 +127,24 @@ namespace Client.Tests.Playback
         }
 
         [TestMethod]
+        public void Handle_PlayFailedMessage_CallsNotificationServiceShowWithANiceMessage()
+        {
+            Subject.Handle(new PlayFailedMessage("test m", null));
+
+            MockDialogNotificationService.Showed.Count.Should().Be(1);
+            MockDialogNotificationService.Showed[0].Message.Should().Be("Could not play item:\r\ntest m");
+        }
+
+        [TestMethod]
+        public void Handle_PlayFailedMessage_ShouldPublishAStopMessage()
+        {
+            Subject.Handle(new PlayFailedMessage("test m", null));
+
+            MockEventAggregator.PublishCallCount.Should().Be(1);
+            MockEventAggregator.Messages[0].Should().BeOfType<StopMessage>();
+        }
+
+        [TestMethod]
         public void Handle_PlaylistStateChangedMessage_SetsPlaybackControlsVisibleToMessageHasElements()
         {
             Subject.Handle(new PlaylistStateChangedMessage(true));
@@ -136,7 +175,8 @@ namespace Client.Tests.Playback
         {
             var knownTypes = new List<Type>();
             var statePageState = new Dictionary<string, object>();
-            _mockPlaylistManagementService.Items.Add(new PlaylistItem { Artist = "test_a", UriAsString = "http://google.com/" });
+            _mockPlaylistManagementService.Items.Add(
+                new PlaylistItem { Artist = "test_a", UriAsString = "http://google.com/" });
             Subject.SaveState(statePageState, knownTypes);
             _mockPlaylistManagementService.Items.Clear();
             _mockPlaylistManagementService.Items.Count.Should().Be(0);
@@ -174,6 +214,12 @@ namespace Client.Tests.Playback
         }
 
         [TestMethod]
+        public void PlaylistItems_Should_BeAListCollectionView()
+        {
+            Subject.PlaylistItems.Should().BeOfType<ListCollectionView>();
+        }
+
+        [TestMethod]
         public void SavePlaylist_Always_CallsWinRTWrapperServiceGetNewStorageFile()
         {
             Subject.SavePlaylist();
@@ -181,39 +227,19 @@ namespace Client.Tests.Playback
             _mockWinRTWrappersService.GetNewStorageFileCallCount.Should().Be(1);
         }
 
-        [TestMethod]
-        public void ShowFilter_Should_SetTheStateToFilter()
+        [UITestMethod]
+        public void SettingAEmptyFilter_Should_ClearTheFilter()
         {
-            Subject.ShowFilter();
+            var playlistItem1 = new PlaylistItem { Title = "test song" };
+            var playlistItem2 = new PlaylistItem { Title = "song1 super" };
+            _mockPlaylistManagementService.Items.Add(playlistItem1);
+            _mockPlaylistManagementService.Items.Add(playlistItem2);
 
-            Subject.State.Should().Be(PlaybackViewModelStateEnum.Filter);
-        }
+            Subject.FilterText = string.Empty;
 
-        [TestMethod]
-        public void DoneFiltering_Should_SetTheStateToThePreviousStateBeforeStartingFiltering()
-        {
-            Subject.State = PlaybackViewModelStateEnum.Audio;
-            Subject.ShowFilter();
-
-            Subject.DoneFiltering();
-
-            Subject.State.Should().Be(PlaybackViewModelStateEnum.Audio);
-        }
-
-        [TestMethod]
-        public void DoneFiltering_Should_ClearTheFilterText()
-        {
-            Subject.FilterText = "asdads";
-
-            Subject.DoneFiltering();
-
-            Subject.FilterText.Should().BeEmpty();
-        }
-
-        [TestMethod]
-        public void PlaylistItems_Should_BeAListCollectionView()
-        {
-            Subject.PlaylistItems.Should().BeOfType<ListCollectionView>();
+            Subject.PlaylistItems.Count.Should().Be(2);
+            Subject.PlaylistItems[0].Should().Be(playlistItem1);
+            Subject.PlaylistItems[1].Should().Be(playlistItem2);
         }
 
         [UITestMethod]
@@ -245,21 +271,6 @@ namespace Client.Tests.Playback
         }
 
         [UITestMethod]
-        public void SettingAEmptyFilter_Should_ClearTheFilter()
-        {
-            var playlistItem1 = new PlaylistItem { Title = "test song" };
-            var playlistItem2 = new PlaylistItem { Title = "song1 super" };
-            _mockPlaylistManagementService.Items.Add(playlistItem1);
-            _mockPlaylistManagementService.Items.Add(playlistItem2);
-
-            Subject.FilterText = string.Empty;
-
-            Subject.PlaylistItems.Count.Should().Be(2);
-            Subject.PlaylistItems[0].Should().Be(playlistItem1);
-            Subject.PlaylistItems[1].Should().Be(playlistItem2);
-        }
-
-        [UITestMethod]
         public void SettingANullFilter_Should_ClearTheFilter()
         {
             var playlistItem1 = new PlaylistItem { Title = "test song" };
@@ -275,21 +286,11 @@ namespace Client.Tests.Playback
         }
 
         [TestMethod]
-        public void Handle_PlayFailedMessage_CallsNotificationServiceShowWithANiceMessage()
+        public void ShowFilter_Should_SetTheStateToFilter()
         {
-            Subject.Handle(new PlayFailedMessage("test m", null));
+            Subject.ShowFilter();
 
-            MockDialogNotificationService.Showed.Count.Should().Be(1);
-            MockDialogNotificationService.Showed[0].Message.Should().Be("Could not play item:\r\ntest m");
-        }
-
-        [TestMethod]
-        public void Handle_PlayFailedMessage_ShouldPublishAStopMessage()
-        {
-            Subject.Handle(new PlayFailedMessage("test m", null));
-
-            MockEventAggregator.PublishCallCount.Should().Be(1);
-            MockEventAggregator.Messages[0].Should().BeOfType<StopMessage>();
+            Subject.State.Should().Be(PlaybackViewModelStateEnum.Filter);
         }
 
         #endregion
@@ -322,8 +323,8 @@ namespace Client.Tests.Playback
                     tcr.SetResult(
                         new PlaylistItem
                             {
-                                PlayingState = PlaylistItemState.NotPlaying,
-                                Uri = new Uri("http://test-uri"),
+                                PlayingState = PlaylistItemState.NotPlaying, 
+                                Uri = new Uri("http://test-uri"), 
                                 Artist = "test-artist"
                             });
                     return tcr.Task;

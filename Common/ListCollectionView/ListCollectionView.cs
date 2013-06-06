@@ -46,10 +46,10 @@ namespace Common.ListCollectionView
     /// mygrid.ItemsSource = cv;
     /// </code>
     /// </remarks>
-    public class ListCollectionView : ICollectionViewEx,
-                                      IEditableCollectionView,
-                                      INotifyPropertyChanged,
-                                      IComparer<object>,
+    public class ListCollectionView : ICollectionViewEx, 
+                                      IEditableCollectionView, 
+                                      INotifyPropertyChanged, 
+                                      IComparer<object>, 
                                       IUpdateTracker
     {
         #region Fields

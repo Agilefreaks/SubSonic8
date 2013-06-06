@@ -40,11 +40,10 @@
 
         private void ApplyConventions(IEnumerable<Type> types)
         {
-            foreach (
-                var result in
-                    types.SelectMany(
-                        type => Convetions.Select(c => new { type, convention = c, isMatch = c.ConditionMet(type) }))
-                         .Where(result => result.isMatch))
+            foreach (var result in
+                types.SelectMany(
+                    type => Convetions.Select(c => new { type, convention = c, isMatch = c.ConditionMet(type) }))
+                     .Where(result => result.isMatch))
             {
                 result.convention.CreateBinding(result.type);
             }

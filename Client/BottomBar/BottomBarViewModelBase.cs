@@ -28,8 +28,8 @@
         #region Constructors and Destructors
 
         protected BottomBarViewModelBase(
-            INavigationService navigationService,
-            IEventAggregator eventAggregator,
+            INavigationService navigationService, 
+            IEventAggregator eventAggregator, 
             IPlaylistManagementService playlistManagementService)
         {
             NavigationService = navigationService;

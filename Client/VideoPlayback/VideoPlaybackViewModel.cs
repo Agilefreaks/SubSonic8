@@ -104,11 +104,11 @@
             if (FullScreenChanged != null)
             {
                 FullScreenChanged(
-                    this,
+                    this, 
                     new PlaybackStateEventArgs
                         {
-                            StartTime = mediaPlayer.StartTime,
-                            EndTime = mediaPlayer.EndTime,
+                            StartTime = mediaPlayer.StartTime, 
+                            EndTime = mediaPlayer.EndTime, 
                             TimeRemaining = mediaPlayer.TimeRemaining
                         });
             }
