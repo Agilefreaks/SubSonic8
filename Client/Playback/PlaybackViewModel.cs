@@ -8,7 +8,6 @@
     using System.Linq;
     using System.Threading.Tasks;
     using System.Xml.Serialization;
-    using Client.Common;
     using Client.Common.EventAggregatorMessages;
     using Client.Common.Models;
     using Client.Common.Models.Subsonic;
@@ -290,7 +289,7 @@
                 }
                 catch (Exception exception)
                 {
-                    global::Client.Common.ObjectExtensionMethods.Log(this, exception);
+                    Client.Common.ObjectExtensionMethods.Log(this, exception);
                 }
             }
         }
