@@ -1,6 +1,8 @@
 ﻿namespace Subsonic8.Framework.ViewModel
 {
     using System;
+    using System.ServiceModel;
+    using System.Threading.Tasks;
     using Caliburn.Micro;
     using Client.Common.Services;
     using MugenInjection.Attributes;
@@ -100,7 +102,13 @@
 
         public async void HandleError(Exception error)
         {
-            await NotificationService.Show(new DialogNotificationOptions { Message = error.ToString(), });
+            var message = error is CommunicationException ? error.Message : error.ToString();
+            await HandleError(message);
+        }
+
+        public async Task HandleError(string errorMessage)
+        {
+            await NotificationService.Show(new DialogNotificationOptions { Message = errorMessage, });
         }
 
         #endregion

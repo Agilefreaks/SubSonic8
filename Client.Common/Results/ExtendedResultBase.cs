@@ -20,13 +20,12 @@
         public override async Task Execute(ActionExecutionContext context = null)
         {
             Exception catchedException = null;
+
+            await new VisualStateResult("Loading").Execute();
+
             try
             {
-                await new VisualStateResult("Loading").Execute();
-
                 await ExecuteCore();
-
-                await new VisualStateResult("LoadingComplete").Execute();
             }
             catch (Exception exception)
             {
@@ -43,6 +42,8 @@
                     ExecuteOnSuccessAction();
                 }
             }
+
+            await new VisualStateResult("LoadingComplete").Execute();
         }
 
         public IExtendedResult OnSuccess(Action onSuccess)

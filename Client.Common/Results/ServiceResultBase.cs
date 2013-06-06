@@ -87,7 +87,7 @@
             var response = await Response();
             if (response.Exception != null)
             {
-                throw new CommunicationException("Could not complete request.\r\n", response.Exception);
+                throw response.Exception;
             }
 
             var xDocument = XDocument.Load(response.Stream);
@@ -124,6 +124,14 @@
                         string.Format(
                             "Response was:\r\nStatus Code:{0}\r\nReason:{1}", response.StatusCode, response.ReasonPhrase));
                 }
+            }
+            catch (HttpRequestException exception)
+            {
+                var innerMessage = exception.InnerException != null
+                                       ? exception.Message + "\r\n" + exception.InnerException.Message
+                                       : exception.Message;
+                result.Exception = new CommunicationException(
+                    string.Format("Could not perform Http request.\r\nMessage:\r\n{0}", innerMessage), exception);
             }
             catch (Exception exception)
             {
