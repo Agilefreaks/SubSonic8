@@ -3,10 +3,10 @@
     using System;
     using System.Collections.Generic;
     using Caliburn.Micro;
-    using Client.Common.MugenExtensions;
     using Microsoft.Practices.ServiceLocation;
     using MugenInjection;
     using MugenInjection.Interface;
+    using global::Common.MugenExtensions;
 
     public class CaliburnServiceLocatorApplication : CaliburnApplication
     {

@@ -1,4 +1,4 @@
-﻿namespace Client.Common.MugenExtensions
+﻿namespace Common.MugenExtensions
 {
     using System;
     using System.Reflection;

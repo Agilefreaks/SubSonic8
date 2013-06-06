@@ -1,6 +1,6 @@
 ﻿namespace Client.Common
 {
-    using Client.Common.MugenExtensions;
+    using global::Common.MugenExtensions;
 
     public class CommonModule : MugenModuleWithAutoDiscoveryBase
     {

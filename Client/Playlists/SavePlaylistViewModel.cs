@@ -11,6 +11,7 @@
     using Subsonic8.Framework.Services;
     using Subsonic8.MenuItem;
     using Windows.UI.Xaml.Controls;
+    using global::Common.ExtensionsMethods;
 
     public class SavePlaylistViewModel : PlaylistViewModelBase, ISavePlaylistViewModel
     {

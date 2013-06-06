@@ -162,12 +162,6 @@
     <Compile Include="Models\Subsonic\SearchResultCollection.cs" />
     <Compile Include="Models\Subsonic\Song.cs" />
     <Compile Include="Models\Subsonic\SubsonicModelBase.cs" />
-    <Compile Include="MugenExtensions\Convetion.cs" />
-    <Compile Include="MugenExtensions\MugenModuleWithAutoDiscoveryBase.cs" />
-    <Compile Include="MugenExtensions\InterfaceToImplementationBaseConvention.cs" />
-    <Compile Include="MugenExtensions\MugenServiceLocator.cs" />
-    <Compile Include="MugenExtensions\ServiceConvention.cs" />
-    <Compile Include="MugenExtensions\ViewModelConvention.cs" />
     <Compile Include="ObjectExtensionMethods.cs" />
     <Compile Include="Results\GetAlbumResult.cs" />
     <Compile Include="Results\GetArtistsResult.cs" />
@@ -216,7 +210,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\DataStructures\SubsonicService\SubsonicServiceConfigurationExtensions.cs" />
     <Compile Include="Services\WinRTWrappersService.cs" />
-    <Compile Include="UriExtensionMethods.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Caliburn.Micro, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -240,9 +233,6 @@
     <Reference Include="MetroLog.WinRT">
       <HintPath>..\packages\MetroLog.0.8.1.1\lib\netcore45\MetroLog.WinRT.winmd</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Practices.ServiceLocation">
-      <HintPath>..\Lib\Microsoft.Practices.ServiceLocation.dll</HintPath>
-    </Reference>
     <Reference Include="MugenInjection.Core">
       <HintPath>..\packages\MugenInjection.3.5.1\lib\netcore45\MugenInjection.Core.dll</HintPath>
     </Reference>
@@ -257,7 +247,12 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{11d7fb8c-1a2c-4d5b-b129-937d76468a78}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '11.0' ">
     <VisualStudioVersion>11.0</VisualStudioVersion>
   </PropertyGroup>

@@ -4,9 +4,9 @@
     using System.Collections.Specialized;
     using System.ComponentModel;
     using Caliburn.Micro;
-    using Client.Common;
     using Client.Common.EventAggregatorMessages;
     using Client.Common.Services;
+    using global::Common.ExtensionsMethods;
     using Subsonic8.Main;
 
     public abstract class BottomBarViewModelBase : Screen, IBottomBarViewModel
@@ -28,8 +28,8 @@
         #region Constructors and Destructors
 
         protected BottomBarViewModelBase(
-            INavigationService navigationService, 
-            IEventAggregator eventAggregator, 
+            INavigationService navigationService,
+            IEventAggregator eventAggregator,
             IPlaylistManagementService playlistManagementService)
         {
             NavigationService = navigationService;

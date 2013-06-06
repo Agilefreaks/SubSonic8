@@ -9,11 +9,11 @@
     using System.Linq;
     using System.Threading.Tasks;
     using System.Xml.Serialization;
-    using Client.Common;
     using Client.Common.EventAggregatorMessages;
     using Client.Common.Models;
     using Client.Common.Models.Subsonic;
     using Client.Common.Services;
+    using global::Common.ExtensionsMethods;
     using MugenInjection.Attributes;
     using Subsonic8.BottomBar;
     using Subsonic8.Framework.Extensions;

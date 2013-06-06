@@ -1,4 +1,4 @@
-﻿namespace Client.Common
+﻿namespace Common.ExtensionsMethods
 {
     using System;
     using Windows.Foundation;

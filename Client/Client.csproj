@@ -192,6 +192,9 @@
     <Compile Include="Framework\ViewModel\ItemViewModelBase.cs" />
     <Compile Include="Framework\ViewModel\PlaybackControlsViewModelBase.cs" />
     <Compile Include="Framework\ViewModel\ScreenWithStateBase.cs" />
+    <Compile Include="Playback\Playback\Filter.xaml.cs">
+      <DependentUpon>Filter.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PlaylistItem\PlaylistItemView.xaml.cs">
       <DependentUpon>PlaylistItemView.xaml</DependentUpon>
     </Compile>
@@ -394,6 +397,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Playback\Playback\Filter.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Playback\Playback\Video.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -459,6 +466,10 @@
     <ProjectReference Include="..\Client.Common\Client.Common.csproj">
       <Project>{a8f49761-4d7a-458f-b1b1-4a66c421b3aa}</Project>
       <Name>Client.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{11d7fb8c-1a2c-4d5b-b129-937d76468a78}</Project>
+      <Name>Common</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

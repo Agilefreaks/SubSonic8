@@ -1,15 +1,15 @@
-﻿namespace Client.Common.MugenExtensions
+﻿namespace Common.MugenExtensions
 {
     using System;
     using System.Reflection;
     using MugenInjection;
     using MugenInjection.Interface;
 
-    public class ViewModelConvention : InterfaceToImplementationBaseConvention
+    public class ServiceConvention : InterfaceToImplementationBaseConvention
     {
         #region Constructors and Destructors
 
-        public ViewModelConvention(IInjector injector)
+        public ServiceConvention(IInjector injector)
             : base(injector)
         {
         }
@@ -22,7 +22,7 @@
         {
             var typeInfo = type.GetTypeInfo();
 
-            return typeInfo.IsInterface && typeInfo.Name.EndsWith("ViewModel") && GetTargetType(type) != null;
+            return typeInfo.IsInterface && typeInfo.Name.EndsWith("Service") && GetTargetType(type) != null;
         }
 
         public override void CreateBinding(Type type)

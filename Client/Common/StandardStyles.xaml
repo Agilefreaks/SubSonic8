@@ -547,6 +547,12 @@
         <Setter Property="Content" Value="&#xE13E;" />
     </Style>
 
+    <Style x:Key="FilterAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
+        <Setter Property="AutomationProperties.AutomationId" Value="FilterAppBarButton"/>
+        <Setter Property="AutomationProperties.Name" Value="Filter"/>
+        <Setter Property="Content" Value="&#xE11A;"/>
+    </Style>
+
     <!-- 
         Standard AppBarButton Styles for use with Button and ToggleButton
     
