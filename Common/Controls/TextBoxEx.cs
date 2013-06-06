@@ -1,5 +1,5 @@
 ﻿/*
- * Code taken from following article:
+ * Original code taken from following article:
  * Title:   [Windows 8] Update TextBox’s binding on TextChanged 
  * Author:  Benjamin Roux
  * Url:     http://weblogs.asp.net/broux/archive/2012/07/03/windows-8-update-textbox-s-binding-on-textchanged.aspx
@@ -12,7 +12,7 @@ namespace Common.Controls
     public static class TextBoxEx
     {
         public static readonly DependencyProperty RealTimeTextProperty =
-    DependencyProperty.RegisterAttached("RealTimeText", typeof(string), typeof(TextBoxEx), null);
+    DependencyProperty.RegisterAttached("RealTimeText", typeof(string), typeof(TextBoxEx), new PropertyMetadata(string.Empty, RealTimeTextChangedCallback));
 
         public static readonly DependencyProperty IsAutoUpdateProperty =
     DependencyProperty.RegisterAttached("IsAutoUpdate", typeof(bool), typeof(TextBoxEx), new PropertyMetadata(false, OnIsAutoUpdateChanged));
@@ -56,6 +56,12 @@ namespace Common.Controls
         {
             var textBox = (TextBox)sender;
             textBox.SetValue(RealTimeTextProperty, textBox.Text);
+        }
+
+        private static void RealTimeTextChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
+        {
+            var textBox = (TextBox)dependencyObject;
+            textBox.Text = (string)dependencyPropertyChangedEventArgs.NewValue ?? string.Empty;
         }
     }
 }
