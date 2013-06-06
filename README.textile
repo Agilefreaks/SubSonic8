@@ -31,3 +31,4 @@ h1. Contributing
 h1. Contact
 
 You can contact us at office@agilefreaks.com or by phone at +40745857479
+Have no fear: We are accepting donations via GitTip! https://www.gittip.com/balauru
