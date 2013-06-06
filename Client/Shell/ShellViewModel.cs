@@ -14,6 +14,7 @@
     using Subsonic8.Framework.Services;
     using Subsonic8.Search;
     using Subsonic8.Settings;
+    using Windows.UI.Xaml;
 
     public class ShellViewModel : Screen, IShellViewModel
     {
@@ -32,12 +33,12 @@
         #region Constructors and Destructors
 
         public ShellViewModel(
-            IEventAggregator eventAggregator, 
-            ISubsonicService subsonicService, 
-            ICustomFrameAdapter navigationService, 
-            IToastNotificationService notificationService, 
-            IDialogNotificationService dialogNotificationService, 
-            IStorageService storageService, 
+            IEventAggregator eventAggregator,
+            ISubsonicService subsonicService,
+            ICustomFrameAdapter navigationService,
+            IToastNotificationService notificationService,
+            IDialogNotificationService dialogNotificationService,
+            IStorageService storageService,
             IWinRTWrappersService winRTWrappersService)
         {
             _eventAggregator = eventAggregator;
@@ -162,6 +163,11 @@
         public void SongEnded()
         {
             _eventAggregator.Publish(new PlayNextMessage());
+        }
+
+        public void SongFailed(ExceptionRoutedEventArgs eventArgs)
+        {
+            _eventAggregator.Publish(new PlayFailedMessage(eventArgs.ErrorMessage, eventArgs.OriginalSource));
         }
 
         public void Stop()

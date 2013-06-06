@@ -170,6 +170,7 @@
     <Compile Include="Shell\ShellViewModelTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Framework\ViewModel\ViewModelBaseTests.cs" />
+    <Compile Include="VideoPlayback\VideoPlaybackViewModelTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

@@ -41,13 +41,7 @@
 
             await Task.Run(() => _subject.Execute(new ActionExecutionContext()));
 
-            _subject.Error.Should().BeOfType<CommunicationException>();
-        }
-
-        [TestMethod]
-        public void HandleResponseShouldDoTheBuggy()
-        {
-            // TODO: pending
+            _subject.Error.Should().BeOfType<HttpRequestException>();
         }
 
         [TestInitialize]

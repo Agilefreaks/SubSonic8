@@ -2,17 +2,18 @@
 {
     using System;
     using System.Collections.Generic;
+    using Client.Common.EventAggregatorMessages;
     using Client.Common.Services.DataStructures.PlayerManagementService;
     using Microsoft.PlayerFramework;
+    using MugenInjection.Attributes;
     using Subsonic8.Framework.Services;
     using Subsonic8.Framework.ViewModel;
+    using Windows.UI.Xaml;
     using PlaylistItem = Client.Common.Models.PlaylistItem;
 
     public class VideoPlaybackViewModel : PlaybackControlsViewModelBase, IVidePlaybackViewModel
     {
         #region Fields
-
-        private readonly IToastNotificationService _notificationService;
 
         private TimeSpan _endTime;
 
@@ -23,15 +24,6 @@
         private Uri _source;
 
         private TimeSpan _startTime;
-
-        #endregion
-
-        #region Constructors and Destructors
-
-        public VideoPlaybackViewModel(IToastNotificationService notificationService)
-        {
-            _notificationService = notificationService;
-        }
 
         #endregion
 
@@ -100,13 +92,8 @@
             }
         }
 
-        public IToastNotificationService ToastNotificationService
-        {
-            get
-            {
-                return _notificationService;
-            }
-        }
+        [Inject]
+        public IToastNotificationService ToastNotificationService { get; set; }
 
         #endregion
 
@@ -117,14 +104,19 @@
             if (FullScreenChanged != null)
             {
                 FullScreenChanged(
-                    this, 
+                    this,
                     new PlaybackStateEventArgs
                         {
-                            StartTime = mediaPlayer.StartTime, 
-                            EndTime = mediaPlayer.EndTime, 
+                            StartTime = mediaPlayer.StartTime,
+                            EndTime = mediaPlayer.EndTime,
                             TimeRemaining = mediaPlayer.TimeRemaining
                         });
             }
+        }
+
+        public void SongFailed(ExceptionRoutedEventArgs eventArgs)
+        {
+            EventAggregator.Publish(new PlayFailedMessage(eventArgs.ErrorMessage, eventArgs.OriginalSource));
         }
 
         #endregion
@@ -141,9 +133,6 @@
 
         void IPlayer.Play(PlaylistItem item, object options)
         {
-            // var regex = new Regex("(.*)(id=)([0-9]{1,})(.*)");
-            // var id = int.Parse(regex.Matches(item.UriAsString)[0].Groups[3].Value);
-            // await SubsonicService.GetSong(id).WithErrorHandler(this).Execute();
             var startInfo = GetStartInfo(item, options as PlaybackStateEventArgs);
             Source = startInfo.Source;
             _pendingPlayerActions = new List<Action>

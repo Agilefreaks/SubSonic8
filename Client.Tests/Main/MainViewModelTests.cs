@@ -3,6 +3,8 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Client.Common.Models.Subsonic;
+    using Client.Common.Results;
+    using Client.Common.Services.DataStructures.SubsonicService;
     using Client.Tests.Framework.ViewModel;
     using Client.Tests.Mocks;
     using FluentAssertions;
@@ -35,9 +37,10 @@
         }
 
         [TestMethod]
-        public async Task PopulateWhenServiceIsConfiguredShouldExecuteAGetRootResult()
+        public async Task PopulateWhenServiceIsConfiguredAndPingResultIsOkShouldExecuteAGetRootResult()
         {
             MockSubsonicService.SetHasValidSubsonicUrl(true);
+            MockSubsonicService.Ping = () => new MockPingResult();
 
             await Task.Run(() => Subject.Populate());
             _mockGetRootResult.ExecuteCallCount.Should().Be(1);

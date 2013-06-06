@@ -8,7 +8,8 @@ namespace Subsonic8.Playback
     using Subsonic8.Framework.ViewModel;
 
     public interface IPlaybackViewModel : IHandle<PlaylistStateChangedMessage>, 
-                                          IHandle<StartPlaybackMessage>, 
+                                          IHandle<StartPlaybackMessage>,
+                                          IHandle<PlayFailedMessage>,
                                           IViewModel, 
                                           IToastNotificationCapable, 
                                           IHaveState, 

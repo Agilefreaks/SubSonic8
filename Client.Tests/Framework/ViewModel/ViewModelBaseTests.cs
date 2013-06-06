@@ -21,7 +21,7 @@
 
         protected MockSubsonicService MockSubsonicService { get; set; }
 
-        protected abstract TViewModel Subject { get; set; }
+        protected virtual TViewModel Subject { get; set; }
 
         #endregion
 

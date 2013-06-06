@@ -2,6 +2,7 @@
 {
     using System;
     using Caliburn.Micro;
+    using global::Common.MugenExtensions;
     using Subsonic8.BottomBar;
     using Subsonic8.Framework;
     using Subsonic8.Framework.Interfaces;
@@ -9,7 +10,6 @@
     using Subsonic8.Playlists;
     using Subsonic8.Shell;
     using Subsonic8.VideoPlayback;
-    using global::Common.MugenExtensions;
 
     public class ClientModule : MugenModuleWithAutoDiscoveryBase
     {

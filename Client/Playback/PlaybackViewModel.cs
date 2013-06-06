@@ -368,6 +368,12 @@
             PlaybackControlsVisible = message.HasElements;
         }
 
+        public void Handle(PlayFailedMessage message)
+        {
+            EventAggregator.Publish(new StopMessage());
+            HandleError("Could not play item:\r\n" + message.ErrorMessage);
+        }
+
         public async void LoadPlaylist()
         {
             var storageFile = await WinRTWrappersService.OpenStorageFile();

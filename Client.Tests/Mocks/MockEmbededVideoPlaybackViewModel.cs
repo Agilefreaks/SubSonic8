@@ -9,6 +9,7 @@
     using Subsonic8.BottomBar;
     using Subsonic8.Framework.Services;
     using Subsonic8.VideoPlayback;
+    using Windows.UI.Xaml;
     using Action = System.Action;
     using PlaylistItem = Client.Common.Models.PlaylistItem;
 
@@ -98,6 +99,10 @@
         }
 
         public void OnFullScreenChanged(MediaPlayer mediaPlayer)
+        {
+        }
+
+        public void SongFailed(ExceptionRoutedEventArgs eventArgs)
         {
         }
 

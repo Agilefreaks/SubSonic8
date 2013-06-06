@@ -11,6 +11,7 @@
         <mmppf:MediaPlayer Source="{Binding Path=Source}" Width="Auto" Height="Auto" IsFullScreenVisible="True"
                            AutoPlay="False"
                            MediaEnded="MediaPlayer_OnMediaEnded"
-                           IsFullScreenChanged="MediaPlayer_OnIsFullScreenChanged" x:Name="MediaPlayer" />
+                           IsFullScreenChanged="MediaPlayer_OnIsFullScreenChanged" x:Name="MediaPlayer"
+                           MediaFailed="MediaPlayer_OnMediaFailed"/>
     </Grid>
 </videoPlayback:VideoPlaybackView>

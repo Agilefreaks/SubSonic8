@@ -274,6 +274,24 @@ namespace Client.Tests.Playback
             Subject.PlaylistItems[1].Should().Be(playlistItem2);
         }
 
+        [TestMethod]
+        public void Handle_PlayFailedMessage_CallsNotificationServiceShowWithANiceMessage()
+        {
+            Subject.Handle(new PlayFailedMessage("test m", null));
+
+            MockDialogNotificationService.Showed.Count.Should().Be(1);
+            MockDialogNotificationService.Showed[0].Message.Should().Be("Could not play item:\r\ntest m");
+        }
+
+        [TestMethod]
+        public void Handle_PlayFailedMessage_ShouldPublishAStopMessage()
+        {
+            Subject.Handle(new PlayFailedMessage("test m", null));
+
+            MockEventAggregator.PublishCallCount.Should().Be(1);
+            MockEventAggregator.Messages[0].Should().BeOfType<StopMessage>();
+        }
+
         #endregion
 
         #region Methods

@@ -116,6 +116,10 @@
             throw new NotImplementedException();
         }
 
+        public void Handle(PlayFailedMessage message)
+        {
+        }
+
         public void LoadState(string parameter, Dictionary<string, object> statePageState)
         {
         }

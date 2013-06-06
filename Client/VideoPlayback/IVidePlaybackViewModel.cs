@@ -5,6 +5,7 @@
     using Microsoft.PlayerFramework;
     using Subsonic8.Framework.Interfaces;
     using Subsonic8.Framework.ViewModel;
+    using Windows.UI.Xaml;
 
     // ReSharper disable PossibleInterfaceMemberAmbiguity
     public interface IVidePlaybackViewModel : IPlaybackControlsViewModel, IViewModel, IToastNotificationCapable, IPlayer
@@ -27,6 +28,8 @@
         #region Public Methods and Operators
 
         void OnFullScreenChanged(MediaPlayer mediaPlayer);
+
+        void SongFailed(ExceptionRoutedEventArgs eventArgs);
 
         #endregion
     }

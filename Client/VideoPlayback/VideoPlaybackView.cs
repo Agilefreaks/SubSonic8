@@ -42,16 +42,22 @@
 
         #region Methods
 
-        protected void MediaPlayer_OnIsFullScreenChanged(object sender, RoutedPropertyChangedEventArgs<bool> e)
+        protected void MediaPlayer_OnIsFullScreenChanged(object sender, RoutedPropertyChangedEventArgs<bool> eventArgs)
         {
             // TODO: Replace with something nicer | It may be bug in Windows.Interactivity
             ((IVidePlaybackViewModel)DataContext).OnFullScreenChanged(GetMediaPlayer);
         }
 
-        protected void MediaPlayer_OnMediaEnded(object sender, MediaPlayerActionEventArgs e)
+        protected void MediaPlayer_OnMediaEnded(object sender, MediaPlayerActionEventArgs eventArgs)
         {
             // TODO: Replace with something nicer | It may be bug in Windows.Interactivity
             ((IVidePlaybackViewModel)DataContext).Next();
+        }
+
+        protected void MediaPlayer_OnMediaFailed(object sender, ExceptionRoutedEventArgs eventArgs)
+        {
+            // TODO: Replace with something nicer | It may be bug in Windows.Interactivity
+            ((IVidePlaybackViewModel)DataContext).SongFailed(eventArgs);
         }
 
         private void Pause()

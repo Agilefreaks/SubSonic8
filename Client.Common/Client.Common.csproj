@@ -104,6 +104,7 @@
     <Compile Include="CommonModule.cs" />
     <Compile Include="EventAggregatorMessages\PausePlaybackMessage.cs" />
     <Compile Include="EventAggregatorMessages\PlaybackMessageBase.cs" />
+    <Compile Include="EventAggregatorMessages\PlayFailedMessage.cs" />
     <Compile Include="EventAggregatorMessages\PlayMessage.cs" />
     <Compile Include="Models\IMediaModel.cs" />
     <Compile Include="Models\ISongModel.cs" />

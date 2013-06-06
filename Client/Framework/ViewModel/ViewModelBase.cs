@@ -2,7 +2,6 @@
 {
     using System;
     using System.ServiceModel;
-    using System.Threading.Tasks;
     using Caliburn.Micro;
     using Client.Common.Services;
     using MugenInjection.Attributes;
@@ -100,13 +99,13 @@
             NavigationService.GoBack();
         }
 
-        public async void HandleError(Exception error)
+        public void HandleError(Exception error)
         {
             var message = error is CommunicationException ? error.Message : error.ToString();
-            await HandleError(message);
+            HandleError(message);
         }
 
-        public async Task HandleError(string errorMessage)
+        public async void HandleError(string errorMessage)
         {
             await NotificationService.Show(new DialogNotificationOptions { Message = errorMessage, });
         }

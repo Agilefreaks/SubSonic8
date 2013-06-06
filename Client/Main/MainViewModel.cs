@@ -95,20 +95,19 @@
         {
             var populate = true;
             var diagnosticsResult = SubsonicService.Ping();
-            await diagnosticsResult.WithErrorHandler(this).Execute();
+            await diagnosticsResult.Execute();
             if (diagnosticsResult.Error == null)
             {
                 if (diagnosticsResult.ApiError != null)
                 {
                     populate = false;
-                    await
-                        NotificationService.Show(
-                            new DialogNotificationOptions { Message = diagnosticsResult.ApiError.Message });
+                    HandleError(diagnosticsResult.ApiError.Message);
                 }
             }
             else
             {
                 populate = false;
+                HandleError(diagnosticsResult.Error);
             }
 
             return populate;
