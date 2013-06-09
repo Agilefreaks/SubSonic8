@@ -26,7 +26,7 @@
         protected override async Task AfterPopulate(int id)
         {
             var result = SubsonicService.GetMusicFolders();
-            await result.WithErrorHandler(this).OnSuccess(r => SetIndexName(r, id)).Execute();
+            await result.WithErrorHandler(ErrorDialogViewModel).OnSuccess(r => SetIndexName(r, id)).Execute();
         }
 
         protected override IEnumerable<IMediaModel> GetItemsToDisplay(IndexItem result)

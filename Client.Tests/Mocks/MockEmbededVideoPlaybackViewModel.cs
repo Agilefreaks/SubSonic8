@@ -4,11 +4,14 @@
     using System.Collections.ObjectModel;
     using System.ComponentModel;
     using Caliburn.Micro;
+    using Client.Common.Results;
     using Client.Common.Services;
     using Microsoft.PlayerFramework;
     using Subsonic8.BottomBar;
+    using Subsonic8.ErrorDialog;
     using Subsonic8.Framework.Services;
     using Subsonic8.VideoPlayback;
+    using Windows.ApplicationModel.DataTransfer;
     using Windows.UI.Xaml;
     using Action = System.Action;
     using PlaylistItem = Client.Common.Models.PlaylistItem;
@@ -39,6 +42,8 @@
 
         public TimeSpan EndTime { get; set; }
 
+        public IErrorHandler ErrorHandler { get; private set; }
+
         public IEventAggregator EventAggregator { get; set; }
 
         public bool IsActive { get; private set; }
@@ -58,6 +63,8 @@
         public IToastNotificationService ToastNotificationService { get; private set; }
 
         public Action UpdateDisplayName { get; set; }
+
+        public IErrorDialogViewModel ErrorDialogViewModel { get; set; }
 
         #endregion
 
@@ -99,6 +106,10 @@
         }
 
         public void OnFullScreenChanged(MediaPlayer mediaPlayer)
+        {
+        }
+
+        public void OnShareRequested(DataRequest dataRequest)
         {
         }
 

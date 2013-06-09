@@ -56,7 +56,11 @@
             {
                 if (await ShouldPopulate())
                 {
-                    await SubsonicService.GetMusicFolders().WithErrorHandler(this).OnSuccess(SetMenuItems).Execute();
+                    await
+                        SubsonicService.GetMusicFolders()
+                                       .WithErrorHandler(ErrorDialogViewModel)
+                                       .OnSuccess(SetMenuItems)
+                                       .Execute();
                     if (MenuItems.Count == 1)
                     {
                         NavigationService.NavigateToViewModel<IndexViewModel>(MenuItems[0].Item.Id);
@@ -95,13 +99,13 @@
                 if (diagnosticsResult.ApiError != null)
                 {
                     populate = false;
-                    HandleError(diagnosticsResult.ApiError.Message);
+                    ErrorDialogViewModel.HandleError(diagnosticsResult.ApiError.Message);
                 }
             }
             else
             {
                 populate = false;
-                HandleError(diagnosticsResult.Error);
+                ErrorDialogViewModel.HandleError(diagnosticsResult.Error);
             }
 
             return populate;

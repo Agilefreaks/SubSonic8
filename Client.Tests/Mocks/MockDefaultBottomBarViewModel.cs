@@ -3,8 +3,10 @@
     using System;
     using System.Collections.ObjectModel;
     using Client.Common.EventAggregatorMessages;
+    using Client.Common.Results;
     using Client.Common.Services;
     using Subsonic8.BottomBar;
+    using Subsonic8.ErrorDialog;
     using Subsonic8.Framework.Services;
 
     public class MockDefaultBottomBarViewModel : IDefaultBottomBarViewModel
@@ -23,6 +25,10 @@
         public bool CanAddToPlaylist { get; private set; }
 
         public bool DisplayPlayControls { get; set; }
+
+        public IErrorDialogViewModel ErrorDialogViewModel { get; private set; }
+
+        public IErrorHandler ErrorHandler { get; private set; }
 
         public bool IsOpened { get; set; }
 

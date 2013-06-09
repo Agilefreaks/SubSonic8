@@ -1,0 +1,23 @@
+﻿<UserControl
+    x:Class="Subsonic8.ErrorDialog.ErrorDialogView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:callisto="using:Callisto.Controls"
+    xmlns:cal="using:Caliburn.Micro"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <callisto:CustomDialog Title="{Binding Path=Title}" IsOpen="{Binding Path=IsOpen}" Background="Teal">
+        <StackPanel>
+            <TextBlock Margin="0,0,0,8" FontSize="15" FontWeight="SemiLight" TextWrapping="Wrap"
+                       Text="{Binding Path=Message}" />
+            <StackPanel Margin="0,20,0,0" HorizontalAlignment="Right" Orientation="Horizontal">
+                <Button cal:Message.Attach="[Event Click] = [Action ShareErrorDetails]" Content="Share Error Details"
+                        Width="160" Margin="0,0,20,0" />
+                <Button cal:Message.Attach="[Event Click] = [Action CloseDialog]" Content="Do Nothing" Width="120" />
+            </StackPanel>
+        </StackPanel>
+    </callisto:CustomDialog>
+</UserControl>

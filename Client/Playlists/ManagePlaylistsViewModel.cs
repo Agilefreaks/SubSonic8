@@ -33,7 +33,11 @@
         public override async void ChildClick(ItemClickEventArgs eventArgs)
         {
             var subsonicModel = ((MenuItemViewModel)eventArgs.ClickedItem).Item;
-            await SubsonicService.GetPlaylist(subsonicModel.Id).WithErrorHandler(this).OnSuccess(LoadPlaylist).Execute();
+            await
+                SubsonicService.GetPlaylist(subsonicModel.Id)
+                               .WithErrorHandler(ErrorHandler)
+                               .OnSuccess(LoadPlaylist)
+                               .Execute();
         }
 
         public void LoadPlaylist(Playlist playlist)

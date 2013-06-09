@@ -317,7 +317,7 @@
             _mockPlyalistManagementService = new MockPlyalistManagementService();
             _mockSubsonicService = new MockSubsonicService();
             _subject = new DefaultBottomBarViewModel(
-                _navigationService, _eventAggregator, _mockPlyalistManagementService)
+                _navigationService, _eventAggregator, _mockPlyalistManagementService, new MockErrorDialogViewModel())
                            {
                                NavigateOnPlay =
                                    _navigationService

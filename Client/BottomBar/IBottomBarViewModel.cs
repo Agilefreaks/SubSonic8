@@ -3,12 +3,15 @@ namespace Subsonic8.BottomBar
     using System.Collections.ObjectModel;
     using Caliburn.Micro;
     using Client.Common.EventAggregatorMessages;
+    using Subsonic8.ErrorDialog;
 
     public interface IBottomBarViewModel : IHandle<PlaylistStateChangedMessage>
     {
         #region Public Properties
 
         bool DisplayPlayControls { get; }
+
+        IErrorDialogViewModel ErrorDialogViewModel { get; }
 
         bool IsOpened { get; set; }
 

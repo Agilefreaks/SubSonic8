@@ -8,10 +8,13 @@
     using Caliburn.Micro;
     using Client.Common.EventAggregatorMessages;
     using Client.Common.Models;
+    using Client.Common.Results;
     using Client.Common.Services;
     using Subsonic8.BottomBar;
+    using Subsonic8.ErrorDialog;
     using Subsonic8.Framework.Services;
     using Subsonic8.Playback;
+    using Windows.ApplicationModel.DataTransfer;
     using Action = System.Action;
 
     public class MockPlaybackViewModel : IPlaybackViewModel
@@ -42,6 +45,8 @@
 
         public TimeSpan EndTime { get; set; }
 
+        public IErrorHandler ErrorHandler { get; private set; }
+
         public IEventAggregator EventAggregator { get; set; }
 
         public bool IsActive { get; private set; }
@@ -71,6 +76,8 @@
         public IToastNotificationService ToastNotificationService { get; private set; }
 
         public Action UpdateDisplayName { get; set; }
+
+        public IErrorDialogViewModel ErrorDialogViewModel { get; set; }
 
         #endregion
 
@@ -127,6 +134,10 @@
         public void NotifyOfPropertyChange(string propertyName)
         {
             throw new NotImplementedException();
+        }
+
+        public void OnShareRequested(DataRequest dataRequest)
+        {
         }
 
         public void Refresh()

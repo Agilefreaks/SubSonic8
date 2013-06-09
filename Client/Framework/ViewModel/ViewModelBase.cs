@@ -1,10 +1,10 @@
 ﻿namespace Subsonic8.Framework.ViewModel
 {
-    using System;
-    using System.ServiceModel;
     using Caliburn.Micro;
+    using Client.Common.Results;
     using Client.Common.Services;
     using MugenInjection.Attributes;
+    using Subsonic8.ErrorDialog;
     using Subsonic8.Framework.Services;
     using Action = System.Action;
 
@@ -36,6 +36,17 @@
             get
             {
                 return NavigationService != null && NavigationService.CanGoBack;
+            }
+        }
+
+        [Inject]
+        public IErrorDialogViewModel ErrorDialogViewModel { get; set; }
+
+        public IErrorHandler ErrorHandler
+        {
+            get
+            {
+                return ErrorDialogViewModel;
             }
         }
 
@@ -97,17 +108,6 @@
         public void GoBack()
         {
             NavigationService.GoBack();
-        }
-
-        public void HandleError(Exception error)
-        {
-            var message = error is CommunicationException ? error.Message : error.ToString();
-            HandleError(message);
-        }
-
-        public async void HandleError(string errorMessage)
-        {
-            await NotificationService.Show(new DialogNotificationOptions { Message = errorMessage, });
         }
 
         #endregion

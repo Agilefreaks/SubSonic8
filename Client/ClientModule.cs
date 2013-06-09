@@ -4,6 +4,7 @@
     using Caliburn.Micro;
     using global::Common.MugenExtensions;
     using Subsonic8.BottomBar;
+    using Subsonic8.ErrorDialog;
     using Subsonic8.Framework;
     using Subsonic8.Framework.Interfaces;
     using Subsonic8.Playback;
@@ -24,12 +25,14 @@
                 new[]
                     {
                         new Tuple<Type[], Type>(new[] { typeof(IEventAggregator) }, typeof(EventAggregator)), 
+                        new Tuple<Type[], Type>(new[] { typeof(IErrorDialogViewModel) }, typeof(ErrorDialogViewModel)), 
                         new Tuple<Type[], Type>(
                             new[] { typeof(IShellViewModel), typeof(ShellViewModel) }, typeof(ShellViewModel)), 
                         new Tuple<Type[], Type>(
                             new[] { typeof(IPlaybackViewModel), typeof(PlaybackViewModel) }, typeof(PlaybackViewModel)), 
                         new Tuple<Type[], Type>(
-                            new[] { typeof(IFullScreenVideoPlaybackViewModel) }, typeof(FullScreenVideoPlaybackViewModel)), 
+                            new[] { typeof(IFullScreenVideoPlaybackViewModel) }, typeof(FullScreenVideoPlaybackViewModel))
+                        , 
                         new Tuple<Type[], Type>(
                             new[] { typeof(IEmbededVideoPlaybackViewModel) }, typeof(EmbededVideoPlaybackViewModel)), 
                         new Tuple<Type[], Type>(

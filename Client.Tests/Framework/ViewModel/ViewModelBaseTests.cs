@@ -1,6 +1,5 @@
 ﻿namespace Client.Tests.Framework.ViewModel
 {
-    using System;
     using Caliburn.Micro;
     using Client.Tests.Mocks;
     using FluentAssertions;
@@ -21,23 +20,13 @@
 
         protected MockSubsonicService MockSubsonicService { get; set; }
 
+        protected MockErrorDialogViewModel MockErrorDialogViewModel { get; set; }
+
         protected virtual TViewModel Subject { get; set; }
 
         #endregion
 
         #region Public Methods and Operators
-
-        [TestMethod]
-        public void HandleErrorCallsNotificationServiceShow()
-        {
-            var exception = new Exception("oops?");
-            var mockDialogNotificationService = new MockDialogNotificationService();
-            Subject.NotificationService = mockDialogNotificationService;
-
-            Subject.HandleError(exception);
-
-            mockDialogNotificationService.Showed.Count.Should().Be(1);
-        }
 
         [TestMethod]
         public void OnActivateShouldSetDiplayName()
@@ -56,13 +45,15 @@
             MockNavigationService = new MockNavigationService();
             MockDialogNotificationService = new MockDialogNotificationService();
             MockEventAggregator = new MockEventAggregator();
+            MockErrorDialogViewModel = new MockErrorDialogViewModel();
             Subject = new TViewModel
                           {
-                              EventAggregator = MockEventAggregator, 
-                              SubsonicService = MockSubsonicService, 
-                              NavigationService = MockNavigationService, 
-                              NotificationService = MockDialogNotificationService, 
-                              UpdateDisplayName = () => Subject.DisplayName = string.Empty
+                              EventAggregator = MockEventAggregator,
+                              SubsonicService = MockSubsonicService,
+                              NavigationService = MockNavigationService,
+                              NotificationService = MockDialogNotificationService,
+                              UpdateDisplayName = () => Subject.DisplayName = string.Empty,
+                              ErrorDialogViewModel = MockErrorDialogViewModel
                           };
             TestInitializeExtensions();
         }

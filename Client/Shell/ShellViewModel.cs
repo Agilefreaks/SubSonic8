@@ -8,7 +8,9 @@
     using Client.Common.Models.Subsonic;
     using Client.Common.Results;
     using Client.Common.Services;
+    using MugenInjection.Attributes;
     using Subsonic8.BottomBar;
+    using Subsonic8.ErrorDialog;
     using Subsonic8.Framework.Extensions;
     using Subsonic8.Framework.Interfaces;
     using Subsonic8.Framework.Services;
@@ -23,6 +25,8 @@
         private readonly IEventAggregator _eventAggregator;
 
         private IBottomBarViewModel _bottomBar;
+
+        private IErrorDialogViewModel _errorDialog;
 
         private IPlayerControls _playerControls;
 
@@ -82,6 +86,26 @@
             get
             {
                 return "Subsonic8";
+            }
+        }
+
+        [Inject]
+        public IErrorDialogViewModel ErrorDialog
+        {
+            get
+            {
+                return _errorDialog;
+            }
+
+            set
+            {
+                if (Equals(value, _errorDialog))
+                {
+                    return;
+                }
+
+                _errorDialog = value;
+                NotifyOfPropertyChange();
             }
         }
 

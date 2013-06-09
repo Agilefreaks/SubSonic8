@@ -131,8 +131,8 @@ namespace Client.Tests.Playback
         {
             Subject.Handle(new PlayFailedMessage("test m", null));
 
-            MockDialogNotificationService.Showed.Count.Should().Be(1);
-            MockDialogNotificationService.Showed[0].Message.Should().Be("Could not play item:\r\ntest m");
+            MockErrorDialogViewModel.HandleErrorCallCount.Should().Be(1);
+            MockErrorDialogViewModel.HandledErrors.First().Should().Be("Could not play item:\r\ntest m");
         }
 
         [TestMethod]
@@ -323,8 +323,8 @@ namespace Client.Tests.Playback
                     tcr.SetResult(
                         new PlaylistItem
                             {
-                                PlayingState = PlaylistItemState.NotPlaying, 
-                                Uri = new Uri("http://test-uri"), 
+                                PlayingState = PlaylistItemState.NotPlaying,
+                                Uri = new Uri("http://test-uri"),
                                 Artist = "test-artist"
                             });
                     return tcr.Task;

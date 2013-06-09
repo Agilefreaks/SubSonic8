@@ -3,9 +3,11 @@
     using Client.Common.Results;
     using Client.Common.Services;
 
-    public interface ISongLoader : IErrorHandler
+    public interface ISongLoader
     {
         #region Public Properties
+
+        IErrorHandler ErrorHandler { get; }
 
         ISubsonicService SubsonicService { get; set; }
 

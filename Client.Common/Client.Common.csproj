@@ -179,7 +179,6 @@
     <Compile Include="Results\IGetRootResult.cs" />
     <Compile Include="Results\IGetSongResult.cs" />
     <Compile Include="Results\IResultBase.cs" />
-    <Compile Include="Results\IResultHandler.cs" />
     <Compile Include="Results\ISearchResult.cs" />
     <Compile Include="Results\IServiceResultBase.cs" />
     <Compile Include="Results\ISuccessHandler.cs" />

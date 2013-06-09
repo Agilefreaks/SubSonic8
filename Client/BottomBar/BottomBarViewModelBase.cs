@@ -7,6 +7,7 @@
     using Client.Common.EventAggregatorMessages;
     using Client.Common.Services;
     using global::Common.ExtensionsMethods;
+    using Subsonic8.ErrorDialog;
     using Subsonic8.Main;
 
     public abstract class BottomBarViewModelBase : Screen, IBottomBarViewModel
@@ -19,6 +20,8 @@
 
         protected readonly IPlaylistManagementService PlaylistManagementService;
 
+        private IErrorDialogViewModel _errorDialogViewModel;
+
         private bool _isOpened;
 
         private ObservableCollection<object> _selectedItems;
@@ -30,7 +33,8 @@
         protected BottomBarViewModelBase(
             INavigationService navigationService, 
             IEventAggregator eventAggregator, 
-            IPlaylistManagementService playlistManagementService)
+            IPlaylistManagementService playlistManagementService, 
+            IErrorDialogViewModel errorDialogViewModel)
         {
             NavigationService = navigationService;
             EventAggregator = eventAggregator;
@@ -38,6 +42,7 @@
             PlaylistManagementService = playlistManagementService;
             HookPlaylistManagementService();
             SelectedItems = new ObservableCollection<object>();
+            ErrorDialogViewModel = errorDialogViewModel;
         }
 
         #endregion
@@ -49,6 +54,25 @@
             get
             {
                 return PlaylistManagementService.HasElements;
+            }
+        }
+
+        public IErrorDialogViewModel ErrorDialogViewModel
+        {
+            get
+            {
+                return _errorDialogViewModel;
+            }
+
+            private set
+            {
+                if (Equals(value, _errorDialogViewModel))
+                {
+                    return;
+                }
+
+                _errorDialogViewModel = value;
+                NotifyOfPropertyChange();
             }
         }
 

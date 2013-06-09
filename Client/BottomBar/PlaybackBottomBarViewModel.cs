@@ -6,6 +6,7 @@
     using Client.Common.EventAggregatorMessages;
     using Client.Common.Models;
     using Client.Common.Services;
+    using Subsonic8.ErrorDialog;
 
     public class PlaybackBottomBarViewModel : BottomBarViewModelBase, IPlaybackBottomBarViewModel
     {
@@ -14,8 +15,9 @@
         public PlaybackBottomBarViewModel(
             INavigationService navigationService, 
             IEventAggregator eventAggregator, 
-            IPlaylistManagementService playlistManagementService)
-            : base(navigationService, eventAggregator, playlistManagementService)
+            IPlaylistManagementService playlistManagementService, 
+            IErrorDialogViewModel errorDialogViewModel)
+            : base(navigationService, eventAggregator, playlistManagementService, errorDialogViewModel)
         {
         }
 

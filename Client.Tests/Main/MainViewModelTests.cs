@@ -1,6 +1,7 @@
 ﻿namespace Client.Tests.Main
 {
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using Client.Common.Models.Subsonic;
     using Client.Tests.Framework.ViewModel;
@@ -47,7 +48,7 @@
         }
 
         [TestMethod]
-        public async Task Populate_PingResultHasAPIError_ShowsADialogMessageWithTheObtainedInformation()
+        public async Task Populate_PingResultHasAPIError_CallsErrorDialogViewModelHandle()
         {
             MockSubsonicService.SetHasValidSubsonicUrl(true);
             Subject.Parameter = true;
@@ -56,8 +57,8 @@
 
             await Task.Run(() => Subject.Populate());
 
-            MockDialogNotificationService.Showed.Count.Should().Be(1);
-            MockDialogNotificationService.Showed[0].Message.Should().Be("test_m");
+            MockErrorDialogViewModel.HandleErrorCallCount.Should().Be(1);
+            MockErrorDialogViewModel.HandledErrors.First().Should().Be("test_m");
         }
 
         [TestMethod]

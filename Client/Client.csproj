@@ -149,6 +149,11 @@
     <Compile Include="Converters\IntToTimeStringConverter.cs" />
     <Compile Include="Converters\PlaybackStateToVisibilityConverter.cs" />
     <Compile Include="Converters\PlayingStateToVisibilityConverter.cs" />
+    <Compile Include="ErrorDialog\ErrorDialogView.xaml.cs">
+      <DependentUpon>ErrorDialogView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ErrorDialog\ErrorDialogViewModel.cs" />
+    <Compile Include="ErrorDialog\IErrorDialogViewModel.cs" />
     <Compile Include="Framework\Behaviors\IActiveItemProvider.cs" />
     <Compile Include="Framework\Behaviors\ScrollIntoViewBehavior.cs" />
     <Compile Include="Framework\Extensions\ModelLoaderExtensionMethods.cs" />
@@ -372,6 +377,10 @@
     <Page Include="Common\StandardStyles.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ErrorDialog\ErrorDialogView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Index\IndexView.xaml">
       <Generator>MSBuild:Compile</Generator>

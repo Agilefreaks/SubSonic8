@@ -17,7 +17,7 @@
             {
                 await
                     modelLoader.SubsonicService.GetSong(model.Id)
-                               .WithErrorHandler(modelLoader)
+                               .WithErrorHandler(modelLoader.ErrorHandler)
                                .OnSuccess(
                                    result =>
                                    playlistItem = CreatePlaylistItemFromSong(result, modelLoader.SubsonicService))

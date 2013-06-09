@@ -114,7 +114,7 @@
             {
                 await
                     SubsonicService.GetPlaylist(existingEntry.Item.Id)
-                                   .WithErrorHandler(this)
+                                   .WithErrorHandler(ErrorHandler)
                                    .OnSuccess(async result => await UpdatePlaylist(result))
                                    .Execute();
             }
@@ -123,7 +123,7 @@
                 var songIds = GetSongIdsForActivePlaylist();
                 await
                     SubsonicService.CreatePlaylist(PlaylistName, songIds)
-                                   .WithErrorHandler(this)
+                                   .WithErrorHandler(ErrorHandler)
                                    .OnSuccess(OnSaveFinished)
                                    .Execute();
             }
@@ -173,7 +173,7 @@
                                  .Select(songId => songIdsInPlaylist.IndexOf(songId));
             await
                 SubsonicService.UpdatePlaylist(playlist.Id, songIdsToAdd, songIndexesToRemove)
-                               .WithErrorHandler(this)
+                               .WithErrorHandler(ErrorHandler)
                                .OnSuccess(OnSaveFinished)
                                .Execute();
         }

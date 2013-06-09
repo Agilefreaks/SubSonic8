@@ -9,10 +9,13 @@
     using Client.Common.EventAggregatorMessages;
     using Client.Common.Models;
     using Client.Common.Models.Subsonic;
+    using Client.Common.Results;
     using Client.Common.Services;
     using MugenInjection.Attributes;
+    using Subsonic8.ErrorDialog;
     using Subsonic8.Framework.Extensions;
     using Subsonic8.Framework.Services;
+    using Subsonic8.Framework.ViewModel;
     using Subsonic8.MenuItem;
     using Subsonic8.Playback;
     using Action = System.Action;
@@ -30,8 +33,9 @@
         public DefaultBottomBarViewModel(
             ICustomFrameAdapter navigationService, 
             IEventAggregator eventAggregator, 
-            IPlaylistManagementService playlistManagementService)
-            : base(navigationService, eventAggregator, playlistManagementService)
+            IPlaylistManagementService playlistManagementService, 
+            IErrorDialogViewModel errorDialogViewModel)
+            : base(navigationService, eventAggregator, playlistManagementService, errorDialogViewModel)
         {
             LoadModel = this.LoadSong;
             NavigateOnPlay = () => NavigationService.NavigateToViewModel<PlaybackViewModel>();
@@ -61,6 +65,18 @@
 
         #endregion
 
+        #region Explicit Interface Properties
+
+        IErrorHandler ISongLoader.ErrorHandler
+        {
+            get
+            {
+                return ErrorDialogViewModel;
+            }
+        }
+
+        #endregion
+
         #region Properties
 
         private IEnumerable<ISubsonicModel> SelectedSubsonicItems
@@ -79,11 +95,6 @@
         {
             AddToPlaylist(SelectedSubsonicItems.ToList());
             SelectedItems.Clear();
-        }
-
-        public async void HandleError(Exception error)
-        {
-            await NotificationService.Show(new DialogNotificationOptions { Message = error.ToString(), });
         }
 
         public void NavigateToPlaylist()
@@ -135,7 +146,7 @@
                         {
                             await
                                 SubsonicService.GetAlbum(item.Id)
-                                               .WithErrorHandler(this)
+                                               .WithErrorHandler(ErrorDialogViewModel)
                                                .OnSuccess(result => children.AddRange(result.Songs))
                                                .Execute();
                         }
@@ -145,7 +156,7 @@
                         {
                             await
                                 SubsonicService.GetArtist(item.Id)
-                                               .WithErrorHandler(this)
+                                               .WithErrorHandler(ErrorDialogViewModel)
                                                .OnSuccess(result => children.AddRange(result.Albums))
                                                .Execute();
                         }
@@ -155,7 +166,7 @@
                         {
                             await
                                 SubsonicService.GetMusicDirectory(item.Id)
-                                               .WithErrorHandler(this)
+                                               .WithErrorHandler(ErrorDialogViewModel)
                                                .OnSuccess(result => children.AddRange(result.Children))
                                                .Execute();
                         }

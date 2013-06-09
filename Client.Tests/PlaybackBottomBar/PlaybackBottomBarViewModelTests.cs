@@ -69,7 +69,7 @@
             _mockEventAggregator = new MockEventAggregator();
             _playlistManagementService = new MockPlyalistManagementService();
             _subject = new PlaybackBottomBarViewModel(
-                _mockNavigationService, _mockEventAggregator, _playlistManagementService);
+                _mockNavigationService, _mockEventAggregator, _playlistManagementService, new MockErrorDialogViewModel());
         }
 
         #endregion

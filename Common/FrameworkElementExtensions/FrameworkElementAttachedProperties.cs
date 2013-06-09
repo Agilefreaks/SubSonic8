@@ -15,7 +15,7 @@ namespace Common.FrameworkElementExtensions
 
     internal class FrameworkElementAttachedProperties : DependencyObject
     {
-        #region  Constants
+        #region Constants
 
         private const string ExtensionDPsNamePrefix = "DependencyPropertyEx";
 
@@ -25,9 +25,9 @@ namespace Common.FrameworkElementExtensions
 
         public static readonly DependencyProperty DependencyPropertyCallbacksProperty =
             DependencyProperty.RegisterAttached(
-                "DependencyPropertyCallbacks",
-                typeof(DependencyPropertyChangedCallbacks),
-                typeof(FrameworkElementAttachedProperties),
+                "DependencyPropertyCallbacks", 
+                typeof(DependencyPropertyChangedCallbacks), 
+                typeof(FrameworkElementAttachedProperties), 
                 new PropertyMetadata(null));
 
         private static readonly Dictionary<string, DependencyProperty> StaticExtensionDPs =
@@ -43,8 +43,8 @@ namespace Common.FrameworkElementExtensions
         }
 
         public static void RegisterDependencyPropertyBinding<T>(
-            FrameworkElement element,
-            Expression<Func<T>> dependencyPropertyFunc,
+            FrameworkElement element, 
+            Expression<Func<T>> dependencyPropertyFunc, 
             Action<DependencyPropertyChangedEventArgs> changedCallback)
         {
             var propertyName = dependencyPropertyFunc.GetOperandName();
@@ -92,9 +92,9 @@ namespace Common.FrameworkElementExtensions
             {
                 var unusedDependencyProperty =
                     DependencyProperty.RegisterAttached(
-                        ExtensionDPsNamePrefix + "_" + propertyName,
-                        typeof(object),
-                        typeof(FrameworkElementAttachedProperties),
+                        ExtensionDPsNamePrefix + "_" + propertyName, 
+                        typeof(object), 
+                        typeof(FrameworkElementAttachedProperties), 
                         new PropertyMetadata(null, DependencyPropertyExPropertyChanged));
                 StaticExtensionDPs.Add(propertyName, unusedDependencyProperty);
             }
@@ -108,7 +108,7 @@ namespace Common.FrameworkElementExtensions
             var bindingSource = new RelativeSource { Mode = RelativeSourceMode.Self };
             var dependencyPropertyExtensionBinding = new Binding
                                                          {
-                                                             Path = new PropertyPath(dependencyPropertyToBind),
+                                                             Path = new PropertyPath(dependencyPropertyToBind), 
                                                              RelativeSource = bindingSource
                                                          };
             element.SetBinding(attachedDp, dependencyPropertyExtensionBinding);

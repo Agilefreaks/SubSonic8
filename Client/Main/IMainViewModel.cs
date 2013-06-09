@@ -8,7 +8,7 @@
     using Subsonic8.MenuItem;
     using Windows.UI.Xaml.Controls;
 
-    public interface IMainViewModel : IViewModel, IResultHandler<IList<MusicFolder>>
+    public interface IMainViewModel : IViewModel, ISuccessHandler<IList<MusicFolder>>
     {
         #region Public Properties
 

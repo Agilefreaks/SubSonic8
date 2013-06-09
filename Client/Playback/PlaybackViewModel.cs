@@ -8,6 +8,7 @@
     using System.Linq;
     using System.Threading.Tasks;
     using System.Xml.Serialization;
+    using Client.Common;
     using Client.Common.EventAggregatorMessages;
     using Client.Common.Models;
     using Client.Common.Models.Subsonic;
@@ -21,7 +22,6 @@
     using Subsonic8.Playlists;
     using Subsonic8.VideoPlayback;
     using Windows.UI.Xaml.Controls;
-    using ObjectExtensionMethods = global::Common.ExtensionsMethods.ObjectExtensionMethods;
 
     public class PlaybackViewModel : PlaybackControlsViewModelBase, IPlaybackViewModel
     {
@@ -289,7 +289,7 @@
                 }
                 catch (Exception exception)
                 {
-                    Client.Common.ObjectExtensionMethods.Log(this, exception);
+                    ObjectExtensionMethods.Log(this, exception);
                 }
             }
         }
@@ -376,7 +376,7 @@
         public void Handle(PlayFailedMessage message)
         {
             EventAggregator.Publish(new StopMessage());
-            HandleError("Could not play item:\r\n" + message.ErrorMessage);
+            ErrorDialogViewModel.HandleError("Could not play item:\r\n" + message.ErrorMessage);
         }
 
         public async void LoadPlaylist()
@@ -499,7 +499,7 @@
         {
             await
                 SubsonicService.GetSong(songId)
-                               .WithErrorHandler(this)
+                               .WithErrorHandler(ErrorDialogViewModel)
                                .OnSuccess(async song => await AddToPlaylistAndPlay(song))
                                .Execute();
         }
@@ -522,7 +522,7 @@
             object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
             if (propertyChangedEventArgs.PropertyName
-                == ObjectExtensionMethods.GetPropertyName(
+                == global::Common.ExtensionsMethods.ObjectExtensionMethods.GetPropertyName(
                     _playlistManagementService, () => _playlistManagementService.IsPlaying))
             {
                 NotifyOfPropertyChange(() => IsPlaying);

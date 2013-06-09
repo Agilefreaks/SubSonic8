@@ -64,12 +64,12 @@
         {
             _mockSubsonicService = new MockSubsonicService();
             _subject = new PlaylistBottomBarViewModel(
-                new MockNavigationService(), new MockEventAggregator(), new MockPlyalistManagementService())
-                           {
-                               SubsonicService
-                                   =
-                                   _mockSubsonicService
-                           };
+                new MockNavigationService(), 
+                new MockEventAggregator(), 
+                new MockPlyalistManagementService(), 
+                new MockErrorDialogViewModel()) {
+                                                   SubsonicService = _mockSubsonicService 
+                                                };
         }
 
         #endregion

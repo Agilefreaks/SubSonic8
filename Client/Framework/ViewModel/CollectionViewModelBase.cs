@@ -131,7 +131,7 @@
 
         public virtual async void Populate()
         {
-            await GetResult(Parameter).WithErrorHandler(this).OnSuccess(OnResultSuccessfull).Execute();
+            await GetResult(Parameter).WithErrorHandler(ErrorDialogViewModel).OnSuccess(OnResultSuccessfull).Execute();
             await AfterPopulate(Parameter);
             UpdateDisplayName();
         }
