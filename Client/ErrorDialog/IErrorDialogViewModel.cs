@@ -2,6 +2,7 @@
 {
     using Caliburn.Micro;
     using Client.Common.Results;
+    using Client.Common.Services;
 
     public interface IErrorDialogViewModel : IErrorHandler, ISupportSharing
     {
@@ -11,7 +12,7 @@
 
         string ErrorMessage { get; }
 
-        ISharingService SharingService { get; set; }
+        IWinRTWrappersService WinRTWrapperService { get; }
 
         #endregion
 

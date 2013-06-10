@@ -1,7 +1,9 @@
 ﻿namespace Client.Common.Services
 {
+    using System;
     using System.Threading.Tasks;
     using Client.Common.Helpers;
+    using Windows.ApplicationModel.DataTransfer;
     using Windows.ApplicationModel.Search;
     using Windows.Foundation;
     using Windows.Storage;
@@ -25,6 +27,10 @@
             TypedEventHandler<SettingsPane, SettingsPaneCommandsRequestedEventArgs> handler);
 
         Task SaveToFile<T>(IStorageFile storageFile, T @object);
+
+        void RegisterShareRequestHandler(Action<DataRequest> requestHandler);
+
+        void ShowShareUI();
 
         #endregion
     }

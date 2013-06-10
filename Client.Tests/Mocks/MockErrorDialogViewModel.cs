@@ -2,7 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
-    using Caliburn.Micro;
+    using Client.Common.Services;
     using Subsonic8.ErrorDialog;
     using Windows.ApplicationModel.DataTransfer;
 
@@ -42,7 +42,7 @@
 
         public string ErrorMessage { get; private set; }
 
-        public ISharingService SharingService { get; set; }
+        public IWinRTWrappersService WinRTWrapperService { get; private set; }
 
         public void CloseDialog()
         {

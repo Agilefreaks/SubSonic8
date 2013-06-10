@@ -4,6 +4,7 @@
     using System.Threading.Tasks;
     using Client.Common.Helpers;
     using Client.Common.Services;
+    using Windows.ApplicationModel.DataTransfer;
     using Windows.ApplicationModel.Search;
     using Windows.Foundation;
     using Windows.Storage;
@@ -36,6 +37,10 @@
         #endregion
 
         #region Properties
+
+        public int RegisterShareRequestHandlerCallCount { get; set; }
+
+        public int ShowShareUICallCount { get; set; }
 
         protected int SaveToFileCount { get; set; }
 
@@ -84,6 +89,16 @@
             var taskCompletionSource = new TaskCompletionSource<int>();
             taskCompletionSource.SetResult(0);
             return taskCompletionSource.Task;
+        }
+
+        public void RegisterShareRequestHandler(Action<DataRequest> requestHandler)
+        {
+            RegisterShareRequestHandlerCallCount++;
+        }
+
+        public void ShowShareUI()
+        {
+            ShowShareUICallCount++;
         }
 
         #endregion

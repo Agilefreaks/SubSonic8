@@ -7,6 +7,7 @@
     using System.Xml.Serialization;
     using Client.Common.Helpers;
     using MetroLog;
+    using Windows.ApplicationModel.DataTransfer;
     using Windows.ApplicationModel.Search;
     using Windows.Foundation;
     using Windows.Media;
@@ -96,6 +97,20 @@
 
             await randomAccessStream.FlushAsync();
             randomAccessStream.Dispose();
+        }
+
+        public void RegisterShareRequestHandler(Action<DataRequest> requestHandler)
+        {
+            if (requestHandler != null)
+            {
+                var dataTransferManager = DataTransferManager.GetForCurrentView();
+                dataTransferManager.DataRequested += (sender, eventArgs) => requestHandler(eventArgs.Request);
+            }
+        }
+
+        public void ShowShareUI()
+        {
+            DataTransferManager.ShowShareUI();
         }
 
         #endregion

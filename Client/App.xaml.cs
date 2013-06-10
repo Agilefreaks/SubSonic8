@@ -136,8 +136,6 @@
 
             RegisterNavigationService(shellView.ShellFrame);
 
-            RegisterShareService();
-
             BindShellViewModelToView(shellView);
 
             RegisterPlayers();
@@ -147,11 +145,6 @@
             await LoadSettings();
 
             await RestoreLastViewOrGoToMain(shellView);
-        }
-
-        private void RegisterShareService()
-        {
-            Kernel.Bind<ISharingService>().ToConstant(new SharingService());
         }
 
         #endregion

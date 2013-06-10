@@ -9,11 +9,18 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
+    <UserControl.Resources>
+        <cal:BooleanToVisibilityConverter x:Name="BooleanToVisibilityConverter"/>
+    </UserControl.Resources>
+    
     <callisto:CustomDialog Title="{Binding Path=Title}" IsOpen="{Binding Path=IsOpen}" Background="White">
         <StackPanel>
             <TextBlock Margin="0,0,0,8" FontSize="15" FontWeight="SemiLight" TextWrapping="Wrap"
                        Text="{Binding Path=Message}" />
-            <Button>Click Here To Show The Error Details</Button>
+            <ToggleSwitch x:Name="ShowErrorButton" OnContent="Hide Error" OffContent="Show Error"
+                          Style="{StaticResource LightToggleSwitch}"/>
+            <TextBox x:Name="ErrorMessage" IsReadOnly="True" MaxHeight="100" AcceptsReturn="True" BorderBrush="Teal" BorderThickness="1"
+                     Visibility="{Binding Path=IsOn, ElementName=ShowErrorButton, Converter={StaticResource BooleanToVisibilityConverter}}"/>
             <StackPanel Margin="0,20,0,0" HorizontalAlignment="Right" Orientation="Horizontal">
                 <Button cal:Message.Attach="[Event Click] = [Action ShareErrorDetails]" Content="Share Error Details"
                         Width="160" Margin="0,0,20,0" Style="{StaticResource LightButton}"/>

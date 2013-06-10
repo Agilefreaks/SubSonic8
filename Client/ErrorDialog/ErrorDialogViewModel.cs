@@ -3,7 +3,7 @@
     using System;
     using System.Text;
     using Caliburn.Micro;
-    using MugenInjection.Attributes;
+    using Client.Common.Services;
     using Windows.ApplicationModel.DataTransfer;
 
     public class ErrorDialogViewModel : PropertyChangedBase, IErrorDialogViewModel
@@ -29,6 +29,12 @@
         #endregion
 
         #region Constructors and Destructors
+
+        public ErrorDialogViewModel(IWinRTWrappersService winRTWrappersService)
+        {
+            WinRTWrapperService = winRTWrappersService;
+            WinRTWrapperService.RegisterShareRequestHandler(OnShareRequested);
+        }
 
         #endregion
 
@@ -88,8 +94,7 @@
             }
         }
 
-        [Inject]
-        public ISharingService SharingService { get; set; }
+        public IWinRTWrappersService WinRTWrapperService { get; private set; }
 
         #endregion
 
@@ -110,7 +115,7 @@
         public void ShareErrorDetails()
         {
             IsOpen = false;
-            SharingService.ShowShareUI();
+            WinRTWrapperService.ShowShareUI();
         }
 
         public void CloseDialog()

@@ -11,16 +11,19 @@
     {
         private ErrorDialogViewModel _subject;
 
-        private MockSharingService _mockSharingService;
+        private MockWinRTWrappersService _mockWinRTWrapperService;
 
         [TestInitialize]
         public void Setup()
         {
-            _mockSharingService = new MockSharingService();
-            _subject = new ErrorDialogViewModel
-                           {
-                               SharingService = _mockSharingService
-                           };
+            _mockWinRTWrapperService = new MockWinRTWrappersService();
+            _subject = new ErrorDialogViewModel(_mockWinRTWrapperService);
+        }
+
+        [TestMethod]
+        public void Ctor_Should_CallWinRTWrapperServiceRegisterShareRequestHandler()
+        {
+            _mockWinRTWrapperService.RegisterShareRequestHandlerCallCount.Should().Be(1);
         }
 
         [TestMethod]
@@ -90,7 +93,7 @@
         {
             _subject.ShareErrorDetails();
 
-            _mockSharingService.ShowShareUICallCount.Should().Be(1);
+            _mockWinRTWrapperService.ShowShareUICallCount.Should().Be(1);
         }
     }
 }
