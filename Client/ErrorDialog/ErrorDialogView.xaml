@@ -9,14 +9,16 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-    <callisto:CustomDialog Title="{Binding Path=Title}" IsOpen="{Binding Path=IsOpen}" Background="Teal">
+    <callisto:CustomDialog Title="{Binding Path=Title}" IsOpen="{Binding Path=IsOpen}" Background="White">
         <StackPanel>
             <TextBlock Margin="0,0,0,8" FontSize="15" FontWeight="SemiLight" TextWrapping="Wrap"
                        Text="{Binding Path=Message}" />
+            <Button>Click Here To Show The Error Details</Button>
             <StackPanel Margin="0,20,0,0" HorizontalAlignment="Right" Orientation="Horizontal">
                 <Button cal:Message.Attach="[Event Click] = [Action ShareErrorDetails]" Content="Share Error Details"
-                        Width="160" Margin="0,0,20,0" />
-                <Button cal:Message.Attach="[Event Click] = [Action CloseDialog]" Content="Do Nothing" Width="120" />
+                        Width="160" Margin="0,0,20,0" Style="{StaticResource LightButton}"/>
+                <Button cal:Message.Attach="[Event Click] = [Action CloseDialog]" Content="Ignore" Width="120" 
+                        Style="{StaticResource LightButton}"/>
             </StackPanel>
         </StackPanel>
     </callisto:CustomDialog>

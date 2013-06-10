@@ -2,7 +2,9 @@
 {
     using System;
     using System.Collections.Generic;
+    using Caliburn.Micro;
     using Subsonic8.ErrorDialog;
+    using Windows.ApplicationModel.DataTransfer;
 
     public class MockErrorDialogViewModel : IErrorDialogViewModel
     {
@@ -40,6 +42,8 @@
 
         public string ErrorMessage { get; private set; }
 
+        public ISharingService SharingService { get; set; }
+
         public void CloseDialog()
         {
         }
@@ -56,6 +60,10 @@
         }
 
         public void ShareErrorDetails()
+        {
+        }
+
+        public void OnShareRequested(DataRequest dataRequest)
         {
         }
 

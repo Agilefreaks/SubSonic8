@@ -1,9 +1,9 @@
 ﻿namespace Subsonic8.ErrorDialog
 {
     using System;
-    using System.ServiceModel;
     using System.Text;
     using Caliburn.Micro;
+    using MugenInjection.Attributes;
     using Windows.ApplicationModel.DataTransfer;
 
     public class ErrorDialogViewModel : PropertyChangedBase, IErrorDialogViewModel
@@ -22,8 +22,6 @@
 
         #region Fields
 
-        private readonly DataTransferManager _dataTransferManager;
-
         private string _errorMessage;
 
         private bool _isOpen;
@@ -31,12 +29,6 @@
         #endregion
 
         #region Constructors and Destructors
-
-        public ErrorDialogViewModel()
-        {
-            _dataTransferManager = DataTransferManager.GetForCurrentView();
-            _dataTransferManager.DataRequested += DataTransferManagerOnDataRequested;
-        }
 
         #endregion
 
@@ -96,19 +88,16 @@
             }
         }
 
+        [Inject]
+        public ISharingService SharingService { get; set; }
+
         #endregion
 
         #region Public Methods and Operators
 
-        public void CloseDialog()
-        {
-            ClearErrorMessage();
-            IsOpen = false;
-        }
-
         public void HandleError(Exception error)
         {
-            var message = error is CommunicationException ? error.Message : error.ToString();
+            var message = error.ToString();
             HandleError(message);
         }
 
@@ -121,16 +110,17 @@
         public void ShareErrorDetails()
         {
             IsOpen = false;
-            DataTransferManager.ShowShareUI();
+            SharingService.ShowShareUI();
         }
 
-        #endregion
-
-        #region Methods
-
-        private void DataTransferManagerOnDataRequested(DataTransferManager sender, DataRequestedEventArgs eventArgs)
+        public void CloseDialog()
         {
-            var dataRequest = eventArgs.Request;
+            IsOpen = false;
+            ClearErrorMessage();
+        }
+
+        public void OnShareRequested(DataRequest dataRequest)
+        {
             if (string.IsNullOrWhiteSpace(_errorMessage))
             {
                 dataRequest.FailWithDisplayText("There is nothing to share at this moment.");
@@ -147,6 +137,10 @@
                 ClearErrorMessage();
             }
         }
+
+        #endregion
+
+        #region Methods
 
         private void ClearErrorMessage()
         {
