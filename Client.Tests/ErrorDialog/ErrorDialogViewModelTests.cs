@@ -1,6 +1,7 @@
 ﻿namespace Client.Tests.ErrorDialog
 {
     using System;
+    using System.Linq;
     using Client.Tests.Mocks;
     using FluentAssertions;
     using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
@@ -13,11 +14,17 @@
 
         private MockWinRTWrappersService _mockWinRTWrapperService;
 
+        private MockNavigationService _mockNavigationService;
+
         [TestInitialize]
         public void Setup()
         {
             _mockWinRTWrapperService = new MockWinRTWrappersService();
-            _subject = new ErrorDialogViewModel(_mockWinRTWrapperService);
+            _mockNavigationService = new MockNavigationService();
+            _subject = new ErrorDialogViewModel(_mockWinRTWrapperService, _mockNavigationService)
+                           {
+                               NavigateAction = _mockNavigationService.DoNavigate
+                           };
         }
 
         [TestMethod]
@@ -27,65 +34,56 @@
         }
 
         [TestMethod]
-        public void HandleError_WithString_ShouldSetIsOpenTrue()
+        public void Ctor_Always_ShouldSetTheNavigateActionToNavigate()
         {
-            _subject.HandleError("test");
+            var errorDialogViewModel = new ErrorDialogViewModel(_mockWinRTWrapperService, _mockNavigationService);
 
-            _subject.IsOpen.Should().BeTrue();
+            errorDialogViewModel.NavigateAction.Should().Be((Action<Type>)errorDialogViewModel.Navigate);
         }
 
         [TestMethod]
-        public void HandleError_WithString_ShouldSetStringAsErrorMessage()
+        public void HandleError_WithString_ShouldNavigateToErrorDialogViewModel()
         {
             _subject.HandleError("test");
 
-            _subject.ErrorMessage.Should().Be("test");
+            _mockNavigationService.NavigateToViewModelCalls.Count.Should().Be(1);
+            _mockNavigationService.NavigateToViewModelCalls.First().Key.Should().Be(typeof(ErrorDialogViewModel));
         }
 
         [TestMethod]
-        public void HandleError_WithException_ShouldSetExceptionAsErrorMessage()
+        public void HandleError_WithString_ShouldSetStringAsErrorDescription()
+        {
+            _subject.HandleError("test");
+
+            _subject.ErrorDescription.Should().Be("test");
+        }
+
+        [TestMethod]
+        public void HandleError_WithException_ShouldSetExceptionAsExceptionString()
         {
             _subject.HandleError(new Exception("test"));
 
-            _subject.ErrorMessage.Should().Be("System.Exception: test");
+            _subject.ExceptionString.Should().Be("System.Exception: test");
         }
 
         [TestMethod]
-        public void HandleError_WithException_ShouldSetIsOpenTrue()
+        public void HandleError_WithException_ShouldNavigateToSelf()
         {
             _subject.HandleError(new Exception("test"));
 
-            _subject.IsOpen.Should().BeTrue();
+            _mockNavigationService.NavigateToViewModelCalls.Count.Should().Be(1);
+            _mockNavigationService.NavigateToViewModelCalls.First().Key.Should().Be(typeof(ErrorDialogViewModel));
         }
 
         [TestMethod]
-        public void CloseDialog_Always_ShouldSetIsOpenFalse()
+        public void GoBack_CanGoBack_ShouldSetIsOpenFalse()
         {
             _subject.HandleError("test");
+            _mockNavigationService.CanGoBack = true;
 
-            _subject.CloseDialog();
+            _subject.GoBack();
 
-            _subject.IsOpen.Should().BeFalse();
-        }
-
-        [TestMethod]
-        public void CloseDialog_Always_ShouldClearTheErrorMessage()
-        {
-            _subject.HandleError("test");
-
-            _subject.CloseDialog();
-
-            _subject.ErrorMessage.Should().BeNullOrEmpty();
-        }
-
-        [TestMethod]
-        public void ShareErrorDetails_Always_ShouldSetIsOpenFalse()
-        {
-            _subject.HandleError("test");
-
-            _subject.ShareErrorDetails();
-
-            _subject.IsOpen.Should().BeFalse();
+            _mockNavigationService.GoBackCallCount.Should().Be(1);
         }
 
         [TestMethod]

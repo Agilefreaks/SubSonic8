@@ -32,7 +32,7 @@
 
         #region Public Properties
 
-        public bool CanGoBack { get; private set; }
+        public bool CanGoBack { get; set; }
 
         public bool CanGoForward { get; private set; }
 
@@ -51,6 +51,11 @@
         public void DoNavigate()
         {
             NavigateToViewModelCalls.Add(typeof(IViewModel), null);
+        }
+
+        public void DoNavigate(Type targetType)
+        {
+            NavigateToViewModelCalls.Add(targetType, null);
         }
 
         public void GoBack()

@@ -8,9 +8,7 @@
     {
         #region Public Properties
 
-        bool IsOpen { get; set; }
-
-        string ErrorMessage { get; }
+        string ExceptionString { get; }
 
         IWinRTWrappersService WinRTWrapperService { get; }
 
@@ -18,11 +16,13 @@
 
         #region Public Methods and Operators
 
-        void CloseDialog();
-
         void HandleError(string errorMessage);
 
         void ShareErrorDetails();
+
+        void GoBack();
+
+        void ShowSettings();
 
         #endregion
     }

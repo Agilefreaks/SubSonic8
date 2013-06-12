@@ -122,7 +122,7 @@
                 {
                     throw new CommunicationException(
                         string.Format(
-                            "Response was:\r\nStatus Code:{0}\r\nReason:{1}", response.StatusCode, response.ReasonPhrase));
+                            "Response was:\r\nStatus Code: {0}\r\nReason: {1}", response.StatusCode, response.ReasonPhrase));
                 }
             }
             catch (HttpRequestException exception)

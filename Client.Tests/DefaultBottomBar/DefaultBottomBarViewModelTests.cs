@@ -34,6 +34,22 @@
 
         #region Public Methods and Operators
 
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            IoC.GetInstance = (type, s) => null;
+            _eventAggregator = new MockEventAggregator();
+            _navigationService = new MockNavigationService();
+            _mockPlyalistManagementService = new MockPlyalistManagementService();
+            _mockSubsonicService = new MockSubsonicService();
+            _subject = new DefaultBottomBarViewModel(
+                _navigationService, _eventAggregator, _mockPlyalistManagementService, new MockErrorDialogViewModel())
+            {
+                NavigateOnPlay = _navigationService.DoNavigate,
+                SubsonicService = _mockSubsonicService
+            };
+        }
+
         [TestMethod]
         public void AddToPlaylistCallShouldClearSelectedItemsCollection()
         {
@@ -102,7 +118,7 @@
                         Item =
                             new IndexItem
                                 {
-                                    Id = 5, 
+                                    Id = 5,
                                     Artists = new List<Artist> { new Artist { Id = 3 } }
                                 }
                     });
@@ -308,25 +324,6 @@
             _eventAggregator.Messages[0].Should().BeOfType<StopMessage>();
         }
 
-        [TestInitialize]
-        public void TestInitialize()
-        {
-            IoC.GetInstance = (type, s) => null;
-            _eventAggregator = new MockEventAggregator();
-            _navigationService = new MockNavigationService();
-            _mockPlyalistManagementService = new MockPlyalistManagementService();
-            _mockSubsonicService = new MockSubsonicService();
-            _subject = new DefaultBottomBarViewModel(
-                _navigationService, _eventAggregator, _mockPlyalistManagementService, new MockErrorDialogViewModel())
-                           {
-                               NavigateOnPlay =
-                                   _navigationService
-                                   .DoNavigate, 
-                               SubsonicService =
-                                   _mockSubsonicService
-                           };
-        }
-
         [TestMethod]
         public void ToggleShuffle_Always_PublishesANewToggleShuffleMessage()
         {
@@ -348,8 +345,8 @@
                     tcr.SetResult(
                         new PlaylistItem
                             {
-                                PlayingState = PlaylistItemState.NotPlaying, 
-                                Uri = new Uri("http://test-uri"), 
+                                PlayingState = PlaylistItemState.NotPlaying,
+                                Uri = new Uri("http://test-uri"),
                                 Artist = "test-artist"
                             });
                     return tcr.Task;

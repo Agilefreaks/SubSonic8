@@ -4,9 +4,11 @@
     using System.Text;
     using Caliburn.Micro;
     using Client.Common.Services;
+    using Subsonic8.Framework.Services;
+    using Subsonic8.Settings;
     using Windows.ApplicationModel.DataTransfer;
 
-    public class ErrorDialogViewModel : PropertyChangedBase, IErrorDialogViewModel
+    public class ErrorDialogViewModel : Screen, IErrorDialogViewModel
     {
         #region Constants
 
@@ -14,7 +16,7 @@
 
         private const string ActionInormation = "Please send this email to: " + ErrorReportDeliveryEmail;
 
-        private const string TitleMessage = "An Error Was Encountered.";
+        private const string TitleMessage = "Could not complete request.";
 
         private const string DefaultMessage = "You can choose to send us a report with the error details or ignore this.";
 
@@ -22,31 +24,25 @@
 
         #region Fields
 
-        private string _errorMessage;
+        private string _exceptionString;
 
-        private bool _isOpen;
+        private string _errorDescription;
 
         #endregion
 
         #region Constructors and Destructors
 
-        public ErrorDialogViewModel(IWinRTWrappersService winRTWrappersService)
+        public ErrorDialogViewModel(IWinRTWrappersService winRTWrappersService, INavigationService navigationService)
         {
             WinRTWrapperService = winRTWrappersService;
             WinRTWrapperService.RegisterShareRequestHandler(OnShareRequested);
+            NavigationService = navigationService;
+            NavigateAction = Navigate;
         }
 
         #endregion
 
         #region Public Properties
-
-        public string Title
-        {
-            get
-            {
-                return TitleMessage;
-            }
-        }
 
         public string Message
         {
@@ -56,45 +52,49 @@
             }
         }
 
-        public string ErrorMessage
+        public string ErrorDescription
         {
             get
             {
-                return _errorMessage;
-            }
-
-            private set
-            {
-                if (value == _errorMessage)
-                {
-                    return;
-                }
-
-                _errorMessage = value;
-                NotifyOfPropertyChange();
-            }
-        }
-
-        public bool IsOpen
-        {
-            get
-            {
-                return _isOpen;
+                return _errorDescription;
             }
 
             set
             {
-                if (value.Equals(_isOpen))
+                if (value == _errorDescription)
                 {
                     return;
                 }
 
-                _isOpen = value;
+                _errorDescription = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
+        public string ExceptionString
+        {
+            get
+            {
+                return _exceptionString;
+            }
+
+            private set
+            {
+                if (value == _exceptionString)
+                {
+                    return;
+                }
+
+                _exceptionString = value;
                 NotifyOfPropertyChange();
             }
         }
 
         public IWinRTWrappersService WinRTWrapperService { get; private set; }
+
+        public INavigationService NavigationService { get; private set; }
+
+        public Action<Type> NavigateAction { get; set; }
 
         #endregion
 
@@ -102,31 +102,32 @@
 
         public void HandleError(Exception error)
         {
-            var message = error.ToString();
-            HandleError(message);
+            ExceptionString = error.ToString();
+            HandleError(error.Message);
         }
 
         public void HandleError(string errorMessage)
         {
-            ErrorMessage = errorMessage;
-            IsOpen = true;
+            ErrorDescription = errorMessage;
+            NavigateAction(typeof(ErrorDialogViewModel));
         }
 
         public void ShareErrorDetails()
         {
-            IsOpen = false;
             WinRTWrapperService.ShowShareUI();
         }
 
-        public void CloseDialog()
+        public void GoBack()
         {
-            IsOpen = false;
-            ClearErrorMessage();
+            if (NavigationService.CanGoBack)
+            {
+                NavigationService.GoBack();
+            }
         }
 
         public void OnShareRequested(DataRequest dataRequest)
         {
-            if (string.IsNullOrWhiteSpace(_errorMessage))
+            if (string.IsNullOrWhiteSpace(_exceptionString))
             {
                 dataRequest.FailWithDisplayText("There is nothing to share at this moment.");
             }
@@ -137,19 +138,29 @@
                 dataRequest.Data.Properties.ApplicationName = "Subsonic8";
                 var dataBuilder = new StringBuilder();
                 dataBuilder.Append(string.Format("<h2>{0}</h2><br/>", ActionInormation));
-                dataBuilder.Append(string.Format("<div><span>{0}</span></div>", ErrorMessage));
+                dataBuilder.Append(string.Format("<div><span>{0}</span></div>", ExceptionString));
                 dataRequest.Data.SetHtmlFormat(HtmlFormatHelper.CreateHtmlFormat(dataBuilder.ToString()));
-                ClearErrorMessage();
             }
+        }
+
+        public void ShowSettings()
+        {
+            DialogService.ShowSettings<SettingsViewModel>();
+        }
+
+        public void Navigate(Type type)
+        {
+            NavigationService.NavigateToViewModel(type);
         }
 
         #endregion
 
         #region Methods
 
-        private void ClearErrorMessage()
+        protected override void OnActivate()
         {
-            ErrorMessage = null;
+            base.OnActivate();
+            DisplayName = TitleMessage;
         }
 
         #endregion

@@ -5,6 +5,7 @@
     using Client.Common;
     using Client.Common.Services;
     using MugenInjection;
+    using Subsonic8.ErrorDialog;
     using Subsonic8.Framework;
     using Subsonic8.Framework.Interfaces;
     using Subsonic8.Main;
@@ -122,7 +123,8 @@
 
             SuspensionManager.RegisterFrame(shellView.ShellFrame, "MainFrame");
 
-            if (shellView.ShellFrame.SourcePageType == null)
+            if (shellView.ShellFrame.SourcePageType == null ||
+                shellView.ShellFrame.SourcePageType == typeof(ErrorDialogView))
             {
                 _navigationService.NavigateToViewModel<MainViewModel>();
             }

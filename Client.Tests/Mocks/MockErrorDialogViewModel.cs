@@ -40,7 +40,7 @@
 
         #region Public Methods and Operators
 
-        public string ErrorMessage { get; private set; }
+        public string ExceptionString { get; private set; }
 
         public IWinRTWrappersService WinRTWrapperService { get; private set; }
 
@@ -60,6 +60,14 @@
         }
 
         public void ShareErrorDetails()
+        {
+        }
+
+        public void GoBack()
+        {
+        }
+
+        public void ShowSettings()
         {
         }
 

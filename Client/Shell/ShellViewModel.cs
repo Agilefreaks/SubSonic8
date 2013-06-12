@@ -8,9 +8,7 @@
     using Client.Common.Models.Subsonic;
     using Client.Common.Results;
     using Client.Common.Services;
-    using MugenInjection.Attributes;
     using Subsonic8.BottomBar;
-    using Subsonic8.ErrorDialog;
     using Subsonic8.Framework.Extensions;
     using Subsonic8.Framework.Interfaces;
     using Subsonic8.Framework.Services;
@@ -26,8 +24,6 @@
 
         private IBottomBarViewModel _bottomBar;
 
-        private IErrorDialogViewModel _errorDialog;
-
         private IPlayerControls _playerControls;
 
         private Uri _source;
@@ -37,12 +33,12 @@
         #region Constructors and Destructors
 
         public ShellViewModel(
-            IEventAggregator eventAggregator, 
-            ISubsonicService subsonicService, 
-            ICustomFrameAdapter navigationService, 
-            IToastNotificationService notificationService, 
-            IDialogNotificationService dialogNotificationService, 
-            IStorageService storageService, 
+            IEventAggregator eventAggregator,
+            ISubsonicService subsonicService,
+            ICustomFrameAdapter navigationService,
+            IToastNotificationService notificationService,
+            IDialogNotificationService dialogNotificationService,
+            IStorageService storageService,
             IWinRTWrappersService winRTWrappersService)
         {
             _eventAggregator = eventAggregator;
@@ -86,26 +82,6 @@
             get
             {
                 return "Subsonic8";
-            }
-        }
-
-        [Inject]
-        public IErrorDialogViewModel ErrorDialog
-        {
-            get
-            {
-                return _errorDialog;
-            }
-
-            set
-            {
-                if (Equals(value, _errorDialog))
-                {
-                    return;
-                }
-
-                _errorDialog = value;
-                NotifyOfPropertyChange();
             }
         }
 

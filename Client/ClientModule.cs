@@ -25,7 +25,7 @@
                 new[]
                     {
                         new Tuple<Type[], Type>(new[] { typeof(IEventAggregator) }, typeof(EventAggregator)), 
-                        new Tuple<Type[], Type>(new[] { typeof(IErrorDialogViewModel) }, typeof(ErrorDialogViewModel)), 
+                        new Tuple<Type[], Type>(new[] { typeof(IErrorDialogViewModel), typeof(ErrorDialogViewModel) }, typeof(ErrorDialogViewModel)), 
                         new Tuple<Type[], Type>(
                             new[] { typeof(IShellViewModel), typeof(ShellViewModel) }, typeof(ShellViewModel)), 
                         new Tuple<Type[], Type>(
