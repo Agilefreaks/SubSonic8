@@ -289,7 +289,7 @@
                 }
                 catch (Exception exception)
                 {
-                    ObjectExtensionMethods.Log(this, exception);
+                    this.Log(exception);
                 }
             }
         }
@@ -376,7 +376,10 @@
         public void Handle(PlayFailedMessage message)
         {
             EventAggregator.Publish(new StopMessage());
-            ErrorDialogViewModel.HandleError("Could not play item:\r\n" + message.ErrorMessage);
+            NotificationService.Show(new DialogNotificationOptions
+                                         {
+                                             Message = "Could not play item:\r\n" + message.ErrorMessage
+                                         });
         }
 
         public async void LoadPlaylist()

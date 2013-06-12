@@ -131,8 +131,8 @@ namespace Client.Tests.Playback
         {
             Subject.Handle(new PlayFailedMessage("test m", null));
 
-            MockErrorDialogViewModel.HandleErrorCallCount.Should().Be(1);
-            MockErrorDialogViewModel.HandledErrors.First().Should().Be("Could not play item:\r\ntest m");
+            MockDialogNotificationService.Showed.Count.Should().Be(1);
+            MockDialogNotificationService.Showed.First().Message.Should().Be("Could not play item:\r\ntest m");
         }
 
         [TestMethod]
