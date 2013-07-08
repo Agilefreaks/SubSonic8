@@ -1,0 +1,27 @@
+﻿<UserControl
+    x:Class="Subsonic8.Common.ExpandToFullScreen"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:i="using:Windows.UI.Interactivity"
+    xmlns:behaviors="using:Subsonic8.Framework.Behaviors"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400" Background="White">
+
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Image Source="ms-appx:///Assets/WideLogo.png" Stretch="None"/>
+            <TextBlock Style="{StaticResource ExpandTextBlockStyle}" HorizontalAlignment="Center">Browse items in fullscreen</TextBlock>
+            <Button Style="{StaticResource ExpandButtonStyle}" HorizontalAlignment="Center" Margin="10">
+                <i:Interaction.Behaviors>
+                    <behaviors:UnsnapBehavior/>
+                </i:Interaction.Behaviors>
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>

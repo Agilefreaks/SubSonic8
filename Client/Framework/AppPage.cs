@@ -132,11 +132,7 @@
         public void StartLayoutUpdates(object sender, RoutedEventArgs e)
         {
             var control = sender as Control;
-            if (control == null)
-            {
-                return;
-            }
-
+            if (control == null) return;
             if (_layoutAwareControls == null)
             {
                 // Start listening to view state changes when there are controls interested in updates
