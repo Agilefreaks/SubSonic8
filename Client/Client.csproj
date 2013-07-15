@@ -144,8 +144,17 @@
     <Compile Include="Common\ExpandToFullscreen.xaml.cs">
       <DependentUpon>ExpandToFullscreen.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Common\BrowseView.xaml.cs">
+      <DependentUpon>BrowseView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Common\PageHeader.xaml.cs">
       <DependentUpon>PageHeader.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Common\BrowseViews\FullScreen.xaml.cs">
+      <DependentUpon>FullScreen.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Common\BrowseViews\Snapped.xaml.cs">
+      <DependentUpon>Snapped.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\AppBarToggleButton.cs" />
     <Compile Include="Converters\InvertedBooleanToVisibilityConverter.cs" />
@@ -206,12 +215,6 @@
     </Compile>
     <Compile Include="Index\Views\Snapped.xaml.cs">
       <DependentUpon>Snapped.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Main\Views\Snapped.xaml.cs">
-      <DependentUpon>Snapped.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Main\Views\FullScreen.xaml.cs">
-      <DependentUpon>FullScreen.xaml</DependentUpon>
     </Compile>
     <Compile Include="Playback\Playback\Filter.xaml.cs">
       <DependentUpon>Filter.xaml</DependentUpon>
@@ -390,11 +393,23 @@
       <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
+    <Page Include="Common\BrowseView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Common\PageHeader.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Common\StandardStyles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Common\BrowseViews\FullScreen.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Common\BrowseViews\Snapped.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -413,14 +428,6 @@
     <Page Include="Index\Views\Snapped.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Main\Views\Snapped.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Main\Views\FullScreen.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MenuItem\MenuItemView.xaml">
       <SubType>Designer</SubType>

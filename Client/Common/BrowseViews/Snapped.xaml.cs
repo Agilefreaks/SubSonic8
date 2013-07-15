@@ -1,4 +1,4 @@
-﻿namespace Subsonic8.Main.Views
+﻿namespace Subsonic8.Common.BrowseViews
 {
     public sealed partial class Snapped
     {
