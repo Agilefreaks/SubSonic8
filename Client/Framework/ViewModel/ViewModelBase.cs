@@ -39,9 +39,6 @@
             }
         }
 
-        [Inject]
-        public IErrorDialogViewModel ErrorDialogViewModel { get; set; }
-
         public IErrorHandler ErrorHandler
         {
             get
@@ -49,6 +46,9 @@
                 return ErrorDialogViewModel;
             }
         }
+
+        [Inject]
+        public IErrorDialogViewModel ErrorDialogViewModel { get; set; }
 
         [Inject]
         public IEventAggregator EventAggregator

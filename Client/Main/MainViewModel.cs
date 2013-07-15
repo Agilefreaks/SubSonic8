@@ -1,20 +1,19 @@
 ﻿namespace Subsonic8.Main
 {
     using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
     using Caliburn.Micro;
+    using Client.Common.Models;
     using Client.Common.Models.Subsonic;
+    using Client.Common.Results;
     using MugenInjection.Attributes;
-    using Subsonic8.Framework.Extensions;
     using Subsonic8.Framework.Services;
     using Subsonic8.Framework.ViewModel;
     using Subsonic8.Index;
     using Subsonic8.MenuItem;
     using Subsonic8.Settings;
-    using Windows.UI.Xaml.Controls;
 
-    public class MainViewModel : ViewModelBase, IMainViewModel
+    public class MainViewModel : CollectionViewModelBase<bool, IList<MusicFolder>>, IMainViewModel
     {
         #region Constructors and Destructors
 
@@ -27,10 +26,6 @@
 
         #region Public Properties
 
-        public BindableCollection<MenuItemViewModel> MenuItems { get; private set; }
-
-        public bool Parameter { get; set; }
-
         [Inject]
         public IResourceService ResourceService { get; set; }
 
@@ -38,28 +33,13 @@
 
         #region Public Methods and Operators
 
-        public void IndexClick(ItemClickEventArgs eventArgs)
-        {
-            var item = ((MenuItemViewModel)eventArgs.ClickedItem).Item;
-
-            NavigationService.NavigateToViewModel<IndexViewModel>(item.Id);
-        }
-
-        public async void Populate()
+        public override async void Populate()
         {
             if (SubsonicService.HasValidSubsonicUrl)
             {
                 if (await ShouldPopulate())
                 {
-                    await
-                        SubsonicService.GetMusicFolders()
-                                       .WithErrorHandler(ErrorDialogViewModel)
-                                       .OnSuccess(SetMenuItems)
-                                       .Execute();
-                    if (MenuItems.Count == 1)
-                    {
-                        NavigationService.NavigateToViewModel<IndexViewModel>(MenuItems[0].Item.Id);
-                    }
+                    base.Populate();
                 }
             }
             else
@@ -69,19 +49,28 @@
             }
         }
 
-        public void SetMenuItems(IList<MusicFolder> items)
-        {
-            MenuItems.AddRange(items.Select(s => s.AsMenuItemViewModel()));
-        }
-
         #endregion
 
         #region Methods
 
-        protected override void OnInitialize()
+        protected override IEnumerable<IMediaModel> GetItemsToDisplay(IList<MusicFolder> result)
         {
-            base.OnInitialize();
-            Populate();
+            return result;
+        }
+
+        protected override IServiceResultBase<IList<MusicFolder>> GetResult(bool parameter)
+        {
+            return SubsonicService.GetMusicFolders();
+        }
+
+        protected override Task AfterPopulate(bool parameter)
+        {
+            if (MenuItems.Count == 1)
+            {
+                NavigationService.NavigateToViewModel<IndexViewModel>(MenuItems[0].Item.Id);
+            }
+
+            return base.AfterPopulate(parameter);
         }
 
         private async Task<bool> ShouldPopulate()

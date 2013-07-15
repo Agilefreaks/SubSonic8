@@ -29,7 +29,13 @@
                         </ObjectAnimationUsingKeyFrames>
                     </Storyboard>
                 </VisualState>
-                <VisualState x:Name="FullScreenPortrait"/>
+                <VisualState x:Name="FullScreenPortrait">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="FullScreenView" Storyboard.TargetProperty="Visibility">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="Visible"/>
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
                 <VisualState x:Name="Snapped">
                     <Storyboard>
                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="SnappedView" Storyboard.TargetProperty="Visibility">

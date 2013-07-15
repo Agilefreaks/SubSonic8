@@ -95,9 +95,19 @@
         }
 
         [TestMethod]
-        public void SetMenuItemsShouldAddMenuItems()
+        public async Task PopulateWhenResultIsSuccessfull()
         {
-            Subject.SetMenuItems(new List<MusicFolder> { new MusicFolder(), new MusicFolder() });
+            MockSubsonicService.SetHasValidSubsonicUrl(true);
+            MockSubsonicService.Ping = () => new MockPingResult();
+            MockSubsonicService.GetMusicFolders =
+                () =>
+                new MockGetRootResult
+                    {
+                        GetResultFunc =
+                            () => new List<MusicFolder> { new MusicFolder(), new MusicFolder() }
+                    };
+
+            await Task.Run(() => Subject.Populate());
 
             Subject.MenuItems.Should().HaveCount(2);
         }
