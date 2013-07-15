@@ -181,7 +181,6 @@
     <Compile Include="Results\IResultBase.cs" />
     <Compile Include="Results\ISearchResult.cs" />
     <Compile Include="Results\IServiceResultBase.cs" />
-    <Compile Include="Results\ISuccessHandler.cs" />
     <Compile Include="Results\ITaskResult.cs" />
     <Compile Include="Results\MessageDialogResult.cs" />
     <Compile Include="Results\ResultBase.cs" />

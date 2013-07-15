@@ -3,12 +3,11 @@
     using System.Collections.Generic;
     using Caliburn.Micro;
     using Client.Common.Models.Subsonic;
-    using Client.Common.Results;
     using Subsonic8.Framework.ViewModel;
     using Subsonic8.MenuItem;
     using Windows.UI.Xaml.Controls;
 
-    public interface IMainViewModel : IViewModel, ISuccessHandler<IList<MusicFolder>>
+    public interface IMainViewModel : IViewModel
     {
         #region Public Properties
 

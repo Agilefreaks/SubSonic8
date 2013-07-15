@@ -38,11 +38,6 @@
 
         #region Public Methods and Operators
 
-        public void HandleSuccess(IList<MusicFolder> result)
-        {
-            SetMenuItems(result);
-        }
-
         public void IndexClick(ItemClickEventArgs eventArgs)
         {
             var item = ((MenuItemViewModel)eventArgs.ClickedItem).Item;
