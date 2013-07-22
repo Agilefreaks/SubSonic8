@@ -25,19 +25,15 @@
                 Padding="10">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="10*" />
-                    <ColumnDefinition Width="70*" />
-                    <ColumnDefinition Width="20*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <TextBox caliburn:Message.Attach="[Event TextChanged] = [PlaylistNameChanged($source)]" Height="30"
-                         Margin="10, 0" Grid.Column="1" IsEnabled="{Binding Path=CanEdit}"
+                         Margin="60, 0, 10, 0" IsEnabled="{Binding Path=CanEdit}"
                          Text="{Binding Path=PlaylistName, Mode=OneWay}" />
-                <StackPanel Orientation="Horizontal" Grid.Column="2">
-                    <Button x:Name="Save" Margin="10, 0" MinWidth="100"
-                            Background="{StaticResource SaveButtonBackgroundBrush}">
-                        Save
-                    </Button>
-                    <Button x:Name="Cancel" Margin="10, 0" MinWidth="100" IsEnabled="{Binding Path=CanEdit}">Cancel</Button>
+                <StackPanel Orientation="Horizontal" Grid.Column="1" MinWidth="220">
+                    <Button x:Name="Save" Margin="10, 0" MinWidth="100" Background="{StaticResource SaveButtonBackgroundBrush}" Content="Save"/>
+                    <Button x:Name="Cancel" Margin="10, 0" MinWidth="100" IsEnabled="{Binding Path=CanEdit}" Content="Cancel"/>
                 </StackPanel>
             </Grid>
         </Border>
