@@ -18,10 +18,8 @@
     </Page.Resources>
 
     <Grid>
-        <ContentControl HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
-                        Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='FullScreen'}">
-            <videoPlayback:FullScreenVideoPlaybackView cal:Bind.Model="{Binding Path=FullScreenVideoPlaybackViewModel}" />
-        </ContentControl>
+        <videoPlayback:FullScreenVideoPlaybackView cal:Bind.Model="{Binding Path=FullScreenVideoPlaybackViewModel}" 
+                                                   Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='FullScreen'}"/>
         <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}"
               Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='VideoAudioFilter'}">
             <Grid.RowDefinitions>
@@ -31,7 +29,7 @@
 
             <common:PageHeader DataContext="{Binding}" />
 
-            <Grid Grid.Row="1">
+            <Grid Grid.Row="1" Margin="46,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
@@ -40,24 +38,17 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <Grid Grid.Column="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <StackPanel Grid.Column="1" Orientation="Horizontal">
-                        <Button Style="{StaticResource FilterAppBarButtonStyle}" x:Name="ShowFilter" />
-                        <Button Style="{StaticResource ClearPlaylistAppBarButtonStyle}" x:Name="ClearPlaylist" />
-                        <Button Style="{StaticResource LoadPlaylistAppBarButtonStyle}" x:Name="LoadPlaylist" />
-                        <Button Style="{StaticResource SaveAppBarButtonStyle}" x:Name="SavePlaylist" />
-                        <Button Style="{StaticResource LoadRemotePlaylistAppBarButtonStyle}"
-                                x:Name="LoadRemotePlaylist" />
-                        <Button Style="{StaticResource SaveRemoteAppBarButtonStyle}" x:Name="SaveRemotePlaylist" />
-                    </StackPanel>
-                </Grid>
+                <StackPanel Grid.ColumnSpan="2" HorizontalAlignment="Right" Orientation="Horizontal">
+                    <Button Style="{StaticResource FilterAppBarButtonStyle}" x:Name="ShowFilter" />
+                    <Button Style="{StaticResource ClearPlaylistAppBarButtonStyle}" x:Name="ClearPlaylist" />
+                    <Button Style="{StaticResource LoadPlaylistAppBarButtonStyle}" x:Name="LoadPlaylist" />
+                    <Button Style="{StaticResource SaveAppBarButtonStyle}" x:Name="SavePlaylist" />
+                    <Button Style="{StaticResource LoadRemotePlaylistAppBarButtonStyle}"
+                            x:Name="LoadRemotePlaylist" />
+                    <Button Style="{StaticResource SaveRemoteAppBarButtonStyle}" x:Name="SaveRemotePlaylist" />
+                </StackPanel>
                 <ContentControl Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                Padding="116,0,116,46">
+                                Padding="116,0,116,0">
                     <Grid>
                         <playback:Audio cal:Bind.Model="{Binding}"
                                         Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='Audio'}" />
@@ -67,7 +58,7 @@
                                          Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='Filter'}" />
                     </Grid>
                 </ContentControl>
-                <ListView Grid.Row="1" Grid.Column="1" Margin="0,0,46,46"
+                <ListView Grid.Row="1" Grid.Column="1"
                           ItemsSource="{Binding PlaylistItems}"
                           SelectionMode="Multiple"
                           behaviors:MultipleSelectBehavior.SelectedItems="{Binding SelectedItems, Mode=TwoWay}"

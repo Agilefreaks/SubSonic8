@@ -34,7 +34,9 @@
         <Setter Property="BorderThickness" Value="2" />
         <Setter Property="Width" Value="270" />
     </Style>
-
+    
+    <SolidColorBrush x:Name="SaveButtonBackgroundBrush" Color="#FF632F00"></SolidColorBrush>
+    
     <Style x:Key="ExpandTextBlockStyle" TargetType="TextBlock">
         <Setter Property="FontSize" Value="20" />
         <Setter Property="FontFamily" Value="{StaticResource ContentControlThemeFontFamily}" />

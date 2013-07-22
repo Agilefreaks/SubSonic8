@@ -27,6 +27,15 @@
 
         #endregion
 
+        #region Cosntructors
+
+        public VideoPlaybackViewModel()
+        {
+            _pendingPlayerActions = new List<Action>();
+        }
+
+        #endregion
+
         #region Public Events
 
         public event EventHandler<PlaybackStateEventArgs> FullScreenChanged;
@@ -104,11 +113,11 @@
             if (FullScreenChanged != null)
             {
                 FullScreenChanged(
-                    this, 
+                    this,
                     new PlaybackStateEventArgs
                         {
-                            StartTime = mediaPlayer.StartTime, 
-                            EndTime = mediaPlayer.EndTime, 
+                            StartTime = mediaPlayer.StartTime,
+                            EndTime = mediaPlayer.EndTime,
                             TimeRemaining = mediaPlayer.TimeRemaining
                         });
             }
