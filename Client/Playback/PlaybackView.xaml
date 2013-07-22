@@ -29,7 +29,7 @@
 
             <common:PageHeader DataContext="{Binding}" />
 
-            <Grid Grid.Row="1" Margin="46,0">
+            <Grid Grid.Row="1" Margin="46,0" x:Name="ContentGrid">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
@@ -48,7 +48,7 @@
                     <Button Style="{StaticResource SaveRemoteAppBarButtonStyle}" x:Name="SaveRemotePlaylist" />
                 </StackPanel>
                 <ContentControl Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                Padding="116,0,116,0">
+                                Padding="116,0" x:Name="ContentView">
                     <Grid>
                         <playback:Audio cal:Bind.Model="{Binding}"
                                         Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='Audio'}" />
@@ -64,7 +64,8 @@
                           behaviors:MultipleSelectBehavior.SelectedItems="{Binding SelectedItems, Mode=TwoWay}"
                           CanDragItems="False" CanReorderItems="False" AllowDrop="False"
                           IsItemClickEnabled="True"
-                          cal:Message.Attach="[Event ItemClick] = [Action StartPlayback($eventArgs)]">
+                          cal:Message.Attach="[Event ItemClick] = [Action StartPlayback($eventArgs)]"
+                          Margin="0,0,0,10">
                     <i:Interaction.Behaviors>
                         <behaviors:ScrollIntoViewBehavior ActiveItemProvider="{Binding}" />
                     </i:Interaction.Behaviors>
@@ -89,5 +90,30 @@
                 </ListView>
             </Grid>
         </Grid>
+        
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="ApplicationViewStates">
+                <VisualState x:Name="FullScreenLandscape"/>
+                <VisualState x:Name="Filled">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentGrid" Storyboard.TargetProperty="Margin">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="10,0"/>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentView" Storyboard.TargetProperty="Padding">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="10,0"/>
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+                <VisualState x:Name="FullScreenPortrait">
+                </VisualState>
+                <VisualState x:Name="Snapped">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="SnappedView" Storyboard.TargetProperty="Visibility">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="Visible"/>
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
     </Grid>
 </framework:AppPage>
