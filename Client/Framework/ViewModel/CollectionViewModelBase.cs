@@ -56,21 +56,6 @@
             }
         }
 
-        [Inject]
-        public IIoCService IoCService
-        {
-            get
-            {
-                return _ioCService;
-            }
-
-            set
-            {
-                _ioCService = value;
-                LoadBottomBar();
-            }
-        }
-
         public BindableCollection<MenuItemViewModel> MenuItems
         {
             get
@@ -99,11 +84,6 @@
 
             set
             {
-                if (Equals(value, _parameter))
-                {
-                    return;
-                }
-
                 _parameter = value;
                 NotifyOfPropertyChange();
                 Populate();
@@ -115,6 +95,21 @@
             get
             {
                 return BottomBar != null ? BottomBar.SelectedItems : new ObservableCollection<object>();
+            }
+        }
+
+        [Inject]
+        public IIoCService IoCService
+        {
+            get
+            {
+                return _ioCService;
+            }
+
+            set
+            {
+                _ioCService = value;
+                LoadBottomBar();
             }
         }
 
@@ -165,7 +160,7 @@
             PopulateMenuItems(result);
         }
 
-        protected virtual void PopulateMenuItems(TResult result)
+        private void PopulateMenuItems(TResult result)
         {
             MenuItems.Clear();
             var children = GetItemsToDisplay(result);

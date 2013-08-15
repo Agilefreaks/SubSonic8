@@ -14,18 +14,11 @@
         public ShellView()
         {
             InitializeComponent();
-            StopAction = CallStop;
-            PauseAction = CallPause;
-            PlayAction = CallPlay;
         }
 
         #endregion
 
         #region Public Properties
-
-        public Action PauseAction { get; private set; }
-
-        public Action PlayAction { get; private set; }
 
         public Frame ShellFrame
         {
@@ -35,29 +28,27 @@
             }
         }
 
-        public Action StopAction { get; private set; }
-
         #endregion
 
         #region Methods
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-        }
-
-        private async void CallPause()
+        public async void Pause()
         {
             await RunOnDispatcher(() => mediaElement.Pause());
         }
 
-        private async void CallPlay()
+        public async void Play()
         {
             await RunOnDispatcher(() => mediaElement.Play());
         }
 
-        private async void CallStop()
+        public async void Stop()
         {
             await RunOnDispatcher(() => mediaElement.Stop());
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
         }
 
         private async Task RunOnDispatcher(Action action)

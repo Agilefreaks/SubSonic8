@@ -31,9 +31,9 @@
         #region Constructors and Destructors
 
         public DefaultBottomBarViewModel(
-            ICustomFrameAdapter navigationService, 
-            IEventAggregator eventAggregator, 
-            IPlaylistManagementService playlistManagementService, 
+            ICustomFrameAdapter navigationService,
+            IEventAggregator eventAggregator,
+            IPlaylistManagementService playlistManagementService,
             IErrorDialogViewModel errorDialogViewModel)
             : base(navigationService, eventAggregator, playlistManagementService, errorDialogViewModel)
         {
@@ -175,6 +175,16 @@
                     case SubsonicModelTypeEnum.Index:
                         {
                             children.AddRange(((IndexItem)item).Artists);
+                        }
+
+                        break;
+                    case SubsonicModelTypeEnum.Folder:
+                        {
+                            await
+                                SubsonicService.GetIndex(item.Id)
+                                               .WithErrorHandler(ErrorDialogViewModel)
+                                               .OnSuccess(result => children.AddRange(result.Artists))
+                                               .Execute();
                         }
 
                         break;

@@ -1,4 +1,4 @@
-﻿namespace Client.Common.Tests.Mocks
+﻿namespace Common.Mocks
 {
     using System.Collections.Generic;
     using Client.Common.Models;

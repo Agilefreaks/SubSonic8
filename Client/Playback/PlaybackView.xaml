@@ -18,85 +18,111 @@
     </Page.Resources>
 
     <Grid>
-        <ContentControl HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
-                        Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='FullScreen'}">
-            <videoPlayback:FullScreenVideoPlaybackView cal:Bind.Model="{Binding Path=FullScreenVideoPlaybackViewModel}" />
-        </ContentControl>
-        <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}"
+        <Grid x:Name="ExpandedView">
+            <videoPlayback:FullScreenVideoPlaybackView cal:Bind.Model="{Binding Path=FullScreenVideoPlaybackViewModel}" 
+                                                   Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='FullScreen'}"/>
+            <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}"
               Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='VideoAudioFilter'}">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="140" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-
-            <common:PageHeader DataContext="{Binding}" />
-
-            <Grid Grid.Row="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="140" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <Grid Grid.Column="1">
+
+                <common:PageHeader DataContext="{Binding}" />
+
+                <Grid Grid.Row="1" Margin="46,0" x:Name="ExpandedContentGrid">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.ColumnSpan="2" HorizontalAlignment="Right" Orientation="Horizontal">
                         <Button Style="{StaticResource FilterAppBarButtonStyle}" x:Name="ShowFilter" />
                         <Button Style="{StaticResource ClearPlaylistAppBarButtonStyle}" x:Name="ClearPlaylist" />
                         <Button Style="{StaticResource LoadPlaylistAppBarButtonStyle}" x:Name="LoadPlaylist" />
                         <Button Style="{StaticResource SaveAppBarButtonStyle}" x:Name="SavePlaylist" />
                         <Button Style="{StaticResource LoadRemotePlaylistAppBarButtonStyle}"
-                                x:Name="LoadRemotePlaylist" />
+                            x:Name="LoadRemotePlaylist" />
                         <Button Style="{StaticResource SaveRemoteAppBarButtonStyle}" x:Name="SaveRemotePlaylist" />
                     </StackPanel>
-                </Grid>
-                <ContentControl Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                Padding="116,0,116,46">
-                    <Grid>
+                    <Grid Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"
+                            Margin="116,0" x:Name="ExpandedMediaPresenter">
                         <playback:Audio cal:Bind.Model="{Binding}"
-                                        Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='Audio'}" />
+                                    Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='Audio'}" />
                         <playback:Video cal:Bind.Model="{Binding}"
-                                        Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='Video'}" />
+                                    Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='Video'}" />
                         <playback:Filter cal:Bind.Model="{Binding}"
-                                         Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='Filter'}" />
+                                        Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='Filter'}" />
                     </Grid>
-                </ContentControl>
-                <ListView Grid.Row="1" Grid.Column="1" Margin="0,0,46,46"
+                    <ListView Grid.Row="1" Grid.Column="1"
                           ItemsSource="{Binding PlaylistItems}"
                           SelectionMode="Multiple"
                           behaviors:MultipleSelectBehavior.SelectedItems="{Binding SelectedItems, Mode=TwoWay}"
                           CanDragItems="False" CanReorderItems="False" AllowDrop="False"
                           IsItemClickEnabled="True"
-                          cal:Message.Attach="[Event ItemClick] = [Action StartPlayback($eventArgs)]">
-                    <i:Interaction.Behaviors>
-                        <behaviors:ScrollIntoViewBehavior ActiveItemProvider="{Binding}" />
-                    </i:Interaction.Behaviors>
-                    <ListView.ItemContainerStyle>
-                        <Style TargetType="ListViewItem">
-                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                        </Style>
-                    </ListView.ItemContainerStyle>
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <ContentControl HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch"
+                          cal:Message.Attach="[Event ItemClick] = [Action StartPlayback($eventArgs)]"
+                          Margin="0,0,0,10">
+                        <i:Interaction.Behaviors>
+                            <behaviors:ScrollIntoViewBehavior ActiveItemProvider="{Binding}" />
+                        </i:Interaction.Behaviors>
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ContentControl HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch"
                                             DataContext="{Binding}">
-                                <Grid HorizontalAlignment="Stretch">
-                                    <playlistItem:Playing
+                                    <Grid HorizontalAlignment="Stretch">
+                                        <playlistItem:Playing
                                         Visibility="{Binding Path=PlayingState, Converter={StaticResource PlayingStateToVisibilityConverter}, ConverterParameter='Playing'}" />
-                                    <playlistItem:NotPlaying
+                                        <playlistItem:NotPlaying
                                         Visibility="{Binding Path=PlayingState, Converter={StaticResource PlayingStateToVisibilityConverter}, ConverterParameter='NotPlaying'}" />
-                                </Grid>
-                            </ContentControl>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                                    </Grid>
+                                </ContentControl>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
             </Grid>
         </Grid>
+
+        <Grid x:Name="SnappedView" Visibility="Collapsed" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <playback:SnappedAudio cal:Bind.Model="{Binding}"
+                                    Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='Audio'}" />
+            <playback:SnappedVideo cal:Bind.Model="{Binding}"
+                                    Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='Video'}" />
+        </Grid>
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="ApplicationViewStates">
+                <VisualState x:Name="FullScreenLandscape"/>
+                <VisualState x:Name="Filled">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ExpandedContentGrid" Storyboard.TargetProperty="Margin">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="10,0"/>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ExpandedMediaPresenter" Storyboard.TargetProperty="Margin">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="10,0"/>
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+                <VisualState x:Name="FullScreenPortrait"/>
+                <VisualState x:Name="Snapped">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ExpandedView" Storyboard.TargetProperty="Visibility">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed"/>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="SnappedView" Storyboard.TargetProperty="Visibility">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="Visible"/>
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
     </Grid>
 </framework:AppPage>

@@ -551,7 +551,7 @@
         <Setter Property="AutomationProperties.AutomationId" Value="FilterAppBarButton" />
         <Setter Property="AutomationProperties.Name" Value="Filter" />
         <Setter Property="Content" Value="&#xE11A;" />
-    </Style>
+    </Style>   
 
     <!-- 
         Standard AppBarButton Styles for use with Button and ToggleButton
@@ -1504,7 +1504,7 @@
         <Setter Property="TextWrapping" Value="NoWrap" />
         <Setter Property="VerticalAlignment" Value="Bottom" />
         <Setter Property="Margin" Value="0,0,30,40" />
-    </Style>
+    </Style>   
 
     <Style x:Key="PageSubheaderTextStyle" TargetType="TextBlock" BasedOn="{StaticResource SubheaderTextStyle}">
         <Setter Property="TextWrapping" Value="NoWrap" />

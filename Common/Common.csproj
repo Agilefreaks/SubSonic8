@@ -102,6 +102,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Controls\TextBoxEx.cs" />
+    <Compile Include="Converters\InvertedBooleanConverter.cs" />
+    <Compile Include="Converters\InvertedNullToVisibilityConverter.cs" />
     <Compile Include="Converters\NullToVisibilityConverter.cs" />
     <Compile Include="ExtensionsMethods\LambdaExpressionExtensionMethods.cs" />
     <Compile Include="ExtensionsMethods\FrameworkElementExtensions.cs" />

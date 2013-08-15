@@ -31,10 +31,11 @@
                         new Tuple<Type[], Type>(
                             new[] { typeof(IPlaybackViewModel), typeof(PlaybackViewModel) }, typeof(PlaybackViewModel)), 
                         new Tuple<Type[], Type>(
-                            new[] { typeof(IFullScreenVideoPlaybackViewModel) }, typeof(FullScreenVideoPlaybackViewModel))
-                        , 
+                            new[] { typeof(IFullScreenVideoPlaybackViewModel) }, typeof(FullScreenVideoPlaybackViewModel)), 
                         new Tuple<Type[], Type>(
                             new[] { typeof(IEmbededVideoPlaybackViewModel) }, typeof(EmbededVideoPlaybackViewModel)), 
+                        new Tuple<Type[], Type>(
+                            new[] { typeof(ISnappedVideoPlaybackViewModel) }, typeof(SnappedVideoPlaybackViewModel)), 
                         new Tuple<Type[], Type>(
                             new[] { typeof(IDefaultBottomBarViewModel) }, typeof(DefaultBottomBarViewModel)), 
                         new Tuple<Type[], Type>(

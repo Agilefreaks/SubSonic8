@@ -38,7 +38,6 @@
 
                 _item = value;
                 NotifyOfPropertyChange();
-                PopulateMenuItems(Item);
             }
         }
 
@@ -49,6 +48,7 @@
         protected override void OnResultSuccessfull(T result)
         {
             Item = result;
+            base.OnResultSuccessfull(result);
         }
 
         #endregion
