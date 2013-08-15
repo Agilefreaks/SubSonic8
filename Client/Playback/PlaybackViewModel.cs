@@ -8,11 +8,11 @@
     using System.Linq;
     using System.Threading.Tasks;
     using System.Xml.Serialization;
-    using Client.Common;
     using Client.Common.EventAggregatorMessages;
     using Client.Common.Models;
     using Client.Common.Models.Subsonic;
     using Client.Common.Services;
+    using Client.Common.Services.DataStructures.PlayerManagementService;
     using global::Common.ListCollectionView;
     using MugenInjection.Attributes;
     using Subsonic8.BottomBar;
@@ -28,6 +28,8 @@
         #region Constants
 
         public const string CoverArtPlaceholderLarge = @"/Assets/CoverArtPlaceholderLarge.jpg";
+
+        public const string SnappedStateName = "Snapped";
 
         private const string StatePlaylistKey = "playlist_items";
 
@@ -57,9 +59,11 @@
 
         private PlaybackViewModelStateEnum _previousState;
 
-        private Uri _source;
-
         private PlaybackViewModelStateEnum _state;
+
+        private ISnappedVideoPlaybackViewModel _snappedVideoPlaybackViewModel;
+
+        private string _currentVisualState;
 
         #endregion
 
@@ -76,31 +80,11 @@
 
         #region Public Properties
 
-        public object ActiveItem
+        public PlaylistItem ActiveItem
         {
             get
             {
                 return PlaylistManagementService.CurrentItem;
-            }
-        }
-
-        [Inject]
-        public IPlaybackBottomBarViewModel BottomBar
-        {
-            get
-            {
-                return _bottomBar;
-            }
-
-            set
-            {
-                if (Equals(value, _bottomBar))
-                {
-                    return;
-                }
-
-                _bottomBar = value;
-                NotifyOfPropertyChange();
             }
         }
 
@@ -117,27 +101,6 @@
                                 ? CoverArtPlaceholderLarge
                                 : value;
                 NotifyOfPropertyChange();
-            }
-        }
-
-        [Inject]
-        public IEmbededVideoPlaybackViewModel EmbededVideoPlaybackViewModel
-        {
-            get
-            {
-                return _embededVideoPlaybackViewModel;
-            }
-
-            set
-            {
-                if (Equals(value, _embededVideoPlaybackViewModel))
-                {
-                    return;
-                }
-
-                _embededVideoPlaybackViewModel = value;
-                NotifyOfPropertyChange(() => EmbededVideoPlaybackViewModel);
-                HookEmbededVideoPlaybackViewModel();
             }
         }
 
@@ -158,27 +121,6 @@
                 _filterText = value;
                 NotifyOfPropertyChange();
                 SetPlaylistFilter(_filterText);
-            }
-        }
-
-        [Inject]
-        public IFullScreenVideoPlaybackViewModel FullScreenVideoPlaybackViewModel
-        {
-            get
-            {
-                return _fullScreenVideoPlaybackViewModel;
-            }
-
-            set
-            {
-                if (Equals(value, _fullScreenVideoPlaybackViewModel))
-                {
-                    return;
-                }
-
-                _fullScreenVideoPlaybackViewModel = value;
-                NotifyOfPropertyChange();
-                HookFullScreenVideoPlaybackViewModel();
             }
         }
 
@@ -222,6 +164,119 @@
             }
         }
 
+        public ListCollectionView PlaylistItems
+        {
+            get
+            {
+                return _playlistItems ?? (_playlistItems = new ListCollectionView(_playlistManagementService.Items));
+            }
+        }
+
+        public ObservableCollection<object> SelectedItems
+        {
+            get
+            {
+                return BottomBar != null ? BottomBar.SelectedItems : new ObservableCollection<object>();
+            }
+        }
+
+        public PlaybackViewModelStateEnum State
+        {
+            get
+            {
+                return _state;
+            }
+
+            set
+            {
+                if (value == _state)
+                {
+                    return;
+                }
+
+                _state = value;
+                NotifyOfPropertyChange(() => State);
+            }
+        }
+
+        [Inject]
+        public IPlaybackBottomBarViewModel BottomBar
+        {
+            get
+            {
+                return _bottomBar;
+            }
+
+            set
+            {
+                if (Equals(value, _bottomBar))
+                {
+                    return;
+                }
+
+                _bottomBar = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
+        [Inject]
+        public IEmbededVideoPlaybackViewModel EmbededVideoPlaybackViewModel
+        {
+            get
+            {
+                return _embededVideoPlaybackViewModel;
+            }
+
+            set
+            {
+                if (Equals(value, _embededVideoPlaybackViewModel))
+                {
+                    return;
+                }
+
+                _embededVideoPlaybackViewModel = value;
+                NotifyOfPropertyChange(() => EmbededVideoPlaybackViewModel);
+                HookEmbededVideoPlaybackViewModel();
+            }
+        }
+
+        [Inject]
+        public IFullScreenVideoPlaybackViewModel FullScreenVideoPlaybackViewModel
+        {
+            get
+            {
+                return _fullScreenVideoPlaybackViewModel;
+            }
+
+            set
+            {
+                if (Equals(value, _fullScreenVideoPlaybackViewModel))
+                {
+                    return;
+                }
+
+                _fullScreenVideoPlaybackViewModel = value;
+                NotifyOfPropertyChange();
+                HookFullScreenVideoPlaybackViewModel();
+            }
+        }
+
+        [Inject]
+        public ISnappedVideoPlaybackViewModel SnappedVideoPlaybackViewModel
+        {
+            get
+            {
+                return _snappedVideoPlaybackViewModel;
+            }
+
+            set
+            {
+                if (Equals(value, _snappedVideoPlaybackViewModel)) return;
+                _snappedVideoPlaybackViewModel = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
         [Inject]
         public IPlayerManagementService PlayerManagementService
         {
@@ -242,14 +297,6 @@
             }
         }
 
-        public ListCollectionView PlaylistItems
-        {
-            get
-            {
-                return _playlistItems ?? (_playlistItems = new ListCollectionView(_playlistManagementService.Items));
-            }
-        }
-
         [Inject]
         public IPlaylistManagementService PlaylistManagementService
         {
@@ -262,54 +309,6 @@
             {
                 _playlistManagementService = value;
                 HookPlaylistManagementService();
-            }
-        }
-
-        public ObservableCollection<object> SelectedItems
-        {
-            get
-            {
-                return BottomBar != null ? BottomBar.SelectedItems : new ObservableCollection<object>();
-            }
-        }
-
-        public Uri Source
-        {
-            get
-            {
-                return _source;
-            }
-
-            set
-            {
-                try
-                {
-                    _source = value;
-                    NotifyOfPropertyChange();
-                }
-                catch (Exception exception)
-                {
-                    this.Log(exception);
-                }
-            }
-        }
-
-        public PlaybackViewModelStateEnum State
-        {
-            get
-            {
-                return _state;
-            }
-
-            set
-            {
-                if (value == _state)
-                {
-                    return;
-                }
-
-                _state = value;
-                NotifyOfPropertyChange(() => State);
             }
         }
 
@@ -466,6 +465,27 @@
             EventAggregator.Publish(new PlayItemAtIndexMessage(pressedItemIndex));
         }
 
+        public void OnVisualStateChanged(string state)
+        {
+            if (_currentVisualState == state) return;
+
+            if (_currentVisualState == SnappedStateName && (State == PlaybackViewModelStateEnum.FullScreen || State == PlaybackViewModelStateEnum.Video))
+            {
+                var playbackTimeInfo = ((IVideoPlayer)PlayerManagementService.CurrentPlayer).GetPlaybackTimeInfo();
+                var videoPlayer = State == PlaybackViewModelStateEnum.FullScreen
+                                      ? (IVideoPlayer)FullScreenVideoPlaybackViewModel
+                                      : EmbededVideoPlaybackViewModel;
+                SwitchVideoPlayback(playbackTimeInfo, videoPlayer);
+            }
+            else if (state == SnappedStateName && (State == PlaybackViewModelStateEnum.FullScreen || State == PlaybackViewModelStateEnum.Video))
+            {
+                var playbackTimeInfo = ((IVideoPlayer)PlayerManagementService.CurrentPlayer).GetPlaybackTimeInfo();
+                SwitchVideoPlayback(playbackTimeInfo, SnappedVideoPlaybackViewModel);
+            }
+
+            _currentVisualState = state;
+        }
+
         #endregion
 
         #region Methods
@@ -479,13 +499,13 @@
         private void HookEmbededVideoPlaybackViewModel()
         {
             EmbededVideoPlaybackViewModel.FullScreenChanged +=
-                (sender, eventArgs) => SwitchToFullScreenVideoPlayback(eventArgs);
+                (sender, eventArgs) => SwitchVideoPlayback(eventArgs, FullScreenVideoPlaybackViewModel);
         }
 
         private void HookFullScreenVideoPlaybackViewModel()
         {
             FullScreenVideoPlaybackViewModel.FullScreenChanged +=
-                (sender, eventArgs) => SwitchToEmbededVideoPlayback(eventArgs);
+                (sender, eventArgs) => SwitchVideoPlayback(eventArgs, EmbededVideoPlaybackViewModel);
         }
 
         private void HookPlayerManagementService()
@@ -559,27 +579,22 @@
 
         private void SetStateByCurrentPlayer()
         {
-            if (!IsFiltering)
-            {
-                State = PlayerManagementService.CurrentPlayer == EmbededVideoPlaybackViewModel
-                            ? PlaybackViewModelStateEnum.Video
-                            : PlayerManagementService.CurrentPlayer == FullScreenVideoPlaybackViewModel
-                                  ? PlaybackViewModelStateEnum.FullScreen
-                                  : PlaybackViewModelStateEnum.Audio;
-            }
+            if (IsFiltering) return;
+
+            var currentPlayer = PlayerManagementService.CurrentPlayer;
+            State = currentPlayer == EmbededVideoPlaybackViewModel
+                        ? PlaybackViewModelStateEnum.Video
+                        : currentPlayer == FullScreenVideoPlaybackViewModel
+                              ? PlaybackViewModelStateEnum.FullScreen
+                              : currentPlayer == SnappedVideoPlaybackViewModel
+                                    ? State
+                                    : PlaybackViewModelStateEnum.Audio;
         }
 
-        private void SwitchToEmbededVideoPlayback(PlaybackStateEventArgs eventArgs)
+        private void SwitchVideoPlayback(PlaybackStateEventArgs eventArgs, IVideoPlayer videoPlayer)
         {
             EventAggregator.Publish(new StopMessage());
-            PlayerManagementService.DefaultVideoPlayer = EmbededVideoPlaybackViewModel;
-            EventAggregator.Publish(new PlayMessage { Options = eventArgs });
-        }
-
-        private void SwitchToFullScreenVideoPlayback(PlaybackStateEventArgs eventArgs)
-        {
-            EventAggregator.Publish(new StopMessage());
-            PlayerManagementService.DefaultVideoPlayer = FullScreenVideoPlaybackViewModel;
+            PlayerManagementService.DefaultVideoPlayer = videoPlayer;
             EventAggregator.Publish(new PlayMessage { Options = eventArgs });
         }
 

@@ -19,6 +19,12 @@
 
         #region Public Methods and Operators
 
+        [TestInitialize]
+        public void Setup()
+        {
+            _subject = new PlayerManagementService(new MockEventAggregator());
+        }
+
         [TestCleanup]
         public void Cleanup()
         {
@@ -30,7 +36,7 @@
         {
             var mockPlayer1 = new MockPlayer();
             _subject.DefaultAudioPlayer = mockPlayer1;
-            var mockPlayer2 = new MockPlayer();
+            var mockPlayer2 = new MockVideoPlayer();
             _subject.DefaultVideoPlayer = mockPlayer2;
 
             var player = _subject.GetPlayerFor(new PlaylistItem { Type = PlaylistItemTypeEnum.Audio });
@@ -43,7 +49,7 @@
         {
             var mockPlayer1 = new MockPlayer();
             _subject.DefaultAudioPlayer = mockPlayer1;
-            var mockPlayer2 = new MockPlayer();
+            var mockPlayer2 = new MockVideoPlayer();
             _subject.DefaultVideoPlayer = mockPlayer2;
 
             var player = _subject.GetPlayerFor(new PlaylistItem { Type = PlaylistItemTypeEnum.Video });
@@ -110,12 +116,6 @@
             _subject.RegisteredPlayers.Should().Contain(mockPlayer2);
         }
 
-        [TestInitialize]
-        public void Setup()
-        {
-            _subject = new PlayerManagementService(new MockEventAggregator());
-        }
-
         [TestMethod]
         public void VideoPlayer_RegisteredVideoPlayersEmpty_ReturnsNull()
         {
@@ -138,7 +138,7 @@
             var mockPlayer2 = new MockPlayer();
             _subject.RegisterVideoPlayer(mockPlayer1);
             _subject.RegisterVideoPlayer(mockPlayer2);
-            var mockPlayer3 = new MockPlayer();
+            var mockPlayer3 = new MockVideoPlayer();
             _subject.DefaultVideoPlayer = mockPlayer3;
 
             _subject.VideoPlayer.Should().Be(mockPlayer3);

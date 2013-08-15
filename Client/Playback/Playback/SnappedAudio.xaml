@@ -1,0 +1,58 @@
+﻿<Page
+    x:Class="Subsonic8.Playback.Playback.SnappedAudio"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:cal="using:Caliburn.Micro"
+    xmlns:ic="using:Subsonic8.Controls" xmlns:converters="using:Common.Converters"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <cal:BooleanToVisibilityConverter x:Name="BoolToVisibilityConverter" />
+        <converters:InvertedNullToVisibilityConverter x:Name="InvertedNullToVisibilityConverter"/>
+        <converters:NullToVisibilityConverter x:Name="NullToVisibilityConverter"/>
+        <Style TargetType="TextBlock" x:Key="SnappedTitleStyle">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
+        <Style TargetType="TextBlock" x:Key="SnappedAppNameStyle">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Margin" Value="0,0,0,160"></Setter>
+        </Style>
+    </Page.Resources>
+
+    <Grid Margin="20,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Style="{StaticResource SnappedAppNameStyle}">Subsonic8</TextBlock>
+
+        <Image Grid.Row="1" Source="{Binding CoverArt}" Stretch="Uniform"/>
+
+        <StackPanel Grid.Row="2" Orientation="Vertical" Margin="0,20,0,0">
+            <TextBlock Text="{Binding Path=ActiveItem.Artist}" Style="{StaticResource SnappedTitleStyle}" Visibility="{Binding Path=ActiveItem, Converter={StaticResource NullToVisibilityConverter}}"/>
+            <TextBlock Text="{Binding Path=ActiveItem.Title}" Style="{StaticResource SnappedTitleStyle}" Visibility="{Binding Path=ActiveItem, Converter={StaticResource NullToVisibilityConverter}}"/>
+            <TextBlock Text="Nothing Playing" Style="{StaticResource SnappedTitleStyle}" Visibility="{Binding Path=ActiveItem, Converter={StaticResource InvertedNullToVisibilityConverter}}"/>
+        </StackPanel>
+        <Grid Grid.Row="3" HorizontalAlignment="Center" Margin="0,80,0,0"
+            Visibility="{Binding Path=PlaybackControlsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="18"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="18"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Style="{StaticResource PreviousAppBarButtonStyle}"
+                    cal:Message.Attach="[Event Click] = [Action Previous]" />
+            <ic:AppBarToggleButton Grid.Column="2" Style="{StaticResource PlayAppBarButtonStyle}"
+                                   CheckedStyle="{StaticResource PauseAppBarButtonStyle}"
+                                   cal:Message.Attach="[Event Click] = [Action PlayPause()]" AutoToggle="False"
+                                   IsChecked="{Binding IsPlaying}" />
+            <Button Grid.Column="4" Style="{StaticResource NextAppBarButtonStyle}" cal:Message.Attach="[Event Click] = [Action Next]"/>
+        </Grid>
+    </Grid>
+</Page> 

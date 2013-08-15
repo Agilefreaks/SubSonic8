@@ -85,6 +85,7 @@
 
             set
             {
+                if (value == _isOpened) return;                
                 _isOpened = value;
                 NotifyOfPropertyChange();
             }

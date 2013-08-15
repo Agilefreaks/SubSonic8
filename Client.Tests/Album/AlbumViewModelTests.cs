@@ -1,6 +1,5 @@
 ﻿namespace Client.Tests.Album
 {
-    using System.Collections.Generic;
     using Client.Common.Models.Subsonic;
     using Client.Tests.Framework.ViewModel;
     using FluentAssertions;
@@ -17,16 +16,6 @@
         #endregion
 
         #region Public Methods and Operators
-
-        [TestMethod]
-        public void AlbumWhenSetPopulatesMenuItemsWithElementsFromSongsProperty()
-        {
-            var album = new Album { Songs = new List<Song> { new Song(), new Song() } };
-
-            Subject.Item = album;
-
-            Subject.MenuItems.Should().HaveCount(2);
-        }
 
         [TestMethod]
         public void CtroShouldInstantiateMenuItems()

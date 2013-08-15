@@ -108,6 +108,11 @@
                 foreach (var layoutAwareControl in _layoutAwareControls)
                 {
                     VisualStateManager.GoToState(layoutAwareControl, visualState, false);
+                    var visualStateAwareDataContext = layoutAwareControl.DataContext as IVisualStateAware;
+                    if (visualStateAwareDataContext != null)
+                    {
+                        visualStateAwareDataContext.OnVisualStateChanged(visualState);
+                    }
                 }
             }
         }
@@ -132,11 +137,7 @@
         public void StartLayoutUpdates(object sender, RoutedEventArgs e)
         {
             var control = sender as Control;
-            if (control == null)
-            {
-                return;
-            }
-
+            if (control == null) return;
             if (_layoutAwareControls == null)
             {
                 // Start listening to view state changes when there are controls interested in updates

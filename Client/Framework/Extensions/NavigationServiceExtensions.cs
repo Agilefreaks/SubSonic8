@@ -4,6 +4,7 @@
     using Client.Common.Models;
     using Subsonic8.Album;
     using Subsonic8.Artist;
+    using Subsonic8.Index;
     using Subsonic8.MusicDirectory;
     using Subsonic8.Playback;
 
@@ -29,6 +30,9 @@
                     break;
                 case SubsonicModelTypeEnum.Artist:
                     navigationService.NavigateToViewModel<ArtistViewModel>(id);
+                    break;
+                case SubsonicModelTypeEnum.Folder:
+                    navigationService.NavigateToViewModel<IndexViewModel>(id);
                     break;
             }
         }

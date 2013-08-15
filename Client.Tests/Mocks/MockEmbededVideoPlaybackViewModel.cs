@@ -6,6 +6,7 @@
     using Caliburn.Micro;
     using Client.Common.Results;
     using Client.Common.Services;
+    using Client.Common.Services.DataStructures.PlayerManagementService;
     using Microsoft.PlayerFramework;
     using Subsonic8.BottomBar;
     using Subsonic8.ErrorDialog;
@@ -105,7 +106,7 @@
             throw new NotImplementedException();
         }
 
-        public void OnFullScreenChanged(MediaPlayer mediaPlayer)
+        public void OnFullScreenChanged()
         {
         }
 
@@ -145,6 +146,11 @@
         }
 
         public void Stop()
+        {
+            throw new NotImplementedException();
+        }
+
+        public PlaybackStateEventArgs GetPlaybackTimeInfo()
         {
             throw new NotImplementedException();
         }

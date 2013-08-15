@@ -51,7 +51,6 @@
         public async Task Populate_PingResultHasAPIError_CallsErrorDialogViewModelHandle()
         {
             MockSubsonicService.SetHasValidSubsonicUrl(true);
-            Subject.Parameter = true;
             var mockPingResult = new MockPingResult { ApiError = new Error { Message = "test_m" } };
             MockSubsonicService.Ping = () => mockPingResult;
 
@@ -95,9 +94,19 @@
         }
 
         [TestMethod]
-        public void SetMenuItemsShouldAddMenuItems()
+        public async Task PopulateWhenResultIsSuccessfull()
         {
-            Subject.SetMenuItems(new List<MusicFolder> { new MusicFolder(), new MusicFolder() });
+            MockSubsonicService.SetHasValidSubsonicUrl(true);
+            MockSubsonicService.Ping = () => new MockPingResult();
+            MockSubsonicService.GetMusicFolders =
+                () =>
+                new MockGetRootResult
+                    {
+                        GetResultFunc =
+                            () => new List<MusicFolder> { new MusicFolder(), new MusicFolder() }
+                    };
+
+            await Task.Run(() => Subject.Populate());
 
             Subject.MenuItems.Should().HaveCount(2);
         }

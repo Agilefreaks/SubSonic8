@@ -7,9 +7,11 @@ namespace Client.Tests.Playback
     using Client.Common.EventAggregatorMessages;
     using Client.Common.Models;
     using Client.Common.Models.Subsonic;
+    using Client.Common.Services.DataStructures.PlayerManagementService;
     using Client.Tests.Framework.ViewModel;
     using Client.Tests.Mocks;
     using global::Common.ListCollectionView;
+    using global::Common.Mocks;
     using FluentAssertions;
     using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
     using Microsoft.VisualStudio.TestPlatform.UnitTestFramework.AppContainer;
@@ -28,6 +30,12 @@ namespace Client.Tests.Playback
         private MockToastNotificationService _mockToastNotificationService;
 
         private MockWinRTWrappersService _mockWinRTWrappersService;
+
+        private MockPlayerManagementService _mockPlayerManagementService;
+
+        private MockSnappedVideoPlaybackViewModel _mockSnappedVideoPlaybackViewModel;
+
+        private MockFullScreenVideoPlaybackViewModel _mockFullScreenVideoPlaybackViewModel;
 
         #endregion
 
@@ -293,6 +301,126 @@ namespace Client.Tests.Playback
             Subject.State.Should().Be(PlaybackViewModelStateEnum.Filter);
         }
 
+        [TestMethod]
+        public void OnVisualStateChanged_NewStateNameIsSnappedAndCurrentStateIsVideoOrFullScreen_ShouldSentAStopMessage()
+        {
+            Subject.State = PlaybackViewModelStateEnum.Video;
+            _mockPlayerManagementService.CurrentPlayer = new MockVideoPlayer();
+
+            Subject.OnVisualStateChanged(PlaybackViewModel.SnappedStateName);
+
+            MockEventAggregator.Messages.Should().ContainSingle(item => item.GetType() == typeof(StopMessage));
+        }
+
+        [TestMethod]
+        public void OnVisualStateChanged_NewStateNameIsSnappedAndCurrentStateIsVideoOrFullScreen_ShouldTryToGetThePlaybackTimeInfoFromTheCurrentPlayer()
+        {
+            var mockVideoPlayer = new MockVideoPlayer();
+            var callCount = 0;
+            mockVideoPlayer.OnGetPlaybackTimeInfo = () =>
+                {
+                    callCount++;
+                    return new PlaybackStateEventArgs();
+                };
+            _mockPlayerManagementService.CurrentPlayer = mockVideoPlayer;
+            Subject.State = PlaybackViewModelStateEnum.Video;
+
+            Subject.OnVisualStateChanged(PlaybackViewModel.SnappedStateName);
+
+            callCount.Should().Be(1);
+        }
+
+        [TestMethod]
+        public void OnVisualStateChanged_NewStateNameIsSnappedAndCurrentStateIsVideoOrFullScreen_ShouldSetTheSnappedVideoPlaybackViewModelAsTheDefaultVideoPlayer()
+        {
+            _mockPlayerManagementService.CurrentPlayer = new MockVideoPlayer();
+            Subject.State = PlaybackViewModelStateEnum.Video;
+
+            Subject.OnVisualStateChanged(PlaybackViewModel.SnappedStateName);
+
+            _mockPlayerManagementService.DefaultVideoPlayer.Should().Be(_mockSnappedVideoPlaybackViewModel);
+        }
+
+        [TestMethod]
+        public void OnVisualStateChanged_NewStateNameIsSnappedAndCurrentStateIsVideoOrFullScreen_ShouldSendAPlayMessageWithTheCurrentPlaybackTimeInfo()
+        {
+            Subject.State = PlaybackViewModelStateEnum.Video;
+            var mockVideoPlayer = new MockVideoPlayer { OnGetPlaybackTimeInfo = () => new PlaybackStateEventArgs() };
+            _mockPlayerManagementService.CurrentPlayer = mockVideoPlayer;
+
+            Subject.OnVisualStateChanged(PlaybackViewModel.SnappedStateName);
+
+            MockEventAggregator.Messages.Should().ContainSingle(item => item.GetType() == typeof(PlayMessage));
+        }
+
+        [TestMethod]
+        public void OnVisualStateChanged_OldStateNameIsSnappedAndCurrentStateIsVideoOrFullScreen_ShouldSentAStopMessage()
+        {
+            Subject.State = PlaybackViewModelStateEnum.Video;
+            _mockPlayerManagementService.CurrentPlayer = new MockVideoPlayer();
+
+            Subject.OnVisualStateChanged(PlaybackViewModel.SnappedStateName);
+            Subject.OnVisualStateChanged("test");
+
+            MockEventAggregator.Messages.Count(m => m.GetType() == typeof(StopMessage)).Should().Be(2);
+        }
+
+        [TestMethod]
+        public void OnVisualStateChanged_OldStateNameIsSnappedAndCurrentStateIsVideoOrFullScreen_ShouldTryToGetThePlaybackTimeInfoFromTheCurrentPlayer()
+        {
+            var mockVideoPlayer = new MockVideoPlayer();
+            var callCount = 0;
+            mockVideoPlayer.OnGetPlaybackTimeInfo = () =>
+                {
+                    callCount++;
+                    return new PlaybackStateEventArgs();
+                };
+            _mockPlayerManagementService.CurrentPlayer = mockVideoPlayer;
+            Subject.State = PlaybackViewModelStateEnum.Video;
+
+            Subject.OnVisualStateChanged(PlaybackViewModel.SnappedStateName);
+            Subject.OnVisualStateChanged("test");
+
+            callCount.Should().Be(2);
+        }
+
+        [TestMethod]
+        public void OnVisualStateChanged_OldStateNameIsSnappedAndCurrentStateIsVideo_ShouldSetTheEmbededVideoPlaybackViewModelAsTheDefaultVideoPlayer()
+        {
+            _mockPlayerManagementService.CurrentPlayer = new MockVideoPlayer();
+            Subject.State = PlaybackViewModelStateEnum.Video;
+
+            Subject.OnVisualStateChanged(PlaybackViewModel.SnappedStateName);
+            Subject.OnVisualStateChanged("test");
+
+            _mockPlayerManagementService.DefaultVideoPlayer.Should().Be(_mockEmbededVideoPlaybackViewModel);
+        }
+
+        [TestMethod]
+        public void OnVisualStateChanged_OldStateNameIsSnappedAndCurrentStateIsFullScreen_ShouldSetTheFullScreenVideoPlaybackViewModelAsTheDefaultVideoPlayer()
+        {
+            _mockPlayerManagementService.CurrentPlayer = new MockVideoPlayer();
+            Subject.State = PlaybackViewModelStateEnum.FullScreen;
+
+            Subject.OnVisualStateChanged(PlaybackViewModel.SnappedStateName);
+            Subject.OnVisualStateChanged("test");
+
+            _mockPlayerManagementService.DefaultVideoPlayer.Should().Be(_mockFullScreenVideoPlaybackViewModel);
+        }
+
+        [TestMethod]
+        public void OnVisualStateChanged_OldStateNameIsSnappedAndCurrentStateIsVideoOrFullScreen_ShouldSentAPlayMessageWithTheCurrentPlaybackTimeInfo()
+        {
+            Subject.State = PlaybackViewModelStateEnum.Video;
+            var mockVideoPlayer = new MockVideoPlayer { OnGetPlaybackTimeInfo = () => new PlaybackStateEventArgs() };
+            _mockPlayerManagementService.CurrentPlayer = mockVideoPlayer;
+
+            Subject.OnVisualStateChanged(PlaybackViewModel.SnappedStateName);
+            Subject.OnVisualStateChanged("test");
+
+            MockEventAggregator.Messages.Count(m => m.GetType() == typeof(PlayMessage)).Should().Be(2);
+        }
+
         #endregion
 
         #region Methods
@@ -302,11 +430,17 @@ namespace Client.Tests.Playback
             _mockToastNotificationService = new MockToastNotificationService();
             _mockWinRTWrappersService = new MockWinRTWrappersService();
             _mockPlaylistManagementService = new MockPlyalistManagementService();
+            _mockPlayerManagementService = new MockPlayerManagementService();
             _mockEmbededVideoPlaybackViewModel = new MockEmbededVideoPlaybackViewModel();
+            _mockSnappedVideoPlaybackViewModel = new MockSnappedVideoPlaybackViewModel();
+            _mockFullScreenVideoPlaybackViewModel = new MockFullScreenVideoPlaybackViewModel();
             Subject.WinRTWrappersService = _mockWinRTWrappersService;
             Subject.PlaylistManagementService = _mockPlaylistManagementService;
+            Subject.PlayerManagementService = _mockPlayerManagementService;
             Subject.EmbededVideoPlaybackViewModel = _mockEmbededVideoPlaybackViewModel;
             Subject.ToastNotificationService = _mockToastNotificationService;
+            Subject.SnappedVideoPlaybackViewModel = _mockSnappedVideoPlaybackViewModel;
+            Subject.FullScreenVideoPlaybackViewModel = _mockFullScreenVideoPlaybackViewModel;
             Subject.LoadModel = model =>
                 {
                     var tcr = new TaskCompletionSource<PlaylistItem>();

@@ -1,12 +1,13 @@
 ﻿namespace Subsonic8.Framework.Behaviors
 {
     using System.ComponentModel;
+    using Client.Common.Models;
 
     public interface IActiveItemProvider : INotifyPropertyChanged
     {
         #region Public Properties
 
-        object ActiveItem { get; }
+        PlaylistItem ActiveItem { get; }
 
         #endregion
     }

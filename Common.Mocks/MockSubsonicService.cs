@@ -1,4 +1,4 @@
-﻿namespace Client.Common.Tests.Mocks
+﻿namespace Common.Mocks
 {
     using System;
     using Client.Common.Services;

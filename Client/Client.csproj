@@ -141,8 +141,20 @@
       <DependentUpon>RenamePlaylistDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="ClientModule.cs" />
+    <Compile Include="Common\ExpandToFullscreen.xaml.cs">
+      <DependentUpon>ExpandToFullscreen.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Common\BrowseView.xaml.cs">
+      <DependentUpon>BrowseView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Common\PageHeader.xaml.cs">
       <DependentUpon>PageHeader.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Common\BrowseViews\FullScreen.xaml.cs">
+      <DependentUpon>FullScreen.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Common\BrowseViews\Snapped.xaml.cs">
+      <DependentUpon>Snapped.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\AppBarToggleButton.cs" />
     <Compile Include="Converters\InvertedBooleanToVisibilityConverter.cs" />
@@ -154,6 +166,7 @@
     </Compile>
     <Compile Include="ErrorDialog\ErrorDialogViewModel.cs" />
     <Compile Include="ErrorDialog\IErrorDialogViewModel.cs" />
+    <Compile Include="Framework\Behaviors\UnSnapBehavior.cs" />
     <Compile Include="Framework\Behaviors\IActiveItemProvider.cs" />
     <Compile Include="Framework\Behaviors\ScrollIntoViewBehavior.cs" />
     <Compile Include="Framework\Extensions\ModelLoaderExtensionMethods.cs" />
@@ -192,13 +205,20 @@
     <Compile Include="Framework\ViewModel\DetailViewModelBase.cs" />
     <Compile Include="Framework\Extensions\NavigationServiceExtensions.cs" />
     <Compile Include="Framework\ViewModel\IDetailViewModel.cs" />
+    <Compile Include="Framework\ViewModel\IVisualStateAware.cs" />
     <Compile Include="Framework\ViewModel\ISongLoader.cs" />
     <Compile Include="Framework\ViewModel\IPlaybackControlsViewModel.cs" />
     <Compile Include="Framework\ViewModel\ItemViewModelBase.cs" />
     <Compile Include="Framework\ViewModel\PlaybackControlsViewModelBase.cs" />
     <Compile Include="Framework\ViewModel\ScreenWithStateBase.cs" />
+    <Compile Include="Playback\Playback\SnappedAudio.xaml.cs">
+      <DependentUpon>SnappedAudio.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Playback\Playback\Filter.xaml.cs">
       <DependentUpon>Filter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Playback\Playback\SnappedVideo.xaml.cs">
+      <DependentUpon>SnappedVideo.xaml</DependentUpon>
     </Compile>
     <Compile Include="PlaylistItem\PlaylistItemView.xaml.cs">
       <DependentUpon>PlaylistItemView.xaml</DependentUpon>
@@ -291,6 +311,9 @@
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Shell\ShellViewModel.cs" />
+    <Compile Include="VideoPlayback\SnappedVideoPlaybackView.xaml.cs">
+      <DependentUpon>SnappedVideoPlaybackView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="VideoPlayback\EmbededVideoPlaybackView.xaml.cs">
       <DependentUpon>EmbededVideoPlaybackView.xaml</DependentUpon>
     </Compile>
@@ -301,9 +324,10 @@
     <Compile Include="VideoPlayback\IEmbededVideoPlaybackViewModel.cs" />
     <Compile Include="VideoPlayback\IFullScreenVideoPlaybackViewModel.cs" />
     <Compile Include="VideoPlayback\FullScreenVideoPlaybackViewModel.cs" />
+    <Compile Include="VideoPlayback\ISnappedVideoPlaybackViewModel.cs" />
     <Compile Include="VideoPlayback\IVideoPlayerView.cs" />
     <Compile Include="VideoPlayback\IVidePlaybackViewModel.cs" />
-    <Compile Include="VideoPlayback\PlaybackStateEventArgs.cs" />
+    <Compile Include="VideoPlayback\SnappedVideoPlaybackViewModel.cs" />
     <Compile Include="VideoPlayback\VideoPlaybackView.cs" />
     <Compile Include="VideoPlayback\VideoPlaybackViewModel.cs" />
     <Compile Include="VideoPlayback\VideoStartInfo.cs" />
@@ -365,16 +389,32 @@
       <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
+    <Page Include="Common\ExpandToFullscreen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Common\LightStandardStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Page>
+    <Page Include="Common\BrowseView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Common\PageHeader.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Common\StandardStyles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Common\BrowseViews\FullScreen.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Common\BrowseViews\Snapped.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -406,7 +446,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Playback\Playback\SnappedAudio.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Playback\Playback\Filter.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Playback\Playback\SnappedVideo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -462,6 +510,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="VideoPlayback\SnappedVideoPlaybackView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="VideoPlayback\EmbededVideoPlaybackView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -506,6 +558,9 @@
     <Reference Include="Windows.UI.Interactivity, Version=1.2.0.0, Culture=neutral, PublicKeyToken=2f4cf195f2e6765d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Windows.UI.Interactivity.1.3.0.0\lib\win8\Windows.UI.Interactivity.dll</HintPath>
+    </Reference>
+    <Reference Include="WinRTXamlToolkit">
+      <HintPath>..\packages\WinRTXamlToolkit.1.5.2.0\lib\netcore45\WinRTXamlToolkit.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
