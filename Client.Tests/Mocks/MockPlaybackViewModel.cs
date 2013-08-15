@@ -159,7 +159,7 @@
             throw new NotImplementedException();
         }
 
-        public void OnStateChanged(string state)
+        public void OnVisualStateChanged(string state)
         {
             throw new NotImplementedException();
         }

@@ -1,0 +1,16 @@
+﻿<videoPlayback:VideoPlaybackView
+    x:Class="Subsonic8.VideoPlayback.SnappedVideoPlaybackView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mmppf="using:Microsoft.PlayerFramework" xmlns:videoPlayback="using:Subsonic8.VideoPlayback"
+    mc:Ignorable="d">
+
+    <Grid Background="Black">
+        <mmppf:MediaPlayer Source="{Binding Path=Source}" Width="Auto" Height="Auto"
+                           AutoPlay="False" MediaEnded="MediaPlayer_OnMediaEnded"
+                           IsFullScreenChanged="MediaPlayer_OnIsFullScreenChanged" x:Name="MediaPlayer"
+                           MediaFailed="MediaPlayer_OnMediaFailed" />
+    </Grid>
+</videoPlayback:VideoPlaybackView>

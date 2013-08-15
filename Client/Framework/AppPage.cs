@@ -108,6 +108,11 @@
                 foreach (var layoutAwareControl in _layoutAwareControls)
                 {
                     VisualStateManager.GoToState(layoutAwareControl, visualState, false);
+                    var visualStateAwareDataContext = layoutAwareControl.DataContext as IVisualStateAware;
+                    if (visualStateAwareDataContext != null)
+                    {
+                        visualStateAwareDataContext.OnVisualStateChanged(visualState);
+                    }
                 }
             }
         }

@@ -205,6 +205,7 @@
     <Compile Include="Framework\ViewModel\DetailViewModelBase.cs" />
     <Compile Include="Framework\Extensions\NavigationServiceExtensions.cs" />
     <Compile Include="Framework\ViewModel\IDetailViewModel.cs" />
+    <Compile Include="Framework\ViewModel\IVisualStateAware.cs" />
     <Compile Include="Framework\ViewModel\ISongLoader.cs" />
     <Compile Include="Framework\ViewModel\IPlaybackControlsViewModel.cs" />
     <Compile Include="Framework\ViewModel\ItemViewModelBase.cs" />
@@ -215,6 +216,9 @@
     </Compile>
     <Compile Include="Playback\Playback\Filter.xaml.cs">
       <DependentUpon>Filter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Playback\Playback\SnappedVideo.xaml.cs">
+      <DependentUpon>SnappedVideo.xaml</DependentUpon>
     </Compile>
     <Compile Include="PlaylistItem\PlaylistItemView.xaml.cs">
       <DependentUpon>PlaylistItemView.xaml</DependentUpon>
@@ -307,6 +311,9 @@
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Shell\ShellViewModel.cs" />
+    <Compile Include="VideoPlayback\SnappedVideoPlaybackView.xaml.cs">
+      <DependentUpon>SnappedVideoPlaybackView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="VideoPlayback\EmbededVideoPlaybackView.xaml.cs">
       <DependentUpon>EmbededVideoPlaybackView.xaml</DependentUpon>
     </Compile>
@@ -317,8 +324,10 @@
     <Compile Include="VideoPlayback\IEmbededVideoPlaybackViewModel.cs" />
     <Compile Include="VideoPlayback\IFullScreenVideoPlaybackViewModel.cs" />
     <Compile Include="VideoPlayback\FullScreenVideoPlaybackViewModel.cs" />
+    <Compile Include="VideoPlayback\ISnappedVideoPlaybackViewModel.cs" />
     <Compile Include="VideoPlayback\IVideoPlayerView.cs" />
     <Compile Include="VideoPlayback\IVidePlaybackViewModel.cs" />
+    <Compile Include="VideoPlayback\SnappedVideoPlaybackViewModel.cs" />
     <Compile Include="VideoPlayback\VideoPlaybackView.cs" />
     <Compile Include="VideoPlayback\VideoPlaybackViewModel.cs" />
     <Compile Include="VideoPlayback\VideoStartInfo.cs" />
@@ -445,6 +454,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Playback\Playback\SnappedVideo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Playback\Playback\Video.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -496,6 +509,10 @@
     <Page Include="Shell\ShellView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="VideoPlayback\SnappedVideoPlaybackView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="VideoPlayback\EmbededVideoPlaybackView.xaml">
       <Generator>MSBuild:Compile</Generator>

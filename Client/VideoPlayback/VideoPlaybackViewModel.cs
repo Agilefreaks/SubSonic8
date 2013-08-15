@@ -127,6 +127,16 @@
             EventAggregator.Publish(new PlayFailedMessage(eventArgs.ErrorMessage, eventArgs.OriginalSource));
         }
 
+        public PlaybackStateEventArgs GetPlaybackTimeInfo()
+        {
+            return new PlaybackStateEventArgs
+            {
+                StartTime = _playerControls.GetStartTime(),
+                EndTime = _playerControls.GetEndTime(),
+                TimeRemaining = _playerControls.GetTimeRemaining()
+            };
+        }
+
         #endregion
 
         #region Explicit Interface Methods

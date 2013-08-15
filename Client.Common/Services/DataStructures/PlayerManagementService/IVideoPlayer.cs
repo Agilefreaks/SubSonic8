@@ -2,5 +2,6 @@
 {
     public interface IVideoPlayer : IPlayer
     {
+        PlaybackStateEventArgs GetPlaybackTimeInfo();
     }
 }

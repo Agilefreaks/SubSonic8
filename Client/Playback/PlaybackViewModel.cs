@@ -29,6 +29,8 @@
 
         public const string CoverArtPlaceholderLarge = @"/Assets/CoverArtPlaceholderLarge.jpg";
 
+        public const string SnappedStateName = "Snapped";
+
         private const string StatePlaylistKey = "playlist_items";
 
         #endregion
@@ -58,6 +60,10 @@
         private PlaybackViewModelStateEnum _previousState;
 
         private PlaybackViewModelStateEnum _state;
+
+        private ISnappedVideoPlaybackViewModel _snappedVideoPlaybackViewModel;
+
+        private string _currentVisualState;
 
         #endregion
 
@@ -256,6 +262,22 @@
         }
 
         [Inject]
+        public ISnappedVideoPlaybackViewModel SnappedVideoPlaybackViewModel
+        {
+            get
+            {
+                return _snappedVideoPlaybackViewModel;
+            }
+
+            set
+            {
+                if (Equals(value, _snappedVideoPlaybackViewModel)) return;
+                _snappedVideoPlaybackViewModel = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
+        [Inject]
         public IPlayerManagementService PlayerManagementService
         {
             get
@@ -443,6 +465,27 @@
             EventAggregator.Publish(new PlayItemAtIndexMessage(pressedItemIndex));
         }
 
+        public void OnVisualStateChanged(string state)
+        {
+            if (_currentVisualState == state) return;
+
+            if (_currentVisualState == SnappedStateName && (State == PlaybackViewModelStateEnum.FullScreen || State == PlaybackViewModelStateEnum.Video))
+            {
+                var playbackTimeInfo = ((IVideoPlayer)PlayerManagementService.CurrentPlayer).GetPlaybackTimeInfo();
+                var videoPlayer = State == PlaybackViewModelStateEnum.FullScreen
+                                      ? (IVideoPlayer)FullScreenVideoPlaybackViewModel
+                                      : EmbededVideoPlaybackViewModel;
+                SwitchVideoPlayback(playbackTimeInfo, videoPlayer);
+            }
+            else if (state == SnappedStateName && (State == PlaybackViewModelStateEnum.FullScreen || State == PlaybackViewModelStateEnum.Video))
+            {
+                var playbackTimeInfo = ((IVideoPlayer)PlayerManagementService.CurrentPlayer).GetPlaybackTimeInfo();
+                SwitchVideoPlayback(playbackTimeInfo, SnappedVideoPlaybackViewModel);
+            }
+
+            _currentVisualState = state;
+        }
+
         #endregion
 
         #region Methods
@@ -456,13 +499,13 @@
         private void HookEmbededVideoPlaybackViewModel()
         {
             EmbededVideoPlaybackViewModel.FullScreenChanged +=
-                (sender, eventArgs) => SwitchToFullScreenVideoPlayback(eventArgs);
+                (sender, eventArgs) => SwitchVideoPlayback(eventArgs, FullScreenVideoPlaybackViewModel);
         }
 
         private void HookFullScreenVideoPlaybackViewModel()
         {
             FullScreenVideoPlaybackViewModel.FullScreenChanged +=
-                (sender, eventArgs) => SwitchToEmbededVideoPlayback(eventArgs);
+                (sender, eventArgs) => SwitchVideoPlayback(eventArgs, EmbededVideoPlaybackViewModel);
         }
 
         private void HookPlayerManagementService()
@@ -536,27 +579,22 @@
 
         private void SetStateByCurrentPlayer()
         {
-            if (!IsFiltering)
-            {
-                State = PlayerManagementService.CurrentPlayer == EmbededVideoPlaybackViewModel
-                            ? PlaybackViewModelStateEnum.Video
-                            : PlayerManagementService.CurrentPlayer == FullScreenVideoPlaybackViewModel
-                                  ? PlaybackViewModelStateEnum.FullScreen
-                                  : PlaybackViewModelStateEnum.Audio;
-            }
+            if (IsFiltering) return;
+
+            var currentPlayer = PlayerManagementService.CurrentPlayer;
+            State = currentPlayer == EmbededVideoPlaybackViewModel
+                        ? PlaybackViewModelStateEnum.Video
+                        : currentPlayer == FullScreenVideoPlaybackViewModel
+                              ? PlaybackViewModelStateEnum.FullScreen
+                              : currentPlayer == SnappedVideoPlaybackViewModel
+                                    ? State
+                                    : PlaybackViewModelStateEnum.Audio;
         }
 
-        private void SwitchToEmbededVideoPlayback(PlaybackStateEventArgs eventArgs)
+        private void SwitchVideoPlayback(PlaybackStateEventArgs eventArgs, IVideoPlayer videoPlayer)
         {
             EventAggregator.Publish(new StopMessage());
-            PlayerManagementService.DefaultVideoPlayer = EmbededVideoPlaybackViewModel;
-            EventAggregator.Publish(new PlayMessage { Options = eventArgs });
-        }
-
-        private void SwitchToFullScreenVideoPlayback(PlaybackStateEventArgs eventArgs)
-        {
-            EventAggregator.Publish(new StopMessage());
-            PlayerManagementService.DefaultVideoPlayer = FullScreenVideoPlaybackViewModel;
+            PlayerManagementService.DefaultVideoPlayer = videoPlayer;
             EventAggregator.Publish(new PlayMessage { Options = eventArgs });
         }
 

@@ -92,9 +92,9 @@
         </Grid>
 
         <Grid x:Name="SnappedView" Visibility="Collapsed" VerticalAlignment="Center" HorizontalAlignment="Center">
-                <playback:SnappedAudio cal:Bind.Model="{Binding}"
+            <playback:SnappedAudio cal:Bind.Model="{Binding}"
                                     Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='Audio'}" />
-                <playback:Video cal:Bind.Model="{Binding}"
+            <playback:SnappedVideo cal:Bind.Model="{Binding}"
                                     Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='Video'}" />
         </Grid>
 
