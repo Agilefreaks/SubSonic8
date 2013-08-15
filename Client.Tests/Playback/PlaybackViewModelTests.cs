@@ -10,6 +10,7 @@ namespace Client.Tests.Playback
     using Client.Tests.Framework.ViewModel;
     using Client.Tests.Mocks;
     using global::Common.ListCollectionView;
+    using global::Common.Mocks;
     using FluentAssertions;
     using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
     using Microsoft.VisualStudio.TestPlatform.UnitTestFramework.AppContainer;

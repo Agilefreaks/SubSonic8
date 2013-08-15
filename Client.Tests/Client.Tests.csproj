@@ -228,6 +228,10 @@
       <Project>{cdb542af-063b-4dec-937d-cecb11c561ee}</Project>
       <Name>Client</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Common.Mocks\Common.Mocks.csproj">
+      <Project>{a3b01298-4607-4ed2-a361-c5541845174c}</Project>
+      <Name>Common.Mocks</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{11d7fb8c-1a2c-4d5b-b129-937d76468a78}</Project>
       <Name>Common</Name>
