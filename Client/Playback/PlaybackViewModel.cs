@@ -12,6 +12,7 @@
     using Client.Common.Models;
     using Client.Common.Models.Subsonic;
     using Client.Common.Services;
+    using Client.Common.Services.DataStructures.PlayerManagementService;
     using global::Common.ListCollectionView;
     using MugenInjection.Attributes;
     using Subsonic8.BottomBar;
@@ -73,7 +74,7 @@
 
         #region Public Properties
 
-        public object ActiveItem
+        public PlaylistItem ActiveItem
         {
             get
             {

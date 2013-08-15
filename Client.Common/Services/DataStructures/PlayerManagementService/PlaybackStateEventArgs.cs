@@ -1,4 +1,4 @@
-﻿namespace Subsonic8.VideoPlayback
+﻿namespace Client.Common.Services.DataStructures.PlayerManagementService
 {
     using System;
 

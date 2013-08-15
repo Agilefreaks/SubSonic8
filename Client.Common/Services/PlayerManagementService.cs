@@ -92,11 +92,11 @@
             }
         }
 
-        public IPlayer DefaultVideoPlayer
+        public IVideoPlayer DefaultVideoPlayer
         {
             get
             {
-                return GetDefaultPlayerByType(PlayerType.Video);
+                return GetDefaultPlayerByType(PlayerType.Video) as IVideoPlayer;
             }
 
             set

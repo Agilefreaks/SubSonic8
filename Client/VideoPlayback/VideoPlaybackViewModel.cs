@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using Client.Common.EventAggregatorMessages;
     using Client.Common.Services.DataStructures.PlayerManagementService;
-    using Microsoft.PlayerFramework;
     using MugenInjection.Attributes;
     using Subsonic8.Framework.Services;
     using Subsonic8.Framework.ViewModel;
@@ -108,7 +107,7 @@
 
         #region Public Methods and Operators
 
-        public void OnFullScreenChanged(MediaPlayer mediaPlayer)
+        public void OnFullScreenChanged()
         {
             if (FullScreenChanged != null)
             {
@@ -116,9 +115,9 @@
                     this,
                     new PlaybackStateEventArgs
                         {
-                            StartTime = mediaPlayer.StartTime,
-                            EndTime = mediaPlayer.EndTime,
-                            TimeRemaining = mediaPlayer.TimeRemaining
+                            StartTime = _playerControls.GetStartTime(),
+                            EndTime = _playerControls.GetEndTime(),
+                            TimeRemaining = _playerControls.GetTimeRemaining()
                         });
             }
         }
@@ -136,7 +135,7 @@
         {
             if (_playerControls != null)
             {
-                _playerControls.PauseAction();
+                _playerControls.Pause();
             }
         }
 
@@ -146,11 +145,9 @@
             Source = startInfo.Source;
             _pendingPlayerActions = new List<Action>
                                         {
-                                            () =>
-                                            _playerControls.SetStartTimeAction(
-                                                startInfo.StartTime.Negate()), 
-                                            () => _playerControls.SetEndTimeAction(startInfo.EndTime), 
-                                            () => _playerControls.PlayAction()
+                                            () => _playerControls.SetStartTime(startInfo.StartTime.Negate()), 
+                                            () => _playerControls.SetEndTime(startInfo.EndTime), 
+                                            () => _playerControls.Play()
                                         };
             ExecutePendingPlayerActions();
         }
@@ -159,7 +156,7 @@
         {
             if (_playerControls != null)
             {
-                _playerControls.PlayAction();
+                _playerControls.Play();
             }
         }
 
@@ -167,7 +164,7 @@
         {
             if (_playerControls != null)
             {
-                _playerControls.PauseAction();
+                _playerControls.Pause();
             }
         }
 

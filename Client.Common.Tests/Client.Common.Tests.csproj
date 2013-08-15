@@ -116,6 +116,7 @@
     <Compile Include="Mocks\MockServiceResultBase.cs" />
     <Compile Include="Mocks\MockSubsonicService.cs" />
     <Compile Include="Mocks\MockPlayer.cs" />
+    <Compile Include="Mocks\MockVideoPlayer.cs" />
     <Compile Include="Models\Subsonic\AlbumTests.cs" />
     <Compile Include="Models\Subsonic\ArtistTests.cs" />
     <Compile Include="Models\Subsonic\ExpandedArtistTests.cs" />

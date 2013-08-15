@@ -28,7 +28,7 @@
 
         IPlayer DefaultAudioPlayer { get; set; }
 
-        IPlayer DefaultVideoPlayer { get; set; }
+        IVideoPlayer DefaultVideoPlayer { get; set; }
 
         IEnumerable<IPlayer> RegisteredAudioPlayers { get; }
 

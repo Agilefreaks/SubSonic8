@@ -133,6 +133,8 @@
     <Compile Include="Results\RenamePlaylistResult.cs" />
     <Compile Include="Results\UpdatePlaylistResult.cs" />
     <Compile Include="Services\DataStructures\PlayerManagementService\IPlayer.cs" />
+    <Compile Include="Services\DataStructures\PlayerManagementService\IVideoPlayer.cs" />
+    <Compile Include="Services\DataStructures\PlayerManagementService\PlaybackStateEventArgs.cs" />
     <Compile Include="Services\DataStructures\PlayerManagementService\PlayerType.cs" />
     <Compile Include="Services\DataStructures\SubsonicService\SubsonicServiceConfiguration.cs" />
     <Compile Include="Services\IPlayerManagementService.cs" />

@@ -5,11 +5,17 @@
 
     public interface IVideoPlayerView : IPlayerControls
     {
-        #region Public Properties
+        #region Public Methods
 
-        Action<TimeSpan> SetEndTimeAction { get; }
+        void SetEndTime(TimeSpan endTime);
 
-        Action<TimeSpan> SetStartTimeAction { get; }
+        void SetStartTime(TimeSpan startTime);
+
+        TimeSpan GetEndTime();
+
+        TimeSpan GetStartTime();
+
+        TimeSpan GetTimeRemaining();
 
         #endregion
     }

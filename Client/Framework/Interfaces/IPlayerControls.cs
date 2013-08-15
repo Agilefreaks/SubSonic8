@@ -1,16 +1,14 @@
 namespace Subsonic8.Framework.Interfaces
 {
-    using System;
-
     public interface IPlayerControls
     {
         #region Public Properties
 
-        Action PauseAction { get; }
+        void Pause();
 
-        Action PlayAction { get; }
+        void Play();
 
-        Action StopAction { get; }
+        void Stop();
 
         #endregion
     }

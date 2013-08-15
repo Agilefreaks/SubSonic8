@@ -141,18 +141,18 @@
 
         public void Pause()
         {
-            _playerControls.PauseAction();
+            _playerControls.Pause();
         }
 
         public void Play(PlaylistItem item, object options = null)
         {
             Source = item.Uri;
-            _playerControls.PlayAction();
+            _playerControls.Play();
         }
 
         public void Resume()
         {
-            _playerControls.PlayAction();
+            _playerControls.Play();
         }
 
         public void SendSearchQueryMessage(string query)
@@ -172,7 +172,7 @@
 
         public void Stop()
         {
-            _playerControls.StopAction();
+            _playerControls.Stop();
         }
 
         #endregion

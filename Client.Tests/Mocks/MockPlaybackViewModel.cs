@@ -33,7 +33,7 @@
 
         #region Public Properties
 
-        public object ActiveItem { get; private set; }
+        public PlaylistItem ActiveItem { get; private set; }
 
         public IDefaultBottomBarViewModel BottomBar { get; set; }
 
@@ -155,6 +155,11 @@
         }
 
         public void TryClose()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnStateChanged(string state)
         {
             throw new NotImplementedException();
         }
