@@ -8,7 +8,6 @@
     using System.Linq;
     using System.Threading.Tasks;
     using System.Xml.Serialization;
-    using Client.Common;
     using Client.Common.EventAggregatorMessages;
     using Client.Common.Models;
     using Client.Common.Models.Subsonic;
@@ -57,8 +56,6 @@
 
         private PlaybackViewModelStateEnum _previousState;
 
-        private Uri _source;
-
         private PlaybackViewModelStateEnum _state;
 
         #endregion
@@ -84,26 +81,6 @@
             }
         }
 
-        [Inject]
-        public IPlaybackBottomBarViewModel BottomBar
-        {
-            get
-            {
-                return _bottomBar;
-            }
-
-            set
-            {
-                if (Equals(value, _bottomBar))
-                {
-                    return;
-                }
-
-                _bottomBar = value;
-                NotifyOfPropertyChange();
-            }
-        }
-
         public string CoverArt
         {
             get
@@ -117,27 +94,6 @@
                                 ? CoverArtPlaceholderLarge
                                 : value;
                 NotifyOfPropertyChange();
-            }
-        }
-
-        [Inject]
-        public IEmbededVideoPlaybackViewModel EmbededVideoPlaybackViewModel
-        {
-            get
-            {
-                return _embededVideoPlaybackViewModel;
-            }
-
-            set
-            {
-                if (Equals(value, _embededVideoPlaybackViewModel))
-                {
-                    return;
-                }
-
-                _embededVideoPlaybackViewModel = value;
-                NotifyOfPropertyChange(() => EmbededVideoPlaybackViewModel);
-                HookEmbededVideoPlaybackViewModel();
             }
         }
 
@@ -158,27 +114,6 @@
                 _filterText = value;
                 NotifyOfPropertyChange();
                 SetPlaylistFilter(_filterText);
-            }
-        }
-
-        [Inject]
-        public IFullScreenVideoPlaybackViewModel FullScreenVideoPlaybackViewModel
-        {
-            get
-            {
-                return _fullScreenVideoPlaybackViewModel;
-            }
-
-            set
-            {
-                if (Equals(value, _fullScreenVideoPlaybackViewModel))
-                {
-                    return;
-                }
-
-                _fullScreenVideoPlaybackViewModel = value;
-                NotifyOfPropertyChange();
-                HookFullScreenVideoPlaybackViewModel();
             }
         }
 
@@ -222,6 +157,103 @@
             }
         }
 
+        public ListCollectionView PlaylistItems
+        {
+            get
+            {
+                return _playlistItems ?? (_playlistItems = new ListCollectionView(_playlistManagementService.Items));
+            }
+        }
+
+        public ObservableCollection<object> SelectedItems
+        {
+            get
+            {
+                return BottomBar != null ? BottomBar.SelectedItems : new ObservableCollection<object>();
+            }
+        }
+
+        public PlaybackViewModelStateEnum State
+        {
+            get
+            {
+                return _state;
+            }
+
+            set
+            {
+                if (value == _state)
+                {
+                    return;
+                }
+
+                _state = value;
+                NotifyOfPropertyChange(() => State);
+            }
+        }
+
+        [Inject]
+        public IPlaybackBottomBarViewModel BottomBar
+        {
+            get
+            {
+                return _bottomBar;
+            }
+
+            set
+            {
+                if (Equals(value, _bottomBar))
+                {
+                    return;
+                }
+
+                _bottomBar = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
+        [Inject]
+        public IEmbededVideoPlaybackViewModel EmbededVideoPlaybackViewModel
+        {
+            get
+            {
+                return _embededVideoPlaybackViewModel;
+            }
+
+            set
+            {
+                if (Equals(value, _embededVideoPlaybackViewModel))
+                {
+                    return;
+                }
+
+                _embededVideoPlaybackViewModel = value;
+                NotifyOfPropertyChange(() => EmbededVideoPlaybackViewModel);
+                HookEmbededVideoPlaybackViewModel();
+            }
+        }
+
+        [Inject]
+        public IFullScreenVideoPlaybackViewModel FullScreenVideoPlaybackViewModel
+        {
+            get
+            {
+                return _fullScreenVideoPlaybackViewModel;
+            }
+
+            set
+            {
+                if (Equals(value, _fullScreenVideoPlaybackViewModel))
+                {
+                    return;
+                }
+
+                _fullScreenVideoPlaybackViewModel = value;
+                NotifyOfPropertyChange();
+                HookFullScreenVideoPlaybackViewModel();
+            }
+        }
+
         [Inject]
         public IPlayerManagementService PlayerManagementService
         {
@@ -242,14 +274,6 @@
             }
         }
 
-        public ListCollectionView PlaylistItems
-        {
-            get
-            {
-                return _playlistItems ?? (_playlistItems = new ListCollectionView(_playlistManagementService.Items));
-            }
-        }
-
         [Inject]
         public IPlaylistManagementService PlaylistManagementService
         {
@@ -262,54 +286,6 @@
             {
                 _playlistManagementService = value;
                 HookPlaylistManagementService();
-            }
-        }
-
-        public ObservableCollection<object> SelectedItems
-        {
-            get
-            {
-                return BottomBar != null ? BottomBar.SelectedItems : new ObservableCollection<object>();
-            }
-        }
-
-        public Uri Source
-        {
-            get
-            {
-                return _source;
-            }
-
-            set
-            {
-                try
-                {
-                    _source = value;
-                    NotifyOfPropertyChange();
-                }
-                catch (Exception exception)
-                {
-                    this.Log(exception);
-                }
-            }
-        }
-
-        public PlaybackViewModelStateEnum State
-        {
-            get
-            {
-                return _state;
-            }
-
-            set
-            {
-                if (value == _state)
-                {
-                    return;
-                }
-
-                _state = value;
-                NotifyOfPropertyChange(() => State);
             }
         }
 

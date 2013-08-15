@@ -210,6 +210,9 @@
     <Compile Include="Framework\ViewModel\ItemViewModelBase.cs" />
     <Compile Include="Framework\ViewModel\PlaybackControlsViewModelBase.cs" />
     <Compile Include="Framework\ViewModel\ScreenWithStateBase.cs" />
+    <Compile Include="Playback\Playback\SnappedAudio.xaml.cs">
+      <DependentUpon>SnappedAudio.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Playback\Playback\Filter.xaml.cs">
       <DependentUpon>Filter.xaml</DependentUpon>
     </Compile>
@@ -432,6 +435,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Playback\Playback\Audio.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Playback\Playback\SnappedAudio.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

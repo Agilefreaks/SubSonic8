@@ -23,8 +23,6 @@ namespace Subsonic8.Playback
 
         int? Parameter { set; }
 
-        Uri Source { get; set; }
-
         PlaybackViewModelStateEnum State { get; }
 
         #endregion
