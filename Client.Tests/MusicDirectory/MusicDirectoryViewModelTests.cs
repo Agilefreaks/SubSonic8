@@ -1,6 +1,5 @@
 ﻿namespace Client.Tests.MusicDirectory
 {
-    using System.Collections.Generic;
     using Client.Common.Models.Subsonic;
     using Client.Tests.Framework.ViewModel;
     using FluentAssertions;
@@ -22,22 +21,6 @@
         public void CtorShouldSetMenuItems()
         {
             Subject.MenuItems.Should().BeEmpty();
-        }
-
-        [TestMethod]
-        public void ParameterSetShouldPopulateMenuItems()
-        {
-            Subject.Item = new MusicDirectory
-                               {
-                                   Children =
-                                       new List<MusicDirectoryChild>
-                                           {
-                                               new MusicDirectoryChild(), 
-                                               new MusicDirectoryChild()
-                                           }
-                               };
-
-            Subject.MenuItems.Should().HaveCount(2);
         }
 
         #endregion
