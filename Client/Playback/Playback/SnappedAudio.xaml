@@ -10,14 +10,6 @@
         <cal:BooleanToVisibilityConverter x:Name="BoolToVisibilityConverter" />
         <converters:InvertedNullToVisibilityConverter x:Name="InvertedNullToVisibilityConverter"/>
         <converters:NullToVisibilityConverter x:Name="NullToVisibilityConverter"/>
-        <Style TargetType="TextBlock" x:Key="SnappedTitleStyle">
-            <Setter Property="FontSize" Value="20"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-        </Style>
-        <Style TargetType="TextBlock" x:Key="SnappedAppNameStyle">
-            <Setter Property="FontSize" Value="20"/>
-            <Setter Property="Margin" Value="0,0,0,160"></Setter>
-        </Style>
     </Page.Resources>
 
     <Grid Margin="20,0">
@@ -34,7 +26,7 @@
 
         <StackPanel Grid.Row="2" Orientation="Vertical" Margin="0,20,0,0">
             <TextBlock Text="{Binding Path=ActiveItem.Artist}" Style="{StaticResource SnappedTitleStyle}" Visibility="{Binding Path=ActiveItem, Converter={StaticResource NullToVisibilityConverter}}"/>
-            <TextBlock Text="{Binding Path=ActiveItem.Title}" Style="{StaticResource SnappedTitleStyle}" Visibility="{Binding Path=ActiveItem, Converter={StaticResource NullToVisibilityConverter}}"/>
+            <TextBlock Text="{Binding Path=ActiveItem.Title}" Style="{StaticResource SnappedArtistStyle}" Visibility="{Binding Path=ActiveItem, Converter={StaticResource NullToVisibilityConverter}}"/>
             <TextBlock Text="Nothing Playing" Style="{StaticResource SnappedTitleStyle}" Visibility="{Binding Path=ActiveItem, Converter={StaticResource InvertedNullToVisibilityConverter}}"/>
         </StackPanel>
         <Grid Grid.Row="3" HorizontalAlignment="Center" Margin="0,80,0,0"

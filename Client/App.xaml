@@ -14,6 +14,7 @@
                 <ResourceDictionary Source="Common/StandardStyles.xaml" />
                 <ResourceDictionary Source="Common/LightStandardStyles.xaml" />
                 <ResourceDictionary Source="Common/CustomStyles.xaml" />
+                <ResourceDictionary Source="Common/SnappedStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <Color x:Key="MetroBlue">#FF3C557D</Color>
