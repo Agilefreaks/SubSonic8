@@ -11,6 +11,7 @@
     using Subsonic8.BottomBar;
     using Subsonic8.MenuItem;
     using Subsonic8.Search;
+    using global::Common.Mocks;
 
     [TestClass]
     public class SearchViewModelTests : CollectionViewModelBaseTests<SearchViewModel, string>

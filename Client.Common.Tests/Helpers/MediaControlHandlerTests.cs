@@ -2,7 +2,7 @@
 {
     using Client.Common.EventAggregatorMessages;
     using Client.Common.Helpers;
-    using Client.Common.Tests.Mocks;
+    using global::Common.Mocks;
     using FluentAssertions;
     using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 

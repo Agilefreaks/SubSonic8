@@ -4,10 +4,12 @@
     using Client.Common.Results;
     using Client.Common.Services.DataStructures.SubsonicService;
     using Client.Tests.Mocks;
+    using global::Common.Mocks;
     using FluentAssertions;
     using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
     using Subsonic8.BottomBar;
     using Subsonic8.MenuItem;
+    using MockSubsonicService = Client.Tests.Mocks.MockSubsonicService;
 
     [TestClass]
     public class PlaylistBottomBarViewModelTests
@@ -64,12 +66,13 @@
         {
             _mockSubsonicService = new MockSubsonicService();
             _subject = new PlaylistBottomBarViewModel(
-                new MockNavigationService(), 
-                new MockEventAggregator(), 
-                new MockPlyalistManagementService(), 
-                new MockErrorDialogViewModel()) {
-                                                   SubsonicService = _mockSubsonicService 
-                                                };
+                new MockNavigationService(),
+                new MockEventAggregator(),
+                new MockPlyalistManagementService(),
+                new MockErrorDialogViewModel())
+                {
+                    SubsonicService = _mockSubsonicService
+                };
         }
 
         #endregion

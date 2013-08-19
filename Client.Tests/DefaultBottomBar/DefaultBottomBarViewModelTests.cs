@@ -10,10 +10,12 @@
     using Client.Common.Models;
     using Client.Common.Models.Subsonic;
     using Client.Tests.Mocks;
+    using global::Common.Mocks;
     using FluentAssertions;
     using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
     using Subsonic8.BottomBar;
     using Subsonic8.MenuItem;
+    using MockSubsonicService = Client.Tests.Mocks.MockSubsonicService;
 
     [TestClass]
     public class DefaultBottomBarViewModelTests

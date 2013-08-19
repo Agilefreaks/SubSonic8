@@ -2,9 +2,11 @@
 {
     using Caliburn.Micro;
     using Client.Tests.Mocks;
+    using global::Common.Mocks;
     using FluentAssertions;
     using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
     using Subsonic8.Framework.ViewModel;
+    using MockSubsonicService = Client.Tests.Mocks.MockSubsonicService;
 
     [TestClass]
     public abstract class ViewModelBaseTests<TViewModel> : ClientTestBase

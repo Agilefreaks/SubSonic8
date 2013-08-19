@@ -8,6 +8,7 @@
     using FluentAssertions;
     using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
     using Subsonic8.BottomBar;
+    using global::Common.Mocks;
 
     [TestClass]
     public class PlaybackBottomBarViewModelTests

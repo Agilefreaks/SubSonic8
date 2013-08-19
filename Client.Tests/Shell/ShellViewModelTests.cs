@@ -7,6 +7,8 @@
     using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
     using Subsonic8.Search;
     using Subsonic8.Shell;
+    using global::Common.Mocks;
+    using MockSubsonicService = Client.Tests.Mocks.MockSubsonicService;
 
     [TestClass]
     public class ShellViewModelTests
