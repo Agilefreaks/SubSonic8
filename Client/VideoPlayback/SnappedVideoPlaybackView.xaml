@@ -8,7 +8,7 @@
     mc:Ignorable="d">
 
     <Grid Background="Black">
-        <mmppf:MediaPlayer Source="{Binding Path=Source}" Width="Auto" Height="Auto"
+        <mmppf:MediaPlayer Source="{Binding Path=Source}" Width="Auto" Height="Auto" IsFullScreenVisible="True"
                            AutoPlay="False" MediaEnded="MediaPlayer_OnMediaEnded"
                            IsFullScreenChanged="MediaPlayer_OnIsFullScreenChanged" x:Name="MediaPlayer"
                            MediaFailed="MediaPlayer_OnMediaFailed" />

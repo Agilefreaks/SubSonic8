@@ -151,6 +151,7 @@
 
         void IPlayer.Play(PlaylistItem item, object options)
         {
+            OnStartingPlayback();
             var startInfo = GetStartInfo(item, options as PlaybackStateEventArgs);
             Source = startInfo.Source;
             _pendingPlayerActions = new List<Action>
@@ -187,6 +188,10 @@
             base.OnViewAttached(view, context);
             _playerControls = view as IVideoPlayerView;
             ExecutePendingPlayerActions();
+        }
+
+        protected virtual void OnStartingPlayback()
+        {
         }
 
         private void ExecutePendingPlayerActions()

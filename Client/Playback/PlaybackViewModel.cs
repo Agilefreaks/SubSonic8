@@ -250,11 +250,7 @@
 
             set
             {
-                if (Equals(value, _fullScreenVideoPlaybackViewModel))
-                {
-                    return;
-                }
-
+                if (Equals(value, _fullScreenVideoPlaybackViewModel)) return;
                 _fullScreenVideoPlaybackViewModel = value;
                 NotifyOfPropertyChange();
                 HookFullScreenVideoPlaybackViewModel();
@@ -274,6 +270,7 @@
                 if (Equals(value, _snappedVideoPlaybackViewModel)) return;
                 _snappedVideoPlaybackViewModel = value;
                 NotifyOfPropertyChange();
+                HookSnapeedVideoPlaybackViewModel();
             }
         }
 
@@ -506,6 +503,12 @@
         {
             FullScreenVideoPlaybackViewModel.FullScreenChanged +=
                 (sender, eventArgs) => SwitchVideoPlayback(eventArgs, EmbededVideoPlaybackViewModel);
+        }
+
+        private void HookSnapeedVideoPlaybackViewModel()
+        {
+            SnappedVideoPlaybackViewModel.FullScreenChanged +=
+                (sender, eventArgs) => SwitchVideoPlayback(eventArgs, FullScreenVideoPlaybackViewModel);
         }
 
         private void HookPlayerManagementService()
