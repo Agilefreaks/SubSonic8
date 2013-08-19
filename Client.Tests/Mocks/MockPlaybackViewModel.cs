@@ -55,13 +55,9 @@
 
         public bool IsPlaying { get; private set; }
 
-        public Func<IId, Task<PlaylistItem>> LoadModel { get; set; }
-
         public ICustomFrameAdapter NavigationService { get; set; }
 
         public IDialogNotificationService NotificationService { get; set; }
-
-        public int? Parameter { get; set; }
 
         public ObservableCollection<object> SelectedItems { get; private set; }
 

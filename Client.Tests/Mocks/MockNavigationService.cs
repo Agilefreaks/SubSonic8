@@ -13,7 +13,7 @@
 
         public MockNavigationService()
         {
-            NavigateToViewModelCalls = new Dictionary<Type, object>();
+            NavigateToViewModelCalls = new List<KeyValuePair<Type, object>>();
         }
 
         #endregion
@@ -40,7 +40,7 @@
 
         public int GoBackCallCount { get; set; }
 
-        public Dictionary<Type, object> NavigateToViewModelCalls { get; private set; }
+        public List<KeyValuePair<Type, object>> NavigateToViewModelCalls { get; private set; }
 
         public Type SourcePageType { get; set; }
 
@@ -50,12 +50,12 @@
 
         public void DoNavigate()
         {
-            NavigateToViewModelCalls.Add(typeof(IViewModel), null);
+            NavigateToViewModelCalls.Add(new KeyValuePair<Type, object>(typeof(IViewModel), null));
         }
 
         public void DoNavigate(Type targetType)
         {
-            NavigateToViewModelCalls.Add(targetType, null);
+            NavigateToViewModelCalls.Add(new KeyValuePair<Type, object>(targetType, null));
         }
 
         public void GoBack()
@@ -70,19 +70,19 @@
 
         public bool Navigate(Type sourcePageType)
         {
-            NavigateToViewModelCalls.Add(sourcePageType, null);
+            NavigateToViewModelCalls.Add(new KeyValuePair<Type, object>(sourcePageType, null));
             return true;
         }
 
         public bool Navigate(Type sourcePageType, object parameter)
         {
-            NavigateToViewModelCalls.Add(sourcePageType, parameter);
+            NavigateToViewModelCalls.Add(new KeyValuePair<Type, object>(sourcePageType, parameter));
             return true;
         }
 
         public void NavigateToViewModel<T>(object parameter = null) where T : Screen
         {
-            NavigateToViewModelCalls.Add(typeof(T), parameter);
+            NavigateToViewModelCalls.Add(new KeyValuePair<Type, object>(typeof(T), parameter));
         }
 
         #endregion

@@ -11,9 +11,9 @@
 
         public int Id { get; set; }
 
-        public string Name { get; private set; }
+        public string Name { get; set; }
 
-        public SubsonicModelTypeEnum Type { get; private set; }
+        public SubsonicModelTypeEnum Type { get; set; }
 
         #endregion
 

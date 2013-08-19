@@ -1,7 +1,7 @@
 ﻿namespace Subsonic8.Framework.Extensions
 {
-    using Caliburn.Micro;
     using Client.Common.Models;
+    using Client.Common.Services;
     using Subsonic8.Album;
     using Subsonic8.Artist;
     using Subsonic8.Index;
@@ -13,14 +13,14 @@
         #region Public Methods and Operators
 
         public static void NavigateByModelType<T>(this T navigationService, ISubsonicModel subsonicModel)
-            where T : INavigationService
+            where T : ICustomFrameAdapter
         {
             var id = subsonicModel.Id;
             switch (subsonicModel.Type)
             {
                 case SubsonicModelTypeEnum.Song:
                 case SubsonicModelTypeEnum.Video:
-                    navigationService.NavigateToViewModel<PlaybackViewModel>(id);
+                    navigationService.NavigateToViewModel<PlaybackViewModel>();
                     break;
                 case SubsonicModelTypeEnum.Album:
                     navigationService.NavigateToViewModel<AlbumViewModel>(id);

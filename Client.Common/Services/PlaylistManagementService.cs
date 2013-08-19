@@ -203,7 +203,12 @@
 
         public void Handle(AddItemsMessage message)
         {
+            if (message.Queue.Count == 0) return;
             Items.AddRange(message.Queue);
+            if (message.StartPlaying)
+            {
+                StartPlaybackAction(Items.Count - message.Queue.Count);
+            }
         }
 
         public void Handle(RemoveItemsMessage message)

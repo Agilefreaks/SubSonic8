@@ -6,17 +6,14 @@
     using System.ComponentModel;
     using System.IO;
     using System.Linq;
-    using System.Threading.Tasks;
     using System.Xml.Serialization;
     using Client.Common.EventAggregatorMessages;
     using Client.Common.Models;
-    using Client.Common.Models.Subsonic;
     using Client.Common.Services;
     using Client.Common.Services.DataStructures.PlayerManagementService;
     using global::Common.ListCollectionView;
     using MugenInjection.Attributes;
     using Subsonic8.BottomBar;
-    using Subsonic8.Framework.Extensions;
     using Subsonic8.Framework.Services;
     using Subsonic8.Framework.ViewModel;
     using Subsonic8.Playlists;
@@ -73,7 +70,6 @@
         {
             UpdateDisplayName = () => DisplayName = "Playlist";
             CoverArt = CoverArtPlaceholderLarge;
-            LoadModel = this.LoadSong;
         }
 
         #endregion
@@ -129,19 +125,6 @@
             get
             {
                 return _playlistManagementService.IsPlaying;
-            }
-        }
-
-        public Func<IId, Task<PlaylistItem>> LoadModel { get; set; }
-
-        public int? Parameter
-        {
-            set
-            {
-                if (value.HasValue)
-                {
-                    LoadSongById(value.Value);
-                }
             }
         }
 
@@ -341,13 +324,6 @@
 
         #region Public Methods and Operators
 
-        public async Task AddToPlaylistAndPlay(Song model)
-        {
-            var playlistItem = await LoadModel(model);
-            PlaylistManagementService.Items.Add(playlistItem);
-            EventAggregator.Publish(new PlayItemAtIndexMessage(PlaylistManagementService.Items.Count - 1));
-        }
-
         public void ClearPlaylist()
         {
             _playlistManagementService.Clear();
@@ -519,15 +495,6 @@
         private void HookPlaylistManagementService()
         {
             PlaylistManagementService.PropertyChanged += PlaylistManagementServiceOnPropertyChanged;
-        }
-
-        private async void LoadSongById(int songId)
-        {
-            await
-                SubsonicService.GetSong(songId)
-                               .WithErrorHandler(ErrorDialogViewModel)
-                               .OnSuccess(async song => await AddToPlaylistAndPlay(song))
-                               .Execute();
         }
 
         private void OnIsFilteringChanged()

@@ -2,7 +2,6 @@
 {
     using System.Threading.Tasks;
     using Client.Common.Models;
-    using Client.Common.Models.Subsonic;
     using Client.Common.Services;
     using Subsonic8.Framework.ViewModel;
 
@@ -10,7 +9,7 @@
     {
         #region Public Methods and Operators
 
-        public static async Task<PlaylistItem> LoadSong(this ISongLoader modelLoader, IId model)
+        public static async Task<PlaylistItem> LoadPlaylistItemFromSong(this ISongLoader modelLoader, IId model)
         {
             PlaylistItem playlistItem = null;
             if (model != null)
@@ -31,7 +30,7 @@
 
         #region Methods
 
-        private static PlaylistItem CreatePlaylistItemFromSong(Song result, ISubsonicService subsonicService)
+        private static PlaylistItem CreatePlaylistItemFromSong(ISongModel result, ISubsonicService subsonicService)
         {
             var playlistItem = result.AsPlaylistItem(subsonicService);
 

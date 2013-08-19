@@ -1,11 +1,13 @@
 ﻿namespace Subsonic8.Framework.ViewModel
 {
+    using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Threading.Tasks;
     using Caliburn.Micro;
+    using Client.Common.EventAggregatorMessages;
     using Client.Common.Models;
     using Client.Common.Results;
     using MugenInjection.Attributes;
@@ -21,7 +23,7 @@
 
         private IBottomBarViewModel _bottomBar;
 
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation", 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation",
             Justification = "Reviewed. Suppression is OK here.")]
         private IIoCService _ioCService;
 
@@ -35,6 +37,7 @@
 
         protected CollectionViewModelBase()
         {
+            LoadPlaylistItem = this.LoadPlaylistItemFromSong;
             MenuItems = new BindableCollection<MenuItemViewModel>();
         }
 
@@ -98,6 +101,8 @@
             }
         }
 
+        public Func<IId, Task<PlaylistItem>> LoadPlaylistItem { get; set; }
+
         [Inject]
         public IIoCService IoCService
         {
@@ -117,9 +122,23 @@
 
         #region Public Methods and Operators
 
-        public virtual void ChildClick(ItemClickEventArgs eventArgs)
+        public async virtual void ChildClick(ItemClickEventArgs eventArgs)
         {
-            var subsonicModel = ((MenuItemViewModel)eventArgs.ClickedItem).Item;
+            await HandleItemSelection(((MenuItemViewModel)eventArgs.ClickedItem).Item);
+        }
+
+        public async Task HandleItemSelection(ISubsonicModel subsonicModel)
+        {
+            if (subsonicModel.Type == SubsonicModelTypeEnum.Song || subsonicModel.Type == SubsonicModelTypeEnum.Video)
+            {
+                var playlistItem = await LoadPlaylistItem(subsonicModel);
+                var addItemsMessage = new AddItemsMessage
+                                          {
+                                              Queue = new List<PlaylistItem> { playlistItem },
+                                              StartPlaying = true
+                                          };
+                EventAggregator.Publish(addItemsMessage);
+            }
 
             NavigationService.NavigateByModelType(subsonicModel);
         }

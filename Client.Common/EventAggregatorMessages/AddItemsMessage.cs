@@ -18,6 +18,8 @@
 
         public List<PlaylistItem> Queue { get; set; }
 
+        public bool StartPlaying { get; set; }
+
         #endregion
     }
 }

@@ -37,7 +37,7 @@
             IErrorDialogViewModel errorDialogViewModel)
             : base(navigationService, eventAggregator, playlistManagementService, errorDialogViewModel)
         {
-            LoadModel = this.LoadSong;
+            LoadPlaylistItem = this.LoadPlaylistItemFromSong;
             NavigateOnPlay = () => NavigationService.NavigateToViewModel<PlaybackViewModel>();
         }
 
@@ -53,7 +53,7 @@
             }
         }
 
-        public Func<IId, Task<PlaylistItem>> LoadModel { get; set; }
+        public Func<IId, Task<PlaylistItem>> LoadPlaylistItem { get; set; }
 
         public Action NavigateOnPlay { get; set; }
 
@@ -124,18 +124,15 @@
         {
             if (item.Type == SubsonicModelTypeEnum.Song || item.Type == SubsonicModelTypeEnum.Video)
             {
-                var addItemsMessage = new AddItemsMessage
-                                          {
-                                              Queue =
-                                                  new List<PlaylistItem>(
-                                                  new[] { await LoadModel(item) })
-                                          };
-                EventAggregator.Publish(addItemsMessage);
+                var playlistItems = new List<PlaylistItem>(new[] { await LoadPlaylistItem(item) });
+                var addItemsMessage = new AddItemsMessage { Queue = playlistItems };
                 if (_playNextItem)
                 {
                     _playNextItem = false;
-                    EventAggregator.Publish(new PlayNextMessage());
+                    addItemsMessage.StartPlaying = true;
                 }
+
+                EventAggregator.Publish(addItemsMessage);
             }
             else
             {

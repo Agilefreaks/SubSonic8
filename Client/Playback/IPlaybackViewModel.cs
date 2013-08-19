@@ -21,8 +21,6 @@ namespace Subsonic8.Playback
 
         bool IsPlaying { get; }
 
-        int? Parameter { set; }
-
         PlaybackViewModelStateEnum State { get; }
 
         #endregion

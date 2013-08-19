@@ -3,10 +3,8 @@ namespace Client.Tests.Playback
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Threading.Tasks;
     using Client.Common.EventAggregatorMessages;
     using Client.Common.Models;
-    using Client.Common.Models.Subsonic;
     using Client.Common.Services.DataStructures.PlayerManagementService;
     using Client.Tests.Framework.ViewModel;
     using Client.Tests.Mocks;
@@ -109,32 +107,6 @@ namespace Client.Tests.Playback
         }
 
         [TestMethod]
-        public async Task HandleWithPlayFileOfTypeSongShouldAddAnItemToThePlaylist()
-        {
-            MockLoadModel();
-
-            await Task.Run(() => Subject.AddToPlaylistAndPlay(new Song { IsVideo = false }));
-
-            _mockPlaylistManagementService.Items.Count.Should().Be(1);
-        }
-
-        [TestMethod]
-        public async Task HandleWithPlayFileOfTypeSongShouldPublishAMessageToStartPlayingTheLastAddedItem()
-        {
-            MockLoadModel();
-            _mockPlaylistManagementService.Items = new PlaylistItemCollection { new PlaylistItem() };
-
-            await Task.Run(() => Subject.AddToPlaylistAndPlay(new Song { IsVideo = false }));
-
-            MockEventAggregator.Messages.Any(
-                m =>
-                m.GetType() == typeof(PlayItemAtIndexMessage)
-                && ((PlayItemAtIndexMessage)m).Index == _mockPlaylistManagementService.Items.Count - 1)
-                               .Should()
-                               .BeTrue();
-        }
-
-        [TestMethod]
         public void Handle_PlayFailedMessage_CallsNotificationServiceShowWithANiceMessage()
         {
             Subject.Handle(new PlayFailedMessage("test m", null));
@@ -194,31 +166,6 @@ namespace Client.Tests.Playback
             _mockPlaylistManagementService.Items.Count.Should().Be(1);
             _mockPlaylistManagementService.Items[0].Artist.Should().Be("test_a");
             _mockPlaylistManagementService.Items[0].UriAsString.Should().Be("http://google.com/");
-        }
-
-        [TestMethod]
-        public async Task ParameterWhenSetShouldAddAnItemToThePlaylist()
-        {
-            MockLoadModel();
-            var itemsCount = _mockPlaylistManagementService.Items.Count;
-            await Task.Run(() => { Subject.Parameter = 1; });
-
-            _mockPlaylistManagementService.Items.Count.Should().Be(itemsCount + 1);
-        }
-
-        [TestMethod]
-        public async Task ParameterWhenSetShouldStartPlayingTheLastAddedItem()
-        {
-            MockLoadModel();
-            _mockPlaylistManagementService.Items = new PlaylistItemCollection { new PlaylistItem() };
-            await Task.Run(() => { Subject.Parameter = 2; });
-
-            MockEventAggregator.Messages.Any(
-                m =>
-                m.GetType() == typeof(PlayItemAtIndexMessage)
-                && ((PlayItemAtIndexMessage)m).Index == _mockPlaylistManagementService.Items.Count - 1)
-                               .Should()
-                               .BeTrue();
         }
 
         [TestMethod]
@@ -441,28 +388,6 @@ namespace Client.Tests.Playback
             Subject.ToastNotificationService = _mockToastNotificationService;
             Subject.SnappedVideoPlaybackViewModel = _mockSnappedVideoPlaybackViewModel;
             Subject.FullScreenVideoPlaybackViewModel = _mockFullScreenVideoPlaybackViewModel;
-            Subject.LoadModel = model =>
-                {
-                    var tcr = new TaskCompletionSource<PlaylistItem>();
-                    tcr.SetResult(new PlaylistItem());
-                    return tcr.Task;
-                };
-        }
-
-        private void MockLoadModel()
-        {
-            Subject.LoadModel = model =>
-                {
-                    var tcr = new TaskCompletionSource<PlaylistItem>();
-                    tcr.SetResult(
-                        new PlaylistItem
-                            {
-                                PlayingState = PlaylistItemState.NotPlaying,
-                                Uri = new Uri("http://test-uri"),
-                                Artist = "test-artist"
-                            });
-                    return tcr.Task;
-                };
         }
 
         #endregion

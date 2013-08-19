@@ -306,7 +306,7 @@
         }
 
         [TestMethod]
-        public void PlayAll_ShouldPublishAPlayNextMessage()
+        public void PlayAll_ShouldPublishAnAddItemToPlaylistMessageWithStartPlayingTrue()
         {
             _subject.SelectedItems.Add(new MenuItemViewModel { Item = new Song() });
             _subject.SelectedItems.Add(new MenuItemViewModel { Item = new Song() });
@@ -314,7 +314,8 @@
 
             _subject.PlayAll();
 
-            _eventAggregator.Messages.Single(m => m.GetType() == typeof(PlayNextMessage)).Should().NotBeNull();
+            var message = (AddItemsMessage)_eventAggregator.Messages.First(m => m.GetType() == typeof(AddItemsMessage));
+            message.StartPlaying.Should().BeTrue();
         }
 
         [TestMethod]
@@ -341,7 +342,7 @@
 
         private void MockLoadModel()
         {
-            _subject.LoadModel = model =>
+            _subject.LoadPlaylistItem = model =>
                 {
                     var tcr = new TaskCompletionSource<PlaylistItem>();
                     tcr.SetResult(

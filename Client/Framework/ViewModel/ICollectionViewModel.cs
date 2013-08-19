@@ -1,10 +1,12 @@
 ﻿namespace Subsonic8.Framework.ViewModel
 {
+    using System;
     using System.Collections.ObjectModel;
+    using System.Threading.Tasks;
     using Caliburn.Micro;
+    using Client.Common.Models;
     using Subsonic8.BottomBar;
     using Subsonic8.MenuItem;
-    using Windows.UI.Xaml.Controls;
 
     public interface ICollectionViewModel<TParameter> : IViewModel
     {
@@ -18,11 +20,13 @@
 
         ObservableCollection<object> SelectedItems { get; }
 
+        Func<IId, Task<PlaylistItem>> LoadPlaylistItem { get; set; }
+
         #endregion
 
         #region Public Methods and Operators
 
-        void ChildClick(ItemClickEventArgs eventArgs);
+        Task HandleItemSelection(ISubsonicModel subsonicModel);
 
         #endregion
     }

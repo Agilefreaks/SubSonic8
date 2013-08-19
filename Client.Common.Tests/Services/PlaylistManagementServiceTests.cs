@@ -366,6 +366,18 @@
         }
 
         [TestMethod]
+        public void Handle_WithAddItemsMessageAndHasStartPlaybackTrue_CallsStartPlyabckActionWithTheIndexOfTheFirstItemInQueue()
+        {
+            _subject.Items.AddRange(GeneratePlaylistItems(3));
+            var playbackIndex = 0;
+            _subject.StartPlaybackAction = i => playbackIndex = i;
+
+            _subject.Handle(new AddItemsMessage { Queue = new List<PlaylistItem> { new PlaylistItem() }, StartPlaying = true });
+
+            playbackIndex.Should().Be(3);
+        }
+
+        [TestMethod]
         public void IsPlaying_ByDefault_IsFalse()
         {
             _subject.IsPlaying.Should().BeFalse();
