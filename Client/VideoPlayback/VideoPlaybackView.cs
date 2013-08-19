@@ -67,6 +67,7 @@
 
         protected void MediaPlayer_OnMediaEnded(object sender, MediaPlayerActionEventArgs eventArgs)
         {
+            GetMediaPlayer.Source = null;
             // TODO: Replace with something nicer | It may be bug in Windows.Interactivity
             ((IVidePlaybackViewModel)DataContext).Next();
         }
