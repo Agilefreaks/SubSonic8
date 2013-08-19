@@ -127,6 +127,11 @@
             EventAggregator.Publish(new PlayFailedMessage(eventArgs.ErrorMessage, eventArgs.OriginalSource));
         }
 
+        public void ClearSource()
+        {
+            Source = null;
+        }
+
         public PlaybackStateEventArgs GetPlaybackTimeInfo()
         {
             return new PlaybackStateEventArgs

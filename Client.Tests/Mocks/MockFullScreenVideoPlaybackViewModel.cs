@@ -143,5 +143,10 @@ namespace Client.Tests.Mocks
         {
             throw new NotImplementedException();
         }
+
+        public void ClearSource()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

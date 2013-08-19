@@ -145,6 +145,11 @@
         {
         }
 
+        public void ClearSource()
+        {
+            throw new NotImplementedException();
+        }
+
         public void Stop()
         {
             throw new NotImplementedException();

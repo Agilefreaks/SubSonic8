@@ -31,5 +31,7 @@
         void SongFailed(ExceptionRoutedEventArgs eventArgs);
 
         #endregion
+
+        void ClearSource();
     }
 }
