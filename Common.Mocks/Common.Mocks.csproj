@@ -149,6 +149,12 @@
       <HintPath>..\packages\Windows.UI.Interactivity.1.3.0.0\lib\win8\Windows.UI.Interactivity.dll</HintPath>
     </Reference>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Images\UnitTestLogoM.png" />
+    <Content Include="Images\UnitTestSmallLogoM.png" />
+    <Content Include="Images\UnitTestSplashScreenM.png" />
+    <Content Include="Images\UnitTestStoreLogoM.png" />
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '11.0' ">
     <VisualStudioVersion>11.0</VisualStudioVersion>
   </PropertyGroup>
