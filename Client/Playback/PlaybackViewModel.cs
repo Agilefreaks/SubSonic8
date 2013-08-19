@@ -26,9 +26,9 @@
 
         public const string CoverArtPlaceholderLarge = @"/Assets/CoverArtPlaceholderLarge.jpg";
 
-        public const string SnappedStateName = "Snapped";
+        public const string PlaylistServiceStateKey = "playlist_service_state";
 
-        private const string StatePlaylistKey = "playlist_items";
+        public const string SnappedStateName = "Snapped";
 
         #endregion
 
@@ -373,21 +373,12 @@
 
         public void LoadState(string parameter, Dictionary<string, object> statePageState)
         {
-            if (!statePageState.ContainsKey(StatePlaylistKey) || PlaylistManagementService.Items.Any())
+            if (!statePageState.ContainsKey(PlaylistServiceStateKey) || PlaylistManagementService.Items.Any())
             {
                 return;
             }
 
-            var bytes = Convert.FromBase64String((string)statePageState[StatePlaylistKey]);
-            PlaylistItemCollection playlist;
-            using (var memoryStream = new MemoryStream(bytes))
-            {
-                var xmlSerializer = new XmlSerializer(typeof(PlaylistItemCollection));
-                playlist = (PlaylistItemCollection)xmlSerializer.Deserialize(memoryStream);
-            }
-
-            PlaylistManagementService.Items.Clear();
-            PlaylistManagementService.Items.AddRange(playlist);
+            PlaylistManagementService.SetStateFromString((string)statePageState[PlaylistServiceStateKey]);
         }
 
         public async void SavePlaylist()
@@ -407,13 +398,8 @@
         public void SaveState(Dictionary<string, object> statePageState, List<Type> knownTypes)
         {
             knownTypes.Add(typeof(string));
-            var xmlSerializer = new XmlSerializer(typeof(PlaylistItemCollection));
-            using (var memoryStream = new MemoryStream())
-            {
-                xmlSerializer.Serialize(memoryStream, PlaylistManagementService.Items);
-                memoryStream.Flush();
-                statePageState.Add(StatePlaylistKey, Convert.ToBase64String(memoryStream.ToArray()));
-            }
+            var stateAsString = PlaylistManagementService.GetStateAsString();
+            statePageState.Add(PlaylistServiceStateKey, stateAsString);
         }
 
         public void ShowFilter()

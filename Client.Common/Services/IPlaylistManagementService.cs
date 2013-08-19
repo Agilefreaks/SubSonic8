@@ -4,17 +4,18 @@
     using Caliburn.Micro;
     using Client.Common.EventAggregatorMessages;
     using Client.Common.Models;
+    using Client.Common.Services.DataStructures.PlaylistManagementService;
 
-    public interface IPlaylistManagementService : IHandle<PlayNextMessage>, 
-                                                  IHandle<PlayPreviousMessage>, 
-                                                  IHandle<AddItemsMessage>, 
-                                                  IHandle<ToggleShuffleMessage>, 
-                                                  IHandle<RemoveItemsMessage>, 
-                                                  IHandle<PlayPauseMessage>, 
-                                                  IHandle<PlayItemAtIndexMessage>, 
-                                                  IHandle<StopMessage>, 
-                                                  IHandle<PauseMessage>, 
-                                                  IHandle<PlayMessage>, 
+    public interface IPlaylistManagementService : IHandle<PlayNextMessage>,
+                                                  IHandle<PlayPreviousMessage>,
+                                                  IHandle<AddItemsMessage>,
+                                                  IHandle<ToggleShuffleMessage>,
+                                                  IHandle<RemoveItemsMessage>,
+                                                  IHandle<PlayPauseMessage>,
+                                                  IHandle<PlayItemAtIndexMessage>,
+                                                  IHandle<StopMessage>,
+                                                  IHandle<PauseMessage>,
+                                                  IHandle<PlayMessage>,
                                                   INotifyPropertyChanged
     {
         #region Public Properties
@@ -37,6 +38,10 @@
 
         void LoadPlaylist(PlaylistItemCollection playlistItemCollection);
 
+        string GetStateAsString();
+
         #endregion
+
+        void SetStateFromString(string stateString);
     }
 }

@@ -136,6 +136,7 @@
     <Compile Include="Services\DataStructures\PlayerManagementService\IVideoPlayer.cs" />
     <Compile Include="Services\DataStructures\PlayerManagementService\PlaybackStateEventArgs.cs" />
     <Compile Include="Services\DataStructures\PlayerManagementService\PlayerType.cs" />
+    <Compile Include="Services\DataStructures\PlaylistManagementService\PlaybackState.cs" />
     <Compile Include="Services\DataStructures\SubsonicService\SubsonicServiceConfiguration.cs" />
     <Compile Include="Services\IPlayerManagementService.cs" />
     <Compile Include="EventAggregatorMessages\PauseMessage.cs" />

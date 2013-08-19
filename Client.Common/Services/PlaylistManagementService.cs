@@ -2,10 +2,13 @@
 {
     using System;
     using System.Collections.Specialized;
+    using System.IO;
     using System.Linq;
+    using System.Xml.Serialization;
     using Caliburn.Micro;
     using Client.Common.EventAggregatorMessages;
     using Client.Common.Models;
+    using Client.Common.Services.DataStructures.PlaylistManagementService;
     using Action = System.Action;
 
     public class PlaylistManagementService : PropertyChangedBase, IPlaylistManagementService
@@ -265,6 +268,47 @@
             Items.AddRange(playlistItemCollection);
         }
 
+        public string GetStateAsString()
+        {
+            string result;
+            var playlistServiceState = new PlaylistServiceState
+                                           {
+                                               CurrentTrackNumber = CurrentTrackNumber,
+                                               IsShuffleOn = ShuffleOn,
+                                               Items = Items,
+                                               IsPlaying = IsPlaying
+                                           };
+            var xmlSerializer = GetStateSerializer();
+            using (var memoryStream = new MemoryStream())
+            {
+                xmlSerializer.Serialize(memoryStream, playlistServiceState);
+                memoryStream.Flush();
+                result = Convert.ToBase64String(memoryStream.ToArray());
+            }
+
+            return result;
+        }
+
+        public void SetStateFromString(string stateString)
+        {
+            var bytes = Convert.FromBase64String(stateString);
+            PlaylistServiceState state;
+            using (var memoryStream = new MemoryStream(bytes))
+            {
+                var xmlSerializer = GetStateSerializer();
+                state = (PlaylistServiceState)xmlSerializer.Deserialize(memoryStream);
+            }
+
+            Items.Clear();
+            Items.AddRange(state.Items);
+            CurrentItem = state.CurrentTrackNumber > -1 ? Items.ElementAt(state.CurrentTrackNumber) : null;
+            ShuffleOn = state.IsShuffleOn;
+            if (state.IsPlaying)
+            {
+                Play();
+            }
+        }
+
         public void Pause()
         {
             if (!IsPlaying)
@@ -336,6 +380,11 @@
         #endregion
 
         #region Methods
+
+        private static XmlSerializer GetStateSerializer()
+        {
+            return new XmlSerializer(typeof(PlaylistServiceState), new[] { typeof(PlaylistItemCollection) });
+        }
 
         private void PlaylistChanged(object sender, NotifyCollectionChangedEventArgs e)
         {

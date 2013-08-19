@@ -1,5 +1,6 @@
 namespace Client.Tests.Mocks
 {
+    using System;
     using System.Collections.Generic;
     using Caliburn.Micro;
     using Client.Common.EventAggregatorMessages;
@@ -14,6 +15,7 @@ namespace Client.Tests.Mocks
         {
             Items = new PlaylistItemCollection();
             MethodCalls = new Dictionary<string, object>();
+            SetStateFromStringCalls = new List<string>();
         }
 
         #endregion
@@ -35,6 +37,10 @@ namespace Client.Tests.Mocks
         public Dictionary<string, object> MethodCalls { get; set; }
 
         public bool ShuffleOn { get; set; }
+
+        public List<string> SetStateFromStringCalls { get; set; }
+
+        public Func<string> GetStateAsStringCallback { get; set; }
 
         #endregion
 
@@ -89,6 +95,16 @@ namespace Client.Tests.Mocks
         {
             LoadPlaylistCallCount++;
             MethodCalls.Add("LoadPlaylist", playlistItemCollection);
+        }
+
+        public string GetStateAsString()
+        {
+            return GetStateAsStringCallback != null ? GetStateAsStringCallback() : string.Empty;
+        }
+
+        public void SetStateFromString(string stateString)
+        {
+            SetStateFromStringCalls.Add(stateString);
         }
 
         #endregion

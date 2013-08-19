@@ -151,21 +151,39 @@ namespace Client.Tests.Playback
         }
 
         [TestMethod]
-        public void LoadState_StateContainsPlaylistKey_IsAbleToRestorePlaylistFromPreviouslySavePlaylist()
+        public void LoadState_StateContainsPlaylistServiceKey_ShouldCallSetStateFromStrinForThePlaylistManagementServiceWithTheObtainedData()
         {
-            var knownTypes = new List<Type>();
-            var statePageState = new Dictionary<string, object>();
-            _mockPlaylistManagementService.Items.Add(
-                new PlaylistItem { Artist = "test_a", UriAsString = "http://google.com/" });
-            Subject.SaveState(statePageState, knownTypes);
-            _mockPlaylistManagementService.Items.Clear();
-            _mockPlaylistManagementService.Items.Count.Should().Be(0);
+            var statePageState = new Dictionary<string, object>
+                                     {
+                                         {
+                                             PlaybackViewModel.PlaylistServiceStateKey,
+                                             "testData"
+                                         }
+                                     };
 
             Subject.LoadState(null, statePageState);
 
-            _mockPlaylistManagementService.Items.Count.Should().Be(1);
-            _mockPlaylistManagementService.Items[0].Artist.Should().Be("test_a");
-            _mockPlaylistManagementService.Items[0].UriAsString.Should().Be("http://google.com/");
+            _mockPlaylistManagementService.SetStateFromStringCalls.Count.Should().Be(1);
+            _mockPlaylistManagementService.SetStateFromStringCalls[0].Should().Be("testData");
+        }
+
+        [TestMethod]
+        public void SaveState_Always_ShouldCallGetStateAsStringForThePlaylistManagementServiceWithTheObtainedData()
+        {
+            var knownTypes = new List<Type>();
+            var statePageState = new Dictionary<string, object>();
+            var callCount = 0;
+            _mockPlaylistManagementService.GetStateAsStringCallback = () =>
+                {
+                    callCount++;
+                    return "testData";
+                };
+
+            Subject.SaveState(statePageState, knownTypes);
+
+            callCount.Should().Be(1);
+            knownTypes.Should().Contain(typeof(string));
+            statePageState[PlaybackViewModel.PlaylistServiceStateKey].Should().Be("testData");
         }
 
         [TestMethod]
