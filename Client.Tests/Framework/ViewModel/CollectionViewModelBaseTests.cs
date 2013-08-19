@@ -51,7 +51,7 @@
         [DataTestMethod]
         [DataRow(SubsonicModelTypeEnum.Song)]
         [DataRow(SubsonicModelTypeEnum.Video)]
-        public async Task HandleItemSelection_ModelTypeIsSong_ShouldTryToPublishAnAddItemMessageWithTheObtainedPlaylistItemAndStartPlayingTrue(SubsonicModelTypeEnum type)
+        public async Task HandleItemSelection_ModelTypeIsSongOrVideo_ShouldTryToPublishAnAddItemMessageWithTheObtainedPlaylistItemAndStartPlayingTrue(SubsonicModelTypeEnum type)
         {
             MockEventAggregator.Messages.Clear();
             var playlistItem = new PlaylistItem();
@@ -69,7 +69,7 @@
         [DataTestMethod]
         [DataRow(SubsonicModelTypeEnum.Song)]
         [DataRow(SubsonicModelTypeEnum.Video)]
-        public async Task HandleItemSelection_ItemIsASong_ShouldTryToNavigateToThePlaybackViewModel(SubsonicModelTypeEnum type)
+        public async Task HandleItemSelection_ItemIsASongOrVideo_ShouldTryToNavigateToThePlaybackViewModel(SubsonicModelTypeEnum type)
         {
             MockNavigationService.NavigateToViewModelCalls.Clear();
             MockLoadModel();
