@@ -7,6 +7,8 @@ h1. Requirments
 # Windows 8 works on WinRT devices
 # Subsonic server premium version >= 4.7
 
+To be able to build the source code you need to install the Player Framework addin for Visual Studio which can be found in the libs folder and also you need to have nuget installed in Visual Studio to fetch all the other dependencies.
+
 h1. Note
 
 If you install the app and when switching away to another app the sound volume lowers automatically, and you are annoyed by this follow these steps:
