@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
+  <Identity Name="11722CristiBadila-AgileFr.Subsonic8" Publisher="CN=9A125042-BA51-4746-8221-E7237026040D" Version="1.0.0.18" />
+  <Properties>
+    <DisplayName>Subsonic8</DisplayName>
+    <PublisherDisplayName>Cristi Badila - AgileFreaks</PublisherDisplayName>
+    <Logo>Assets\StoreLogo.png</Logo>
+  </Properties>
+  <Prerequisites>
+    <OSMinVersion>6.2.1</OSMinVersion>
+    <OSMaxVersionTested>6.2.1</OSMaxVersionTested>
+  </Prerequisites>
+  <Resources>
+    <Resource Language="x-generate" />
+  </Resources>
+  <Applications>
+    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="Client.App">
+      <VisualElements DisplayName="Subsonic8" Logo="Assets\Logo.png" SmallLogo="Assets\SmallLogo.png" Description="Subsonic8" ForegroundText="light" BackgroundColor="#464646" ToastCapable="true">
+        <DefaultTile ShowName="allLogos" WideLogo="Assets\WideLogo.png" ShortName="Subsonic8" />
+        <SplashScreen Image="Assets\subsonic.png" />
+        <InitialRotationPreference>
+          <Rotation Preference="portrait" />
+          <Rotation Preference="landscape" />
+          <Rotation Preference="portraitFlipped" />
+          <Rotation Preference="landscapeFlipped" />
+        </InitialRotationPreference>
+      </VisualElements>
+      <Extensions>
+        <Extension Category="windows.backgroundTasks" EntryPoint="Subsonic8.Shell">
+          <BackgroundTasks>
+            <Task Type="audio" />
+          </BackgroundTasks>
+        </Extension>
+        <Extension Category="windows.search" EntryPoint="Subsonic8.Shell" />
+      </Extensions>
+    </Application>
+  </Applications>
+  <Capabilities>
+    <Capability Name="privateNetworkClientServer" />
+    <Capability Name="internetClientServer" />
+    <Capability Name="internetClient" />
+  </Capabilities>
+</Package>
