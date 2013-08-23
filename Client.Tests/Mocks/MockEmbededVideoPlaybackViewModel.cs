@@ -7,7 +7,6 @@
     using Client.Common.Results;
     using Client.Common.Services;
     using Client.Common.Services.DataStructures.PlayerManagementService;
-    using Microsoft.PlayerFramework;
     using Subsonic8.BottomBar;
     using Subsonic8.ErrorDialog;
     using Subsonic8.Framework.Services;

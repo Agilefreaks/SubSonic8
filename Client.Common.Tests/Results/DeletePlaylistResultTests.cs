@@ -25,6 +25,13 @@
 
         #region Public Methods and Operators
 
+        [TestInitialize]
+        public void Setup()
+        {
+            var subsonicServiceConfiguration = new SubsonicServiceConfiguration();
+            _subject = new DeletePlaylistResultWrapper(subsonicServiceConfiguration, 1);
+        }
+
         [TestMethod]
         public void HandleResponse_ResponseIsEmpty_ReturnsTrue()
         {
@@ -39,12 +46,6 @@
         public void RequestUrlShouldBeCorrect()
         {
             _subject.RequestUrl.Should().EndWith("&id=1");
-        }
-
-        [TestInitialize]
-        public void Setup()
-        {
-            _subject = new DeletePlaylistResultWrapper(new SubsonicServiceConfiguration(), 1);
         }
 
         [TestMethod]

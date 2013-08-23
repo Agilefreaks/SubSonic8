@@ -24,6 +24,16 @@
 
         #endregion
 
+        #region Constructors
+
+        public SubsonicServiceConfiguration()
+        {
+            Password = string.Empty;
+            Username = string.Empty;
+        }
+
+        #endregion
+
         #region Public Properties
 
         public string BaseUrl

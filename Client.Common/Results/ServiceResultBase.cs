@@ -12,7 +12,8 @@
     {
         #region Fields
 
-        protected readonly HttpClient Client = new HttpClient();
+        protected readonly HttpClient Client =
+            new HttpClient(new HttpClientHandler { AllowAutoRedirect = true, PreAuthenticate = true });
 
         protected readonly XNamespace Namespace = "http://subsonic.org/restapi";
 
@@ -38,7 +39,11 @@
         {
             get
             {
-                return string.Format(Configuration.RequestFormat(), ViewName);
+                return string.Format(
+                    Configuration.RequestFormatWithUsernameAndPassword(),
+                    ViewName,
+                    Configuration.Username,
+                    Configuration.EncodedPassword);
             }
         }
 

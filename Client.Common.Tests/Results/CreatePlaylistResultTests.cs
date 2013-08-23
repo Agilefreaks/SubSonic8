@@ -29,6 +29,13 @@
 
         #region Public Methods and Operators
 
+        [TestInitialize]
+        public void Setup()
+        {
+            _songIds = new List<int>();
+            _subject = new CreatePlaylistResultWrapper(new SubsonicServiceConfiguration(), "test playlist", _songIds);
+        }
+
         [TestMethod]
         public void HandleResponse_ResponseIsEmpty_ReturnsTrue()
         {
@@ -45,13 +52,6 @@
             _songIds.AddRange(Enumerable.Range(0, 5));
 
             _subject.RequestUrl.Should().EndWith("&name=test+playlist&songId=0&songId=1&songId=2&songId=3&songId=4");
-        }
-
-        [TestInitialize]
-        public void Setup()
-        {
-            _songIds = new List<int>();
-            _subject = new CreatePlaylistResultWrapper(new SubsonicServiceConfiguration(), "test playlist", _songIds);
         }
 
         [TestMethod]

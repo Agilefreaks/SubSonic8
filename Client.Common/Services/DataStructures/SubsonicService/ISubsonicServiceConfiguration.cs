@@ -12,6 +12,8 @@ namespace Client.Common.Services.DataStructures.SubsonicService
 
         string Username { get; set; }
 
+        string EncodedPassword { get; }
+
         #endregion
     }
 }
