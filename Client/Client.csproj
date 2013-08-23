@@ -336,7 +336,6 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <None Include="Client_StoreKey.pfx" />
     <None Include="Client_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <PRIResource Include="Shell\ShellStrings.resw" />
@@ -349,7 +348,6 @@
     <Content Include="Assets\Logo.png" />
     <Content Include="Assets\subsonic.png" />
     <Content Include="Assets\WideLogo.png" />
-    <None Include="Package.StoreAssociation.xml" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -569,12 +567,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <SDKReference Include="Microsoft.PlayerFramework.Xaml, Version=1.8.0.5">
-      <Name>Microsoft Player Framework</Name>
-    </SDKReference>
+    <Folder Include="Messages\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Messages\" />
+    <SDKReference Include="Microsoft.PlayerFramework.Xaml, Version=1.8.1.0">
+      <Name>Microsoft Player Framework %28Microsoft.PlayerFramework.Xaml, Version=1.8.1.0%29</Name>
+    </SDKReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '11.0' ">
     <VisualStudioVersion>11.0</VisualStudioVersion>
