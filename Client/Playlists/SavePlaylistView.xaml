@@ -4,25 +4,20 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:framework="using:Subsonic8.Framework"
-    xmlns:caliburn="using:Caliburn.Micro" xmlns:behaviors="using:Subsonic8.Framework.Behaviors"
+    xmlns:caliburn="using:Caliburn.Micro"
     xmlns:common="using:Subsonic8.Common"
     mc:Ignorable="d">
 
     <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="140" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <common:PageHeader DataContext="{Binding}" />
-
-        <GridView x:Name="MenuItems" Grid.Row="1" Margin="0,-3,0,0" Padding="116,0,116,46" SelectionMode="Single"
-                  behaviors:MultipleSelectBehavior.SelectedItems="{Binding SelectedItems, Mode=TwoWay}"
-                  IsItemClickEnabled="True" caliburn:Message.Attach="[Event ItemClick] = [ChildClick($eventArgs)]" />
-
-        <Border BorderThickness="0,1,0,0" BorderBrush="{StaticResource SaveButtonBackgroundBrush}" Grid.Row="2"
-                Padding="10">
+        <common:BrowseView/>
+        
+        <Border BorderThickness="0,1,0,0" BorderBrush="{StaticResource SaveButtonBackgroundBrush}" Grid.Row="1"
+                Padding="10" x:Name="ActionBar">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -37,5 +32,38 @@
                 </StackPanel>
             </Grid>
         </Border>
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="ApplicationViewStates">
+                <VisualState x:Name="FullScreenLandscape">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ActionBar" Storyboard.TargetProperty="Visibility">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="Visible"/>
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+                <VisualState x:Name="Filled">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ActionBar" Storyboard.TargetProperty="Visibility">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="Visible"/>
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+                <VisualState x:Name="FullScreenPortrait">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ActionBar" Storyboard.TargetProperty="Visibility">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="Visible"/>
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+                <VisualState x:Name="Snapped">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ActionBar" Storyboard.TargetProperty="Visibility">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed"/>
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
     </Grid>
 </framework:AppPage>
