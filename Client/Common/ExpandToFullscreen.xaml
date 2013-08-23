@@ -16,7 +16,7 @@
         
         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Image Source="ms-appx:///Assets/WideLogo.png" Stretch="None"/>
-            <TextBlock Style="{StaticResource ExpandTextBlockStyle}" HorizontalAlignment="Center">Browse items in fullscreen</TextBlock>
+            <TextBlock Style="{StaticResource ExpandTextBlockStyle}" HorizontalAlignment="Center">Show items in fullscreen</TextBlock>
             <Button Style="{StaticResource ExpandButtonStyle}" HorizontalAlignment="Center" Margin="10">
                 <i:Interaction.Behaviors>
                     <behaviors:UnsnapBehavior/>
