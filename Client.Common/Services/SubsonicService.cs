@@ -39,6 +39,7 @@
             UpdatePlaylist = UpdatePlaylistResultImpl;
             RenamePlaylist = RenamePlaylistImpl;
             Ping = PingImpl;
+            GetRandomSongs = GetRandomSongsImpl;
         }
 
         #endregion
@@ -95,6 +96,10 @@
 
         public Func<int, IEnumerable<int>, IEnumerable<int>, IUpdatePlaylistResult> UpdatePlaylist { get; set; }
 
+        public Func<int, IGetRandomSongsResult> GetRandomSongs { get; set; }
+
+        public bool IsVideoPlaybackInitialized { get; set; }
+
         #endregion
 
         #region Public Methods and Operators
@@ -110,9 +115,9 @@
             if (!string.IsNullOrEmpty(coverArt))
             {
                 result = string.Format(
-                    _configuration.RequestFormatWithUsernameAndPassword(), 
-                    "getCoverArt.view", 
-                    _configuration.Username, 
+                    _configuration.RequestFormatWithUsernameAndPassword(),
+                    "getCoverArt.view",
+                    _configuration.Username,
                     _configuration.EncodedPassword) + string.Format("&id={0}", coverArt)
                          + string.Format("&size={0}", (int)imageType);
             }
@@ -129,9 +134,9 @@
             return
                 new Uri(
                     string.Format(
-                        _configuration.RequestFormatWithUsernameAndPassword(), 
-                        "stream.view", 
-                        _configuration.Username, 
+                        _configuration.RequestFormatWithUsernameAndPassword(),
+                        "stream.view",
+                        _configuration.Username,
                         _configuration.EncodedPassword) + string.Format("&id={0}", id));
         }
 
@@ -230,6 +235,11 @@
             int id, IEnumerable<int> songIdsToAdd, IEnumerable<int> songIndexesToRemove)
         {
             return new UpdatePlaylistResult(Configuration, id, songIdsToAdd, songIndexesToRemove);
+        }
+
+        private IGetRandomSongsResult GetRandomSongsImpl(int numberOfSongs)
+        {
+            return new GetRandomSongsResult(Configuration, numberOfSongs);
         }
 
         #endregion

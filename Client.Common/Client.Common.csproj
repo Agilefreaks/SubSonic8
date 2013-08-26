@@ -120,12 +120,14 @@
     <Compile Include="Results\ExtendedResultBase.cs" />
     <Compile Include="Results\GetAllPlaylistsResult.cs" />
     <Compile Include="Results\GetPlaylistResult.cs" />
+    <Compile Include="Results\GetRandomSongsResult.cs" />
     <Compile Include="Results\IDeletePlaylistResult.cs" />
     <Compile Include="Results\IEmptyResponseResult.cs" />
     <Compile Include="Results\IExtendedResult.cs" />
     <Compile Include="Results\IGetAllPlaylistsResult.cs" />
     <Compile Include="Results\IGetPlaylistResult.cs" />
     <Compile Include="Results\ICreatePlaylistResult.cs" />
+    <Compile Include="Results\IGetRandomSongsResult.cs" />
     <Compile Include="Results\IPingResult.cs" />
     <Compile Include="Results\IRenamePlaylistResult.cs" />
     <Compile Include="Results\IUpdatePlaylistResult.cs" />

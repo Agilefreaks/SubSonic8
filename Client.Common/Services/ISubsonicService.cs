@@ -9,6 +9,8 @@ namespace Client.Common.Services
     {
         #region Public Properties
 
+        bool IsVideoPlaybackInitialized { get; set; }
+
         SubsonicServiceConfiguration Configuration { get; set; }
 
         Func<string, IEnumerable<int>, ICreatePlaylistResult> CreatePlaylist { get; set; }
@@ -40,6 +42,8 @@ namespace Client.Common.Services
         Func<string, ISearchResult> Search { get; set; }
 
         Func<int, IEnumerable<int>, IEnumerable<int>, IUpdatePlaylistResult> UpdatePlaylist { get; set; }
+
+        Func<int, IGetRandomSongsResult> GetRandomSongs { get; set; }
 
         #endregion
 

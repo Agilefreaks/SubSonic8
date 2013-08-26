@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Threading.Tasks;
     using Client.Common.EventAggregatorMessages;
     using Client.Common.Services.DataStructures.PlayerManagementService;
     using MugenInjection.Attributes;
@@ -154,8 +155,9 @@
             }
         }
 
-        void IPlayer.Play(PlaylistItem item, object options)
+        async void IPlayer.Play(PlaylistItem item, object options)
         {
+            await AssureVideoPlaybackIsInitalized();
             OnStartingPlayback();
             var startInfo = GetStartInfo(item, options as PlaybackStateEventArgs);
             Source = startInfo.Source;
@@ -165,7 +167,7 @@
                                             () => _playerControls.SetEndTime(startInfo.EndTime), 
                                             () => _playerControls.Play()
                                         };
-            ExecutePendingPlayerActions();
+            ExecutePlayerDependentActions();
         }
 
         void IPlayer.Resume()
@@ -192,14 +194,14 @@
         {
             base.OnViewAttached(view, context);
             _playerControls = view as IVideoPlayerView;
-            ExecutePendingPlayerActions();
+            ExecutePlayerDependentActions();
         }
 
         protected virtual void OnStartingPlayback()
         {
         }
 
-        private void ExecutePendingPlayerActions()
+        private void ExecutePlayerDependentActions()
         {
             if (_playerControls == null)
             {
@@ -243,6 +245,13 @@
                 item.Uri, videoStartInfo.StartTime.TotalSeconds);
 
             return videoStartInfo;
+        }
+
+        private async Task AssureVideoPlaybackIsInitalized()
+        {
+            if (SubsonicService.IsVideoPlaybackInitialized) return;
+            await SubsonicService.GetRandomSongs(1).Execute();
+            SubsonicService.IsVideoPlaybackInitialized = true;
         }
 
         #endregion
