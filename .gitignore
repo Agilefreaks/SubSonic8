@@ -29,6 +29,7 @@
 *.tlh
 *.tmp
 *.vspscc
+*.backup
 .builds
 *.dotCover
 
