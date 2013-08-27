@@ -210,7 +210,6 @@
     <Compile Include="Framework\ViewModel\IPlaybackControlsViewModel.cs" />
     <Compile Include="Framework\ViewModel\ItemViewModelBase.cs" />
     <Compile Include="Framework\ViewModel\PlaybackControlsViewModelBase.cs" />
-    <Compile Include="Framework\ViewModel\ScreenWithStateBase.cs" />
     <Compile Include="Playback\Playback\SnappedAudio.xaml.cs">
       <DependentUpon>SnappedAudio.xaml</DependentUpon>
     </Compile>

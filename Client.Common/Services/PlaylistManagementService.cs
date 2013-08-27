@@ -4,6 +4,7 @@
     using System.Collections.Specialized;
     using System.IO;
     using System.Linq;
+    using System.Runtime.Serialization;
     using System.Xml.Serialization;
     using Caliburn.Micro;
     using Client.Common.EventAggregatorMessages;
@@ -278,10 +279,10 @@
                                                Items = Items,
                                                IsPlaying = IsPlaying
                                            };
-            var xmlSerializer = GetStateSerializer();
+            var serializer = GetStateSerializer();
             using (var memoryStream = new MemoryStream())
             {
-                xmlSerializer.Serialize(memoryStream, playlistServiceState);
+                serializer.WriteObject(memoryStream, playlistServiceState);
                 memoryStream.Flush();
                 result = Convert.ToBase64String(memoryStream.ToArray());
             }
@@ -295,8 +296,16 @@
             PlaylistServiceState state;
             using (var memoryStream = new MemoryStream(bytes))
             {
-                var xmlSerializer = GetStateSerializer();
-                state = (PlaylistServiceState)xmlSerializer.Deserialize(memoryStream);
+                try
+                {
+                    var serializer = GetStateSerializer();
+                    state = (PlaylistServiceState)serializer.ReadObject(memoryStream);
+                }
+                catch (Exception)
+                {
+                    var serializer = GetLegacyStateSerializer();
+                    state = (PlaylistServiceState)serializer.Deserialize(memoryStream);
+                }
             }
 
             Items.Clear();
@@ -381,7 +390,12 @@
 
         #region Methods
 
-        private static XmlSerializer GetStateSerializer()
+        private static XmlObjectSerializer GetStateSerializer()
+        {
+            return new DataContractSerializer(typeof(PlaylistServiceState), new[] { typeof(PlaylistItemCollection) });
+        }
+
+        private static XmlSerializer GetLegacyStateSerializer()
         {
             return new XmlSerializer(typeof(PlaylistServiceState), new[] { typeof(PlaylistItemCollection) });
         }
