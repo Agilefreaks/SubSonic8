@@ -1,5 +1,6 @@
 ﻿namespace Subsonic8.Main
 {
+    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Caliburn.Micro;
@@ -83,7 +84,7 @@
                 if (diagnosticsResult.ApiError != null)
                 {
                     populate = false;
-                    ErrorDialogViewModel.HandleError(diagnosticsResult.ApiError.Message);
+                    ErrorDialogViewModel.HandleError(new Exception(diagnosticsResult.ApiError.Message));
                 }
             }
             else

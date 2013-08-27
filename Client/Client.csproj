@@ -336,7 +336,9 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
+    <PRIResource Include="BugFreakCredentials.resw" />
     <None Include="Client_TemporaryKey.pfx" />
+    <PRIResource Include="ErrorDialog\ErrorDialogViewModelStrings.resw" />
     <None Include="packages.config" />
     <PRIResource Include="Shell\ShellStrings.resw" />
   </ItemGroup>
@@ -537,6 +539,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="BugFreak, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\BugFreak.WinRT.1.0.1.1\lib\win\BugFreak.winmd</HintPath>
+    </Reference>
+    <Reference Include="BugFreak.WinRT.Lib">
+      <HintPath>..\packages\BugFreak.WinRT.1.0.1.1\lib\win\BugFreak.WinRT.Lib.dll</HintPath>
+    </Reference>
     <Reference Include="Caliburn.Micro, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Caliburn.Micro.1.5.0\lib\win8\Caliburn.Micro.dll</HintPath>
@@ -566,9 +575,7 @@
       <HintPath>..\packages\WinRTXamlToolkit.1.5.2.0\lib\netcore45\WinRTXamlToolkit.dll</HintPath>
     </Reference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Messages\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <SDKReference Include="Microsoft.PlayerFramework.Xaml, Version=1.8.1.0">
       <Name>Microsoft Player Framework %28Microsoft.PlayerFramework.Xaml, Version=1.8.1.0%29</Name>

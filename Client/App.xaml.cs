@@ -8,6 +8,7 @@
     using Subsonic8.ErrorDialog;
     using Subsonic8.Framework;
     using Subsonic8.Framework.Interfaces;
+    using Subsonic8.Framework.Services;
     using Subsonic8.Main;
     using Subsonic8.Playback;
     using Subsonic8.Shell;
@@ -16,6 +17,7 @@
     using Windows.ApplicationModel.Activation;
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
+    using BugFreak = BugFreak.BugFreak;
 
     public sealed partial class App
     {
@@ -132,6 +134,8 @@
 
         private async void StartApplication()
         {
+            HookBugFreak();
+
             DisplayRootView<ShellView>();
 
             var shellView = GetShellView();
@@ -147,6 +151,14 @@
             await LoadSettings();
 
             await RestoreLastViewOrGoToMain(shellView);
+        }
+
+        private void HookBugFreak()
+        {
+            var resouceService = Kernel.Get<ResourceService>();
+            var apiKey = resouceService.GetStringResource("BugFreakCredentials/ApiKey");
+            var token = resouceService.GetStringResource("BugFreakCredentials/Token");
+            BugFreak.Hook(apiKey, token, this);
         }
 
         #endregion

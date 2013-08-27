@@ -16,14 +16,24 @@
 
         private MockNavigationService _mockNavigationService;
 
+        private MockDialogNotificationService _mockDialogNotificationService;
+
+        private MockResourceService _mockResourceService;
+
         [TestInitialize]
         public void Setup()
         {
             _mockWinRTWrapperService = new MockWinRTWrappersService();
             _mockNavigationService = new MockNavigationService();
-            _subject = new ErrorDialogViewModel(_mockWinRTWrapperService, _mockNavigationService)
+            _mockDialogNotificationService = new MockDialogNotificationService();
+            _mockResourceService = new MockResourceService();
+            _subject = new ErrorDialogViewModel(
+                _mockWinRTWrapperService, _mockNavigationService, _mockDialogNotificationService, _mockResourceService)
                            {
-                               NavigateAction = _mockNavigationService.DoNavigate
+                               NavigateAction
+                                   =
+                                   _mockNavigationService
+                                   .DoNavigate
                            };
         }
 
@@ -36,7 +46,8 @@
         [TestMethod]
         public void Ctor_Always_ShouldSetTheNavigateActionToNavigate()
         {
-            var errorDialogViewModel = new ErrorDialogViewModel(_mockWinRTWrapperService, _mockNavigationService);
+            var errorDialogViewModel = new ErrorDialogViewModel(
+                _mockWinRTWrapperService, _mockNavigationService, _mockDialogNotificationService, _mockResourceService);
 
             errorDialogViewModel.NavigateAction.Should().Be((Action<Type>)errorDialogViewModel.Navigate);
         }
@@ -44,7 +55,7 @@
         [TestMethod]
         public void HandleError_WithString_ShouldNavigateToErrorDialogViewModel()
         {
-            _subject.HandleError("test");
+            _subject.HandleError(new Exception("test"));
 
             _mockNavigationService.NavigateToViewModelCalls.Count.Should().Be(1);
             _mockNavigationService.NavigateToViewModelCalls.First().Key.Should().Be(typeof(ErrorDialogViewModel));
@@ -53,7 +64,7 @@
         [TestMethod]
         public void HandleError_WithString_ShouldSetStringAsErrorDescription()
         {
-            _subject.HandleError("test");
+            _subject.HandleError(new Exception("test"));
 
             _subject.ErrorDescription.Should().Be("test");
         }
@@ -78,7 +89,7 @@
         [TestMethod]
         public void GoBack_CanGoBack_ShouldSetIsOpenFalse()
         {
-            _subject.HandleError("test");
+            _subject.HandleError(new Exception("test"));
             _mockNavigationService.CanGoBack = true;
 
             _subject.GoBack();

@@ -10,17 +10,9 @@
 
     public class ErrorDialogViewModel : Screen, IErrorDialogViewModel
     {
-        #region Constants
+        private readonly IDialogNotificationService _dialogNotificationService;
 
-        private const string ErrorReportDeliveryEmail = "subsonic8@agilefreaks.com";
-
-        private const string ActionInormation = "Please send this email to: " + ErrorReportDeliveryEmail;
-
-        private const string TitleMessage = "Could not complete request.";
-
-        private const string DefaultMessage = "You can choose to send us a report with the error details or ignore this.";
-
-        #endregion
+        private readonly IResourceService _resourceService;
 
         #region Fields
 
@@ -28,12 +20,20 @@
 
         private string _errorDescription;
 
+        private Exception _error;
+
         #endregion
 
         #region Constructors and Destructors
 
-        public ErrorDialogViewModel(IWinRTWrappersService winRTWrappersService, INavigationService navigationService)
+        public ErrorDialogViewModel(
+            IWinRTWrappersService winRTWrappersService,
+            INavigationService navigationService,
+            IDialogNotificationService dialogNotificationService,
+            IResourceService resourceService)
         {
+            _dialogNotificationService = dialogNotificationService;
+            _resourceService = resourceService;
             WinRTWrapperService = winRTWrappersService;
             WinRTWrapperService.RegisterShareRequestHandler(OnShareRequested);
             NavigationService = navigationService;
@@ -48,7 +48,7 @@
         {
             get
             {
-                return DefaultMessage;
+                return _resourceService.GetStringResource("ErrorDialogViewModelStrings/DefaultMessage");
             }
         }
 
@@ -102,19 +102,31 @@
 
         public void HandleError(Exception error)
         {
+            _error = error;
             ExceptionString = error.ToString();
-            HandleError(error.Message);
-        }
-
-        public void HandleError(string errorMessage)
-        {
-            ErrorDescription = errorMessage;
+            ErrorDescription = error.Message;
             NavigateAction(typeof(ErrorDialogViewModel));
         }
 
         public void ShareErrorDetails()
         {
             WinRTWrapperService.ShowShareUI();
+        }
+
+        public void ReportErrorDetails()
+        {
+            string message;
+            try
+            {
+                BugFreak.ReportingService.Instance.BeginReport(_error);
+                message = _resourceService.GetStringResource("ErrorDialogViewModelStrings/ErrorDelivered");
+            }
+            catch (Exception)
+            {
+                message = _resourceService.GetStringResource("ErrorDialogViewModelStrings/ErrorWasNotDelivered");
+            }
+
+            _dialogNotificationService.Show(new DialogNotificationOptions { Message = message });
         }
 
         public void GoBack()
@@ -137,7 +149,11 @@
                 dataRequest.Data.Properties.Description = "Share this with us by email";
                 dataRequest.Data.Properties.ApplicationName = "Subsonic8";
                 var dataBuilder = new StringBuilder();
-                dataBuilder.Append(string.Format("<h2>{0}</h2><br/>", ActionInormation));
+                var actionInformation =
+                    string.Format(
+                        _resourceService.GetStringResource("ErrorDialogViewModelStrings/ActionInormation"),
+                        _resourceService.GetStringResource("ErrorDialogViewModelStrings/ErrorReportDeliveryEmail"));
+                dataBuilder.Append(string.Format("<h2>{0}</h2><br/>", actionInformation));
                 dataBuilder.Append(string.Format("<div><span>{0}</span></div>", ExceptionString));
                 dataRequest.Data.SetHtmlFormat(HtmlFormatHelper.CreateHtmlFormat(dataBuilder.ToString()));
             }
@@ -160,7 +176,7 @@
         protected override void OnActivate()
         {
             base.OnActivate();
-            DisplayName = TitleMessage;
+            DisplayName = _resourceService.GetStringResource("ErrorDialogViewModelStrings/TitleMessage");
         }
 
         #endregion

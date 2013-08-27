@@ -16,8 +16,6 @@
 
         #region Public Methods and Operators
 
-        void HandleError(string errorMessage);
-
         void ShareErrorDetails();
 
         void GoBack();
