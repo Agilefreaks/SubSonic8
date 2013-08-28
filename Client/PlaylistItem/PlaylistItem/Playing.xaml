@@ -9,7 +9,7 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-    <Border BorderThickness="4" BorderBrush="Blue">
+    <Border Style="{StaticResource PlayingItemBorderStyle}">
         <playlistItem:NotPlaying />
     </Border>
 </UserControl>

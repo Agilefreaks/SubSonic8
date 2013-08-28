@@ -16,8 +16,8 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Image Source="{Binding CoverArt}" Stretch="Uniform" MinHeight="400" />
-        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,16,0,0"
+        <Image Source="{Binding CoverArt}" Style="{StaticResource PlaybackBigCoverArtStyle}" />
+        <StackPanel Grid.Row="1" Style="{StaticResource PlaybackControlsPanelStyle}"
                     Visibility="{Binding Path=PlaybackControlsVisible, Converter={StaticResource boolToVisibilityConverter}}">
             <Button Style="{StaticResource PreviousAppBarButtonStyle}"
                     cal:Message.Attach="[Event Click] = [Action Previous]" />

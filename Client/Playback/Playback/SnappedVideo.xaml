@@ -15,7 +15,7 @@
     </Page.Resources>
 
     <Grid>
-        <Grid Margin="10,0">
+        <Grid Style="{StaticResource SnappedVideoViewGridStyle}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
@@ -28,7 +28,7 @@
                 <videoPlayback:SnappedVideoPlaybackView cal:Bind.Model="{Binding Path=SnappedVideoPlaybackViewModel}" />
             </ContentControl>
 
-            <StackPanel Grid.Row="2" Orientation="Vertical" Margin="0,20,0,160">
+            <StackPanel Grid.Row="2" Style="{StaticResource SnappedVideoDetailsPanelStyle}">
                 <TextBlock Text="{Binding Path=ActiveItem.Artist}" Style="{StaticResource SnappedTitleStyle}" Visibility="{Binding Path=ActiveItem, Converter={StaticResource NullToVisibilityConverter}}"/>
                 <TextBlock Text="{Binding Path=ActiveItem.Title}" Style="{StaticResource SnappedArtistStyle}" Visibility="{Binding Path=ActiveItem, Converter={StaticResource NullToVisibilityConverter}}"/>
                 <TextBlock Text="Nothing Playing" Style="{StaticResource SnappedTitleStyle}" Visibility="{Binding Path=ActiveItem, Converter={StaticResource InvertedNullToVisibilityConverter}}"/>

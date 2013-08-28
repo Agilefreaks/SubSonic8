@@ -14,15 +14,14 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Image Source="{Binding CoverArt}" Stretch="Uniform" MinHeight="400" />
-        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Grid.Row="1">
-            <TextBlock Text="Type the name of a song or artist bellow: " FontSize="20" Margin="10"
-                       HorizontalAlignment="Center" />
-            <StackPanel Orientation="Horizontal" Margin="10, 0, 10, 10" HorizontalAlignment="Center">
-                <TextBox FontSize="20" Height="40" Width="270" TabIndex="0" x:Name="FilterTextBox"
+        <Image Source="{Binding CoverArt}" Style="{StaticResource PlaybackBigCoverArtStyle}"/>
+        <StackPanel Grid.Row="1" Style="{StaticResource FilterPanelStyle}">
+            <TextBlock Text="Type the name of a song or artist bellow: " Style="{StaticResource FilterInstructionsStyle}"/>
+            <StackPanel Style="{StaticResource FilterInputPanelStyle}">
+                <TextBox  x:Name="FilterTextBox" Style="{StaticResource FilterTextBoxStyle}"
                          controls:TextBoxEx.RealTimeText="{Binding Path=FilterText, Mode=TwoWay}"
                          controls:TextBoxEx.IsAutoUpdate="True" KeyUp="FilterTextBox_OnKeyUp" />
-                <Button FontSize="20" Height="46" Width="90"
+                <Button Style="{StaticResource DoneFilteringButtonStyle}"
                         cal:Message.Attach="[Event Click] = [Action DoneFiltering()]" x:Name="DoneButton">
                     Done
                 </Button>

@@ -4,9 +4,7 @@
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
-    using System.IO;
     using System.Linq;
-    using System.Xml.Serialization;
     using Client.Common.EventAggregatorMessages;
     using Client.Common.Models;
     using Client.Common.Services;
