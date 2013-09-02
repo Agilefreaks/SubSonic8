@@ -36,11 +36,7 @@
         {
             var xElement = xDocument.Element(Namespace + "subsonic-response");
             Result = !xElement.HasElements;
-            if (Result)
-            {
-                return;
-            }
-
+            if (Result) return;
             var xmlSerializer = new XmlSerializer(typeof(Error));
             xElement = xElement.Element(Namespace + "error");
             using (var xmlReader = xElement.CreateReader())

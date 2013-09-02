@@ -38,6 +38,7 @@ namespace Subsonic8.Settings
             _notificationService = notificationService;
             _storageService = storageService;
             _navigationService = navigationService;
+            DisplayName = "Settings";
         }
 
         #endregion
@@ -66,14 +67,6 @@ namespace Subsonic8.Settings
                 _configuration = value;
                 NotifyOfPropertyChange();
                 NotifyOfPropertyChange(() => CanSaveChanges);
-            }
-        }
-
-        public override string DisplayName
-        {
-            get
-            {
-                return "Settings";
             }
         }
 
