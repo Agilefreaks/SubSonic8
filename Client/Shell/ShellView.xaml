@@ -4,11 +4,13 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:cal="using:Caliburn.Micro" xmlns:controls="using:WinRTXamlToolkit.Controls"
-    xmlns:converters="using:Common.Converters"
+    xmlns:converters="using:Common.Converters" xmlns:errorDialog="using:Subsonic8.ErrorDialog"
+    xmlns:converters2="using:Subsonic8.Converters"
     mc:Ignorable="d">
 
     <Page.Resources>
         <converters:InvertedBooleanConverter x:Key="InvertedBooleanConverter"/>
+        <converters2:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter"/>
     </Page.Resources>
     
     <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
@@ -36,6 +38,9 @@
                 <ProgressRing Grid.Row="1" Grid.Column="1" IsActive="True" Width="50" Height="50" />
             </Grid>
         </Frame>
+
+        <errorDialog:ErrorDialogView Grid.Row="0" cal:Bind.Model="{Binding Path=ErrorDialogViewModel}" 
+                                     Visibility="{Binding Path=IsHidden, Converter={StaticResource InvertedBooleanToVisibilityConverter}}"/>
 
         <ProgressBar Grid.Row="0" VerticalAlignment="Top" VerticalContentAlignment="Top" x:Name="LoadingIndicator"
                      Visibility="Collapsed" IsIndeterminate="True" HorizontalAlignment="Stretch" />

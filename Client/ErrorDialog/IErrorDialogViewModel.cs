@@ -20,8 +20,12 @@
 
         void GoBack();
 
+        void Show();
+
         void ShowSettings();
 
         #endregion
+
+        void Hide();
     }
 }

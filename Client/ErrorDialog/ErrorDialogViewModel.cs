@@ -7,6 +7,7 @@
     using Subsonic8.Framework.Services;
     using Subsonic8.Settings;
     using Windows.ApplicationModel.DataTransfer;
+    using Action = System.Action;
 
     public class ErrorDialogViewModel : Screen, IErrorDialogViewModel
     {
@@ -22,6 +23,8 @@
 
         private Exception _error;
 
+        private bool _isHidden;
+
         #endregion
 
         #region Constructors and Destructors
@@ -34,15 +37,31 @@
         {
             _dialogNotificationService = dialogNotificationService;
             _resourceService = resourceService;
+            IsHidden = true;
             WinRTWrapperService = winRTWrappersService;
             WinRTWrapperService.RegisterShareRequestHandler(OnShareRequested);
             NavigationService = navigationService;
-            NavigateAction = Navigate;
+            ShowAction = Show;
         }
 
         #endregion
 
         #region Public Properties
+
+        public bool IsHidden
+        {
+            get
+            {
+                return _isHidden;
+            }
+
+            set
+            {
+                if (value.Equals(_isHidden)) return;
+                _isHidden = value;
+                NotifyOfPropertyChange(() => IsHidden);
+            }
+        }
 
         public string Message
         {
@@ -94,7 +113,7 @@
 
         public INavigationService NavigationService { get; private set; }
 
-        public Action<Type> NavigateAction { get; set; }
+        public Action ShowAction { get; set; }
 
         #endregion
 
@@ -105,7 +124,7 @@
             _error = error;
             ExceptionString = error.ToString();
             ErrorDescription = error.Message;
-            NavigateAction(typeof(ErrorDialogViewModel));
+            ShowAction();
         }
 
         public void ShareErrorDetails()
@@ -131,10 +150,7 @@
 
         public void GoBack()
         {
-            if (NavigationService.CanGoBack)
-            {
-                NavigationService.GoBack();
-            }
+            Hide();
         }
 
         public void OnShareRequested(DataRequest dataRequest)
@@ -164,9 +180,14 @@
             DialogService.ShowSettings<SettingsViewModel>();
         }
 
-        public void Navigate(Type type)
+        public void Hide()
         {
-            NavigationService.NavigateToViewModel(type);
+            IsHidden = true;
+        }
+
+        public void Show()
+        {
+            IsHidden = false;
         }
 
         #endregion

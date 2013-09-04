@@ -3,8 +3,8 @@
     using Caliburn.Micro;
     using Client.Common.Services;
     using Client.Tests.Mocks;
-    using Subsonic8.Shell;
     using global::Common.Mocks;
+    using Subsonic8.Shell;
     using MockSubsonicService = Client.Tests.Mocks.MockSubsonicService;
 
     public abstract class ClientTestBase
@@ -29,14 +29,16 @@
             var mockDialogNotificationService = new MockDialogNotificationService();
             var mockStorageService = new MockStorageService();
             var mockWinRTWrappersService = new MockWinRTWrappersService();
+            var mockErrorDialogViewModel = new MockErrorDialogViewModel();
             var shellViewModel = new ShellViewModel(
-                mockEventAggregator, 
-                mockSubsonicService, 
-                mockNavigationService, 
-                mockNotificationService, 
-                mockDialogNotificationService, 
-                mockStorageService, 
-                mockWinRTWrappersService);
+                mockEventAggregator,
+                mockSubsonicService,
+                mockNavigationService,
+                mockNotificationService,
+                mockDialogNotificationService,
+                mockStorageService,
+                mockWinRTWrappersService,
+                mockErrorDialogViewModel);
 
             IoC.GetInstance = (type, s) =>
                 {

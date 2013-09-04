@@ -29,9 +29,9 @@ namespace Subsonic8.Settings
         #region Constructors and Destructors
 
         public SettingsViewModel(
-            ISubsonicService subsonicService, 
-            IToastNotificationService notificationService, 
-            IStorageService storageService, 
+            ISubsonicService subsonicService,
+            IToastNotificationService notificationService,
+            IStorageService storageService,
             ICustomFrameAdapter navigationService)
         {
             _subsonicService = subsonicService;
@@ -147,9 +147,9 @@ namespace Subsonic8.Settings
             var passwordCredential = new PasswordCredential
                                          {
                                              UserName =
-                                                 Configuration.SubsonicServiceConfiguration.Username, 
+                                                 Configuration.SubsonicServiceConfiguration.Username,
                                              Password =
-                                                 Configuration.SubsonicServiceConfiguration.Password, 
+                                                 Configuration.SubsonicServiceConfiguration.Password,
                                              Resource =
                                                  Framework.SettingsHelper.PasswordVaultResourceName
                                          };

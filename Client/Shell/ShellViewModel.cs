@@ -9,6 +9,7 @@
     using Client.Common.Results;
     using Client.Common.Services;
     using Subsonic8.BottomBar;
+    using Subsonic8.ErrorDialog;
     using Subsonic8.Framework.Extensions;
     using Subsonic8.Framework.Interfaces;
     using Subsonic8.Framework.Services;
@@ -39,7 +40,8 @@
             IToastNotificationService notificationService,
             IDialogNotificationService dialogNotificationService,
             IStorageService storageService,
-            IWinRTWrappersService winRTWrappersService)
+            IWinRTWrappersService winRTWrappersService,
+            IErrorDialogViewModel errorDialogViewModel)
         {
             _eventAggregator = eventAggregator;
             SubsonicService = subsonicService;
@@ -48,6 +50,7 @@
             DialogNotificationService = dialogNotificationService;
             StorageService = storageService;
             WinRTWrappersService = winRTWrappersService;
+            ErrorDialogViewModel = errorDialogViewModel;
 
             eventAggregator.Subscribe(this);
         }
@@ -124,6 +127,8 @@
         public ISubsonicService SubsonicService { get; set; }
 
         public IWinRTWrappersService WinRTWrappersService { get; set; }
+
+        public IErrorDialogViewModel ErrorDialogViewModel { get; set; }
 
         #endregion
 

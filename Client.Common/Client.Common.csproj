@@ -106,14 +106,17 @@
     <Compile Include="EventAggregatorMessages\PlaybackMessageBase.cs" />
     <Compile Include="EventAggregatorMessages\PlayFailedMessage.cs" />
     <Compile Include="EventAggregatorMessages\PlayMessage.cs" />
+    <Compile Include="Exceptions\ApiException.cs" />
     <Compile Include="Models\IMediaModel.cs" />
     <Compile Include="Models\ISongModel.cs" />
+    <Compile Include="Models\Subsonic\SubsonicResponse.cs" />
     <Compile Include="Models\Subsonic\Error.cs" />
     <Compile Include="Models\Subsonic\GenericMediaModel.cs" />
     <Compile Include="Models\Subsonic\MediaModelBase.cs" />
     <Compile Include="Models\Subsonic\Playlist.cs" />
     <Compile Include="Models\Subsonic\PlaylistCollection.cs" />
     <Compile Include="Models\Subsonic\PlaylistEntry.cs" />
+    <Compile Include="Models\Subsonic\SubsonicResponseEnum.cs" />
     <Compile Include="Results\CreatePlaylistResult.cs" />
     <Compile Include="Results\DeletePlaylistResult.cs" />
     <Compile Include="Results\EmptyResponseResultBase.cs" />

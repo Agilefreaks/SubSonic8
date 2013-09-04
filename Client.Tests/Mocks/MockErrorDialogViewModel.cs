@@ -67,7 +67,15 @@
         {
         }
 
+        public void Show()
+        {
+        }
+
         public void ShowSettings()
+        {
+        }
+
+        public void Hide()
         {
         }
 

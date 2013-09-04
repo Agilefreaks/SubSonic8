@@ -1,7 +1,6 @@
 ﻿namespace Client.Common.Results
 {
     using System.Xml.Linq;
-    using System.Xml.Serialization;
     using Client.Common.Models.Subsonic;
     using Client.Common.Services.DataStructures.SubsonicService;
 
@@ -34,19 +33,7 @@
 
         protected override void HandleResponse(XDocument xDocument)
         {
-            var xElement = xDocument.Element(Namespace + "subsonic-response");
-            Result = !xElement.HasElements;
-            if (Result)
-            {
-                return;
-            }
-
-            var xmlSerializer = new XmlSerializer(typeof(Error));
-            xElement = xElement.Element(Namespace + "error");
-            using (var xmlReader = xElement.CreateReader())
-            {
-                ApiError = (Error)xmlSerializer.Deserialize(xmlReader);
-            }
+            Result = Error != null;
         }
 
         #endregion

@@ -5,7 +5,10 @@
     using System.ServiceModel;
     using System.Threading.Tasks;
     using System.Xml.Linq;
+    using System.Xml.Serialization;
     using Caliburn.Micro;
+    using Client.Common.Exceptions;
+    using Client.Common.Models.Subsonic;
     using Client.Common.Services.DataStructures.SubsonicService;
 
     public abstract class ServiceResultBase<T> : ExtendedResultBase, IServiceResultBase<T>
@@ -96,7 +99,9 @@
             }
 
             var xDocument = XDocument.Load(response.Stream);
-            HandleResponse(xDocument);
+
+            HandleFailedCall(xDocument);
+            HandleResponse(xDocument);                
         }
 
         protected override void ExecuteOnSuccessAction()
@@ -109,6 +114,20 @@
         }
 
         protected abstract void HandleResponse(XDocument xDocument);
+
+        private void HandleFailedCall(XDocument xDocument)
+        {
+            var xElement = xDocument.Element(Namespace + "subsonic-response");
+            var xmlSerializer = new XmlSerializer(typeof(SubsonicResponse), new[] { typeof(Error) });
+            using (var xmlReader = xElement.CreateReader())
+            {
+                var response = (SubsonicResponse)xmlSerializer.Deserialize(xmlReader);
+                if (response.Status == SubsonicResponseEnum.Failed.ToString().ToLowerInvariant())
+                {
+                    throw new ApiException(response.Error);
+                }
+            }
+        }
 
         private async Task<HttpStreamResult> ResponseFunc()
         {

@@ -1,9 +1,9 @@
 ﻿namespace Subsonic8.Main
 {
-    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Caliburn.Micro;
+    using Client.Common.Exceptions;
     using Client.Common.Models;
     using Client.Common.Models.Subsonic;
     using Client.Common.Results;
@@ -36,6 +36,7 @@
 
         public override async void Populate()
         {
+            ErrorDialogViewModel.Hide();
             if (SubsonicService.HasValidSubsonicUrl)
             {
                 if (await ShouldPopulate())
@@ -84,7 +85,7 @@
                 if (diagnosticsResult.ApiError != null)
                 {
                     populate = false;
-                    ErrorDialogViewModel.HandleError(new Exception(diagnosticsResult.ApiError.Message));
+                    ErrorDialogViewModel.HandleError(new ApiException(diagnosticsResult.ApiError));
                 }
             }
             else

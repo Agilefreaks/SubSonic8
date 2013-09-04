@@ -30,7 +30,7 @@
             _subject = new ErrorDialogViewModel(
                 _mockWinRTWrapperService, _mockNavigationService, _mockDialogNotificationService, _mockResourceService)
                            {
-                               NavigateAction
+                               ShowAction
                                    =
                                    _mockNavigationService
                                    .DoNavigate
@@ -49,7 +49,7 @@
             var errorDialogViewModel = new ErrorDialogViewModel(
                 _mockWinRTWrapperService, _mockNavigationService, _mockDialogNotificationService, _mockResourceService);
 
-            errorDialogViewModel.NavigateAction.Should().Be((Action<Type>)errorDialogViewModel.Navigate);
+            errorDialogViewModel.ShowAction.Should().Be((Action)errorDialogViewModel.Show);
         }
 
         [TestMethod]

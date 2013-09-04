@@ -3,11 +3,11 @@
     using System.Linq;
     using Caliburn.Micro;
     using Client.Tests.Mocks;
+    using global::Common.Mocks;
     using FluentAssertions;
     using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
     using Subsonic8.Search;
     using Subsonic8.Shell;
-    using global::Common.Mocks;
     using MockSubsonicService = Client.Tests.Mocks.MockSubsonicService;
 
     [TestClass]
@@ -30,6 +30,8 @@
         private MockToastNotificationService _mockToastNotificationService;
 
         private MockWinRTWrappersService _mockWinRTWrappersService;
+
+        private MockErrorDialogViewModel _mockErrorDialogViewModel;
 
         #endregion
 
@@ -76,6 +78,7 @@
             _mockStorageService = new MockStorageService();
             _mockWinRTWrappersService = new MockWinRTWrappersService();
             _mockPlayerControls = new MockPlayerControls();
+            _mockErrorDialogViewModel = new MockErrorDialogViewModel();
             Subject = new ShellViewModel(
                 _eventAggregator,
                 _mockSubsonicService,
@@ -83,7 +86,8 @@
                 _mockToastNotificationService,
                 _mockDialogNotificationService,
                 _mockStorageService,
-                _mockWinRTWrappersService)
+                _mockWinRTWrappersService,
+                _mockErrorDialogViewModel)
                 {
                     PlayerControls = _mockPlayerControls
                 };
