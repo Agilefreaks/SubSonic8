@@ -59,7 +59,7 @@
     <Style x:Key="PlaylistItemsListStyle" TargetType="ListView">
         <Setter Property="Background" Value = "#2c2525"/>
         <Setter Property="Margin" Value="0,0,0,10"/>
-        <Setter Property="Padding" Value="20,5,0,0"/>
+        <Setter Property="Padding" Value="5,5,0,0"/>
     </Style>
 
     <Style x:Key="PlaylistItemDurationStyle" TargetType="TextBlock">
@@ -158,5 +158,10 @@
     <Style x:Name="SnappedVideoDetailsPanelStyle" TargetType="StackPanel">
         <Setter Property="Orientation" Value="Vertical" />
         <Setter Property="Margin" Value="0,20,0,160"/>
+    </Style>
+    
+    <Style x:Name="NotPlayingBorderStyle" TargetType="Border">
+        <Setter Property="BorderThickness" Value="3"/>
+        <Setter Property="BorderBrush" Value="{StaticResource ApplicationPageBackgroundThemeBrush}"/>
     </Style>
 </ResourceDictionary>

@@ -13,26 +13,28 @@
         <converters:IntToTimeStringConverter x:Key="TimeConverter" />
     </UserControl.Resources>
 
-    <Grid Style="{StaticResource PlaylistItemGridStyle}">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-
-        <Image Source="{Binding CoverArtUrl}" Style="{StaticResource PlaylistItemCoverArtStyle}" />
-
-        <Grid Grid.Column="1" Style="{StaticResource PlaylistItemDetailsGridStyle}">
+    <Border Style="{StaticResource NotPlayingBorderStyle}">
+        <Grid Style="{StaticResource PlaylistItemGridStyle}">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <StackPanel>
-                <TextBlock Text="{Binding Artist}"></TextBlock>
-                <TextBlock Text="{Binding Title}"></TextBlock>
-            </StackPanel>
+            <Image Source="{Binding CoverArtUrl}" Style="{StaticResource PlaylistItemCoverArtStyle}" />
 
-            <TextBlock Grid.Column="1" Text="{Binding Duration, Converter={StaticResource TimeConverter}}" Style="{StaticResource PlaylistItemDurationStyle}" />
+            <Grid Grid.Column="1" Style="{StaticResource PlaylistItemDetailsGridStyle}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel>
+                    <TextBlock Text="{Binding Artist}"></TextBlock>
+                    <TextBlock Text="{Binding Title}"></TextBlock>
+                </StackPanel>
+
+                <TextBlock Grid.Column="1" Text="{Binding Duration, Converter={StaticResource TimeConverter}}" Style="{StaticResource PlaylistItemDurationStyle}" />
+            </Grid>
         </Grid>
-    </Grid>
+    </Border>
 </UserControl>
