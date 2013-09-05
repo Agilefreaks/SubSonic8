@@ -1,5 +1,6 @@
 ﻿namespace Client.Tests.PlaylistBottomBar
 {
+    using System.Threading.Tasks;
     using Client.Common.Models.Subsonic;
     using Client.Common.Results;
     using Client.Common.Services.DataStructures.SubsonicService;
@@ -25,7 +26,7 @@
         #region Public Methods and Operators
 
         [TestMethod]
-        public void DeletePlaylist_Always_CallsDeletePlaylistWithTheFirstSelectedItemsId()
+        public async Task DeletePlaylist_Always_CallsDeletePlaylistWithTheFirstSelectedItemsId()
         {
             var callCount = 0;
             _subject.SelectedItems.Add(new MenuItemViewModel { Item = new Playlist { Id = 5 } });
@@ -37,13 +38,13 @@
                     return new DeletePlaylistResult(new SubsonicServiceConfiguration(), playlistId);
                 };
 
-            _subject.DeletePlaylist();
+            await _subject.DeletePlaylist();
 
             callCount.Should().Be(1);
         }
 
         [TestMethod]
-        public void RenamePlaylist_Always_CallRenamePlaylistWithTheFirstSelectedItemsId()
+        public async Task RenamePlaylist_Always_CallRenamePlaylistWithTheFirstSelectedItemsId()
         {
             var callCount = 0;
             _subject.SelectedItems.Add(new MenuItemViewModel { Item = new Playlist { Id = 5 } });
@@ -56,7 +57,7 @@
                     return new MockRenamePlaylistResult();
                 };
 
-            _subject.RenamePlaylist("test");
+            await _subject.RenamePlaylist("test");
 
             callCount.Should().Be(1);
         }

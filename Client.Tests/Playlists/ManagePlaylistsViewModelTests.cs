@@ -86,7 +86,7 @@
         [TestMethod]
         public async Task Populate_Always_ShouldExecuteAGetAllPlaylistsResult()
         {
-            await Task.Run(() => Subject.Populate());
+            await Subject.Populate();
 
             _mockGetAllPlaylistsResult.ExecuteCallCount.Should().Be(1);
         }
@@ -105,7 +105,7 @@
                                          };
             _mockGetAllPlaylistsResult.GetResultFunc = () => playlistCollection;
 
-            await Task.Run(() => Subject.Populate());
+            await Subject.Populate();
 
             Subject.MenuItems.Count.Should().Be(2);
         }
@@ -117,7 +117,7 @@
         protected override void TestInitializeExtensions()
         {
             base.TestInitializeExtensions();
-            _mockGetAllPlaylistsResult = new MockGetAllPlaylistsResult();
+            _mockGetAllPlaylistsResult = new MockGetAllPlaylistsResult { GetResultFunc = () => new PlaylistCollection() };
             MockSubsonicService.GetAllPlaylists = () => _mockGetAllPlaylistsResult;
             _mockPlyalistManagementService = new MockPlyalistManagementService();
             Subject.PlaylistManagementService = _mockPlyalistManagementService;

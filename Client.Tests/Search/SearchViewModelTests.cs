@@ -6,12 +6,12 @@
     using Client.Common.Models.Subsonic;
     using Client.Tests.Framework.ViewModel;
     using Client.Tests.Mocks;
+    using global::Common.Mocks;
     using FluentAssertions;
     using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
     using Subsonic8.BottomBar;
     using Subsonic8.MenuItem;
     using Subsonic8.Search;
-    using global::Common.Mocks;
 
     [TestClass]
     public class SearchViewModelTests : CollectionViewModelBaseTests<SearchViewModel, string>
@@ -54,7 +54,7 @@
                                    };
             MockSubsonicService.Search = s => new MockSearchResult { GetResultFunc = () => searchResult };
 
-            await Task.Run(() => Subject.Parameter = "test");
+            await Subject.Populate();
 
             Subject.MenuItems.Should().HaveCount(1);
         }
@@ -66,7 +66,7 @@
 
             MockSubsonicService.Search = s => new MockSearchResult { GetResultFunc = () => searchResult };
 
-            await Task.Run(() => Subject.Parameter = "test");
+            await Subject.Populate();
 
             Subject.MenuItems.Should().HaveCount(1);
         }
@@ -77,7 +77,7 @@
             var searchResult = new SearchResultCollection { Songs = new List<Song> { new Song() }, };
             MockSubsonicService.Search = s => new MockSearchResult { GetResultFunc = () => searchResult };
 
-            await Task.Run(() => Subject.Parameter = "test");
+            await Subject.Populate();
 
             Subject.MenuItems.Should().HaveCount(1);
         }
@@ -91,7 +91,7 @@
         }
 
         [TestMethod]
-        public async Task Populate_Always_PerformsASubsonicSearch()
+        public void Populate_Always_PerformsASubsonicSearch()
         {
             var callCount = 0;
             var searchResult = new MockSearchResult();
@@ -102,7 +102,7 @@
                     return searchResult;
                 };
 
-            await Task.Run(() => Subject.Parameter = "test");
+            Subject.Parameter = "test";
 
             Assert.AreEqual(1, callCount);
         }
@@ -114,7 +114,7 @@
             var searchResult = new MockSearchResult { GetResultFunc = () => searchResultCollection };
             MockSubsonicService.Search = s => searchResult;
 
-            await Task.Run(() => Subject.Parameter = "test");
+            await Subject.Populate();
 
             Subject.State.Should().Be(SearchResultState.NoResultsFound);
         }
@@ -126,7 +126,7 @@
             var searchResult = new MockSearchResult { GetResultFunc = () => searchResultCollection };
             MockSubsonicService.Search = s => searchResult;
 
-            await Task.Run(() => Subject.Parameter = "test");
+            await Subject.Populate();
 
             Subject.State.Should().Be(SearchResultState.ResultsFound);
         }
@@ -140,9 +140,9 @@
             _eventAggregator = new MockEventAggregator();
 
             var bottomBarViewModel = new DefaultBottomBarViewModel(
-                MockNavigationService, 
-                _eventAggregator, 
-                new MockPlyalistManagementService(), 
+                MockNavigationService,
+                _eventAggregator,
+                new MockPlyalistManagementService(),
                 new MockErrorDialogViewModel());
             Subject.BottomBar = bottomBarViewModel;
         }

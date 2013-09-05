@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Specialized;
     using System.Linq;
+    using System.Threading.Tasks;
     using Caliburn.Micro;
     using Callisto.Controls;
     using Client.Common.Services;
@@ -26,9 +27,9 @@
         #region Constructors and Destructors
 
         public PlaylistBottomBarViewModel(
-            INavigationService navigationService, 
-            IEventAggregator eventAggregator, 
-            IPlaylistManagementService playlistManagementService, 
+            INavigationService navigationService,
+            IEventAggregator eventAggregator,
+            IPlaylistManagementService playlistManagementService,
             IErrorDialogViewModel errorDialogViewModel)
             : base(navigationService, eventAggregator, playlistManagementService, errorDialogViewModel)
         {
@@ -66,7 +67,7 @@
 
         #region Public Methods and Operators
 
-        public async void DeletePlaylist()
+        public async Task DeletePlaylist()
         {
             var playlistId = ((MenuItemViewModel)SelectedItems[0]).Item.Id;
             await
@@ -81,7 +82,7 @@
             await NotificationService.Show(new DialogNotificationOptions { Message = error.ToString(), });
         }
 
-        public async void RenamePlaylist(string newName)
+        public async Task RenamePlaylist(string newName)
         {
             var playlistId = SelectedItem.Item.Id;
             await
@@ -131,14 +132,14 @@
         {
             var renamePlaylistDialog = new RenamePlaylistDialog
                                            {
-                                               OnOkClick = RenamePlaylist, 
+                                               OnOkClick = async newName => await RenamePlaylist(newName),
                                                PlaylistName = SelectedItem.Title
                                            };
             var flyout = new Flyout
                              {
-                                 Placement = PlacementMode.Top, 
-                                 PlacementTarget = (UIElement)sender, 
-                                 Content = renamePlaylistDialog, 
+                                 Placement = PlacementMode.Top,
+                                 PlacementTarget = (UIElement)sender,
+                                 Content = renamePlaylistDialog,
                                  IsOpen = true
                              };
 

@@ -106,7 +106,7 @@
             PlaylistName = sender.Text;
         }
 
-        public async void Save()
+        public async Task Save()
         {
             CanEdit = false;
             var existingEntry = MenuItems.FirstOrDefault(item => item.Item.Name == PlaylistName);

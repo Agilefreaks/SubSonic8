@@ -75,7 +75,7 @@
 
             var existingPlaylist = new Playlist
                                        {
-                                           Id = 3, 
+                                           Id = 3,
                                            Entries =
                                                new List<PlaylistEntry>
                                                    {
@@ -95,7 +95,7 @@
                     return new MockUpdatePlaylistResult();
                 };
 
-            await Task.Factory.StartNew(() => Subject.Save());
+            await Subject.Save();
 
             callCount.Should().Be(1);
         }
@@ -115,7 +115,7 @@
                     return new MockGetPlaylistResult();
                 };
 
-            await Task.Factory.StartNew(() => Subject.Save());
+            await Subject.Save();
 
             callCount.Should().Be(1);
         }
@@ -134,11 +134,11 @@
                 {
                     callCount++;
                     playlistName.Should().Be("test2");
-                    songIdsToAdd.Should().BeEquivalentTo(new List<int> { 2 });
+                    songIdsToAdd.Should().BeEquivalentTo(new List<int> { 1, 2 });
                     return new MockCreatePlaylistResult();
                 };
 
-            await Task.Factory.StartNew(() => Subject.Save());
+            await Subject.Save();
 
             callCount.Should().Be(1);
         }
