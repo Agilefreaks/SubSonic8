@@ -7,13 +7,14 @@
     using Subsonic8.Framework.Services;
     using Subsonic8.Settings;
     using Windows.ApplicationModel.DataTransfer;
-    using Action = System.Action;
 
     public class ErrorDialogViewModel : Screen, IErrorDialogViewModel
     {
         private readonly IDialogNotificationService _dialogNotificationService;
 
         private readonly IResourceService _resourceService;
+
+        private readonly IDialogService _dialogService;
 
         #region Fields
 
@@ -33,10 +34,12 @@
             IWinRTWrappersService winRTWrappersService,
             INavigationService navigationService,
             IDialogNotificationService dialogNotificationService,
-            IResourceService resourceService)
+            IResourceService resourceService,
+            IDialogService dialogService)
         {
             _dialogNotificationService = dialogNotificationService;
             _resourceService = resourceService;
+            _dialogService = dialogService;
             IsHidden = true;
             WinRTWrapperService = winRTWrappersService;
             WinRTWrapperService.RegisterShareRequestHandler(OnShareRequested);
@@ -177,7 +180,7 @@
 
         public void ShowSettings()
         {
-            DialogService.ShowSettings<SettingsViewModel>();
+            _dialogService.ShowSettings<SettingsViewModel>();
         }
 
         public void Hide()

@@ -20,6 +20,8 @@
 
         private MockResourceService _mockResourceService;
 
+        private MockDialogService _mockDialogService;
+
         [TestInitialize]
         public void Setup()
         {
@@ -27,8 +29,13 @@
             _mockNavigationService = new MockNavigationService();
             _mockDialogNotificationService = new MockDialogNotificationService();
             _mockResourceService = new MockResourceService();
+            _mockDialogService = new MockDialogService();
             _subject = new ErrorDialogViewModel(
-                _mockWinRTWrapperService, _mockNavigationService, _mockDialogNotificationService, _mockResourceService)
+                _mockWinRTWrapperService,
+                _mockNavigationService,
+                _mockDialogNotificationService,
+                _mockResourceService,
+                _mockDialogService)
                            {
                                ShowAction
                                    =

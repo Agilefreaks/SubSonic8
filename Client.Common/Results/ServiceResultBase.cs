@@ -101,7 +101,7 @@
             var xDocument = XDocument.Load(response.Stream);
 
             HandleFailedCall(xDocument);
-            HandleResponse(xDocument);                
+            HandleResponse(xDocument);
         }
 
         protected override void ExecuteOnSuccessAction()

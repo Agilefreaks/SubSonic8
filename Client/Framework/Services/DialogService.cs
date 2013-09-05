@@ -10,7 +10,7 @@
     /// <summary>
     /// Helper methods to show Caliburn.Micro's view models using Callisto's dialogs 
     /// </summary>
-    public static class DialogService
+    public class DialogService : IDialogService
     {
         #region Public Methods and Operators
 
@@ -22,10 +22,10 @@
         /// <param name="placementTarget">The control which is used as a placement target. Example: Placement target can be a button the view. Placement-property defines if the dialog is shown above, under, left or right of the button.</param>
         /// <param name="onInitialize">Method which is executed before the dialog is shown</param>
         /// <param name="onClose">Method which is executed after the dialog has been closed</param>
-        public static void ShowDialog<T>(
-            PlacementMode placement, 
-            UIElement placementTarget, 
-            Action<T> onInitialize = null, 
+        public void ShowDialog<T>(
+            PlacementMode placement,
+            UIElement placementTarget,
+            Action<T> onInitialize = null,
             Action<T, UIElement> onClose = null) where T : Screen
         {
             var viewModelAndView = CreateViewModelAndView(onInitialize);
@@ -34,10 +34,10 @@
 
             var f = new Flyout
                         {
-                            Content = view, 
-                            Placement = placement, 
-                            PlacementTarget = placementTarget, 
-                            IsOpen = true, 
+                            Content = view,
+                            Placement = placement,
+                            PlacementTarget = placementTarget,
+                            IsOpen = true,
                         };
 
             if (onClose != null)
@@ -54,10 +54,10 @@
         /// <param name="onClosed">Method which is executed after the dialog has been closed</param>
         /// <param name="headerBrush">Setting pane's header color</param>
         /// <param name="backgroundBrush">Setting pane's backgruond color</param>
-        public static void ShowSettings<T>(
-            Action<T> onInitialize = null, 
-            Action<T, UIElement> onClosed = null, 
-            SolidColorBrush headerBrush = null, 
+        public void ShowSettings<T>(
+            Action<T> onInitialize = null,
+            Action<T, UIElement> onClosed = null,
+            SolidColorBrush headerBrush = null,
             SolidColorBrush backgroundBrush = null) where T : Screen
         {
             var viewModelAndView = CreateViewModelAndView(onInitialize);

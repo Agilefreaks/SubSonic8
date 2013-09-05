@@ -19,6 +19,8 @@
 
         private MockResourceService _mockResourceService;
 
+        private MockDialogService _mockDialogService;
+
         #endregion
 
         #region Properties
@@ -94,6 +96,16 @@
         }
 
         [TestMethod]
+        public async Task Populate_WhenServiceIsNotConfigured_ShouldShowTheSettingsPanel()
+        {
+            MockSubsonicService.SetHasValidSubsonicUrl(false);
+
+            await Subject.Populate();
+
+            _mockDialogService.ShowSettingsCallCount.Should().Be(1);
+        }
+
+        [TestMethod]
         public async Task PopulateWhenResultIsSuccessfull()
         {
             MockSubsonicService.SetHasValidSubsonicUrl(true);
@@ -121,6 +133,8 @@
             MockSubsonicService.GetMusicFolders = () => _mockGetRootResult;
             _mockResourceService = new MockResourceService();
             Subject.ResourceService = _mockResourceService;
+            _mockDialogService = new MockDialogService();
+            Subject.DialogService = _mockDialogService;
         }
 
         #endregion

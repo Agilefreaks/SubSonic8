@@ -3,7 +3,6 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Caliburn.Micro;
-    using Client.Common.Exceptions;
     using Client.Common.Models;
     using Client.Common.Models.Subsonic;
     using Client.Common.Results;
@@ -29,6 +28,9 @@
 
         [Inject]
         public IResourceService ResourceService { get; set; }
+
+        [Inject]
+        public IDialogService DialogService { get; set; }
 
         #endregion
 

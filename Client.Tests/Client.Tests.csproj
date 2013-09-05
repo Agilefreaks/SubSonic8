@@ -126,6 +126,7 @@
     <Compile Include="Framework\ViewModel\CollectionViewModelBaseTests.cs" />
     <Compile Include="Framework\ViewModel\DetailViewModelBaseTests.cs" />
     <Compile Include="Framework\ViewModel\ItemViewModelBaseTests.cs" />
+    <Compile Include="Mocks\MockDialogService.cs" />
     <Compile Include="Mocks\MockFullScreenVideoPlaybackViewModel.cs" />
     <Compile Include="Mocks\MockErrorDialogViewModel.cs" />
     <Compile Include="Mocks\MockGetRandomSongsResult.cs" />
