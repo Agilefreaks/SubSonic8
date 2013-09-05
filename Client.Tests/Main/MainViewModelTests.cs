@@ -48,10 +48,11 @@
         }
 
         [TestMethod]
-        public async Task Populate_PingResultHasAPIError_CallsErrorDialogViewModelHandle()
+        public async Task Populate_PingResultHasError_CallsErrorDialogViewModelHandle()
         {
             MockSubsonicService.SetHasValidSubsonicUrl(true);
-            var mockPingResult = new MockPingResult { ApiError = new Error { Message = "test_m" } };
+            var apiException = new ApiException(new Error { Message = "test_m" });
+            var mockPingResult = new MockPingResult { GetErrorFunc = () => apiException };
             MockSubsonicService.Ping = () => mockPingResult;
 
             await Task.Run(() => Subject.Populate());

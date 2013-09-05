@@ -80,15 +80,7 @@
             var populate = true;
             var diagnosticsResult = SubsonicService.Ping();
             await diagnosticsResult.Execute();
-            if (diagnosticsResult.Error == null)
-            {
-                if (diagnosticsResult.ApiError != null)
-                {
-                    populate = false;
-                    ErrorDialogViewModel.HandleError(new ApiException(diagnosticsResult.ApiError));
-                }
-            }
-            else
+            if (diagnosticsResult.Error != null)
             {
                 populate = false;
                 ErrorDialogViewModel.HandleError(diagnosticsResult.Error);
