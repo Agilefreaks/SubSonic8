@@ -89,7 +89,7 @@
             {
                 _parameter = value;
                 NotifyOfPropertyChange();
-                Populate();
+                AwaitPopulate();
             }
         }
 
@@ -143,7 +143,7 @@
             NavigationService.NavigateByModelType(subsonicModel);
         }
 
-        public virtual async void Populate()
+        public virtual async Task Populate()
         {
             await GetResult(Parameter).WithErrorHandler(ErrorDialogViewModel).OnSuccess(OnResultSuccessfull).Execute();
             await AfterPopulate(Parameter);
@@ -189,6 +189,11 @@
         private void SetAppBottomBar()
         {
             EventAggregator.Publish(new ChangeBottomBarMessage { BottomBarViewModel = BottomBar });
+        }
+
+        private async void AwaitPopulate()
+        {
+            await Populate();
         }
 
         #endregion

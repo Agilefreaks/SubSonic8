@@ -55,10 +55,10 @@ namespace Subsonic8.Search
 
         #region Public Methods and Operators
 
-        public override void Populate()
+        public override async Task Populate()
         {
             State = SearchResultState.Busy;
-            base.Populate();
+            await base.Populate();
         }
 
         #endregion

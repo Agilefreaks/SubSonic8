@@ -34,14 +34,14 @@
 
         #region Public Methods and Operators
 
-        public override async void Populate()
+        public override async Task Populate()
         {
             ErrorDialogViewModel.Hide();
             if (SubsonicService.HasValidSubsonicUrl)
             {
                 if (await ShouldPopulate())
                 {
-                    base.Populate();
+                    await base.Populate();
                 }
             }
             else

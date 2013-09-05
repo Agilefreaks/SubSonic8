@@ -55,17 +55,16 @@
             var mockPingResult = new MockPingResult { GetErrorFunc = () => apiException };
             MockSubsonicService.Ping = () => mockPingResult;
 
-            await Task.Run(() => Subject.Populate());
+            await Subject.Populate();
 
             MockErrorDialogViewModel.HandleErrorCallCount.Should().Be(1);
             MockErrorDialogViewModel.HandledErrors.First().Should().Be("test_m");
         }
 
         [TestMethod]
-        public async Task Populate_WhenServiceIsConfiguredAndParameterIsTrue_WillRunAPingResult()
+        public async Task Populate_WhenServiceIsConfigured_WillRunAPingResult()
         {
             MockSubsonicService.SetHasValidSubsonicUrl(true);
-            Subject.Parameter = true;
             var mockPingResult = new MockPingResult();
             var callCount = 0;
             MockSubsonicService.Ping = () =>
@@ -74,7 +73,7 @@
                     return mockPingResult;
                 };
 
-            await Task.Run(() => Subject.Populate());
+            await Subject.Populate();
 
             callCount.Should().Be(1);
             mockPingResult.ExecuteCallCount.Should().Be(1);
@@ -88,7 +87,7 @@
                 "You did not set up your connection. Please fill in you server address, username and password to start browsing.";
             _mockResourceService.GetStringResourceFunc = s => ExpectedMessage;
 
-            await Task.Run(() => Subject.Populate());
+            await Subject.Populate();
 
             MockDialogNotificationService.Showed.Count.Should().Be(1);
             MockDialogNotificationService.Showed[0].Message.Should().Be(ExpectedMessage);
@@ -107,7 +106,7 @@
                             () => new List<MusicFolder> { new MusicFolder(), new MusicFolder() }
                     };
 
-            await Task.Run(() => Subject.Populate());
+            await Subject.Populate();
 
             Subject.MenuItems.Should().HaveCount(2);
         }

@@ -8,7 +8,7 @@
     using Subsonic8.BottomBar;
     using Subsonic8.Framework.ViewModel;
 
-    public abstract class PlaylistViewModelBase : CollectionViewModelBase<object, PlaylistCollection>, 
+    public abstract class PlaylistViewModelBase : CollectionViewModelBase<object, PlaylistCollection>,
                                                   IPlaylistViewModel
     {
         #region Methods
@@ -28,10 +28,10 @@
             BottomBar = BottomBar ?? GetPlaylistBottomBar();
         }
 
-        protected override void OnActivate()
+        protected override async void OnActivate()
         {
             base.OnActivate();
-            Populate();
+            await Populate();
         }
 
         protected override void OnViewLoaded(object view)
@@ -43,7 +43,7 @@
         private IPlaylistBottomBarViewModel GetPlaylistBottomBar()
         {
             var playlistBottomBarViewModel = IoCService.Get<IPlaylistBottomBarViewModel>();
-            playlistBottomBarViewModel.OnPlaylistDeleted = Populate;
+            playlistBottomBarViewModel.OnPlaylistDeleted = async () => await Populate();
 
             return playlistBottomBarViewModel;
         }
