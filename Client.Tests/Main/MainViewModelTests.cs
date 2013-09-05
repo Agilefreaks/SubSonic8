@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using Client.Common.Exceptions;
     using Client.Common.Models.Subsonic;
     using Client.Tests.Framework.ViewModel;
     using Client.Tests.Mocks;
@@ -59,8 +60,8 @@
 
             await Subject.Populate();
 
-            MockErrorDialogViewModel.HandleErrorCallCount.Should().Be(1);
-            MockErrorDialogViewModel.HandledErrors.First().Should().Be("test_m");
+            MockErrorDialogViewModel.HandledErrors.Count().Should().Be(1);
+            MockErrorDialogViewModel.HandledErrors.First().Should().Be(apiException);
         }
 
         [TestMethod]
@@ -129,7 +130,7 @@
 
         protected override void TestInitializeExtensions()
         {
-            _mockGetRootResult = new MockGetRootResult();
+            _mockGetRootResult = new MockGetRootResult { GetResultFunc = () => new List<MusicFolder>() };
             MockSubsonicService.GetMusicFolders = () => _mockGetRootResult;
             _mockResourceService = new MockResourceService();
             Subject.ResourceService = _mockResourceService;

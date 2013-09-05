@@ -8,14 +8,14 @@
 
     public class MockErrorDialogViewModel : IErrorDialogViewModel
     {
-        private readonly IList<string> _handledErrors;
+        private readonly IList<Exception> _handledErrors;
 
         #region Constructors and Destructors
 
         public MockErrorDialogViewModel(string message = "test")
         {
             Message = message;
-            _handledErrors = new List<string>();
+            _handledErrors = new List<Exception>();
         }
 
         #endregion
@@ -26,9 +26,7 @@
 
         public string Message { get; private set; }
 
-        public int HandleErrorCallCount { get; set; }
-
-        public IEnumerable<string> HandledErrors
+        public IEnumerable<Exception> HandledErrors
         {
             get
             {
@@ -48,15 +46,9 @@
         {
         }
 
-        public void HandleError(string errorMessage)
-        {
-            HandleErrorCallCount++;
-            _handledErrors.Add(errorMessage);
-        }
-
         public void HandleError(Exception error)
         {
-            _handledErrors.Add(error.ToString());
+            _handledErrors.Add(error);
         }
 
         public void ShareErrorDetails()

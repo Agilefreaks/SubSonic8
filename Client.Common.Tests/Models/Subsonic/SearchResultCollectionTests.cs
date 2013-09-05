@@ -5,7 +5,7 @@
     using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 
     [TestClass]
-    internal class SearchResultCollectionTests
+    public class SearchResultCollectionTests
     {
         #region Fields
 

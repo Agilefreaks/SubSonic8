@@ -28,14 +28,14 @@
         {
             Showed.Add(options);
 
-            return new Task(() => { });
+            return Task.Run(() => { });
         }
 
         public Task Show(DialogNotificationOptions options, Action onDialogClosed)
         {
             Showed.Add(options);
 
-            return new Task(() => { });
+            return Task.Run(() => { });
         }
 
         #endregion

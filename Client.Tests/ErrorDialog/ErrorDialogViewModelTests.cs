@@ -1,7 +1,6 @@
 ﻿namespace Client.Tests.ErrorDialog
 {
     using System;
-    using System.Linq;
     using Client.Tests.Mocks;
     using FluentAssertions;
     using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
@@ -35,13 +34,7 @@
                 _mockNavigationService,
                 _mockDialogNotificationService,
                 _mockResourceService,
-                _mockDialogService)
-                           {
-                               ShowAction
-                                   =
-                                   _mockNavigationService
-                                   .DoNavigate
-                           };
+                _mockDialogService);
         }
 
         [TestMethod]
@@ -51,21 +44,11 @@
         }
 
         [TestMethod]
-        public void Ctor_Always_ShouldSetTheNavigateActionToNavigate()
-        {
-            var errorDialogViewModel = new ErrorDialogViewModel(
-                _mockWinRTWrapperService, _mockNavigationService, _mockDialogNotificationService, _mockResourceService);
-
-            errorDialogViewModel.ShowAction.Should().Be((Action)errorDialogViewModel.Show);
-        }
-
-        [TestMethod]
-        public void HandleError_WithString_ShouldNavigateToErrorDialogViewModel()
+        public void HandleError_WithString_ShouldSetIsHiddenFalse()
         {
             _subject.HandleError(new Exception("test"));
 
-            _mockNavigationService.NavigateToViewModelCalls.Count.Should().Be(1);
-            _mockNavigationService.NavigateToViewModelCalls.First().Key.Should().Be(typeof(ErrorDialogViewModel));
+            _subject.IsHidden.Should().BeFalse();
         }
 
         [TestMethod]
@@ -85,23 +68,22 @@
         }
 
         [TestMethod]
-        public void HandleError_WithException_ShouldNavigateToSelf()
+        public void HandleError_WithException_ShouldSetIsHiddenFalse()
         {
             _subject.HandleError(new Exception("test"));
 
-            _mockNavigationService.NavigateToViewModelCalls.Count.Should().Be(1);
-            _mockNavigationService.NavigateToViewModelCalls.First().Key.Should().Be(typeof(ErrorDialogViewModel));
+            _subject.IsHidden.Should().BeFalse();
         }
 
         [TestMethod]
-        public void GoBack_CanGoBack_ShouldSetIsOpenFalse()
+        public void GoBack_CanGoBack_ShouldSetIsHiddenTrue()
         {
             _subject.HandleError(new Exception("test"));
             _mockNavigationService.CanGoBack = true;
 
             _subject.GoBack();
 
-            _mockNavigationService.GoBackCallCount.Should().Be(1);
+            _subject.IsHidden.Should().BeTrue();
         }
 
         [TestMethod]

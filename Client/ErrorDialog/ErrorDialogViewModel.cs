@@ -44,7 +44,6 @@
             WinRTWrapperService = winRTWrappersService;
             WinRTWrapperService.RegisterShareRequestHandler(OnShareRequested);
             NavigationService = navigationService;
-            ShowAction = Show;
         }
 
         #endregion
@@ -116,8 +115,6 @@
 
         public INavigationService NavigationService { get; private set; }
 
-        public Action ShowAction { get; set; }
-
         #endregion
 
         #region Public Methods and Operators
@@ -127,7 +124,7 @@
             _error = error;
             ExceptionString = error.ToString();
             ErrorDescription = error.Message;
-            ShowAction();
+            Show();
         }
 
         public void ShareErrorDetails()
