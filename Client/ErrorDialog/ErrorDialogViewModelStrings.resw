@@ -121,7 +121,7 @@
     <value>Please send this email to: {0}</value>
   </data>
   <data name="DefaultMessage" xml:space="preserve">
-    <value>You can choose to send us a report with the error details or ignore this.</value>
+    <value>You can choose to send us a report with the error details or ignore this (sending the report by email will allow us to fix the issue as fast as we can).</value>
   </data>
   <data name="ErrorDelivered" xml:space="preserve">
     <value>The error details have been successfully deilvered.</value>
@@ -131,6 +131,9 @@
   </data>
   <data name="ErrorWasNotDelivered" xml:space="preserve">
     <value>The error details could not be successfully deilvered.</value>
+  </data>
+  <data name="Notice" xml:space="preserve">
+    <value>An error occured with the following message:</value>
   </data>
   <data name="TitleMessage" xml:space="preserve">
     <value>Could not complete request.</value>

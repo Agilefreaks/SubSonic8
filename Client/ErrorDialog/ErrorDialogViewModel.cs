@@ -27,6 +27,8 @@
 
         private bool _isHidden;
 
+        private string _notice;
+
         #endregion
 
         #region Constructors and Destructors
@@ -45,6 +47,7 @@
             WinRTWrapperService = winRTWrappersService;
             WinRTWrapperService.RegisterShareRequestHandler(OnShareRequested);
             NavigationService = navigationService;
+            DisplayName = "It seems that something went wrong ;(";
         }
 
         #endregion
@@ -63,6 +66,14 @@
                 if (value.Equals(_isHidden)) return;
                 _isHidden = value;
                 NotifyOfPropertyChange(() => IsHidden);
+            }
+        }
+
+        public string Notice
+        {
+            get
+            {
+                return _resourceService.GetStringResource("ErrorDialogViewModelStrings/Notice");
             }
         }
 

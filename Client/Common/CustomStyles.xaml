@@ -159,9 +159,25 @@
         <Setter Property="Orientation" Value="Vertical" />
         <Setter Property="Margin" Value="0,20,0,160"/>
     </Style>
-    
+
     <Style x:Name="NotPlayingBorderStyle" TargetType="Border">
         <Setter Property="BorderThickness" Value="3"/>
         <Setter Property="BorderBrush" Value="{StaticResource ApplicationPageBackgroundThemeBrush}"/>
+    </Style>
+
+    <Style x:Name="ErrorDescription" TargetType="TextBlock">
+        <Setter Property="Margin" Value="0,0,0,8"/>
+        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="FontWeight" Value="SemiLight"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+    </Style>
+    
+    <Style x:Name="ErrorRootPanel" TargetType="StackPanel">
+        <Setter Property="Background" Value="{StaticResource ApplicationPageBackgroundThemeBrush}"/>
+    </Style>
+    
+    <Style x:Name="ErrorPanel" TargetType="StackPanel">
+        <Setter Property="Margin" Value="20"/>
+        <Setter Property="Background" Value="{StaticResource ApplicationPageBackgroundThemeBrush}"/>
     </Style>
 </ResourceDictionary>
