@@ -74,6 +74,11 @@
         {
         }
 
+        public async Task HandleCriticalError(Exception exception)
+        {
+            await HandleError(exception);
+        }
+
         public void OnShareRequested(DataRequest dataRequest)
         {
         }

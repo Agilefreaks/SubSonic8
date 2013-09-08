@@ -27,7 +27,7 @@
 
         private bool _isHidden;
 
-        private string _notice;
+        private bool _canGoBack;
 
         #endregion
 
@@ -123,6 +123,21 @@
             }
         }
 
+        public bool CanGoBack
+        {
+            get
+            {
+                return _canGoBack;
+            }
+
+            set
+            {
+                if (value.Equals(_canGoBack)) return;
+                _canGoBack = value;
+                NotifyOfPropertyChange(() => CanGoBack);
+            }
+        }
+
         public IWinRTWrappersService WinRTWrapperService { get; private set; }
 
         public INavigationService NavigationService { get; private set; }
@@ -130,6 +145,12 @@
         #endregion
 
         #region Public Methods and Operators
+
+        public async Task HandleCriticalError(Exception exception)
+        {
+            CanGoBack = false;
+            await HandleError(exception);
+        }
 
         public async Task HandleError(Exception error)
         {

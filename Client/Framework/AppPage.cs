@@ -286,10 +286,18 @@
         /// property provides the group to be displayed.</param>
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
-            var frameState = SuspensionManager.SessionStateForFrame(Frame);
-            var pageState = new Dictionary<string, object>();
-            SaveState(pageState);
-            frameState[_pageKey] = pageState;
+            try
+            {
+                var frameState = SuspensionManager.SessionStateForFrame(Frame);
+                var pageState = new Dictionary<string, object>();
+                SaveState(pageState);
+                frameState[_pageKey] = pageState;
+            }
+            catch (Exception exception)
+            {
+                var errorDialogViewModel = IoC.Get<IErrorDialogViewModel>();
+                errorDialogViewModel.HandleCriticalError(exception);
+            }
         }
 
         /// <summary>
@@ -340,7 +348,7 @@
             catch (Exception exception)
             {
                 var errorDialogViewModel = IoC.Get<IErrorDialogViewModel>();
-                errorDialogViewModel.HandleError(exception);
+                errorDialogViewModel.HandleCriticalError(exception);
             }
         }
 

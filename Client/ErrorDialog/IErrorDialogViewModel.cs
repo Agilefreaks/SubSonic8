@@ -1,5 +1,7 @@
 ﻿namespace Subsonic8.ErrorDialog
 {
+    using System;
+    using System.Threading.Tasks;
     using Caliburn.Micro;
     using Client.Common.Results;
     using Client.Common.Services;
@@ -27,5 +29,7 @@
         #endregion
 
         void Hide();
+
+        Task HandleCriticalError(Exception exception);
     }
 }

@@ -1,6 +1,7 @@
 ﻿namespace Client.Tests.ErrorDialog
 {
     using System;
+    using System.Threading.Tasks;
     using Client.Tests.Mocks;
     using FluentAssertions;
     using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
@@ -44,41 +45,49 @@
         }
 
         [TestMethod]
-        public void HandleError_WithString_ShouldSetIsHiddenFalse()
+        public async Task HandleError_WithString_ShouldSetIsHiddenFalse()
         {
-            _subject.HandleError(new Exception("test"));
+            await _subject.HandleError(new Exception("test"));
 
             _subject.IsHidden.Should().BeFalse();
         }
 
         [TestMethod]
-        public void HandleError_WithString_ShouldSetStringAsErrorDescription()
+        public async Task HandleError_WithString_ShouldSetStringAsErrorDescription()
         {
-            _subject.HandleError(new Exception("test"));
+            await _subject.HandleError(new Exception("test"));
 
             _subject.ErrorDescription.Should().Be("test");
         }
 
         [TestMethod]
-        public void HandleError_WithException_ShouldSetExceptionAsExceptionString()
+        public async Task HandleError_WithException_ShouldSetExceptionAsExceptionString()
         {
-            _subject.HandleError(new Exception("test"));
+            await _subject.HandleError(new Exception("test"));
 
             _subject.ExceptionString.Should().Be("System.Exception: test");
         }
 
         [TestMethod]
-        public void HandleError_WithException_ShouldSetIsHiddenFalse()
+        public async Task HandleError_WithException_ShouldSetIsHiddenFalse()
         {
-            _subject.HandleError(new Exception("test"));
+            await _subject.HandleError(new Exception("test"));
 
             _subject.IsHidden.Should().BeFalse();
         }
 
         [TestMethod]
-        public void GoBack_CanGoBack_ShouldSetIsHiddenTrue()
+        public async Task HandleCriticalError_Always_ShouldSetCanGoBackFalse()
         {
-            _subject.HandleError(new Exception("test"));
+            await _subject.HandleCriticalError(new Exception("test"));
+
+            _subject.CanGoBack.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public async Task GoBack_CanGoBack_ShouldSetIsHiddenTrue()
+        {
+            await _subject.HandleError(new Exception("test"));
             _mockNavigationService.CanGoBack = true;
 
             _subject.GoBack();
