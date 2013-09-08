@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.ObjectModel;
+    using System.Threading.Tasks;
     using Client.Common.EventAggregatorMessages;
     using Client.Common.Results;
     using Client.Common.Services;
@@ -46,8 +47,9 @@
 
         #region Public Methods and Operators
 
-        public void AddToPlaylist()
+        public async Task AddToPlaylist()
         {
+            await Task.Run(() => { });
         }
 
         public void Handle(PlaylistStateChangedMessage message)
@@ -72,9 +74,9 @@
             throw new NotImplementedException();
         }
 
-        public void PlayAll()
+        public async Task PlayAll()
         {
-            throw new NotImplementedException();
+            await Task.Run(() => { });
         }
 
         public void PlayNext()

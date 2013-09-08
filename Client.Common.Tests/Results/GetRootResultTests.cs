@@ -38,7 +38,7 @@
                     return tcr.Task;
                 };
 
-            await Task.Run(() => _subject.Execute(new ActionExecutionContext()));
+            await _subject.Execute(new ActionExecutionContext());
 
             _subject.Error.Should().BeOfType<HttpRequestException>();
         }

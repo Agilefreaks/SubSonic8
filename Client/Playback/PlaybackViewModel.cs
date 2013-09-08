@@ -4,9 +4,8 @@
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
-    using System.IO;
     using System.Linq;
-    using System.Xml.Serialization;
+    using System.Threading.Tasks;
     using Client.Common.EventAggregatorMessages;
     using Client.Common.Models;
     using Client.Common.Services;
@@ -354,7 +353,7 @@
                                          });
         }
 
-        public async void LoadPlaylist()
+        public async Task LoadPlaylist()
         {
             var storageFile = await WinRTWrappersService.OpenStorageFile();
             if (storageFile == null)
@@ -381,7 +380,7 @@
             PlaylistManagementService.SetStateFromString((string)statePageState[PlaylistServiceStateKey]);
         }
 
-        public async void SavePlaylist()
+        public async Task SavePlaylist()
         {
             var storageFile = await WinRTWrappersService.GetNewStorageFile();
             if (storageFile != null)

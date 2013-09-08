@@ -1,6 +1,7 @@
 ﻿namespace Subsonic8.Shell
 {
     using System;
+    using System.Threading.Tasks;
     using Caliburn.Micro;
     using Client.Common.EventAggregatorMessages;
     using Client.Common.Helpers;
@@ -139,7 +140,7 @@
             BottomBar = message.BottomBarViewModel;
         }
 
-        public async void HandleError(Exception error)
+        public async Task HandleError(Exception error)
         {
             await new MessageDialogResult(error.ToString(), "Ooops...").Execute();
         }

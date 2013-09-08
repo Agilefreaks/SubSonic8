@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Collections.Specialized;
+    using System.Diagnostics;
     using System.Linq;
     using System.Threading.Tasks;
     using Caliburn.Micro;
@@ -83,7 +84,7 @@
         {
             get
             {
-                return SelectedItems.Cast<IMenuItemViewModel>().Select(vm => vm.Item);
+                return SelectedItems.Select(vm => ((IMenuItemViewModel)vm).Item);
             }
         }
 
@@ -91,9 +92,9 @@
 
         #region Public Methods and Operators
 
-        public void AddToPlaylist()
+        public async Task AddToPlaylist()
         {
-            AddToPlaylist(SelectedSubsonicItems.ToList());
+            await AddToPlaylist(SelectedSubsonicItems.ToList());
             SelectedItems.Clear();
         }
 
@@ -102,9 +103,9 @@
             NavigationService.NavigateToViewModel<PlaybackViewModel>();
         }
 
-        public void PlayAll()
+        public async Task PlayAll()
         {
-            AddToPlaylist(SelectedSubsonicItems.ToList(), true);
+            await AddToPlaylist(SelectedSubsonicItems.ToList(), true);
             SelectedItems.Clear();
             NavigateOnPlay();
         }
@@ -194,7 +195,7 @@
             }
         }
 
-        private async void AddToPlaylist(IEnumerable<ISubsonicModel> items, bool clearCurrent = false)
+        private async Task AddToPlaylist(IEnumerable<ISubsonicModel> items, bool clearCurrent = false)
         {
             if (clearCurrent)
             {

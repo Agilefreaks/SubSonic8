@@ -43,7 +43,7 @@
                     return new PlaylistItem();
                 });
 
-            await Task.Run(() => Subject.HandleItemSelection(new MockSubsonicModel { Type = type }));
+            await Subject.HandleItemSelection(new MockSubsonicModel { Type = type });
 
             callCount.Should().Be(1);
         }
@@ -57,7 +57,7 @@
             var playlistItem = new PlaylistItem();
             MockLoadModel(() => playlistItem);
 
-            await Task.Run(() => Subject.HandleItemSelection(new MockSubsonicModel { Type = type }));
+            await Subject.HandleItemSelection(new MockSubsonicModel { Type = type });
 
             MockEventAggregator.PublishCallCount.Should().Be(1);
             MockEventAggregator.Messages[0].Should().BeOfType<AddItemsMessage>();
@@ -74,7 +74,7 @@
             MockNavigationService.NavigateToViewModelCalls.Clear();
             MockLoadModel();
 
-            await Task.Run(() => Subject.HandleItemSelection(new MockSubsonicModel { Type = type }));
+            await Subject.HandleItemSelection(new MockSubsonicModel { Type = type });
 
             MockNavigationService.NavigateToViewModelCalls.Count.Should().Be(1);
             MockNavigationService.NavigateToViewModelCalls.First().Key.Should().Be<PlaybackViewModel>();

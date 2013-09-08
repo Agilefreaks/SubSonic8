@@ -1,6 +1,7 @@
 ﻿namespace Subsonic8.BottomBar
 {
     using System;
+    using System.Threading.Tasks;
     using Subsonic8.Framework.Services;
     using Subsonic8.Framework.ViewModel;
 
@@ -18,9 +19,9 @@
 
         #region Public Methods and Operators
 
-        void AddToPlaylist();
+        Task AddToPlaylist();
 
-        void PlayAll();
+        Task PlayAll();
 
         #endregion
     }

@@ -48,18 +48,18 @@
             Kernel.Load<ClientModule>();
         }
 
-        protected override void OnLaunched(LaunchActivatedEventArgs args)
+        protected override async void OnLaunched(LaunchActivatedEventArgs args)
         {
             _previousExecutionState = ApplicationExecutionState.Terminated;
-            StartApplication();
+            await StartApplication();
         }
 
-        protected override void OnSearchActivated(SearchActivatedEventArgs args)
+        protected override async void OnSearchActivated(SearchActivatedEventArgs args)
         {
             var frame = Window.Current.Content as Frame;
             if (frame == null)
             {
-                StartApplication();
+                await StartApplication();
             }
 
             _shellViewModel.SendSearchQueryMessage(args.QueryText);
@@ -132,7 +132,7 @@
             }
         }
 
-        private async void StartApplication()
+        private async Task StartApplication()
         {
             HookBugFreak();
 

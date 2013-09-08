@@ -44,7 +44,7 @@ namespace Subsonic8.Settings
 
         #region Public Properties
 
-        public bool CanSaveChanges
+        public bool CanApplyChanges
         {
             get
             {
@@ -65,7 +65,7 @@ namespace Subsonic8.Settings
             {
                 _configuration = value;
                 NotifyOfPropertyChange();
-                NotifyOfPropertyChange(() => CanSaveChanges);
+                NotifyOfPropertyChange(() => CanApplyChanges);
             }
         }
 
@@ -87,7 +87,7 @@ namespace Subsonic8.Settings
         public void PasswordChanged(PasswordBox passwordBox)
         {
             Configuration.SubsonicServiceConfiguration.Password = passwordBox.Password;
-            NotifyOfPropertyChange(() => CanSaveChanges);
+            NotifyOfPropertyChange(() => CanApplyChanges);
         }
 
         public async Task Populate()
@@ -98,7 +98,7 @@ namespace Subsonic8.Settings
             Configuration = configuration;
         }
 
-        public async void SaveChanges()
+        public async Task ApplyChanges()
         {
             await SaveSettings();
             _navigationService.NavigateToViewModel<MainViewModel>(true);
@@ -116,7 +116,7 @@ namespace Subsonic8.Settings
         public void UsernameChanged(TextBox textBox)
         {
             Configuration.SubsonicServiceConfiguration.Username = textBox.Text;
-            NotifyOfPropertyChange(() => CanSaveChanges);
+            NotifyOfPropertyChange(() => CanApplyChanges);
         }
 
         #endregion

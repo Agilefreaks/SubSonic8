@@ -6,6 +6,7 @@
     using FluentAssertions;
     using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
     using Subsonic8.Framework;
+    using Subsonic8.Main;
     using Subsonic8.Settings;
     using Windows.Security.Credentials;
 
@@ -31,31 +32,31 @@
         #region Public Methods and Operators
 
         [TestMethod]
-        public async Task CanSaveChanges_PasswordEmpty_ReturnsFalse()
+        public async Task CanApplyChanges_PasswordEmpty_ReturnsFalse()
         {
             await _subject.Populate();
             _subject.Configuration.SubsonicServiceConfiguration.Password = string.Empty;
 
-            _subject.CanSaveChanges.Should().BeFalse();
+            _subject.CanApplyChanges.Should().BeFalse();
         }
 
         [TestMethod]
-        public async Task CanSaveChanges_UsernameAndPasswordNotEmpty_ReturnsTrue()
+        public async Task CanApplyChanges_UsernameAndPasswordNotEmpty_ReturnsTrue()
         {
             await _subject.Populate();
             _subject.Configuration.SubsonicServiceConfiguration.Username = "a";
             _subject.Configuration.SubsonicServiceConfiguration.Password = "a";
 
-            _subject.CanSaveChanges.Should().BeTrue();
+            _subject.CanApplyChanges.Should().BeTrue();
         }
 
         [TestMethod]
-        public async Task CanSaveChanges_UsernameEmpty_ReturnsFalse()
+        public async Task CanApplyChanges_UsernameEmpty_ReturnsFalse()
         {
             await _subject.Populate();
             _subject.Configuration.SubsonicServiceConfiguration.Username = string.Empty;
 
-            _subject.CanSaveChanges.Should().BeFalse();
+            _subject.CanApplyChanges.Should().BeFalse();
         }
 
         [TestMethod]
@@ -120,16 +121,6 @@
         }
 
         [TestMethod]
-        public async Task SaveChanges_Always_CallsStorageServiceSave()
-        {
-            await _subject.Populate();
-
-            _subject.SaveChanges();
-
-            _mockStorageService.SaveCallCount.Should().Be(1);
-        }
-
-        [TestMethod]
         public async Task SaveSettings_Always_CallsSettingsHelperUpdateCredentialsInVaultWithCorrectCredentials()
         {
             await _subject.Populate();
@@ -184,6 +175,19 @@
             await _subject.SaveSettings();
 
             _mockSubsonicService.Configuration.Should().Be(configuration.SubsonicServiceConfiguration);
+        }
+
+        [TestMethod]
+        public async Task ApplyChanges_AfterSavingChanges_NavigatesToTheMainViewModel()
+        {
+            await _subject.Populate();
+            _subject.Configuration.SubsonicServiceConfiguration.Username = "test";
+            _subject.Configuration.SubsonicServiceConfiguration.Password = "test";
+
+            await _subject.ApplyChanges();
+
+            _mockNavigationService.NavigateToViewModelCalls.Count.Should().Be(1);
+            _mockNavigationService.NavigateToViewModelCalls[0].Key.Should().Be(typeof(MainViewModel));
         }
 
         [TestInitialize]

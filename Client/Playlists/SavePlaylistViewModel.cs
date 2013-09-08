@@ -96,9 +96,11 @@
             GoBack();
         }
 
-        public override void ChildClick(ItemClickEventArgs eventArgs)
+        public override async Task ChildClick(ItemClickEventArgs eventArgs)
         {
             PlaylistName = ((MenuItemViewModel)eventArgs.ClickedItem).Item.Name;
+
+            await Task.Run(() => { });
         }
 
         public void PlaylistNameChanged(TextBox sender)

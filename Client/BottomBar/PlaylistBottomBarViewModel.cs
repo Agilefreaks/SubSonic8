@@ -77,7 +77,7 @@
                                .Execute();
         }
 
-        public async void HandleError(Exception error)
+        public async Task HandleError(Exception error)
         {
             await NotificationService.Show(new DialogNotificationOptions { Message = error.ToString(), });
         }

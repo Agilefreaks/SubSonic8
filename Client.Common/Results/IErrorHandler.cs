@@ -1,12 +1,13 @@
 ﻿namespace Client.Common.Results
 {
     using System;
+    using System.Threading.Tasks;
 
     public interface IErrorHandler
     {
         #region Public Methods and Operators
 
-        void HandleError(Exception error);
+        Task HandleError(Exception error);
 
         #endregion
     }

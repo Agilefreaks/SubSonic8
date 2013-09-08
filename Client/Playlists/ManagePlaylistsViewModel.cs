@@ -1,6 +1,7 @@
 ﻿namespace Subsonic8.Playlists
 {
     using System.Linq;
+    using System.Threading.Tasks;
     using Client.Common.EventAggregatorMessages;
     using Client.Common.Models;
     using Client.Common.Models.Subsonic;
@@ -30,7 +31,7 @@
 
         #region Public Methods and Operators
 
-        public override async void ChildClick(ItemClickEventArgs eventArgs)
+        public override async Task ChildClick(ItemClickEventArgs eventArgs)
         {
             var subsonicModel = ((MenuItemViewModel)eventArgs.ClickedItem).Item;
             await

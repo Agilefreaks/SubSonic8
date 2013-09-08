@@ -44,7 +44,7 @@
             MockSubsonicService.SetHasValidSubsonicUrl(true);
             MockSubsonicService.Ping = () => new MockPingResult();
 
-            await Task.Run(() => Subject.Populate());
+            await Subject.Populate();
             _mockGetRootResult.ExecuteCallCount.Should().Be(1);
 
             MockSubsonicService.SetHasValidSubsonicUrl(false);

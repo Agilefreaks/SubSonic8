@@ -34,18 +34,8 @@
         [TestMethod]
         public void LoadPlaylist_Always_CallsPlaylistManagementServiceLoadPlaylistWithAListOfEquivalentPlaylistItems()
         {
-            var playlist = new Playlist
-                               {
-                                   Entries =
-                                       new List<PlaylistEntry>
-                                           {
-                                               new PlaylistEntry
-                                                   {
-                                                       Title = "test", 
-                                                       Duration = 123
-                                                   }
-                                           }
-                               };
+            var playlistEntries = new List<PlaylistEntry> { new PlaylistEntry { Title = "test", Duration = 123 } };
+            var playlist = new Playlist { Entries = playlistEntries };
 
             Subject.LoadPlaylist(playlist);
 

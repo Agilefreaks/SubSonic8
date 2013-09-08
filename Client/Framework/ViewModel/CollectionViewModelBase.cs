@@ -122,7 +122,7 @@
 
         #region Public Methods and Operators
 
-        public async virtual void ChildClick(ItemClickEventArgs eventArgs)
+        public async virtual Task ChildClick(ItemClickEventArgs eventArgs)
         {
             await HandleItemSelection(((MenuItemViewModel)eventArgs.ClickedItem).Item);
         }

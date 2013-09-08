@@ -2,6 +2,7 @@
 {
     using System;
     using System.Text;
+    using System.Threading.Tasks;
     using Caliburn.Micro;
     using Client.Common.Services;
     using Subsonic8.Framework.Services;
@@ -119,12 +120,14 @@
 
         #region Public Methods and Operators
 
-        public void HandleError(Exception error)
+        public async Task HandleError(Exception error)
         {
             _error = error;
             ExceptionString = error.ToString();
             ErrorDescription = error.Message;
             Show();
+
+            await Task.Run(() => { });
         }
 
         public void ShareErrorDetails()

@@ -3,6 +3,7 @@ namespace Client.Tests.Playback
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
     using Client.Common.EventAggregatorMessages;
     using Client.Common.Models;
     using Client.Common.Services.DataStructures.PlayerManagementService;
@@ -193,9 +194,9 @@ namespace Client.Tests.Playback
         }
 
         [TestMethod]
-        public void SavePlaylist_Always_CallsWinRTWrapperServiceGetNewStorageFile()
+        public async Task SavePlaylist_Always_CallsWinRTWrapperServiceGetNewStorageFile()
         {
-            Subject.SavePlaylist();
+            await Subject.SavePlaylist();
 
             _mockWinRTWrappersService.GetNewStorageFileCallCount.Should().Be(1);
         }

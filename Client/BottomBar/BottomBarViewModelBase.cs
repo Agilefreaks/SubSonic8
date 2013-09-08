@@ -31,9 +31,9 @@
         #region Constructors and Destructors
 
         protected BottomBarViewModelBase(
-            INavigationService navigationService, 
-            IEventAggregator eventAggregator, 
-            IPlaylistManagementService playlistManagementService, 
+            INavigationService navigationService,
+            IEventAggregator eventAggregator,
+            IPlaylistManagementService playlistManagementService,
             IErrorDialogViewModel errorDialogViewModel)
         {
             NavigationService = navigationService;
@@ -85,7 +85,7 @@
 
             set
             {
-                if (value == _isOpened) return;                
+                if (value == _isOpened) return;
                 _isOpened = value;
                 NotifyOfPropertyChange();
             }

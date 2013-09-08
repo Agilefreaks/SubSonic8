@@ -53,30 +53,30 @@
         }
 
         [TestMethod]
-        public void AddToPlaylistCallShouldClearSelectedItemsCollection()
+        public async Task AddToPlaylistCallShouldClearSelectedItemsCollection()
         {
-            _subject.SelectedItems.Add(new MenuItemViewModel());
-            _subject.SelectedItems.Add(new MenuItemViewModel());
+            _subject.SelectedItems.Add(new MenuItemViewModel { Item = new MockSubsonicModel() });
+            _subject.SelectedItems.Add(new MenuItemViewModel { Item = new MockSubsonicModel() });
 
-            _subject.AddToPlaylist();
+            await _subject.AddToPlaylist();
 
             _subject.SelectedItems.Should().HaveCount(0);
         }
 
         [TestMethod]
-        public void AddToPlaylistShouldFireAnAddItemsMessageForEachMediaItem()
+        public async Task AddToPlaylistShouldFireAnAddItemsMessageForEachMediaItem()
         {
             _subject.SelectedItems.Add(new MenuItemViewModel { Item = new Song { IsVideo = true } });
             _subject.SelectedItems.Add(new MenuItemViewModel { Item = new Song { IsVideo = false } });
 
-            _subject.AddToPlaylist();
+            await _subject.AddToPlaylist();
 
             _eventAggregator.Messages.Count.Should().Be(2);
             _eventAggregator.Messages.All(m => m.GetType() == typeof(AddItemsMessage)).Should().BeTrue();
         }
 
         [TestMethod]
-        public void
+        public async Task
             AddToPlaylist_QueHasItemOfTypeArtist_CallsSubsonicServiceGetArtistAndAddsAllSongsFromAllAlbumsToThePlaylist()
         {
             MockLoadModel();
@@ -102,7 +102,7 @@
                                };
                 };
 
-            _subject.AddToPlaylist();
+            await _subject.AddToPlaylist();
 
             callCount.Should().Be(1);
             getAlbumCallCount.Should().Be(2);
@@ -111,7 +111,7 @@
         }
 
         [TestMethod]
-        public void AddToPlaylist_QueHasItemOfTypeIndexItem_CallsSubsonicServiceGetMusicDirectorysForEachChildArtist()
+        public async Task AddToPlaylist_QueHasItemOfTypeIndexItem_CallsSubsonicServiceGetMusicDirectorysForEachChildArtist()
         {
             MockLoadModel();
             _subject.SelectedItems.Add(
@@ -135,7 +135,7 @@
                     return mockGetMusicDirectoryResult;
                 };
 
-            _subject.AddToPlaylist();
+            await _subject.AddToPlaylist();
 
             callCount.Should().Be(1);
             _eventAggregator.Messages.All(m => m.GetType() == typeof(AddItemsMessage)).Should().BeTrue();
@@ -143,7 +143,7 @@
         }
 
         [TestMethod]
-        public void
+        public async Task
             AddToPlaylist_QueHasItemOfTypeMusicDirectory_CallsSubsonicServiceGetMusicDirectorysAndAddsAllSongsToThePlaylist()
         {
             MockLoadModel();
@@ -159,7 +159,7 @@
                     return mockGetAlbumResult;
                 };
 
-            _subject.AddToPlaylist();
+            await _subject.AddToPlaylist();
 
             callCount.Should().Be(1);
             _eventAggregator.Messages.All(m => m.GetType() == typeof(AddItemsMessage)).Should().BeTrue();
@@ -167,7 +167,7 @@
         }
 
         [TestMethod]
-        public void
+        public async Task
             AddToPlaylist_SelectedItemsHasItemOfTypeAlbum_CallsSubsonicServiceGetAlbumAndAdsAllItsSongsToThePlaylist()
         {
             MockLoadModel();
@@ -183,7 +183,7 @@
                     return mockGetAlbumResult;
                 };
 
-            _subject.AddToPlaylist();
+            await _subject.AddToPlaylist();
 
             callCount.Should().Be(1);
             _eventAggregator.Messages.All(m => m.GetType() == typeof(AddItemsMessage)).Should().BeTrue();
@@ -269,50 +269,50 @@
         }
 
         [TestMethod]
-        public void PlayAllCallShouldClearSelectedItemsCollection()
+        public async Task PlayAllCallShouldClearSelectedItemsCollection()
         {
-            _subject.SelectedItems.Add(new MenuItemViewModel());
-            _subject.SelectedItems.Add(new MenuItemViewModel());
+            _subject.SelectedItems.Add(new MenuItemViewModel { Item = new MockSubsonicModel() });
+            _subject.SelectedItems.Add(new MenuItemViewModel { Item = new MockSubsonicModel() });
 
-            _subject.PlayAll();
+            await _subject.PlayAll();
 
             _subject.SelectedItems.Should().HaveCount(0);
         }
 
         [TestMethod]
-        public void PlayAllCallsEventAggregatorPublish()
+        public async Task PlayAllCallsEventAggregatorPublish()
         {
-            _subject.PlayAll();
+            await _subject.PlayAll();
 
             _eventAggregator.PublishCallCount.Should().Be(1);
         }
 
         [TestMethod]
-        public void PlayAllCallsNavigationServiceNavigateToViewModel()
+        public async Task PlayAllCallsNavigationServiceNavigateToViewModel()
         {
-            _subject.PlayAll();
+            await _subject.PlayAll();
 
             _navigationService.NavigateToViewModelCalls.Count.Should().Be(1);
         }
 
         [TestMethod]
-        public void PlayAll_ClearsTheCurrentPlaylist()
+        public async Task PlayAll_ClearsTheCurrentPlaylist()
         {
             _subject.SelectedItems.Add(new MenuItemViewModel { Item = new Song() });
 
-            _subject.PlayAll();
+            await _subject.PlayAll();
 
             _mockPlyalistManagementService.ClearCallCount.Should().Be(1);
         }
 
         [TestMethod]
-        public void PlayAll_ShouldPublishAnAddItemToPlaylistMessageWithStartPlayingTrue()
+        public async Task PlayAll_ShouldPublishAnAddItemToPlaylistMessageWithStartPlayingTrue()
         {
             _subject.SelectedItems.Add(new MenuItemViewModel { Item = new Song() });
             _subject.SelectedItems.Add(new MenuItemViewModel { Item = new Song() });
             _subject.SelectedItems.Add(new MenuItemViewModel { Item = new Song() });
 
-            _subject.PlayAll();
+            await _subject.PlayAll();
 
             var message = (AddItemsMessage)_eventAggregator.Messages.First(m => m.GetType() == typeof(AddItemsMessage));
             message.StartPlaying.Should().BeTrue();

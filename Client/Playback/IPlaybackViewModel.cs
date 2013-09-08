@@ -1,5 +1,6 @@
 namespace Subsonic8.Playback
 {
+    using System.Threading.Tasks;
     using Caliburn.Micro;
     using Client.Common.EventAggregatorMessages;
     using Subsonic8.Framework.Behaviors;
@@ -29,7 +30,7 @@ namespace Subsonic8.Playback
 
         void ClearPlaylist();
 
-        void SavePlaylist();
+        Task SavePlaylist();
 
         #endregion
     }

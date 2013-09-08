@@ -107,11 +107,12 @@
         {
             var subsonic8Configuration = await StorageService.Load<Subsonic8Configuration>()
                                          ?? new Subsonic8Configuration();
-            SetPasswordFromVault(subsonic8Configuration);
+            await SetPasswordFromVault(subsonic8Configuration);
+
             return subsonic8Configuration;
         }
 
-        private async void SetPasswordFromVault(Subsonic8Configuration appConfiguration)
+        private async Task SetPasswordFromVault(Subsonic8Configuration appConfiguration)
         {
             var configuration = appConfiguration.SubsonicServiceConfiguration;
             var vault = new PasswordVault();

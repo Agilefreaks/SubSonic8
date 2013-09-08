@@ -1,6 +1,7 @@
 ﻿namespace Client.Tests.Mocks
 {
     using System;
+    using System.Threading.Tasks;
     using Caliburn.Micro;
     using Client.Common.EventAggregatorMessages;
     using Client.Common.Models;
@@ -59,8 +60,9 @@
         {
         }
 
-        public void HandleError(Exception error)
+        public async Task HandleError(Exception error)
         {
+            await Task.Run(() => { });
         }
 
         public void Pause()

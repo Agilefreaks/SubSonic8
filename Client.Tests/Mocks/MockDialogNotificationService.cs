@@ -24,18 +24,18 @@
 
         #region Public Methods and Operators
 
-        public Task Show(DialogNotificationOptions options)
+        public async Task Show(DialogNotificationOptions options)
         {
             Showed.Add(options);
 
-            return Task.Run(() => { });
+            await Task.Run(() => { });
         }
 
-        public Task Show(DialogNotificationOptions options, Action onDialogClosed)
+        public async Task Show(DialogNotificationOptions options, Action onDialogClosed)
         {
             Showed.Add(options);
 
-            return Task.Run(() => { });
+            await Task.Run(() => { });
         }
 
         #endregion

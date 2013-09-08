@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Threading.Tasks;
     using Client.Common.Services;
     using Subsonic8.ErrorDialog;
     using Windows.ApplicationModel.DataTransfer;
@@ -46,9 +47,11 @@
         {
         }
 
-        public void HandleError(Exception error)
+        public async Task HandleError(Exception error)
         {
             _handledErrors.Add(error);
+
+            await Task.Run(() => { });
         }
 
         public void ShareErrorDetails()

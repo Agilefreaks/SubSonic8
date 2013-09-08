@@ -4,6 +4,7 @@ namespace Subsonic8.BottomBar
     using Caliburn.Micro;
     using Client.Common.EventAggregatorMessages;
     using Subsonic8.ErrorDialog;
+    using Subsonic8.MenuItem;
 
     public interface IBottomBarViewModel : IHandle<PlaylistStateChangedMessage>
     {

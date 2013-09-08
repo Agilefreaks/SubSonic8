@@ -1,5 +1,6 @@
 ﻿namespace Subsonic8.Framework.Extensions
 {
+    using System.Threading.Tasks;
     using Client.Common.Models;
     using Subsonic8.Framework.Interfaces;
     using Subsonic8.Framework.Services;
@@ -8,13 +9,13 @@
     {
         #region Public Methods and Operators
 
-        public static async void ShowToast<T>(this T notificationServiceOwner, PlaylistItem model)
+        public static async Task ShowToast<T>(this T notificationServiceOwner, PlaylistItem model)
             where T : IToastNotificationCapable
         {
             await notificationServiceOwner.ToastNotificationService.Show(GetNotificationOptionsFromPlaylistItem(model));
         }
 
-        public static async void UpdateTile<T>(this T notificationServiceOwner, PlaylistItem model)
+        public static async Task UpdateTile<T>(this T notificationServiceOwner, PlaylistItem model)
             where T : ITileNotificationCapable
         {
             await notificationServiceOwner.TileNotificationService.Show(GetNotificationOptionsFromPlaylistItem(model));

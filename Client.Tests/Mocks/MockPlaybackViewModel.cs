@@ -141,7 +141,7 @@
             throw new NotImplementedException();
         }
 
-        public void SavePlaylist()
+        public Task SavePlaylist()
         {
             throw new NotImplementedException();
         }

@@ -5,10 +5,10 @@
     using Client.Common.EventAggregatorMessages;
     using Client.Common.Models;
     using Client.Tests.Mocks;
+    using global::Common.Mocks;
     using FluentAssertions;
     using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
     using Subsonic8.BottomBar;
-    using global::Common.Mocks;
 
     [TestClass]
     public class PlaybackBottomBarViewModelTests
