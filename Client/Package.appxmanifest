@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
-  <Identity Name="11722CristiBadila-AgileFr.Subsonic8" Publisher="CN=9A125042-BA51-4746-8221-E7237026040D" Version="1.0.0.21" />
+  <Identity Name="11722CristiBadila-AgileFr.Subsonic8" Publisher="CN=9A125042-BA51-4746-8221-E7237026040D" Version="1.0.0.22" />
   <Properties>
     <DisplayName>Subsonic8</DisplayName>
     <PublisherDisplayName>Cristi Badila - AgileFreaks</PublisherDisplayName>
