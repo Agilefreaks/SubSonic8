@@ -46,6 +46,11 @@
             throw new NotImplementedException();
         }
 
+        public bool HandlerExistsFor(Type messageType)
+        {
+            return true;
+        }
+
         public void Subscribe(object instance)
         {
             Subscriber = instance;

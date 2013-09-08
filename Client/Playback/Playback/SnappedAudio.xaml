@@ -12,7 +12,7 @@
         <converters:NullToVisibilityConverter x:Name="NullToVisibilityConverter"/>
     </Page.Resources>
 
-    <Grid Margin="20,0">
+    <Grid Style="{StaticResource SnappedAudioViewGridStyle}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -24,12 +24,12 @@
 
         <Image Grid.Row="1" Source="{Binding CoverArt}" Stretch="Uniform"/>
 
-        <StackPanel Grid.Row="2" Orientation="Vertical" Margin="0,20,0,0">
+        <StackPanel Grid.Row="2" Style="{StaticResource SnappedArtistDetailsPanelStyle}">
             <TextBlock Text="{Binding Path=ActiveItem.Artist}" Style="{StaticResource SnappedTitleStyle}" Visibility="{Binding Path=ActiveItem, Converter={StaticResource NullToVisibilityConverter}}"/>
             <TextBlock Text="{Binding Path=ActiveItem.Title}" Style="{StaticResource SnappedArtistStyle}" Visibility="{Binding Path=ActiveItem, Converter={StaticResource NullToVisibilityConverter}}"/>
             <TextBlock Text="Nothing Playing" Style="{StaticResource SnappedTitleStyle}" Visibility="{Binding Path=ActiveItem, Converter={StaticResource InvertedNullToVisibilityConverter}}"/>
         </StackPanel>
-        <Grid Grid.Row="3" HorizontalAlignment="Center" Margin="0,80,0,0"
+        <Grid Grid.Row="3" Style="{StaticResource SnappedPlaybackControlsGridStyle}"
             Visibility="{Binding Path=PlaybackControlsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>

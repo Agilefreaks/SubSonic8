@@ -30,7 +30,8 @@
         protected override Task ExecuteCore(ActionExecutionContext context = null)
         {
             context = context ?? new ActionExecutionContext();
-            var view = (context.View ?? ((CaliburnApplication)Application.Current).RootFrame.Content) as Control;
+
+            var view = (context.View ?? ((Frame)Window.Current.Content).Content) as Control;
 
             VisualStateManager.GoToState(view, StateName, UseTransitions);
 

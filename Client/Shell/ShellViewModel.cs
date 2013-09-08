@@ -53,6 +53,7 @@
             WinRTWrappersService = winRTWrappersService;
             ErrorDialogViewModel = errorDialogViewModel;
 
+            DisplayName = "Subsonic8";
             eventAggregator.Subscribe(this);
         }
 
@@ -80,14 +81,6 @@
         }
 
         public IDialogNotificationService DialogNotificationService { get; set; }
-
-        public override string DisplayName
-        {
-            get
-            {
-                return "Subsonic8";
-            }
-        }
 
         public Action<SearchResultCollection> NavigateToSearhResult { get; set; }
 

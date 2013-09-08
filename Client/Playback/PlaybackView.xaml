@@ -30,7 +30,7 @@
 
                 <common:PageHeader DataContext="{Binding}" />
 
-                <Grid Grid.Row="1" Margin="46,0" x:Name="ExpandedContentGrid">
+                <Grid Grid.Row="1" x:Name="ExpandedContentGrid" Style="{StaticResource ExpandedPlaybackGridStyle}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
@@ -49,7 +49,7 @@
                         <Button Style="{StaticResource SaveRemoteAppBarButtonStyle}" x:Name="SaveRemotePlaylist" />
                     </StackPanel>
                     <Grid Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"
-                            Margin="116,0" x:Name="ExpandedMediaPresenter">
+                          x:Name="ExpandedMediaPresenter" Style="{StaticResource PlaylistContentGridStyle}">
                         <playback:Audio cal:Bind.Model="{Binding}"
                                     Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='Audio'}" />
                         <playback:Video cal:Bind.Model="{Binding}"
@@ -57,14 +57,14 @@
                         <playback:Filter cal:Bind.Model="{Binding}"
                                         Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='Filter'}" />
                     </Grid>
-                    <ListView Grid.Row="1" Grid.Column="1"
-                          ItemsSource="{Binding PlaylistItems}"
-                          SelectionMode="Multiple"
-                          behaviors:MultipleSelectBehavior.SelectedItems="{Binding SelectedItems, Mode=TwoWay}"
-                          CanDragItems="False" CanReorderItems="False" AllowDrop="False"
-                          IsItemClickEnabled="True"
-                          cal:Message.Attach="[Event ItemClick] = [Action StartPlayback($eventArgs)]"
-                          Margin="0,0,0,10">
+                    <ListView Grid.Row="1" Grid.Column="1"                              
+                              ItemsSource="{Binding PlaylistItems}"
+                              SelectionMode="Multiple"
+                              behaviors:MultipleSelectBehavior.SelectedItems="{Binding SelectedItems, Mode=TwoWay}"
+                              CanDragItems="False" CanReorderItems="False" AllowDrop="False"
+                              IsItemClickEnabled="True"                              
+                              cal:Message.Attach="[Event ItemClick] = [Action StartPlayback($eventArgs)]"
+                              Style="{StaticResource PlaylistItemsListStyle}">
                         <i:Interaction.Behaviors>
                             <behaviors:ScrollIntoViewBehavior ActiveItemProvider="{Binding}" />
                         </i:Interaction.Behaviors>
