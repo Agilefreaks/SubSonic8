@@ -18,13 +18,9 @@
                     Visibility="{Binding CanAddToPlaylist, Converter={StaticResource VisibilityConverter}}" />
         </StackPanel>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-            <bottomBar:PlaybackControlsView />
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Style="{StaticResource ListAppBarButtonStyle}"
-                        cal:Message.Attach="[Event Click] = [Action NavigateToPlaylist()]" />
-                <Button Style="{StaticResource HomeAppBarButtonStyle}"
-                        cal:Message.Attach="[Event Click] = [Action NavigateToRoot()]" />
-            </StackPanel>
+            <bottomBar:CommonButtons/>
+            <Button Style="{StaticResource ListAppBarButtonStyle}"
+                    cal:Message.Attach="[Event Click] = [Action NavigateToPlaylist()]" />
         </StackPanel>
     </Grid>
 </Page>

@@ -1,0 +1,21 @@
+﻿<UserControl
+    x:Class="Subsonic8.BottomBar.CommonButtons"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:cal="using:Caliburn.Micro"
+    xmlns:ic="using:Subsonic8.Controls" xmlns:bottomBar="using:Subsonic8.BottomBar"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <cal:BooleanToVisibilityConverter x:Key="VisibilityConverter" />
+    </UserControl.Resources>
+
+    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+        <Button Style="{StaticResource ClearSelectionAppBarButtonStyle}"
+                    cal:Message.Attach="[Event Click] = [Action ClearSelection]" Visibility="{Binding Path=SelectionExists, Converter={StaticResource VisibilityConverter}}"/>
+        <bottomBar:PlaybackControlsView />
+        <Button Style="{StaticResource HomeAppBarButtonStyle}"
+                    cal:Message.Attach="[Event Click] = [Action NavigateToRoot()]" />
+    </StackPanel>
+</UserControl>

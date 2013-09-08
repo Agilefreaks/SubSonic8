@@ -7,6 +7,7 @@
     using Client.Common.EventAggregatorMessages;
     using Client.Common.Services;
     using global::Common.ExtensionsMethods;
+    using MugenInjection.Attributes;
     using Subsonic8.ErrorDialog;
     using Subsonic8.Main;
 
@@ -14,35 +15,25 @@
     {
         #region Fields
 
-        protected readonly IEventAggregator EventAggregator;
-
-        protected readonly INavigationService NavigationService;
-
-        protected readonly IPlaylistManagementService PlaylistManagementService;
-
-        private IErrorDialogViewModel _errorDialogViewModel;
-
         private bool _isOpened;
 
         private ObservableCollection<object> _selectedItems;
+
+        private bool _canDismiss;
+
+        private IEventAggregator _eventAggregator;
+
+        private IPlaylistManagementService _playlistManagementService;
+
+        private IErrorDialogViewModel _errorDialogViewModel;
 
         #endregion
 
         #region Constructors and Destructors
 
-        protected BottomBarViewModelBase(
-            INavigationService navigationService,
-            IEventAggregator eventAggregator,
-            IPlaylistManagementService playlistManagementService,
-            IErrorDialogViewModel errorDialogViewModel)
+        protected BottomBarViewModelBase()
         {
-            NavigationService = navigationService;
-            EventAggregator = eventAggregator;
-            EventAggregator.Subscribe(this);
-            PlaylistManagementService = playlistManagementService;
-            HookPlaylistManagementService();
             SelectedItems = new ObservableCollection<object>();
-            ErrorDialogViewModel = errorDialogViewModel;
         }
 
         #endregion
@@ -54,25 +45,6 @@
             get
             {
                 return PlaylistManagementService.HasElements;
-            }
-        }
-
-        public IErrorDialogViewModel ErrorDialogViewModel
-        {
-            get
-            {
-                return _errorDialogViewModel;
-            }
-
-            private set
-            {
-                if (Equals(value, _errorDialogViewModel))
-                {
-                    return;
-                }
-
-                _errorDialogViewModel = value;
-                NotifyOfPropertyChange();
             }
         }
 
@@ -91,11 +63,34 @@
             }
         }
 
+        public bool CanDismiss
+        {
+            get
+            {
+                return _canDismiss;
+            }
+
+            set
+            {
+                if (value.Equals(_canDismiss)) return;
+                _canDismiss = value;
+                NotifyOfPropertyChange(() => CanDismiss);
+            }
+        }
+
         public bool IsPlaying
         {
             get
             {
                 return PlaylistManagementService.IsPlaying;
+            }
+        }
+
+        public bool SelectionExists
+        {
+            get
+            {
+                return SelectedItems.Count > 0;
             }
         }
 
@@ -115,7 +110,7 @@
 
                 ManageSelectedItemsHooks(value, _selectedItems);
                 _selectedItems = value;
-                UpdateIsOpened();
+                ApplySelectionChanges();
                 NotifyOfPropertyChange();
             }
         }
@@ -125,6 +120,55 @@
             get
             {
                 return PlaylistManagementService.ShuffleOn;
+            }
+        }
+
+        [Inject]
+        public ICustomFrameAdapter NavigationService { get; set; }
+
+        [Inject]
+        public IEventAggregator EventAggregator
+        {
+            get
+            {
+                return _eventAggregator;
+            }
+
+            set
+            {
+                _eventAggregator = value;
+                EventAggregator.Subscribe(this);
+            }
+        }
+
+        [Inject]
+        public IPlaylistManagementService PlaylistManagementService
+        {
+            get
+            {
+                return _playlistManagementService;
+            }
+
+            set
+            {
+                _playlistManagementService = value;
+                HookPlaylistManagementService();
+            }
+        }
+
+        [Inject]
+        public IErrorDialogViewModel ErrorDialogViewModel
+        {
+            get
+            {
+                return _errorDialogViewModel;
+            }
+
+            set
+            {
+                if (Equals(value, _errorDialogViewModel)) return;
+                _errorDialogViewModel = value;
+                NotifyOfPropertyChange(() => ErrorDialogViewModel);
             }
         }
 
@@ -139,7 +183,16 @@
 
         public void NavigateToRoot()
         {
+            CanDismiss = true;
+            IsOpened = false;
             NavigationService.NavigateToViewModel<MainViewModel>();
+        }
+
+        public virtual void ClearSelection()
+        {
+            CanDismiss = true;
+            SelectedItems.Clear();
+            IsOpened = false;
         }
 
         public virtual void PlayNext()
@@ -174,7 +227,7 @@
         protected virtual void OnSelectedItemsChanged(
             object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
         {
-            UpdateIsOpened();
+            ApplySelectionChanges();
         }
 
         private void HookPlaylistManagementService()
@@ -212,9 +265,11 @@
             }
         }
 
-        private void UpdateIsOpened()
+        private void ApplySelectionChanges()
         {
+            CanDismiss = SelectedItems.Count != 0;
             IsOpened = SelectedItems.Count != 0;
+            NotifyOfPropertyChange(() => SelectionExists);
         }
 
         #endregion

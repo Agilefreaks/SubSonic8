@@ -120,6 +120,9 @@
     <Compile Include="Artist\IArtistViewModel.cs" />
     <Compile Include="BottomBar\BottomBarViewModelBase.cs" />
     <Compile Include="BottomBar\ChangeBottomBarMessage.cs" />
+    <Compile Include="BottomBar\CommonButtons.xaml.cs">
+      <DependentUpon>CommonButtons.xaml</DependentUpon>
+    </Compile>
     <Compile Include="BottomBar\PlaylistBottomBarView.xaml.cs">
       <DependentUpon>PlaylistBottomBarView.xaml</DependentUpon>
     </Compile>
@@ -364,6 +367,10 @@
     <Page Include="Artist\ArtistView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="BottomBar\CommonButtons.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="BottomBar\PlaylistBottomBarView.xaml">
       <Generator>MSBuild:Compile</Generator>

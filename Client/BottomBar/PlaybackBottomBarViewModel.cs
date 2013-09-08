@@ -2,24 +2,12 @@
 {
     using System.Collections.Specialized;
     using System.Linq;
-    using Caliburn.Micro;
     using Client.Common.EventAggregatorMessages;
     using Client.Common.Models;
-    using Client.Common.Services;
-    using Subsonic8.ErrorDialog;
 
     public class PlaybackBottomBarViewModel : BottomBarViewModelBase, IPlaybackBottomBarViewModel
     {
         #region Constructors and Destructors
-
-        public PlaybackBottomBarViewModel(
-            INavigationService navigationService, 
-            IEventAggregator eventAggregator, 
-            IPlaylistManagementService playlistManagementService, 
-            IErrorDialogViewModel errorDialogViewModel)
-            : base(navigationService, eventAggregator, playlistManagementService, errorDialogViewModel)
-        {
-        }
 
         #endregion
 

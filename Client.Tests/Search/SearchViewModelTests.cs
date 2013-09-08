@@ -139,11 +139,13 @@
         {
             _eventAggregator = new MockEventAggregator();
 
-            var bottomBarViewModel = new DefaultBottomBarViewModel(
-                MockNavigationService,
-                _eventAggregator,
-                new MockPlyalistManagementService(),
-                new MockErrorDialogViewModel());
+            var bottomBarViewModel = new DefaultBottomBarViewModel
+                                         {
+                                             NavigationService = MockNavigationService,
+                                             EventAggregator = _eventAggregator,
+                                             PlaylistManagementService = new MockPlyalistManagementService(),
+                                             ErrorDialogViewModel = new MockErrorDialogViewModel()
+                                         };
             Subject.BottomBar = bottomBarViewModel;
         }
 

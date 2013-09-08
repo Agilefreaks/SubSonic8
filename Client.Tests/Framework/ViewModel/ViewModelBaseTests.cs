@@ -30,16 +30,6 @@
 
         #region Public Methods and Operators
 
-        [TestMethod]
-        public void OnActivateShouldSetDiplayName()
-        {
-            Subject.UpdateDisplayName = () => Subject.DisplayName = "42";
-
-            ((IActivate)Subject).Activate();
-
-            Subject.DisplayName.Should().Be("42");
-        }
-
         [TestInitialize]
         public void TestInitialize()
         {
@@ -58,6 +48,16 @@
                               ErrorDialogViewModel = MockErrorDialogViewModel
                           };
             TestInitializeExtensions();
+        }
+
+        [TestMethod]
+        public void OnActivateShouldSetDiplayName()
+        {
+            Subject.UpdateDisplayName = () => Subject.DisplayName = "42";
+
+            ((IActivate)Subject).Activate();
+
+            Subject.DisplayName.Should().Be("42");
         }
 
         #endregion

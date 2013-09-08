@@ -18,12 +18,6 @@
                     cal:Message.Attach="[Event Click] = [Action ShowRenameDialog($source)]"
                     Visibility="{Binding CanDeletePlaylist, Converter={StaticResource VisibilityConverter}}" />
         </StackPanel>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-            <bottomBar:PlaybackControlsView />
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Style="{StaticResource HomeAppBarButtonStyle}"
-                        cal:Message.Attach="[Event Click] = [Action NavigateToRoot()]" />
-            </StackPanel>
-        </StackPanel>
+        <bottomBar:CommonButtons/>
     </Grid>
 </Page>

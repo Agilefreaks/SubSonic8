@@ -4,11 +4,9 @@
     using System.Collections.Specialized;
     using System.Linq;
     using System.Threading.Tasks;
-    using Caliburn.Micro;
     using Callisto.Controls;
     using Client.Common.Services;
     using MugenInjection.Attributes;
-    using Subsonic8.ErrorDialog;
     using Subsonic8.Framework.Services;
     using Subsonic8.MenuItem;
     using Windows.UI.Xaml;
@@ -25,15 +23,6 @@
         #endregion
 
         #region Constructors and Destructors
-
-        public PlaylistBottomBarViewModel(
-            INavigationService navigationService,
-            IEventAggregator eventAggregator,
-            IPlaylistManagementService playlistManagementService,
-            IErrorDialogViewModel errorDialogViewModel)
-            : base(navigationService, eventAggregator, playlistManagementService, errorDialogViewModel)
-        {
-        }
 
         #endregion
 

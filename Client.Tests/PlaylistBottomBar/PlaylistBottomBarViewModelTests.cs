@@ -4,8 +4,8 @@
     using Client.Common.Models.Subsonic;
     using Client.Common.Results;
     using Client.Common.Services.DataStructures.SubsonicService;
+    using Client.Tests.BottomBar;
     using Client.Tests.Mocks;
-    using global::Common.Mocks;
     using FluentAssertions;
     using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
     using Subsonic8.BottomBar;
@@ -13,13 +13,11 @@
     using MockSubsonicService = Client.Tests.Mocks.MockSubsonicService;
 
     [TestClass]
-    public class PlaylistBottomBarViewModelTests
+    public class PlaylistBottomBarViewModelTests : BottomBarViewModelTests<PlaylistBottomBarViewModel>
     {
         #region Fields
 
         private MockSubsonicService _mockSubsonicService;
-
-        private PlaylistBottomBarViewModel _subject;
 
         #endregion
 
@@ -29,7 +27,7 @@
         public async Task DeletePlaylist_Always_CallsDeletePlaylistWithTheFirstSelectedItemsId()
         {
             var callCount = 0;
-            _subject.SelectedItems.Add(new MenuItemViewModel { Item = new Playlist { Id = 5 } });
+            Subject.SelectedItems.Add(new MenuItemViewModel { Item = new Playlist { Id = 5 } });
             _mockSubsonicService.DeletePlaylist = playlistId =>
                 {
                     callCount++;
@@ -38,7 +36,7 @@
                     return new DeletePlaylistResult(new SubsonicServiceConfiguration(), playlistId);
                 };
 
-            await _subject.DeletePlaylist();
+            await Subject.DeletePlaylist();
 
             callCount.Should().Be(1);
         }
@@ -47,7 +45,7 @@
         public async Task RenamePlaylist_Always_CallRenamePlaylistWithTheFirstSelectedItemsId()
         {
             var callCount = 0;
-            _subject.SelectedItems.Add(new MenuItemViewModel { Item = new Playlist { Id = 5 } });
+            Subject.SelectedItems.Add(new MenuItemViewModel { Item = new Playlist { Id = 5 } });
             _mockSubsonicService.RenamePlaylist = (playlistId, playlistName) =>
                 {
                     callCount++;
@@ -57,23 +55,16 @@
                     return new MockRenamePlaylistResult();
                 };
 
-            await _subject.RenamePlaylist("test");
+            await Subject.RenamePlaylist("test");
 
             callCount.Should().Be(1);
         }
 
-        [TestInitialize]
-        public void Setup()
+        protected override void TestInitializeExtensions()
         {
+            base.TestInitializeExtensions();
             _mockSubsonicService = new MockSubsonicService();
-            _subject = new PlaylistBottomBarViewModel(
-                new MockNavigationService(),
-                new MockEventAggregator(),
-                new MockPlyalistManagementService(),
-                new MockErrorDialogViewModel())
-                {
-                    SubsonicService = _mockSubsonicService
-                };
+            Subject.SubsonicService = _mockSubsonicService;
         }
 
         #endregion

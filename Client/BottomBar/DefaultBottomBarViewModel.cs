@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Collections.Specialized;
-    using System.Diagnostics;
     using System.Linq;
     using System.Threading.Tasks;
     using Caliburn.Micro;
@@ -13,7 +12,6 @@
     using Client.Common.Results;
     using Client.Common.Services;
     using MugenInjection.Attributes;
-    using Subsonic8.ErrorDialog;
     using Subsonic8.Framework.Extensions;
     using Subsonic8.Framework.Services;
     using Subsonic8.Framework.ViewModel;
@@ -31,12 +29,7 @@
 
         #region Constructors and Destructors
 
-        public DefaultBottomBarViewModel(
-            ICustomFrameAdapter navigationService,
-            IEventAggregator eventAggregator,
-            IPlaylistManagementService playlistManagementService,
-            IErrorDialogViewModel errorDialogViewModel)
-            : base(navigationService, eventAggregator, playlistManagementService, errorDialogViewModel)
+        public DefaultBottomBarViewModel()
         {
             LoadPlaylistItem = this.LoadPlaylistItemFromSong;
             NavigateOnPlay = () => NavigationService.NavigateToViewModel<PlaybackViewModel>();
@@ -100,6 +93,8 @@
 
         public void NavigateToPlaylist()
         {
+            CanDismiss = true;
+            IsOpened = false;
             NavigationService.NavigateToViewModel<PlaybackViewModel>();
         }
 

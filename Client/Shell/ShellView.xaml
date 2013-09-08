@@ -45,8 +45,8 @@
         <ProgressBar Grid.Row="0" VerticalAlignment="Top" VerticalContentAlignment="Top" x:Name="LoadingIndicator"
                      Visibility="Collapsed" IsIndeterminate="True" HorizontalAlignment="Stretch" />
 
-        <controls:CustomAppBar IsLightDismissEnabled="False" CanOpenInSnappedView="False" IsOpen="{Binding Path=BottomBar.IsOpened}" 
-                               CanDismiss="{Binding Path=BottomBar.IsOpened, Converter={StaticResource InvertedBooleanConverter}}">
+        <controls:CustomAppBar IsLightDismissEnabled="True" CanOpenInSnappedView="False" IsOpen="{Binding Path=BottomBar.IsOpened, Mode=TwoWay}" 
+                               CanDismiss="{Binding Path=BottomBar.CanDismiss, Converter={StaticResource InvertedBooleanConverter}}">
             <ContentControl x:Name="BottomBar" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" />
         </controls:CustomAppBar>
         
