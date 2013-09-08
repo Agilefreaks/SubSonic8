@@ -6,6 +6,7 @@
     using Caliburn.Micro;
     using Client.Common.Services;
     using Microsoft.Practices.ServiceLocation;
+    using Subsonic8.ErrorDialog;
     using Subsonic8.Framework.ViewModel;
     using Windows.ApplicationModel;
     using Windows.Foundation.Metadata;
@@ -298,40 +299,48 @@
         /// property provides the group to be displayed.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            // Returning to a cached page through navigation shouldn't trigger state loading
-            if (_pageKey != null)
+            try
             {
-                return;
-            }
-
-            var frameState = SuspensionManager.SessionStateForFrame(Frame);
-            _pageKey = "Page-" + Frame.BackStackDepth;
-            if (e.NavigationMode == NavigationMode.New)
-            {
-                // Clear existing state for forward navigation when adding a new page to the
-                // navigation stack
-                var nextPageKey = _pageKey;
-                var nextPageIndex = Frame.BackStackDepth;
-                while (frameState.Remove(nextPageKey))
+                // Returning to a cached page through navigation shouldn't trigger state loading
+                if (_pageKey != null)
                 {
-                    nextPageIndex++;
-                    nextPageKey = "Page-" + nextPageIndex;
+                    return;
                 }
 
-                // Pass the navigation parameter to the new page
-                LoadState(e.Parameter, null, e);
-            }
-            else
-            {
-                // Pass the navigation parameter and preserved page state to the page, using
-                // the same strategy for loading suspended state and recreating pages discarded
-                // from cache
-                LoadState(e.Parameter, (Dictionary<string, object>)frameState[_pageKey], e);
-            }
+                var frameState = SuspensionManager.SessionStateForFrame(Frame);
+                _pageKey = "Page-" + Frame.BackStackDepth;
+                if (e.NavigationMode == NavigationMode.New)
+                {
+                    // Clear existing state for forward navigation when adding a new page to the
+                    // navigation stack
+                    var nextPageKey = _pageKey;
+                    var nextPageIndex = Frame.BackStackDepth;
+                    while (frameState.Remove(nextPageKey))
+                    {
+                        nextPageIndex++;
+                        nextPageKey = "Page-" + nextPageIndex;
+                    }
 
-            if (true)
+                    // Pass the navigation parameter to the new page
+                    LoadState(e.Parameter, null, e);
+                }
+                else
+                {
+                    // Pass the navigation parameter and preserved page state to the page, using
+                    // the same strategy for loading suspended state and recreating pages discarded
+                    // from cache
+                    LoadState(e.Parameter, (Dictionary<string, object>)frameState[_pageKey], e);
+                }
+
+                if (true)
+                {
+                    ApplyTemplate();
+                }
+            }
+            catch (Exception exception)
             {
-                ApplyTemplate();
+                var errorDialogViewModel = IoC.Get<IErrorDialogViewModel>();
+                errorDialogViewModel.HandleError(exception);
             }
         }
 
