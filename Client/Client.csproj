@@ -169,7 +169,6 @@
     </Compile>
     <Compile Include="ErrorDialog\ErrorDialogViewModel.cs" />
     <Compile Include="ErrorDialog\IErrorDialogViewModel.cs" />
-    <Compile Include="Framework\Behaviors\UnSnapBehavior.cs" />
     <Compile Include="Framework\Behaviors\IActiveItemProvider.cs" />
     <Compile Include="Framework\Behaviors\ScrollIntoViewBehavior.cs" />
     <Compile Include="Framework\Extensions\ModelLoaderExtensionMethods.cs" />
@@ -296,7 +295,6 @@
     </Compile>
     <Compile Include="Search\ISearchViewModel.cs" />
     <Compile Include="Framework\Extensions\SubsonicModelToMenuItemViewModelExtensions.cs" />
-    <Compile Include="Framework\Behaviors\MultipleSelectBehavior.cs" />
     <Compile Include="Search\SearchView.xaml.cs">
       <DependentUpon>SearchView.xaml</DependentUpon>
     </Compile>

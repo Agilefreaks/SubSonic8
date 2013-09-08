@@ -1,4 +1,4 @@
-﻿namespace Subsonic8.Framework.Behaviors
+﻿namespace Common.Behaviors
 {
     using System.Collections;
     using System.Collections.Generic;
@@ -14,10 +14,10 @@
 
         public static readonly DependencyProperty SelectedItemsProperty =
             DependencyProperty.RegisterAttached(
-                "SelectedItems", 
-                typeof(object), 
-                typeof(MultipleSelectBehavior), 
-                new PropertyMetadata(new ObservableCollection<object>(), AttchedPropertyChanged));
+                "SelectedItems",
+                typeof(object),
+                typeof(MultipleSelectBehavior),
+                new PropertyMetadata(new ObservableCollection<object>(), AttachedPropertyChanged));
 
         #endregion
 
@@ -37,7 +37,7 @@
 
         #region Methods
 
-        private static void AttchedPropertyChanged(
+        private static void AttachedPropertyChanged(
             DependencyObject dependencyObject, DependencyPropertyChangedEventArgs eventArgs)
         {
             var observableCollection = eventArgs.NewValue as INotifyCollectionChanged;
@@ -98,8 +98,8 @@
         }
 
         private static void SetupOnUnloadedHandler(
-            DependencyObject dependencyObject, 
-            INotifyCollectionChanged observableCollection, 
+            DependencyObject dependencyObject,
+            INotifyCollectionChanged observableCollection,
             NotifyCollectionChangedEventHandler sourceChangedHandler)
         {
             RoutedEventHandler unloadedEventHandler = null;

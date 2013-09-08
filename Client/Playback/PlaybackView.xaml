@@ -9,7 +9,7 @@
     xmlns:playback="using:Subsonic8.Playback.Playback" xmlns:converters="using:Subsonic8.Converters"
     xmlns:behaviors="using:Subsonic8.Framework.Behaviors" xmlns:framework="using:Subsonic8.Framework"
     xmlns:i="using:Windows.UI.Interactivity" xmlns:videoPlayback="using:Subsonic8.VideoPlayback"
-    xmlns:playlistItem="using:Subsonic8.PlaylistItem.PlaylistItem"
+    xmlns:playlistItem="using:Subsonic8.PlaylistItem.PlaylistItem" xmlns:commonBehaviors="using:Common.Behaviors"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -73,7 +73,7 @@
                     <ListView Grid.Row="1" Grid.Column="1"                              
                               ItemsSource="{Binding PlaylistItems}"
                               SelectionMode="Multiple"
-                              behaviors:MultipleSelectBehavior.SelectedItems="{Binding SelectedItems, Mode=TwoWay}"
+                              commonBehaviors:MultipleSelectBehavior.SelectedItems="{Binding SelectedItems, Mode=TwoWay}"
                               CanDragItems="False" CanReorderItems="False" AllowDrop="False"
                               IsItemClickEnabled="True"                              
                               cal:Message.Attach="[Event ItemClick] = [Action StartPlayback($eventArgs)]"

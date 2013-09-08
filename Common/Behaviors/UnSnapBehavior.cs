@@ -1,4 +1,4 @@
-﻿namespace Subsonic8.Framework.Behaviors
+﻿namespace Common.Behaviors
 {
     using Windows.UI.Interactivity;
     using Windows.UI.Xaml;
