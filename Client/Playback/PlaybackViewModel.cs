@@ -10,6 +10,7 @@
     using Client.Common.Models;
     using Client.Common.Services;
     using Client.Common.Services.DataStructures.PlayerManagementService;
+    using global::Common.ExtensionsMethods;
     using global::Common.ListCollectionView;
     using MugenInjection.Attributes;
     using Subsonic8.BottomBar;
@@ -60,6 +61,8 @@
         private ISnappedVideoPlaybackViewModel _snappedVideoPlaybackViewModel;
 
         private string _currentVisualState;
+
+        private bool _isPlaylistVisible;
 
         #endregion
 
@@ -143,6 +146,21 @@
 
                 _playbackControlsVisible = value;
                 NotifyOfPropertyChange();
+            }
+        }
+
+        public bool IsPlaylistVisible
+        {
+            get
+            {
+                return _isPlaylistVisible;
+            }
+
+            set
+            {
+                if (value.Equals(_isPlaylistVisible)) return;
+                _isPlaylistVisible = value;
+                NotifyOfPropertyChange(() => IsPlaylistVisible);
             }
         }
 
@@ -341,7 +359,13 @@
 
         public void Handle(PlaylistStateChangedMessage message)
         {
+            IsPlaylistVisible = message.HasElements;
             PlaybackControlsVisible = message.HasElements;
+            NotifyOfPropertyChange(() => ActiveItem);
+            if (!message.HasElements)
+            {
+                CoverArt = CoverArtPlaceholderLarge;
+            }
         }
 
         public void Handle(PlayFailedMessage message)
@@ -500,8 +524,7 @@
             object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
             if (propertyChangedEventArgs.PropertyName
-                == global::Common.ExtensionsMethods.ObjectExtensionMethods.GetPropertyName(
-                    _playlistManagementService, () => _playlistManagementService.IsPlaying))
+                == _playlistManagementService.GetPropertyName(() => _playlistManagementService.IsPlaying))
             {
                 NotifyOfPropertyChange(() => IsPlaying);
             }

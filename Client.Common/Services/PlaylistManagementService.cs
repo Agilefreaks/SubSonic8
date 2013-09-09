@@ -407,6 +407,12 @@
             var becameNotEmpty = totalElements > 0 && _wasEmpty;
             var becameEmpty = totalElements == 0 && !_wasEmpty;
 
+            if (becameEmpty)
+            {
+                StopPlayback();
+                CurrentItem = null;
+            }
+
             if (becameNotEmpty || becameEmpty)
             {
                 _eventAggregator.Publish(new PlaylistStateChangedMessage(Items.Any()));

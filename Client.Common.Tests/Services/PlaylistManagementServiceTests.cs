@@ -23,6 +23,13 @@
 
         #region Public Methods and Operators
 
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            _mockEventAggregator = new MockEventAggregator();
+            _subject = new PlaylistManagementService(_mockEventAggregator);
+        }
+
         [TestMethod]
         public void Ctor_Always_SetsGetNextTrackNumberFuncToGetNextTrackNumber()
         {
@@ -671,11 +678,27 @@
             _subject.IsPlaying.Should().BeFalse();
         }
 
-        [TestInitialize]
-        public void TestInitialize()
+        [TestMethod]
+        public void ClearingThePlaylist_Always_StopsPlayback()
         {
-            _mockEventAggregator = new MockEventAggregator();
-            _subject = new PlaylistManagementService(_mockEventAggregator);
+            _subject.Items.Add(new PlaylistItem());
+            _subject.Play();
+
+            _subject.Clear();
+
+            _subject.IsPlaying.Should().BeFalse();
+            _subject.IsPaused.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void ClearingThePlaylist_Always_SetsTheCurrentItemToNull()
+        {
+            _subject.Items.Add(new PlaylistItem());
+            _subject.Play();
+
+            _subject.Clear();
+
+            _subject.CurrentItem.Should().BeNull();
         }
 
         #endregion

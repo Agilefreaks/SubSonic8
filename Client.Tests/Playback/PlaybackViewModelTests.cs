@@ -134,6 +134,22 @@ namespace Client.Tests.Playback
         }
 
         [TestMethod]
+        public void Handle_PlaylistStateChangedMessage_SetsIsPlaylistVisibleToMessageHasElements()
+        {
+            Subject.Handle(new PlaylistStateChangedMessage(true));
+
+            Subject.IsPlaylistVisible.Should().Be(true);
+        }
+
+        [TestMethod]
+        public void Handle_PlaylistStateChangedMessage_PlaylistHasNoElementsSetsCoverArtToPlaceHolder()
+        {
+            Subject.Handle(new PlaylistStateChangedMessage(true));
+
+            Subject.CoverArt.Should().Be(PlaybackViewModel.CoverArtPlaceholderLarge);
+        }
+
+        [TestMethod]
         public void IsPlayingReturnsPlaylistManagementServiceIsPlaying()
         {
             _mockPlaylistManagementService.IsPlaying = true;
