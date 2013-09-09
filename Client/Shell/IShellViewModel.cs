@@ -8,6 +8,7 @@
     using Subsonic8.BottomBar;
     using Subsonic8.Framework.Interfaces;
     using Subsonic8.Framework.Services;
+    using Windows.ApplicationModel.Activation;
 
     public interface IShellViewModel : IViewAware, 
                                        IScreen, 
@@ -27,6 +28,8 @@
         Uri Source { get; set; }
 
         ISubsonicService SubsonicService { get; set; }
+
+        ApplicationExecutionState PreviousExecutionsState { get; set; }
 
         #endregion
 

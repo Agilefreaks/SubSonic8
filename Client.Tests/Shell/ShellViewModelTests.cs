@@ -79,18 +79,18 @@
             _mockWinRTWrappersService = new MockWinRTWrappersService();
             _mockPlayerControls = new MockPlayerControls();
             _mockErrorDialogViewModel = new MockErrorDialogViewModel();
-            Subject = new ShellViewModel(
-                _eventAggregator,
-                _mockSubsonicService,
-                _mockNavigationService,
-                _mockToastNotificationService,
-                _mockDialogNotificationService,
-                _mockStorageService,
-                _mockWinRTWrappersService,
-                _mockErrorDialogViewModel)
-                {
-                    PlayerControls = _mockPlayerControls
-                };
+            Subject = new ShellViewModel
+                          {
+                              EventAggregator = _eventAggregator,
+                              SubsonicService = _mockSubsonicService,
+                              NavigationService = _mockNavigationService,
+                              NotificationService = _mockToastNotificationService,
+                              DialogNotificationService = _mockDialogNotificationService,
+                              StorageService = _mockStorageService,
+                              WinRTWrappersService = _mockWinRTWrappersService,
+                              ErrorDialogViewModel = _mockErrorDialogViewModel,
+                              PlayerControls = _mockPlayerControls
+                          };
         }
 
         #endregion

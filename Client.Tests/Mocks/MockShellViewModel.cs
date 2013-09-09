@@ -10,6 +10,7 @@
     using Subsonic8.Framework.Interfaces;
     using Subsonic8.Framework.Services;
     using Subsonic8.Shell;
+    using Windows.ApplicationModel.Activation;
     using Windows.UI.Xaml;
 
     public class MockShellViewModel : Screen, IShellViewModel
@@ -31,6 +32,8 @@
         public int StopCallCount { get; set; }
 
         public ISubsonicService SubsonicService { get; set; }
+
+        public ApplicationExecutionState PreviousExecutionsState { get; set; }
 
         #endregion
 

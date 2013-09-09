@@ -30,15 +30,17 @@
             var mockStorageService = new MockStorageService();
             var mockWinRTWrappersService = new MockWinRTWrappersService();
             var mockErrorDialogViewModel = new MockErrorDialogViewModel();
-            var shellViewModel = new ShellViewModel(
-                mockEventAggregator,
-                mockSubsonicService,
-                mockNavigationService,
-                mockNotificationService,
-                mockDialogNotificationService,
-                mockStorageService,
-                mockWinRTWrappersService,
-                mockErrorDialogViewModel);
+            var shellViewModel = new ShellViewModel
+                                     {
+                                         EventAggregator = mockEventAggregator,
+                                         SubsonicService = mockSubsonicService,
+                                         NavigationService = mockNavigationService,
+                                         NotificationService = mockNotificationService,
+                                         DialogNotificationService = mockDialogNotificationService,
+                                         StorageService = mockStorageService,
+                                         WinRTWrappersService = mockWinRTWrappersService,
+                                         ErrorDialogViewModel = mockErrorDialogViewModel
+                                     };
 
             IoC.GetInstance = (type, s) =>
                 {

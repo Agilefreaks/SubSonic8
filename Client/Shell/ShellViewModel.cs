@@ -2,6 +2,7 @@
 {
     using System;
     using System.Threading.Tasks;
+    using BugFreak;
     using Caliburn.Micro;
     using Client.Common.EventAggregatorMessages;
     using Client.Common.Helpers;
@@ -9,20 +10,27 @@
     using Client.Common.Models.Subsonic;
     using Client.Common.Results;
     using Client.Common.Services;
+    using MugenInjection.Attributes;
     using Subsonic8.BottomBar;
     using Subsonic8.ErrorDialog;
+    using Subsonic8.Framework;
     using Subsonic8.Framework.Extensions;
     using Subsonic8.Framework.Interfaces;
     using Subsonic8.Framework.Services;
+    using Subsonic8.Main;
+    using Subsonic8.Playback;
     using Subsonic8.Search;
     using Subsonic8.Settings;
+    using Subsonic8.VideoPlayback;
+    using Windows.ApplicationModel.Activation;
+    using Windows.UI.Core;
     using Windows.UI.Xaml;
 
     public class ShellViewModel : Screen, IShellViewModel
     {
         #region Fields
 
-        private readonly IEventAggregator _eventAggregator;
+        private IEventAggregator _eventAggregator;
 
         private IBottomBarViewModel _bottomBar;
 
@@ -34,27 +42,9 @@
 
         #region Constructors and Destructors
 
-        public ShellViewModel(
-            IEventAggregator eventAggregator,
-            ISubsonicService subsonicService,
-            ICustomFrameAdapter navigationService,
-            IToastNotificationService notificationService,
-            IDialogNotificationService dialogNotificationService,
-            IStorageService storageService,
-            IWinRTWrappersService winRTWrappersService,
-            IErrorDialogViewModel errorDialogViewModel)
+        public ShellViewModel()
         {
-            _eventAggregator = eventAggregator;
-            SubsonicService = subsonicService;
-            NavigationService = navigationService;
-            NotificationService = notificationService;
-            DialogNotificationService = dialogNotificationService;
-            StorageService = storageService;
-            WinRTWrappersService = winRTWrappersService;
-            ErrorDialogViewModel = errorDialogViewModel;
-
             DisplayName = "Subsonic8";
-            eventAggregator.Subscribe(this);
         }
 
         #endregion
@@ -80,13 +70,7 @@
             }
         }
 
-        public IDialogNotificationService DialogNotificationService { get; set; }
-
         public Action<SearchResultCollection> NavigateToSearhResult { get; set; }
-
-        public ICustomFrameAdapter NavigationService { get; set; }
-
-        public IToastNotificationService NotificationService { get; set; }
 
         public IPlayerControls PlayerControls
         {
@@ -116,13 +100,61 @@
             }
         }
 
+        [Inject]
+        public IEventAggregator EventAggregator
+        {
+            get
+            {
+                return _eventAggregator;
+            }
+
+            set
+            {
+                _eventAggregator = value;
+                _eventAggregator.Subscribe(this);
+            }
+        }
+
+        public ApplicationExecutionState PreviousExecutionsState { get; set; }
+
+        [Inject]
+        public IDialogNotificationService DialogNotificationService { get; set; }
+
+        [Inject]
+        public ICustomFrameAdapter NavigationService { get; set; }
+
+        [Inject]
+        public IToastNotificationService NotificationService { get; set; }
+
+        [Inject]
         public IStorageService StorageService { get; set; }
 
+        [Inject]
         public ISubsonicService SubsonicService { get; set; }
 
+        [Inject]
         public IWinRTWrappersService WinRTWrappersService { get; set; }
 
+        [Inject]
         public IErrorDialogViewModel ErrorDialogViewModel { get; set; }
+
+        [Inject]
+        public IResourceService ResourceService { get; set; }
+
+        [Inject]
+        public ISettingsHelper SettingsHelper { get; set; }
+
+        [Inject]
+        public IoCService IoCService { get; set; }
+
+        [Inject]
+        public IPlayerManagementService PlayerManagementService { get; set; }
+
+        [Inject]
+        public IEmbededVideoPlaybackViewModel EmbededVideoPlaybackViewModel { get; set; }
+
+        [Inject]
+        public IFullScreenVideoPlaybackViewModel FullScreenVideoPlaybackViewModel { get; set; }
 
         #endregion
 
@@ -190,6 +222,69 @@
             WinRTWrappersService.RegisterMediaControlHandler(new MediaControlHandler(_eventAggregator));
 
             PlayerControls = (IPlayerControls)view;
+
+            var dispatcher = CoreWindow.GetForCurrentThread().Dispatcher;
+            dispatcher.RunAsync(
+                CoreDispatcherPriority.Normal,
+                async () =>
+                {
+                    HookBugFreak();
+
+                    RegisterPlayers();
+
+                    InstantiateRequiredSingletons();
+
+                    await LoadSettings();
+
+                    await RestoreLastViewOrGoToMain((ShellView)view);
+                });
+        }
+
+        private void RegisterPlayers()
+        {
+            PlayerManagementService.RegisterAudioPlayer(this);
+            PlayerManagementService.RegisterVideoPlayer(EmbededVideoPlaybackViewModel);
+            PlayerManagementService.RegisterVideoPlayer(FullScreenVideoPlaybackViewModel);
+        }
+
+        private void InstantiateRequiredSingletons()
+        {
+            IoCService.Get<IPlaybackViewModel>();
+            IoCService.Get<INotificationsHelper>();
+        }
+
+        private async Task LoadSettings()
+        {
+            await SettingsHelper.LoadSettings();
+        }
+
+        private async Task RestoreLastViewOrGoToMain(ShellView shellView)
+        {
+            if (PreviousExecutionsState == ApplicationExecutionState.Terminated)
+            {
+                try
+                {
+                    await SuspensionManager.RestoreAsync();
+                }
+                catch (SuspensionManagerException)
+                {
+                }
+            }
+
+            SuspensionManager.RegisterFrame(shellView.ShellFrame, "MainFrame");
+
+            if (shellView.ShellFrame.SourcePageType == null ||
+                shellView.ShellFrame.SourcePageType == typeof(ErrorDialogView))
+            {
+                NavigationService.NavigateToViewModel<MainViewModel>();
+            }
+        }
+
+        private void HookBugFreak()
+        {
+            var apiKey = ResourceService.GetStringResource("BugFreakCredentials/ApiKey");
+            var token = ResourceService.GetStringResource("BugFreakCredentials/Token");
+            BugFreak.Hook(apiKey, token, Application.Current);
         }
 
         #endregion
