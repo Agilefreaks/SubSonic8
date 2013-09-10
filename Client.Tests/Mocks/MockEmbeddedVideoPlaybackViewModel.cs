@@ -16,7 +16,7 @@
     using Action = System.Action;
     using PlaylistItem = Client.Common.Models.PlaylistItem;
 
-    public class MockEmbededVideoPlaybackViewModel : IEmbededVideoPlaybackViewModel
+    public class MockEmbeddedVideoPlaybackViewModel : IEmbeddedVideoPlaybackViewModel
     {
         #region Public Events
 

@@ -318,11 +318,11 @@
     <Compile Include="VideoPlayback\EmbededVideoPlaybackView.xaml.cs">
       <DependentUpon>EmbededVideoPlaybackView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="VideoPlayback\EmbededVideoPlaybackViewModel.cs" />
+    <Compile Include="VideoPlayback\EmbeddedVideoPlaybackViewModel.cs" />
     <Compile Include="VideoPlayback\FullScreenVideoPlaybackView.xaml.cs">
       <DependentUpon>FullScreenVideoPlaybackView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="VideoPlayback\IEmbededVideoPlaybackViewModel.cs" />
+    <Compile Include="VideoPlayback\IEmbeddedVideoPlaybackViewModel.cs" />
     <Compile Include="VideoPlayback\IFullScreenVideoPlaybackViewModel.cs" />
     <Compile Include="VideoPlayback\FullScreenVideoPlaybackViewModel.cs" />
     <Compile Include="VideoPlayback\ISnappedVideoPlaybackViewModel.cs" />

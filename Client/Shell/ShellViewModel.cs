@@ -70,7 +70,7 @@
             }
         }
 
-        public Action<SearchResultCollection> NavigateToSearhResult { get; set; }
+        public Action<SearchResultCollection> NavigateToSearchResult { get; set; }
 
         public IPlayerControls PlayerControls
         {
@@ -151,7 +151,7 @@
         public IPlayerManagementService PlayerManagementService { get; set; }
 
         [Inject]
-        public IEmbededVideoPlaybackViewModel EmbededVideoPlaybackViewModel { get; set; }
+        public IEmbeddedVideoPlaybackViewModel EmbeddedVideoPlaybackViewModel { get; set; }
 
         [Inject]
         public IFullScreenVideoPlaybackViewModel FullScreenVideoPlaybackViewModel { get; set; }
@@ -167,7 +167,7 @@
 
         public async Task HandleError(Exception error)
         {
-            await new MessageDialogResult(error.ToString(), "Ooops...").Execute();
+            await new MessageDialogResult(error.ToString(), "Oops...").Execute();
         }
 
         public void Pause()
@@ -243,7 +243,7 @@
         private void RegisterPlayers()
         {
             PlayerManagementService.RegisterAudioPlayer(this);
-            PlayerManagementService.RegisterVideoPlayer(EmbededVideoPlaybackViewModel);
+            PlayerManagementService.RegisterVideoPlayer(EmbeddedVideoPlaybackViewModel);
             PlayerManagementService.RegisterVideoPlayer(FullScreenVideoPlaybackViewModel);
         }
 

@@ -33,7 +33,7 @@
                         new Tuple<Type[], Type>(
                             new[] { typeof(IFullScreenVideoPlaybackViewModel) }, typeof(FullScreenVideoPlaybackViewModel)), 
                         new Tuple<Type[], Type>(
-                            new[] { typeof(IEmbededVideoPlaybackViewModel) }, typeof(EmbededVideoPlaybackViewModel)), 
+                            new[] { typeof(IEmbeddedVideoPlaybackViewModel) }, typeof(EmbeddedVideoPlaybackViewModel)), 
                         new Tuple<Type[], Type>(
                             new[] { typeof(ISnappedVideoPlaybackViewModel) }, typeof(SnappedVideoPlaybackViewModel)), 
                         new Tuple<Type[], Type>(

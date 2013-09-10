@@ -22,7 +22,7 @@ namespace Client.Tests.Playback
     {
         #region Fields
 
-        private MockEmbededVideoPlaybackViewModel _mockEmbededVideoPlaybackViewModel;
+        private MockEmbeddedVideoPlaybackViewModel _mockEmbeddedVideoPlaybackViewModel;
 
         private MockPlyalistManagementService _mockPlaylistManagementService;
 
@@ -375,7 +375,7 @@ namespace Client.Tests.Playback
             Subject.OnVisualStateChanged(PlaybackViewModel.SnappedStateName);
             Subject.OnVisualStateChanged("test");
 
-            _mockPlayerManagementService.DefaultVideoPlayer.Should().Be(_mockEmbededVideoPlaybackViewModel);
+            _mockPlayerManagementService.DefaultVideoPlayer.Should().Be(_mockEmbeddedVideoPlaybackViewModel);
         }
 
         [TestMethod]
@@ -413,13 +413,13 @@ namespace Client.Tests.Playback
             _mockWinRTWrappersService = new MockWinRTWrappersService();
             _mockPlaylistManagementService = new MockPlyalistManagementService();
             _mockPlayerManagementService = new MockPlayerManagementService();
-            _mockEmbededVideoPlaybackViewModel = new MockEmbededVideoPlaybackViewModel();
+            _mockEmbeddedVideoPlaybackViewModel = new MockEmbeddedVideoPlaybackViewModel();
             _mockSnappedVideoPlaybackViewModel = new MockSnappedVideoPlaybackViewModel();
             _mockFullScreenVideoPlaybackViewModel = new MockFullScreenVideoPlaybackViewModel();
             Subject.WinRTWrappersService = _mockWinRTWrappersService;
             Subject.PlaylistManagementService = _mockPlaylistManagementService;
             Subject.PlayerManagementService = _mockPlayerManagementService;
-            Subject.EmbededVideoPlaybackViewModel = _mockEmbededVideoPlaybackViewModel;
+            Subject.EmbeddedVideoPlaybackViewModel = _mockEmbeddedVideoPlaybackViewModel;
             Subject.ToastNotificationService = _mockToastNotificationService;
             Subject.SnappedVideoPlaybackViewModel = _mockSnappedVideoPlaybackViewModel;
             Subject.FullScreenVideoPlaybackViewModel = _mockFullScreenVideoPlaybackViewModel;
