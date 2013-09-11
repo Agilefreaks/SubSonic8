@@ -64,7 +64,6 @@
         private void BindShellViewModelToView(ShellView shellView, ApplicationExecutionState previousExecutionState)
         {
             _shellViewModel = Kernel.Get<IShellViewModel>();
-            _shellViewModel.PreviousExecutionsState = previousExecutionState;
 
             ViewModelBinder.Bind(_shellViewModel, shellView, null);
         }

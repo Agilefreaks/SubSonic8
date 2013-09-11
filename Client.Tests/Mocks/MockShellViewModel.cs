@@ -33,8 +33,6 @@
 
         public ISubsonicService SubsonicService { get; set; }
 
-        public ApplicationExecutionState PreviousExecutionsState { get; set; }
-
         #endregion
 
         #region Public Methods and Operators

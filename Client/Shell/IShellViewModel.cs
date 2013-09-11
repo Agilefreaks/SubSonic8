@@ -8,13 +8,12 @@
     using Subsonic8.BottomBar;
     using Subsonic8.Framework.Interfaces;
     using Subsonic8.Framework.Services;
-    using Windows.ApplicationModel.Activation;
 
-    public interface IShellViewModel : IViewAware, 
-                                       IScreen, 
-                                       IBottomBarViewModelProvider, 
-                                       IErrorHandler, 
-                                       IPlayer, 
+    public interface IShellViewModel : IViewAware,
+                                       IScreen,
+                                       IBottomBarViewModelProvider,
+                                       IErrorHandler,
+                                       IPlayer,
                                        IHandle<ChangeBottomBarMessage>
     {
         #region Public Properties
@@ -28,8 +27,6 @@
         Uri Source { get; set; }
 
         ISubsonicService SubsonicService { get; set; }
-
-        ApplicationExecutionState PreviousExecutionsState { get; set; }
 
         #endregion
 

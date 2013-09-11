@@ -22,7 +22,6 @@
     using Subsonic8.Search;
     using Subsonic8.Settings;
     using Subsonic8.VideoPlayback;
-    using Windows.ApplicationModel.Activation;
     using Windows.UI.Core;
     using Windows.UI.Xaml;
 
@@ -114,8 +113,6 @@
                 _eventAggregator.Subscribe(this);
             }
         }
-
-        public ApplicationExecutionState PreviousExecutionsState { get; set; }
 
         [Inject]
         public IDialogNotificationService DialogNotificationService { get; set; }
@@ -260,15 +257,12 @@
 
         private async Task RestoreLastViewOrGoToMain(ShellView shellView)
         {
-            if (PreviousExecutionsState == ApplicationExecutionState.Terminated)
+            try
             {
-                try
-                {
-                    await SuspensionManager.RestoreAsync();
-                }
-                catch (SuspensionManagerException)
-                {
-                }
+                await SuspensionManager.RestoreAsync();
+            }
+            catch (SuspensionManagerException)
+            {
             }
 
             SuspensionManager.RegisterFrame(shellView.ShellFrame, "MainFrame");
