@@ -7,35 +7,37 @@
     xmlns:cal="using:Caliburn.Micro" xmlns:converters="using:Common.Converters" xmlns:common="using:Subsonic8.Common"
     mc:Ignorable="d"
     d:DesignHeight="300"
-    d:DesignWidth="400" Margin="30,50,30,50">
+    d:DesignWidth="400">
 
     <UserControl.Resources>
         <cal:BooleanToVisibilityConverter x:Name="BooleanToVisibilityConverter"/>
         <converters:NullToVisibilityConverter x:Name="NullToVisibilityConverter"/>
     </UserControl.Resources>
 
-    <StackPanel Style="{StaticResource ErrorRootPanel}">
-        <common:PageHeader DataContext="{Binding}" />
-        
-        <StackPanel Style="{StaticResource ErrorPanel}">
-            <TextBlock Text="{Binding Path=Notice}" Style="{StaticResource ErrorDescription}"/>
-            <TextBlock Text="{Binding Path=ErrorDescription}" Style="{StaticResource ErrorDescription}"/>
-            <TextBlock Text="{Binding Path=Message}" Style="{StaticResource ErrorDescription}"/>
+    <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
+        <StackPanel Style="{StaticResource ErrorRootPanel}">
+            <common:PageHeader DataContext="{Binding}" />
 
-            <StackPanel Orientation="Vertical" Visibility="{Binding Path=ExceptionString, Converter={StaticResource NullToVisibilityConverter}}"
+            <StackPanel Style="{StaticResource ErrorPanel}">
+                <TextBlock Text="{Binding Path=Notice}" Style="{StaticResource ErrorDescription}"/>
+                <TextBlock Text="{Binding Path=ErrorDescription}" Style="{StaticResource ErrorDescription}"/>
+                <TextBlock Text="{Binding Path=Message}" Style="{StaticResource ErrorDescription}"/>
+
+                <StackPanel Orientation="Vertical" Visibility="{Binding Path=ExceptionString, Converter={StaticResource NullToVisibilityConverter}}"
                     MinHeight="350">
-                <ToggleSwitch x:Name="ShowErrorButton" OnContent="Hide Error" OffContent="Show Error" IsOn="False"/>
-                <TextBox x:Name="ExceptionString" IsReadOnly="True" Height="295" AcceptsReturn="True" BorderBrush="Teal" BorderThickness="1"
+                    <ToggleSwitch x:Name="ShowErrorButton" OnContent="Hide Error" OffContent="Show Error" IsOn="False"/>
+                    <TextBox x:Name="ExceptionString" IsReadOnly="True" Height="295" AcceptsReturn="True" BorderBrush="Teal" BorderThickness="1"
                          Visibility="{Binding Path=IsOn, ElementName=ShowErrorButton, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-            </StackPanel>
-            <StackPanel Margin="0,20,0,0" HorizontalAlignment="Right" Orientation="Horizontal">
-                <Button cal:Message.Attach="[Event Click] = [Action ShowSettings]" Content="Update Settings"
+                </StackPanel>
+                <StackPanel Margin="0,20,0,0" HorizontalAlignment="Right" Orientation="Horizontal">
+                    <Button cal:Message.Attach="[Event Click] = [Action ShowSettings]" Content="Update Settings"
                         Width="170" Margin="0,0,20,0" />
-                <Button cal:Message.Attach="[Event Click] = [Action ReportErrorDetails]" Content="Send Anonymously"
+                    <Button cal:Message.Attach="[Event Click] = [Action ReportErrorDetails]" Content="Send Anonymously"
                         Width="170" Margin="0,0,20,0" />
-                <Button cal:Message.Attach="[Event Click] = [Action ShareErrorDetails]" Content="Send By Email"
+                    <Button cal:Message.Attach="[Event Click] = [Action ShareErrorDetails]" Content="Send By Email"
                         Width="170" Margin="0,0,20,0" />
+                </StackPanel>
             </StackPanel>
         </StackPanel>
-    </StackPanel>
+    </Grid>
 </Page>

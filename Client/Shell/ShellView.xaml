@@ -22,7 +22,7 @@
                       Source="{Binding Path=Source}"
                       cal:Message.Attach="[Event MediaEnded] = [Action SongEnded]; [Event MediaFailed] = [Action SongFailed($eventArgs)]" />
 
-        <Frame Grid.Row="0" DataContext="{x:Null}" x:Name="shellFrame" HorizontalContentAlignment="Stretch"
+        <Frame DataContext="{x:Null}" x:Name="shellFrame" HorizontalContentAlignment="Stretch"
                VerticalContentAlignment="Stretch" Margin="0">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -39,17 +39,17 @@
             </Grid>
         </Frame>
 
-        <errorDialog:ErrorDialogView Grid.Row="0" cal:Bind.Model="{Binding Path=ErrorDialogViewModel}" 
-                                     Visibility="{Binding Path=IsHidden, Converter={StaticResource InvertedBooleanToVisibilityConverter}}"/>
-
-        <ProgressBar Grid.Row="0" VerticalAlignment="Top" VerticalContentAlignment="Top" x:Name="LoadingIndicator"
+        <ProgressBar VerticalAlignment="Top" VerticalContentAlignment="Top" x:Name="LoadingIndicator"
                      Visibility="Collapsed" IsIndeterminate="True" HorizontalAlignment="Stretch" />
 
         <controls:CustomAppBar IsLightDismissEnabled="True" CanOpenInSnappedView="False" IsOpen="{Binding Path=BottomBar.IsOpened, Mode=TwoWay}" 
                                CanDismiss="{Binding Path=BottomBar.CanDismiss, Converter={StaticResource InvertedBooleanConverter}}">
             <ContentControl x:Name="BottomBar" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" />
         </controls:CustomAppBar>
-        
+
+        <errorDialog:ErrorDialogView cal:Bind.Model="{Binding Path=ErrorDialogViewModel}" 
+                                    Visibility="{Binding Path=IsHidden, Converter={StaticResource InvertedBooleanToVisibilityConverter}}"/>
+
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
                 <VisualState x:Name="Loading">

@@ -315,8 +315,8 @@
     <Compile Include="VideoPlayback\SnappedVideoPlaybackView.xaml.cs">
       <DependentUpon>SnappedVideoPlaybackView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="VideoPlayback\EmbededVideoPlaybackView.xaml.cs">
-      <DependentUpon>EmbededVideoPlaybackView.xaml</DependentUpon>
+    <Compile Include="VideoPlayback\EmbeddedVideoPlaybackView.xaml.cs">
+      <DependentUpon>EmbeddedVideoPlaybackView.xaml</DependentUpon>
     </Compile>
     <Compile Include="VideoPlayback\EmbeddedVideoPlaybackViewModel.cs" />
     <Compile Include="VideoPlayback\FullScreenVideoPlaybackView.xaml.cs">
@@ -525,7 +525,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="VideoPlayback\EmbededVideoPlaybackView.xaml">
+    <Page Include="VideoPlayback\EmbeddedVideoPlaybackView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

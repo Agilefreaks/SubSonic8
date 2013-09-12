@@ -39,13 +39,13 @@
         }
 
         [TestMethod]
-        public void Ctor_Should_CallWinRTWrapperServiceRegisterShareRequestHandler()
+        public void Constructor_Should_CallWinRTWrapperServiceRegisterShareRequestHandler()
         {
             _mockWinRTWrapperService.RegisterShareRequestHandlerCallCount.Should().Be(1);
         }
 
         [TestMethod]
-        public async Task HandleError_WithString_ShouldSetIsHiddenFalse()
+        public async Task HandleError_WithException_ShouldSetIsHiddenFalse()
         {
             await _subject.HandleError(new Exception("test"));
 
@@ -69,11 +69,11 @@
         }
 
         [TestMethod]
-        public async Task HandleError_WithException_ShouldSetIsHiddenFalse()
+        public async Task HandleError_WithException_ShouldSetCanGoBackTrue()
         {
             await _subject.HandleError(new Exception("test"));
 
-            _subject.IsHidden.Should().BeFalse();
+            _subject.CanGoBack.Should().BeTrue();
         }
 
         [TestMethod]

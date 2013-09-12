@@ -171,11 +171,12 @@
         <Setter Property="FontWeight" Value="SemiLight"/>
         <Setter Property="TextWrapping" Value="Wrap"/>
     </Style>
-    
+
     <Style x:Name="ErrorRootPanel" TargetType="StackPanel">
         <Setter Property="Background" Value="{StaticResource ApplicationPageBackgroundThemeBrush}"/>
+        <Setter Property="Margin" Value="30,50,30,50"/>
     </Style>
-    
+
     <Style x:Name="ErrorPanel" TargetType="StackPanel">
         <Setter Property="Margin" Value="20"/>
         <Setter Property="Background" Value="{StaticResource ApplicationPageBackgroundThemeBrush}"/>

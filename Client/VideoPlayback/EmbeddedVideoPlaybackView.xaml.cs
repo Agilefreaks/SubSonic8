@@ -2,11 +2,11 @@
 {
     using Microsoft.PlayerFramework;
 
-    public sealed partial class EmbededVideoPlaybackView
+    public sealed partial class EmbeddedVideoPlaybackView
     {
         #region Constructors and Destructors
 
-        public EmbededVideoPlaybackView()
+        public EmbeddedVideoPlaybackView()
         {
             InitializeComponent();
         }

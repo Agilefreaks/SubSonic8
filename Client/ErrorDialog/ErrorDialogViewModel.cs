@@ -154,6 +154,7 @@
 
         public async Task HandleError(Exception error)
         {
+            CanGoBack = true;
             _error = error;
             ExceptionString = error.ToString();
             ErrorDescription = error.Message;
