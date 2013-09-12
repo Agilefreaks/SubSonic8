@@ -203,7 +203,7 @@
                 var dataBuilder = new StringBuilder();
                 var actionInformation =
                     string.Format(
-                        _resourceService.GetStringResource("ErrorDialogViewModelStrings/ActionInormation"),
+                        _resourceService.GetStringResource("ErrorDialogViewModelStrings/ActionInformation"),
                         _resourceService.GetStringResource("ErrorDialogViewModelStrings/ErrorReportDeliveryEmail"));
                 dataBuilder.Append(string.Format("<h2>{0}</h2><br/>", actionInformation));
                 dataBuilder.Append(string.Format("<div><span>{0}</span></div>", ExceptionString));
