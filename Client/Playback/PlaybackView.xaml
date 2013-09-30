@@ -10,7 +10,7 @@
     xmlns:behaviors="using:Subsonic8.Framework.Behaviors" xmlns:framework="using:Subsonic8.Framework"
     xmlns:i="using:Windows.UI.Interactivity" xmlns:videoPlayback="using:Subsonic8.VideoPlayback"
     xmlns:playlistItem="using:Subsonic8.PlaylistItem.PlaylistItem" xmlns:commonBehaviors="using:Common.Behaviors"
-    xmlns:commonConverters="using:Common.Converters"
+    xmlns:commonConverters="using:Common.Converters" xmlns:subsonic8="using:Subsonic8"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -19,6 +19,7 @@
         <cal:BooleanToVisibilityConverter x:Name="BooleanToVisibilityConverter"/>
         <commonConverters:InvertedNullToVisibilityConverter x:Name="InvertedNullToVisibilityConverter"/>
         <commonConverters:NullToVisibilityConverter x:Name="NullToVisibilityConverter"/>
+        <subsonic8:StringResources x:Name="StringResources" />
     </Page.Resources>
 
     <Grid>
@@ -49,7 +50,8 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
-                            <TextBlock FontSize="20" Visibility="{Binding Path=ActiveItem, Converter={StaticResource InvertedNullToVisibilityConverter}}">Nothing Playing</TextBlock>
+                            <TextBlock FontSize="20" Visibility="{Binding Path=ActiveItem, Converter={StaticResource InvertedNullToVisibilityConverter}}"
+                                       Text="{Binding Source={StaticResource StringResources}, Path=PlaybackViewModelStrings.ArtistPlaceholder}"/>
                             <Button x:Name="ArtistInfo" Style="{StaticResource TextButtonStyle}">
                                 <TextBlock TextAlignment="Center" Visibility="{Binding Path=ActiveItem, Converter={StaticResource NullToVisibilityConverter}}">
                                     <Run Text="{Binding Path=ActiveItem.Artist}" FontSize="20" FontWeight="Normal"/>
@@ -76,11 +78,8 @@
                         <playback:Filter cal:Bind.Model="{Binding}"
                                         Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='Filter'}" />
                     </Grid>
-                    <TextBlock Grid.Row="1" Grid.Column="1" TextAlignment="Center" FontSize="25" Padding="0,40,0,0">
-                        <Run>Why don't you add some items to the playlist.</Run>
-                        <LineBreak/>
-                        <Run>It's so lonely out here.</Run>
-                    </TextBlock>
+                    <TextBlock Grid.Row="1" Grid.Column="1" TextAlignment="Center" FontSize="25" Padding="0,40,0,0" 
+                               Text="{Binding Source={StaticResource StringResources}, Path=PlaybackViewModelStrings.NoItemsPlaceholder }"/>
                     <ListView Grid.Row="1" Grid.Column="1"                              
                               ItemsSource="{Binding PlaylistItems}"
                               SelectionMode="Multiple"

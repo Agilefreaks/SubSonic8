@@ -218,6 +218,11 @@
     <Compile Include="Framework\ViewModel\IPlaybackControlsViewModel.cs" />
     <Compile Include="Framework\ViewModel\ItemViewModelBase.cs" />
     <Compile Include="Framework\ViewModel\PlaybackControlsViewModelBase.cs" />
+    <Compile Include="Playback\PlaybackViewModelStrings.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PlaybackViewModelStrings.resw</DependentUpon>
+    </Compile>
     <Compile Include="Playback\Playback\SnappedAudio.xaml.cs">
       <DependentUpon>SnappedAudio.xaml</DependentUpon>
     </Compile>
@@ -317,6 +322,7 @@
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Shell\ShellViewModel.cs" />
+    <Compile Include="StringsResources.cs" />
     <Compile Include="VideoPlayback\SnappedVideoPlaybackView.xaml.cs">
       <DependentUpon>SnappedVideoPlaybackView.xaml</DependentUpon>
     </Compile>
@@ -342,6 +348,10 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
+    <PRIResource Include="Playback\PlaybackViewModelStrings.resw">
+      <Generator>ReswFileCodeGenerator</Generator>
+      <LastGenOutput>PlaybackViewModelStrings.cs</LastGenOutput>
+    </PRIResource>
     <PRIResource Include="BugFreakCredentials.resw" />
     <None Include="Client_TemporaryKey.pfx" />
     <PRIResource Include="ErrorDialog\ErrorDialogViewModelStrings.resw" />
@@ -366,6 +376,10 @@
     <Page Include="Album\AlbumView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ArtistInfo\ArtistInfoView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Artist\ArtistView.xaml">
       <SubType>Designer</SubType>
