@@ -113,6 +113,11 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ArtistInfo\ArtistInfoView.xaml.cs">
+      <DependentUpon>ArtistInfoView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ArtistInfo\ArtistInfoViewModel.cs" />
+    <Compile Include="ArtistInfo\IArtistInfoViewModel.cs" />
     <Compile Include="Artist\ArtistView.xaml.cs">
       <DependentUpon>ArtistView.xaml</DependentUpon>
     </Compile>

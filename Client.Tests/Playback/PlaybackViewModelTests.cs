@@ -14,6 +14,7 @@ namespace Client.Tests.Playback
     using FluentAssertions;
     using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
     using Microsoft.VisualStudio.TestPlatform.UnitTestFramework.AppContainer;
+    using Subsonic8.ArtistInfo;
     using Subsonic8.Playback;
     using Subsonic8.Playlists;
 
@@ -63,7 +64,7 @@ namespace Client.Tests.Playback
         }
 
         [TestMethod]
-        public void Ctor_Always_SetsCoverArtToCoverArtPlaceholderLarge()
+        public void Constructor_Always_SetsCoverArtToCoverArtPlaceholderLarge()
         {
             var playbackViewModel = new PlaybackViewModel();
 
@@ -73,7 +74,7 @@ namespace Client.Tests.Playback
         [TestMethod]
         public void DoneFiltering_Should_ClearTheFilterText()
         {
-            Subject.FilterText = "asdads";
+            Subject.FilterText = "random text";
 
             Subject.DoneFiltering();
 
@@ -92,7 +93,7 @@ namespace Client.Tests.Playback
         }
 
         [TestMethod]
-        public void HandleStartAudioPlayback_Alawys_SetsCoverArtToItemConverArtUrl()
+        public void HandleStartAudioPlayback_Always_SetsCoverArtToItemConvertArtUrl()
         {
             Subject.Handle(new StartPlaybackMessage(new PlaylistItem { CoverArtUrl = "test" }));
 
@@ -100,7 +101,7 @@ namespace Client.Tests.Playback
         }
 
         [TestMethod]
-        public void HandleStartAudioPlayback_Alawys_SetsStateToAudio()
+        public void HandleStartAudioPlayback_Always_SetsStateToAudio()
         {
             Subject.Handle(new StartPlaybackMessage(new PlaylistItem()));
 
@@ -168,7 +169,7 @@ namespace Client.Tests.Playback
         }
 
         [TestMethod]
-        public void LoadState_StateContainsPlaylistServiceKey_ShouldCallSetStateFromStrinForThePlaylistManagementServiceWithTheObtainedData()
+        public void LoadState_StateContainsPlaylistServiceKey_ShouldCallSetStateFromStringForThePlaylistManagementServiceWithTheObtainedData()
         {
             var statePageState = new Dictionary<string, object>
                                      {
@@ -367,7 +368,7 @@ namespace Client.Tests.Playback
         }
 
         [TestMethod]
-        public void OnVisualStateChanged_OldStateNameIsSnappedAndCurrentStateIsVideo_ShouldSetTheEmbededVideoPlaybackViewModelAsTheDefaultVideoPlayer()
+        public void OnVisualStateChanged_OldStateNameIsSnappedAndCurrentStateIsVideo_ShouldSetTheEmbeddedVideoPlaybackViewModelAsTheDefaultVideoPlayer()
         {
             _mockPlayerManagementService.CurrentPlayer = new MockVideoPlayer();
             Subject.State = PlaybackViewModelStateEnum.Video;
@@ -401,6 +402,28 @@ namespace Client.Tests.Playback
             Subject.OnVisualStateChanged("test");
 
             MockEventAggregator.Messages.Count(m => m.GetType() == typeof(PlayMessage)).Should().Be(2);
+        }
+
+        [TestMethod]
+        public void ArtistInfo_PlaylistHasCurrentItem_ShouldNavigateToTheArtistInfoViewModelWithTheArtistName()
+        {
+            _mockPlaylistManagementService.CurrentItem = new PlaylistItem { Artist = "test name" };
+
+            Subject.ArtistInfo();
+
+            MockNavigationService.NavigateToViewModelCalls.Count.Should().Be(1);
+            MockNavigationService.NavigateToViewModelCalls[0].Key.Should().Be<ArtistInfoViewModel>();
+            MockNavigationService.NavigateToViewModelCalls[0].Value.Should().Be("test name");
+        }
+
+        [TestMethod]
+        public void ArtistInfo_PlaylistDoesNotHaveCurrentItem_ShouldNotNavigateToArtistInfoViewModel()
+        {
+            _mockPlaylistManagementService.CurrentItem = null;
+
+            Subject.ArtistInfo();
+
+            MockNavigationService.NavigateToViewModelCalls.Count.Should().Be(0);
         }
 
         #endregion

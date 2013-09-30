@@ -50,10 +50,12 @@
                         </Grid.ColumnDefinitions>
                         <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
                             <TextBlock FontSize="20" Visibility="{Binding Path=ActiveItem, Converter={StaticResource InvertedNullToVisibilityConverter}}">Nothing Playing</TextBlock>
-                            <TextBlock TextAlignment="Center" Visibility="{Binding Path=ActiveItem, Converter={StaticResource NullToVisibilityConverter}}">
-                                <Run Text="{Binding Path=ActiveItem.Artist}" FontSize="20" FontWeight="Normal"/>
-                                <Run Text="{Binding Path=ActiveItem.Title}"  FontSize="20" FontWeight="Bold"/>
-                            </TextBlock>
+                            <Button x:Name="ArtistInfo" Style="{StaticResource TextButtonStyle}">
+                                <TextBlock TextAlignment="Center" Visibility="{Binding Path=ActiveItem, Converter={StaticResource NullToVisibilityConverter}}">
+                                    <Run Text="{Binding Path=ActiveItem.Artist}" FontSize="20" FontWeight="Normal"/>
+                                    <Run Text="{Binding Path=ActiveItem.Title}"  FontSize="20" FontWeight="Bold"/>
+                                </TextBlock>
+                            </Button>
                         </Grid>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="1">
                             <Button Style="{StaticResource FilterAppBarButtonStyle}" x:Name="ShowFilter" />

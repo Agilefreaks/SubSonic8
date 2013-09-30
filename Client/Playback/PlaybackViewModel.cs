@@ -10,6 +10,7 @@
     using Client.Common.Models;
     using Client.Common.Services;
     using Client.Common.Services.DataStructures.PlayerManagementService;
+    using Subsonic8.ArtistInfo;
     using global::Common.ExtensionsMethods;
     using global::Common.ListCollectionView;
     using MugenInjection.Attributes;
@@ -466,6 +467,14 @@
             }
 
             _currentVisualState = state;
+        }
+
+        public void ArtistInfo()
+        {
+            if (ActiveItem != null)
+            {
+                NavigationService.NavigateToViewModel<ArtistInfoViewModel>(ActiveItem.Artist);
+            }
         }
 
         #endregion
