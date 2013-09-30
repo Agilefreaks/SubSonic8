@@ -236,7 +236,7 @@
 
                 _embeddedVideoPlaybackViewModel = value;
                 NotifyOfPropertyChange(() => EmbeddedVideoPlaybackViewModel);
-                HookEmbededVideoPlaybackViewModel();
+                HookEmbeddedVideoPlaybackViewModel();
             }
         }
 
@@ -270,7 +270,7 @@
                 if (Equals(value, _snappedVideoPlaybackViewModel)) return;
                 _snappedVideoPlaybackViewModel = value;
                 NotifyOfPropertyChange();
-                HookSnapeedVideoPlaybackViewModel();
+                HookSnappedVideoPlaybackViewModel();
             }
         }
 
@@ -478,7 +478,7 @@
             SetAppBottomBar();
         }
 
-        private void HookEmbededVideoPlaybackViewModel()
+        private void HookEmbeddedVideoPlaybackViewModel()
         {
             EmbeddedVideoPlaybackViewModel.FullScreenChanged +=
                 (sender, eventArgs) => SwitchVideoPlayback(eventArgs, FullScreenVideoPlaybackViewModel);
@@ -490,7 +490,7 @@
                 (sender, eventArgs) => SwitchVideoPlayback(eventArgs, EmbeddedVideoPlaybackViewModel);
         }
 
-        private void HookSnapeedVideoPlaybackViewModel()
+        private void HookSnappedVideoPlaybackViewModel()
         {
             SnappedVideoPlaybackViewModel.FullScreenChanged +=
                 (sender, eventArgs) => SwitchVideoPlayback(eventArgs, FullScreenVideoPlaybackViewModel);
