@@ -6,10 +6,11 @@
     using System.Threading.Tasks;
     using System.Xml.Linq;
     using System.Xml.Serialization;
-    using Caliburn.Micro;
     using Client.Common.Exceptions;
     using Client.Common.Models.Subsonic;
     using Client.Common.Services.DataStructures.SubsonicService;
+    using global::Common.Interfaces;
+    using global::Common.Results;
 
     public abstract class ServiceResultBase<T> : ExtendedResultBase, IServiceResultBase<T>
     {
@@ -90,7 +91,7 @@
 
         #region Methods
 
-        protected override async Task ExecuteCore(ActionExecutionContext context = null)
+        protected override async Task ExecuteCore()
         {
             var response = await Response();
             if (response.Exception != null)

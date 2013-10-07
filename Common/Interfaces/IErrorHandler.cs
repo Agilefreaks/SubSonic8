@@ -1,4 +1,4 @@
-﻿namespace Client.Common.Results
+﻿namespace Common.Interfaces
 {
     using System;
     using System.Threading.Tasks;

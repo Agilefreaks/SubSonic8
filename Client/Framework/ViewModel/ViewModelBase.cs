@@ -6,6 +6,7 @@
     using MugenInjection.Attributes;
     using Subsonic8.ErrorDialog;
     using Subsonic8.Framework.Services;
+    using global::Common.Interfaces;
     using Action = System.Action;
 
     public abstract class ViewModelBase : Screen, IViewModel

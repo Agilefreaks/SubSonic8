@@ -2,7 +2,7 @@
 {
     using System;
     using System.Threading.Tasks;
-    using Caliburn.Micro;
+    using global::Common.Results;
     using Windows.UI.Popups;
 
     public class MessageDialogResult : ResultBase
@@ -27,7 +27,7 @@
 
         #region Methods
 
-        protected override async Task ExecuteCore(ActionExecutionContext context = null)
+        protected override async Task ExecuteCore()
         {
             await new MessageDialog(_content, _title).ShowAsync();
         }

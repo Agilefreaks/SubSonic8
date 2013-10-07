@@ -15,6 +15,7 @@
     using Subsonic8.Framework.Services;
     using Subsonic8.Playback;
     using Windows.ApplicationModel.DataTransfer;
+    using global::Common.Interfaces;
     using Action = System.Action;
 
     public class MockPlaybackViewModel : IPlaybackViewModel

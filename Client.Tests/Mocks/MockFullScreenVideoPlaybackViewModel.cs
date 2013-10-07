@@ -12,6 +12,7 @@ namespace Client.Tests.Mocks
     using Subsonic8.Framework.ViewModel;
     using Subsonic8.VideoPlayback;
     using Windows.UI.Xaml;
+    using global::Common.Interfaces;
     using Action = System.Action;
 
     public class MockFullScreenVideoPlaybackViewModel : IFullScreenVideoPlaybackViewModel

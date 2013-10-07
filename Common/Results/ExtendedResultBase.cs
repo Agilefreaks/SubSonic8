@@ -1,9 +1,8 @@
-﻿namespace Client.Common.Results
+﻿namespace Common.Results
 {
     using System;
     using System.Threading.Tasks;
-    using Caliburn.Micro;
-    using Action = System.Action;
+    using Common.Interfaces;
 
     public abstract class ExtendedResultBase : ResultBase, IExtendedResult
     {
@@ -17,9 +16,9 @@
 
         #region Public Methods and Operators
 
-        public override async Task Execute(ActionExecutionContext context = null)
+        public override async Task Execute()
         {
-            Exception catchedException = null;
+            Exception caughtException = null;
 
             await new VisualStateResult("Loading").Execute();
 
@@ -29,13 +28,13 @@
             }
             catch (Exception exception)
             {
-                catchedException = exception;
+                caughtException = exception;
             }
             finally
             {
-                if (catchedException != null)
+                if (caughtException != null)
                 {
-                    OnError(catchedException);
+                    OnError(caughtException);
                 }
                 else
                 {

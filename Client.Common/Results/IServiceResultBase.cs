@@ -3,6 +3,8 @@
     using System;
     using System.Threading.Tasks;
     using Client.Common.Services.DataStructures.SubsonicService;
+    using global::Common.Interfaces;
+    using global::Common.Results;
 
     public interface IServiceResultBase<out T> : IExtendedResult
     {

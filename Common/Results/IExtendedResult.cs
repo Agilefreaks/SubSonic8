@@ -1,6 +1,7 @@
-﻿namespace Client.Common.Results
+﻿namespace Common.Results
 {
     using System;
+    using Common.Interfaces;
 
     public interface IExtendedResult : IResultBase
     {

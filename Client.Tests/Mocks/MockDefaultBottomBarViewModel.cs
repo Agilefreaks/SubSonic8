@@ -9,6 +9,7 @@
     using Subsonic8.BottomBar;
     using Subsonic8.ErrorDialog;
     using Subsonic8.Framework.Services;
+    using global::Common.Interfaces;
 
     public class MockDefaultBottomBarViewModel : IDefaultBottomBarViewModel
     {

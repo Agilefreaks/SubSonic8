@@ -1,4 +1,4 @@
-﻿namespace Client.Common.Results
+﻿namespace Common.Results
 {
     using System;
     using System.IO;

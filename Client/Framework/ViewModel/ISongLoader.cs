@@ -2,6 +2,7 @@
 {
     using Client.Common.Results;
     using Client.Common.Services;
+    using global::Common.Interfaces;
 
     public interface ISongLoader
     {

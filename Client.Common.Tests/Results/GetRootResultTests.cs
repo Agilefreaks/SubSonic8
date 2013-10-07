@@ -2,9 +2,9 @@
 {
     using System.Net.Http;
     using System.Threading.Tasks;
-    using Caliburn.Micro;
     using Client.Common.Results;
     using Client.Common.Services.DataStructures.SubsonicService;
+    using global::Common.Results;
     using FluentAssertions;
     using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 
@@ -22,7 +22,7 @@
         #region Public Methods and Operators
 
         [TestMethod]
-        public void CtorShouldSetConfiguration()
+        public void ConstructorShouldSetConfiguration()
         {
             _subject.Configuration.Should().BeSameAs(_subsonicServiceConfiguration);
         }
@@ -32,13 +32,13 @@
         {
             _subject.Response = () =>
                 {
-                    var tcr = new TaskCompletionSource<HttpStreamResult>();
-                    tcr.SetResult(new HttpStreamResult { Exception = new HttpRequestException() });
+                    var taskCompletionSource = new TaskCompletionSource<HttpStreamResult>();
+                    taskCompletionSource.SetResult(new HttpStreamResult { Exception = new HttpRequestException() });
 
-                    return tcr.Task;
+                    return taskCompletionSource.Task;
                 };
 
-            await _subject.Execute(new ActionExecutionContext());
+            await _subject.Execute();
 
             _subject.Error.Should().BeOfType<HttpRequestException>();
         }
@@ -51,7 +51,7 @@
         }
 
         [TestMethod]
-        public void ViewNameShoulBeCorrect()
+        public void ViewNameShouldBeCorrect()
         {
             _subject.ViewName.Should().Be("getMusicFolders.view");
         }

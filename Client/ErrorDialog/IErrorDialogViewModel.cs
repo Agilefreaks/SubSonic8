@@ -5,6 +5,7 @@
     using Caliburn.Micro;
     using Client.Common.Results;
     using Client.Common.Services;
+    using global::Common.Interfaces;
 
     public interface IErrorDialogViewModel : IErrorHandler, ISupportSharing
     {

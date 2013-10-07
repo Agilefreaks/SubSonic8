@@ -2,9 +2,10 @@
 {
     using System;
     using System.Threading.Tasks;
-    using Caliburn.Micro;
     using Client.Common.Results;
     using Client.Common.Services.DataStructures.SubsonicService;
+    using global::Common.Interfaces;
+    using global::Common.Results;
     using Action = System.Action;
 
     public abstract class MockServiceResultBase<T> : IServiceResultBase<T>
@@ -43,7 +44,7 @@
 
         #region Public Methods and Operators
 
-        public Task Execute(ActionExecutionContext context = null)
+        public Task Execute()
         {
             ExecuteCallCount++;
             var taskCompletionSource = new TaskCompletionSource<T>();

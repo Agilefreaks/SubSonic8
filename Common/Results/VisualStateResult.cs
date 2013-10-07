@@ -1,7 +1,6 @@
-﻿namespace Client.Common.Results
+﻿namespace Common.Results
 {
     using System.Threading.Tasks;
-    using Caliburn.Micro;
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
 
@@ -27,11 +26,9 @@
 
         #region Methods
 
-        protected override Task ExecuteCore(ActionExecutionContext context = null)
+        protected override Task ExecuteCore()
         {
-            context = context ?? new ActionExecutionContext();
-
-            var view = (context.View ?? ((Frame)Window.Current.Content).Content) as Control;
+            var view = ((Frame)Window.Current.Content).Content as Control;
 
             VisualStateManager.GoToState(view, StateName, UseTransitions);
 

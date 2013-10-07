@@ -2,6 +2,7 @@
 {
     using System;
     using Client.Common.Results;
+    using global::Common.Interfaces;
 
     public interface IPlaylistBottomBarViewModel : IBottomBarViewModel, IErrorHandler
     {

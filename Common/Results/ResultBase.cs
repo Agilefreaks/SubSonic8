@@ -1,10 +1,9 @@
-﻿namespace Client.Common.Results
+﻿namespace Common.Results
 {
     using System;
     using System.Threading.Tasks;
-    using Caliburn.Micro;
 
-    public abstract class ResultBase : PropertyChangedBase, ITaskResult
+    public abstract class ResultBase : ITaskResult
     {
         #region Public Properties
 
@@ -14,11 +13,11 @@
 
         #region Public Methods and Operators
 
-        public virtual async Task Execute(ActionExecutionContext context = null)
+        public virtual async Task Execute()
         {
             try
             {
-                await ExecuteCore(context);
+                await ExecuteCore();
             }
             catch (Exception exception)
             {
@@ -30,7 +29,7 @@
 
         #region Methods
 
-        protected abstract Task ExecuteCore(ActionExecutionContext context = null);
+        protected abstract Task ExecuteCore();
 
         protected virtual void OnError(Exception error)
         {
