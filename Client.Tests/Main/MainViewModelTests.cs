@@ -3,13 +3,13 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using Client.Common.Exceptions;
     using Client.Common.Models.Subsonic;
     using Client.Tests.Framework.ViewModel;
     using Client.Tests.Mocks;
     using FluentAssertions;
     using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
     using Subsonic8.Main;
+    using global::Common.Exceptions;
 
     [TestClass]
     public class MainViewModelTests : ViewModelBaseTests<MainViewModel>

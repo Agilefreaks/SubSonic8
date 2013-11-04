@@ -6,9 +6,9 @@
     using System.Threading.Tasks;
     using System.Xml.Linq;
     using System.Xml.Serialization;
-    using Client.Common.Exceptions;
     using Client.Common.Models.Subsonic;
     using Client.Common.Services.DataStructures.SubsonicService;
+    using global::Common.Exceptions;
     using global::Common.Interfaces;
     using global::Common.Results;
 
@@ -17,7 +17,11 @@
         #region Fields
 
         protected readonly HttpClient Client =
-            new HttpClient(new HttpClientHandler { AllowAutoRedirect = true, PreAuthenticate = true });
+            new HttpClient(new HttpClientHandler
+            {
+                AllowAutoRedirect = true,
+                PreAuthenticate = true,
+            });
 
         protected readonly XNamespace Namespace = "http://subsonic.org/restapi";
 
@@ -136,8 +140,7 @@
             try
             {
                 var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, RequestUrl);
-                httpRequestMessage.Headers.Add(
-                    "Authorization", string.Format("Basic {0}", Configuration.EncodedCredentials));
+                httpRequestMessage.Headers.Add("Authorization", string.Format("Basic {0}", Configuration.EncodedCredentials));
                 var response = await Client.SendAsync(httpRequestMessage);
                 if (response.IsSuccessStatusCode)
                 {

@@ -129,6 +129,9 @@
     <Compile Include="MugenExtensions\MugenModuleWithAutoDiscoveryBase.cs" />
     <Compile Include="MugenExtensions\MugenServiceLocator.cs" />
     <Compile Include="MugenExtensions\ServiceConvention.cs" />
+    <Compile Include="MugenExtensions\SingletonsCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="MugenExtensions\ViewModelConvention.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ExtendedResultBase.cs" />
