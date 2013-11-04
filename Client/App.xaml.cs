@@ -4,6 +4,7 @@
     using Client.Common;
     using Client.Common.Services;
     using MugenInjection;
+    using SubLastFm;
     using Subsonic8.Framework;
     using Subsonic8.Shell;
     using Windows.ApplicationModel;
@@ -35,6 +36,7 @@
         protected override void Configure()
         {
             Kernel.Load<CommonModule>();
+            Kernel.Load<SubLastFmModule>();
             Kernel.Load<ClientModule>();
         }
 

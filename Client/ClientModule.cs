@@ -18,9 +18,6 @@
 
         protected override void PrepareForLoad()
         {
-            Convetions.AddRange(
-                new MugenConvetion[] { new ServiceConvention(Injector), new ViewModelConvention(Injector) });
-
             Singletons.AddRange(
                 new[]
                     {
@@ -51,6 +48,8 @@
                         new Tuple<Type[], Type>(new[] { typeof(ISettingsHelper) }, typeof(SettingsHelper)), 
                         new Tuple<Type[], Type>(new[] { typeof(INotificationsHelper) }, typeof(NotificationsHelper))
                     });
+            Conventions.AddRange(
+                new MugenConvetion[] {new ServiceConvention(Injector), new ViewModelConvention(Injector)});
         }
 
         #endregion

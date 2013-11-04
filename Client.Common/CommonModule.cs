@@ -8,7 +8,7 @@
 
         protected override void PrepareForLoad()
         {
-            Convetions.Add(new ServiceConvention(Injector));
+            Conventions.Add(new ServiceConvention(Injector));
         }
 
         #endregion

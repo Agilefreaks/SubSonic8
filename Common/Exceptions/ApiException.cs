@@ -1,7 +1,7 @@
-﻿namespace Client.Common.Exceptions
+﻿namespace Common.Exceptions
 {
     using System;
-    using Client.Common.Models.Subsonic;
+    using Common.Interfaces;
 
     public class ApiException : Exception
     {
@@ -10,7 +10,7 @@
         {
         }
 
-        public ApiException(Error error)
+        public ApiException(IError error)
             : base(error.Message)
         {
         }

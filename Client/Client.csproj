@@ -192,6 +192,7 @@
     <Compile Include="Framework\Services\IoCService.cs" />
     <Compile Include="Framework\Services\IResourceService.cs" />
     <Compile Include="Framework\Services\ITileNotificationService.cs" />
+    <Compile Include="Framework\Services\LastFMConfigurationProvider.cs" />
     <Compile Include="Framework\Services\ResourceService.cs" />
     <Compile Include="Framework\Services\TileNotificationService.cs" />
     <Compile Include="Framework\SettingsHelper.cs" />
@@ -561,6 +562,10 @@
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{11d7fb8c-1a2c-4d5b-b129-937d76468a78}</Project>
       <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SubLastFm\SubLastFm.csproj">
+      <Project>{4485a175-2491-40dd-a683-9ccf21267c45}</Project>
+      <Name>SubLastFm</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

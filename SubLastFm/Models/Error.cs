@@ -1,9 +1,9 @@
-﻿namespace Client.Common.Models.Subsonic
+﻿namespace SubLastFm.Models
 {
     using System.Xml.Serialization;
-    using global::Common.Interfaces;
+    using Common.Interfaces;
 
-    [XmlRoot(ElementName = "error", Namespace = "http://subsonic.org/restapi")]
+    [XmlRoot(ElementName = "error")]
     public class Error : IError
     {
         #region Public Properties
@@ -11,7 +11,7 @@
         [XmlAttribute("code")]
         public int Code { get; set; }
 
-        [XmlAttribute("message")]
+        [XmlText]
         public string Message { get; set; }
 
         #endregion

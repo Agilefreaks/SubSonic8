@@ -6,14 +6,15 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{11D7FB8C-1A2C-4D5B-B129-937D76468A78}</ProjectGuid>
+    <ProjectGuid>{2731191A-1BA0-4CF1-857D-F72A3A02F145}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Common</RootNamespace>
-    <AssemblyName>Common</AssemblyName>
+    <RootNamespace>SubLastFmTests</RootNamespace>
+    <AssemblyName>SubLastFmTests</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{BC8A1FFA-BEE3-4634-8014-F334798102B3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <PackageCertificateKeyFile>SubLastFmTests_TemporaryKey.pfx</PackageCertificateKeyFile>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
@@ -100,58 +101,52 @@
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <AppXPackage>True</AppXPackage>
+    <AppxPackageIncludePrivateSymbols>true</AppxPackageIncludePrivateSymbols>
+  </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Behaviors\MultipleSelectBehavior.cs" />
-    <Compile Include="Behaviors\UnSnapBehavior.cs" />
-    <Compile Include="Controls\TextBoxEx.cs" />
-    <Compile Include="Converters\InvertedBooleanConverter.cs" />
-    <Compile Include="Converters\InvertedNullToVisibilityConverter.cs" />
-    <Compile Include="Converters\NullToVisibilityConverter.cs" />
-    <Compile Include="Exceptions\ApiException.cs" />
-    <Compile Include="ExtensionsMethods\LambdaExpressionExtensionMethods.cs" />
-    <Compile Include="ExtensionsMethods\FrameworkElementExtensions.cs" />
-    <Compile Include="ExtensionsMethods\UriExtensionMethods.cs" />
-    <Compile Include="FrameworkElementExtensions\DependencyPropertyChangedCallbacks.cs" />
-    <Compile Include="FrameworkElementExtensions\FrameworkElementAttachedProperties.cs" />
-    <Compile Include="Interfaces\IError.cs" />
-    <Compile Include="Interfaces\IErrorHandler.cs" />
-    <Compile Include="ListCollectionView\DeferNotifications.cs" />
-    <Compile Include="ListCollectionView\ICollectionViewEx.cs" />
-    <Compile Include="ListCollectionView\IEditableCollectionView.cs" />
-    <Compile Include="ListCollectionView\IUpdateTracker.cs" />
-    <Compile Include="ListCollectionView\ListCollectionView.cs" />
-    <Compile Include="ListCollectionView\ListSortDirection.cs" />
-    <Compile Include="ListCollectionView\SortDescription.cs" />
-    <Compile Include="ListCollectionView\VectorChangedEventArgs.cs" />
-    <Compile Include="ExtensionsMethods\ObjectExtensionMethods.cs" />
-    <Compile Include="MugenExtensions\Convetion.cs" />
-    <Compile Include="MugenExtensions\InterfaceToImplementationBaseConvention.cs" />
-    <Compile Include="MugenExtensions\MugenModuleWithAutoDiscoveryBase.cs" />
-    <Compile Include="MugenExtensions\MugenServiceLocator.cs" />
-    <Compile Include="MugenExtensions\ServiceConvention.cs" />
-    <Compile Include="MugenExtensions\ViewModelConvention.cs" />
+    <!--A reference to the entire .Net Framework and Windows SDK are automatically included-->
+    <SDKReference Include="MSTestFramework, Version=11.0" />
+    <SDKReference Include="TestPlatform, Version=11.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="LastFmServiceTests.cs" />
+    <Compile Include="Models\ArtistDetailsTests.cs" />
+    <Compile Include="Models\BiographyTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Results\ExtendedResultBase.cs" />
-    <Compile Include="Results\HttpStreamResult.cs" />
-    <Compile Include="Results\IExtendedResult.cs" />
-    <Compile Include="Results\IResultBase.cs" />
-    <Compile Include="Results\ITaskResult.cs" />
-    <Compile Include="Results\ResultBase.cs" />
-    <Compile Include="Results\VisualStateResult.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Practices.ServiceLocation">
-      <HintPath>..\Lib\Microsoft.Practices.ServiceLocation.dll</HintPath>
-    </Reference>
-    <Reference Include="MugenInjection.Core">
-      <HintPath>..\packages\MugenInjection.3.5.1\lib\netcore45\MugenInjection.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Windows.UI.Interactivity">
-      <HintPath>..\packages\Windows.UI.Interactivity.1.3.0.0\lib\win8\Windows.UI.Interactivity.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
+    <AppxManifest Include="Package.appxmanifest">
+      <SubType>Designer</SubType>
+    </AppxManifest>
     <None Include="packages.config" />
+    <None Include="SubLastFmTests_TemporaryKey.pfx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Images\UnitTestLogo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\UnitTestSmallLogo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\UnitTestSplashScreen.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\UnitTestStoreLogo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SubLastFm\SubLastFm.csproj">
+      <Project>{4485a175-2491-40dd-a683-9ccf21267c45}</Project>
+      <Name>SubLastFm</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="FluentAssertions">
+      <HintPath>..\packages\FluentAssertions.2.1.0.0\lib\winrt45\FluentAssertions.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '11.0' ">
     <VisualStudioVersion>11.0</VisualStudioVersion>
@@ -161,7 +156,7 @@
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
-  </Target>
+  </Target>  
   <Target Name="AfterBuild">
   </Target>
   -->
