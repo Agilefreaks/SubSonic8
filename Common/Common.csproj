@@ -106,6 +106,7 @@
     <Compile Include="Controls\TextBoxEx.cs" />
     <Compile Include="Converters\InvertedBooleanConverter.cs" />
     <Compile Include="Converters\InvertedNullToVisibilityConverter.cs" />
+    <Compile Include="Converters\InvertedVisibilityConverter.cs" />
     <Compile Include="Converters\NullToVisibilityConverter.cs" />
     <Compile Include="Exceptions\ApiException.cs" />
     <Compile Include="ExtensionsMethods\LambdaExpressionExtensionMethods.cs" />

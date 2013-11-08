@@ -17,7 +17,7 @@
         <converters:PlaybackStateToVisibilityConverter x:Name="PlaybackStateToVisibilityConverter" />
         <converters:PlayingStateToVisibilityConverter x:Name="PlayingStateToVisibilityConverter" />
         <cal:BooleanToVisibilityConverter x:Name="BooleanToVisibilityConverter"/>
-        <commonConverters:InvertedNullToVisibilityConverter x:Name="InvertedNullToVisibilityConverter"/>
+        <commonConverters:InvertedVisibilityConverter x:Name="InvertedVisibilityConverter"/>
         <commonConverters:NullToVisibilityConverter x:Name="NullToVisibilityConverter"/>
         <subsonic8:StringResources x:Name="StringResources" />
     </Page.Resources>
@@ -50,9 +50,9 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
-                            <TextBlock FontSize="20" Visibility="{Binding Path=ActiveItem, Converter={StaticResource InvertedNullToVisibilityConverter}}"
+                            <TextBlock FontSize="20" Visibility="{Binding Path=Visibility, ElementName=ArtistInfo, Converter={StaticResource InvertedVisibilityConverter}}"
                                        Text="{Binding Source={StaticResource StringResources}, Path=PlaybackViewModelStrings.ArtistPlaceholder}"/>
-                            <Button x:Name="ArtistInfo" Style="{StaticResource TextButtonStyle}">
+                            <Button x:Name="ArtistInfo" Style="{StaticResource TextButtonStyle}" Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
                                 <TextBlock TextAlignment="Center" Visibility="{Binding Path=ActiveItem, Converter={StaticResource NullToVisibilityConverter}}">
                                     <Run Text="{Binding Path=ActiveItem.Artist}" FontSize="20" FontWeight="Normal"/>
                                     <Run Text="{Binding Path=ActiveItem.Title}"  FontSize="20" FontWeight="Bold"/>
