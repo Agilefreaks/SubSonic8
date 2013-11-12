@@ -27,7 +27,7 @@
             <videoPlayback:FullScreenVideoPlaybackView cal:Bind.Model="{Binding Path=FullScreenVideoPlaybackViewModel}" 
                                                    Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='FullScreen'}"/>
             <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}"
-              Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='VideoAudioFilter'}">
+              Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='VideoAudioFilterDetails'}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="140" />
                     <RowDefinition Height="*" />
@@ -50,9 +50,9 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
-                            <TextBlock FontSize="20" Visibility="{Binding Path=Visibility, ElementName=ArtistInfo, Converter={StaticResource InvertedVisibilityConverter}}"
+                            <TextBlock FontSize="20" Visibility="{Binding Path=Visibility, ElementName=ShowArtistInfo, Converter={StaticResource InvertedVisibilityConverter}}"
                                        Text="{Binding Source={StaticResource StringResources}, Path=PlaybackViewModelStrings.ArtistPlaceholder}"/>
-                            <Button x:Name="ArtistInfo" Style="{StaticResource TextButtonStyle}" Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
+                            <Button x:Name="ShowArtistInfo" Style="{StaticResource TextButtonStyle}" Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
                                 <TextBlock TextAlignment="Center" Visibility="{Binding Path=ActiveItem, Converter={StaticResource NullToVisibilityConverter}}">
                                     <Run Text="{Binding Path=ActiveItem.Artist}" FontSize="20" FontWeight="Normal"/>
                                     <Run Text="{Binding Path=ActiveItem.Title}"  FontSize="20" FontWeight="Bold"/>
@@ -71,12 +71,14 @@
                     </Grid>
                     <Grid Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"
                           x:Name="ExpandedMediaPresenter" Style="{StaticResource PlaylistContentGridStyle}">
-                        <playback:Audio cal:Bind.Model="{Binding}"
+                        <playback:Audio cal:Bind.Model="{Binding}" cal:Message.Attach="[Event Tapped] = [Action ShowArtistInfo]"
                                     Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='Audio'}" />
                         <playback:Video cal:Bind.Model="{Binding}"
                                     Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='Video'}" />
                         <playback:Filter cal:Bind.Model="{Binding}"
                                         Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='Filter'}" />
+                        <playback:Details cal:Bind.Model="{Binding}" cal:Message.Attach="[Event Tapped] = [Action HideArtistInfo]"
+                                        Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='Details'}" />
                     </Grid>
                     <TextBlock Grid.Row="1" Grid.Column="1" TextAlignment="Center" FontSize="25" Padding="0,40,0,0" 
                                Text="{Binding Source={StaticResource StringResources}, Path=PlaybackViewModelStrings.NoItemsPlaceholder }"/>
@@ -117,7 +119,7 @@
 
         <Grid x:Name="SnappedView" Visibility="Collapsed" VerticalAlignment="Center" HorizontalAlignment="Center">
             <playback:SnappedAudio cal:Bind.Model="{Binding}"
-                                    Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='Audio'}" />
+                                    Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='AudioFilterDetails'}" />
             <playback:SnappedVideo cal:Bind.Model="{Binding}"
                                     Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='Video'}" />
         </Grid>

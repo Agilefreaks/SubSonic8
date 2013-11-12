@@ -276,6 +276,9 @@
         }
 
         [Inject]
+        public IArtistInfoViewModel ArtistInfoViewModel { get; set; }
+
+        [Inject]
         public IPlayerManagementService PlayerManagementService
         {
             get
@@ -469,12 +472,23 @@
             _currentVisualState = state;
         }
 
-        public void ArtistInfo()
+        public async void ShowArtistInfo()
         {
-            if (ActiveItem != null)
+            if (ActiveItem == null) return;
+
+            if (State != PlaybackViewModelStateEnum.Details)
             {
-                NavigationService.NavigateToViewModel<ArtistInfoViewModel>(ActiveItem.Artist);
+                _previousState = State;
+                State = PlaybackViewModelStateEnum.Details;
             }
+
+            ArtistInfoViewModel.Parameter = ActiveItem.Artist;
+            await ArtistInfoViewModel.Populate();
+        }
+
+        public void HideArtistInfo()
+        {
+            State = _previousState;
         }
 
         #endregion

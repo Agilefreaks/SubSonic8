@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Xml.Serialization;
 
     [XmlRoot(ElementName = "artist")]
@@ -10,6 +11,9 @@
         public ArtistDetails()
         {
             Images = new List<Image>();
+            Tags = new TagList();
+            Biography = new Biography();
+            Band = new Band();
         }
 
         [XmlElement("name")]
@@ -43,5 +47,10 @@
 
         [XmlElement("bio")]
         public Biography Biography { get; set; }
+
+        public Image LargestImage()
+        {
+            return Images.OrderByDescending(image => image.Size).FirstOrDefault();
+        }
     }
 }

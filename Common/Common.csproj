@@ -115,8 +115,10 @@
     <Compile Include="ExtensionsMethods\UriExtensionMethods.cs" />
     <Compile Include="FrameworkElementExtensions\DependencyPropertyChangedCallbacks.cs" />
     <Compile Include="FrameworkElementExtensions\FrameworkElementAttachedProperties.cs" />
+    <Compile Include="Services\HtmlTransformService.cs" />
     <Compile Include="Interfaces\IError.cs" />
     <Compile Include="Interfaces\IErrorHandler.cs" />
+    <Compile Include="Interfaces\IHtmlTransformService.cs" />
     <Compile Include="ListCollectionView\DeferNotifications.cs" />
     <Compile Include="ListCollectionView\ICollectionViewEx.cs" />
     <Compile Include="ListCollectionView\IEditableCollectionView.cs" />

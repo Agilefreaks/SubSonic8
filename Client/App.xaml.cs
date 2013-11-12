@@ -3,6 +3,7 @@
     using Caliburn.Micro;
     using Client.Common;
     using Client.Common.Services;
+    using global::Common;
     using MugenInjection;
     using SubLastFm;
     using Subsonic8.Framework;
@@ -36,6 +37,7 @@
         protected override void Configure()
         {
             Kernel.Load<CommonModule>();
+            Kernel.Load<SubsonicCommonModule>();
             Kernel.Load<SubLastFmModule>();
             Kernel.Load<ClientModule>();
         }

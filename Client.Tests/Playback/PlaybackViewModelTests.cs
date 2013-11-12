@@ -409,7 +409,7 @@ namespace Client.Tests.Playback
         {
             _mockPlaylistManagementService.CurrentItem = new PlaylistItem { Artist = "test name" };
 
-            Subject.ArtistInfo();
+            Subject.ShowArtistInfo();
 
             MockNavigationService.NavigateToViewModelCalls.Count.Should().Be(1);
             MockNavigationService.NavigateToViewModelCalls[0].Key.Should().Be<ArtistInfoViewModel>();
@@ -421,7 +421,7 @@ namespace Client.Tests.Playback
         {
             _mockPlaylistManagementService.CurrentItem = null;
 
-            Subject.ArtistInfo();
+            Subject.ShowArtistInfo();
 
             MockNavigationService.NavigateToViewModelCalls.Count.Should().Be(0);
         }

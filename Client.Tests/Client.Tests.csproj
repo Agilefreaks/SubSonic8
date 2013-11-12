@@ -115,6 +115,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Album\AlbumViewModelTests.cs" />
+    <Compile Include="ArtistInfo\ArtistInfoViewModelTests.cs" />
     <Compile Include="BottomBar\BottomBarViewModelTests.cs" />
     <Compile Include="ClientTestBase.cs" />
     <Compile Include="Converters\IntToTimeStringConverterTests.cs" />
@@ -130,13 +131,16 @@
     <Compile Include="Mocks\MockDialogService.cs" />
     <Compile Include="Mocks\MockFullScreenVideoPlaybackViewModel.cs" />
     <Compile Include="Mocks\MockErrorDialogViewModel.cs" />
+    <Compile Include="Mocks\MockGetArtistDetailsResult.cs" />
     <Compile Include="Mocks\MockGetRandomSongsResult.cs" />
+    <Compile Include="Mocks\MockLastFmService.cs" />
     <Compile Include="Mocks\MockPlayerManagementService.cs" />
     <Compile Include="Mocks\MockResourceService.cs" />
     <Compile Include="Mocks\MockCreatePlaylistResult.cs" />
     <Compile Include="Mocks\MockGetPlaylistResult.cs" />
     <Compile Include="Mocks\MockPingResult.cs" />
     <Compile Include="Mocks\MockRenamePlaylistResult.cs" />
+    <Compile Include="Mocks\MockLastFmResultBase.cs" />
     <Compile Include="Mocks\MockSettingsHelper.cs" />
     <Compile Include="Mocks\MockSharingService.cs" />
     <Compile Include="Mocks\MockUpdatePlaylistResult.cs" />
@@ -240,6 +244,10 @@
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{11d7fb8c-1a2c-4d5b-b129-937d76468a78}</Project>
       <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SubLastFm\SubLastFm.csproj">
+      <Project>{4485a175-2491-40dd-a683-9ccf21267c45}</Project>
+      <Name>SubLastFm</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

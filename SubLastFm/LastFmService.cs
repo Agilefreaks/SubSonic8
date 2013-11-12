@@ -11,7 +11,7 @@
             _configuration = configurationProvider.Configuration;
         }
 
-        public IGetArtistDetailsResult GetArtistDetails(string artistName)
+        public virtual IGetArtistDetailsResult GetArtistDetails(string artistName)
         {
             return new GetArtistDetailsResult(_configuration, artistName);
         }

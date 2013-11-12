@@ -152,6 +152,14 @@ User-contributed text is available under the Creative Commons By-SA License and 
             }
         }
 
+        private ArtistDetails _subject;
+
+        [TestInitialize]
+        public void Setup()
+        {
+            _subject = new ArtistDetails();
+        }
+
         [TestMethod]
         public void ShouldBeAbleToDeserializeArtistInfo()
         {
@@ -188,6 +196,34 @@ User-contributed text is available under the Creative Commons By-SA License and 
             artistDetails.Tags.Items[2].Name.Should().Be("alternative");
             artistDetails.Tags.Items[3].Name.Should().Be("progressive rock");
             artistDetails.Tags.Items[4].Name.Should().Be("indie");
+        }
+
+        [TestMethod]
+        public void LargestImage_ImagesIsEmpty_ReturnsNull()
+        {
+            _subject.LargestImage().Should().BeNull();
+        }
+
+        [TestMethod]
+        public void LargestImage_ImagesHasOneElement_ReturnsThatImage()
+        {
+            var image = new Image();
+            _subject.Images.Add(image);
+
+            _subject.LargestImage().Should().Be(image);
+        }
+
+        [TestMethod]
+        public void LargestImage_ImagesHasMoreThenOneElement_ReturnsTheImageWithTheHighestSize()
+        {
+            var image1 = new Image { Size = ImageSizeEnum.Medium };
+            var image2 = new Image { Size = ImageSizeEnum.Large };
+            var image3 = new Image { Size = ImageSizeEnum.Small };
+            var image4 = new Image { Size = ImageSizeEnum.Mega };
+            var image5 = new Image { Size = ImageSizeEnum.ExtraLarge };
+            _subject.Images.AddRange(new[] { image1, image2, image3, image4, image5 });
+
+            _subject.LargestImage().Should().Be(image4);
         }
     }
 }

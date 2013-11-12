@@ -3,10 +3,26 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:framework="using:Subsonic8.Framework"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:framework="using:Subsonic8.Framework"
+    xmlns:effects="using:Callisto.Effects"
+    xmlns:converters="using:Subsonic8.Converters"
     mc:Ignorable="d">
-
-    <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
-
+    
+    <Page.Resources>
+        <converters:InvertedBooleanToVisibilityConverter x:Name="InvertedBoolToVisibilityConverter"/>
+    </Page.Resources>
+    
+    <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}" effects:Tilt.IsTiltEnabled="True">
+        <RichTextBlock Visibility="{Binding Path=IsBusy, Converter={StaticResource InvertedBoolToVisibilityConverter}}">
+            <Paragraph>
+                <InlineUIContainer>
+                    <Image Source="{Binding Path=ArtistImage}"/>
+                </InlineUIContainer>
+                <Run Text="{Binding Path=Biography}" />
+            </Paragraph>
+        </RichTextBlock>
+        
+        <ProgressRing Width="50" IsActive="{Binding Path=IsBusy}" Height="50"/>
     </Grid>
 </framework:AppPage>

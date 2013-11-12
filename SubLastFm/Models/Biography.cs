@@ -15,7 +15,10 @@
             }
             set
             {
-                PublishDate = DateTime.Parse(value, CultureInfo.InvariantCulture);
+                if (!string.IsNullOrWhiteSpace(value))
+                {
+                    PublishDate = DateTime.Parse(value, CultureInfo.InvariantCulture);
+                }
             }
         }
 
