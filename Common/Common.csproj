@@ -103,6 +103,7 @@
   <ItemGroup>
     <Compile Include="Behaviors\MultipleSelectBehavior.cs" />
     <Compile Include="Behaviors\UnSnapBehavior.cs" />
+    <Compile Include="CommonModule.cs" />
     <Compile Include="Controls\TextBoxEx.cs" />
     <Compile Include="Converters\InvertedBooleanConverter.cs" />
     <Compile Include="Converters\InvertedNullToVisibilityConverter.cs" />

@@ -2,7 +2,7 @@
 {
     using global::Common.MugenExtensions;
 
-    public class CommonModule : MugenModuleWithAutoDiscoveryBase
+    public class SubsonicCommonModule : MugenModuleWithAutoDiscoveryBase
     {
         #region Methods
 
