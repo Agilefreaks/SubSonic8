@@ -5,6 +5,7 @@
     using Client.Common.Services;
     using global::Common;
     using MugenInjection;
+    using SubEchoNest;
     using SubLastFm;
     using Subsonic8.Framework;
     using Subsonic8.Shell;
@@ -39,6 +40,7 @@
             Kernel.Load<CommonModule>();
             Kernel.Load<SubsonicCommonModule>();
             Kernel.Load<SubLastFmModule>();
+            Kernel.Load<SubEchoNestModule>();
             Kernel.Load<ClientModule>();
         }
 

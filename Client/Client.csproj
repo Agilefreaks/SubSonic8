@@ -187,6 +187,7 @@
     <Compile Include="Framework\Extensions\NotificationExtensions.cs" />
     <Compile Include="Framework\Interfaces\ISettingsHelper.cs" />
     <Compile Include="Framework\Extensions\SettingsPaneExtensionMethods.cs" />
+    <Compile Include="Framework\Services\EchoNestConfigurationProvider.cs" />
     <Compile Include="Framework\Services\IDialogService.cs" />
     <Compile Include="Framework\Services\IIoCService.cs" />
     <Compile Include="Framework\Services\IoCService.cs" />
@@ -569,6 +570,10 @@
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{11d7fb8c-1a2c-4d5b-b129-937d76468a78}</Project>
       <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SubEchoNest\SubEchoNest.csproj">
+      <Project>{431f874c-ede9-4255-906b-1b3d4d460ad3}</Project>
+      <Name>SubEchoNest</Name>
     </ProjectReference>
     <ProjectReference Include="..\SubLastFm\SubLastFm.csproj">
       <Project>{4485a175-2491-40dd-a683-9ccf21267c45}</Project>

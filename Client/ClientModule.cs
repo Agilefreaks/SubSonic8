@@ -35,6 +35,7 @@
             Singletons.Add<ISettingsHelper, SettingsHelper>();
             Singletons.Add<INotificationsHelper, NotificationsHelper>();
             Singletons.Add<IConfigurationProvider, LastFmConfigurationProvider>();
+            Singletons.Add<SubEchoNest.IConfigurationProvider, EchoNestConfigurationProvider>();
         }
 
         #endregion
