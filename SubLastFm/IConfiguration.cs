@@ -1,9 +1,7 @@
 ﻿namespace SubLastFm
 {
-    public interface IConfiguration
+    public interface IConfiguration : Common.Results.IConfiguration
     {
-        string BaseUrl { get; }
-
         string ApiKey { get; }
 
         string RequestFormatWithApiKey { get; }

@@ -30,7 +30,7 @@
         [TestMethod]
         public async Task ExecuteShouldHandleHttpRequestException()
         {
-            _subject.Response = () =>
+            _subject.GetResourceFunc = () =>
                 {
                     var taskCompletionSource = new TaskCompletionSource<HttpStreamResult>();
                     taskCompletionSource.SetResult(new HttpStreamResult { Exception = new HttpRequestException() });
@@ -53,7 +53,7 @@
         [TestMethod]
         public void ViewNameShouldBeCorrect()
         {
-            _subject.ViewName.Should().Be("getMusicFolders.view");
+            _subject.ResourcePath.Should().Be("getMusicFolders.view");
         }
 
         #endregion

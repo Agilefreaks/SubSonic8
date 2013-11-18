@@ -115,6 +115,11 @@
     <Compile Include="ExtensionsMethods\UriExtensionMethods.cs" />
     <Compile Include="FrameworkElementExtensions\DependencyPropertyChangedCallbacks.cs" />
     <Compile Include="FrameworkElementExtensions\FrameworkElementAttachedProperties.cs" />
+    <Compile Include="Results\ApiCallErrorResponseHandler.cs" />
+    <Compile Include="Results\IApiCallErrorResponseHandler.cs" />
+    <Compile Include="Results\IConfiguration.cs" />
+    <Compile Include="Results\IRemoteXmlResultBase.cs" />
+    <Compile Include="Results\RemoteXmlResultBase.cs" />
     <Compile Include="Services\HtmlTransformService.cs" />
     <Compile Include="Interfaces\IError.cs" />
     <Compile Include="Interfaces\IErrorHandler.cs" />

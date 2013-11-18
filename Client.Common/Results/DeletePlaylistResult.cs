@@ -26,7 +26,7 @@
             }
         }
 
-        public override string ViewName
+        public override string ResourcePath
         {
             get
             {

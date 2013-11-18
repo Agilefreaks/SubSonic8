@@ -120,6 +120,7 @@
     <Compile Include="Models\TagList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\ILastFmResultBase.cs" />
+    <Compile Include="Results\LastFmApiCallErrorResponseHandler.cs" />
     <Compile Include="Results\LastFmResultBase.cs" />
     <Compile Include="Models\LastFmResponse.cs" />
     <Compile Include="SubLastFmModule.cs" />

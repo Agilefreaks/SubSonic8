@@ -101,6 +101,7 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Results\SubsonicApiCallErrorResponseHandler.cs" />
     <Compile Include="SubsonicCommonModule.cs" />
     <Compile Include="EventAggregatorMessages\PausePlaybackMessage.cs" />
     <Compile Include="EventAggregatorMessages\PlaybackMessageBase.cs" />

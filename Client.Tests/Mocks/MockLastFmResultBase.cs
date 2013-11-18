@@ -4,7 +4,6 @@
     using System.Threading.Tasks;
     using global::Common.Interfaces;
     using global::Common.Results;
-    using SubLastFm;
     using SubLastFm.Results;
     using Action = System.Action;
 
@@ -22,7 +21,7 @@
 
         #region Public Properties
 
-        public IConfiguration Configuration { get; protected set; }
+        public SubLastFm.IConfiguration Configuration { get; protected set; }
 
         public Exception Error { get; set; }
 
@@ -34,11 +33,11 @@
 
         public string RequestUrl { get; protected set; }
 
-        public Func<Task<HttpStreamResult>> Response { get; set; }
+        public Func<Task<HttpStreamResult>> GetResourceFunc { get; set; }
 
         public T Result { get; set; }
 
-        public string MethodName { get; protected set; }
+        public string ResourcePath { get; protected set; }
 
         #endregion
 
@@ -69,7 +68,7 @@
             return taskCompletionSource.Task;
         }
 
-        public ILastFmResultBase<T> WithErrorHandler(IErrorHandler errorHandler)
+        public IRemoteXmlResultBase<T> WithErrorHandler(IErrorHandler errorHandler)
         {
             _errorHandler = errorHandler;
             return this;
@@ -81,7 +80,7 @@
             return this;
         }
 
-        public ILastFmResultBase<T> OnSuccess(Action<T> onSuccess)
+        public IRemoteXmlResultBase<T> OnSuccess(Action<T> onSuccess)
         {
             _extendedOnSuccess = onSuccess;
             return this;

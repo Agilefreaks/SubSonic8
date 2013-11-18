@@ -15,7 +15,7 @@
 
         public string ArtistName { get; private set; }
 
-        public override string MethodName
+        public override string ResourcePath
         {
             get
             {

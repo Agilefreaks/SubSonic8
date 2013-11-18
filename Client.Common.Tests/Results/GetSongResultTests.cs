@@ -31,7 +31,7 @@
         [TestMethod]
         public void ViewNameShouldBegetMusicDirectory()
         {
-            _subject.ViewName.Should().Be("getSong.view");
+            _subject.ResourcePath.Should().Be("getSong.view");
         }
 
         #endregion

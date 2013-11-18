@@ -62,9 +62,9 @@
         }
 
         [TestMethod]
-        public void ViewNameShouldBeupdatePlaylist()
+        public void ViewNameShouldBeUpdatePlaylist()
         {
-            _subject.ViewName.Should().Be("updatePlaylist.view");
+            _subject.ResourcePath.Should().Be("updatePlaylist.view");
         }
 
         #endregion

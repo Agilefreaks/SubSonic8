@@ -16,6 +16,12 @@
         public int Code { get; set; }
 
         [XmlIgnore]
-        public EchoNestStatusEnum RequestStatus { get; set; }
+        public EchoNestStatusEnum RequestStatus
+        {
+            get
+            {
+                return (EchoNestStatusEnum)Code;
+            }
+        }
     }
 }

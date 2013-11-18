@@ -1,10 +1,10 @@
 namespace Client.Common.Services.DataStructures.SubsonicService
 {
-    public interface ISubsonicServiceConfiguration
+    using global::Common.Results;
+
+    public interface ISubsonicServiceConfiguration : IConfiguration
     {
         #region Public Properties
-
-        string BaseUrl { get; set; }
 
         string EncodedCredentials { get; }
 

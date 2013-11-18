@@ -1,24 +1,10 @@
 ﻿namespace SubLastFm.Results
 {
-    using System;
-    using System.Threading.Tasks;
-    using Common.Interfaces;
     using Common.Results;
+    using IConfiguration = SubLastFm.IConfiguration;
 
-    public interface ILastFmResultBase<T> : IExtendedResult
+    public interface ILastFmResultBase<T> : IRemoteXmlResultBase<T>
     {
         IConfiguration Configuration { get; }
-
-        string RequestUrl { get; }
-
-        Func<Task<HttpStreamResult>> Response { get; set; }
-
-        T Result { get; set; }
-
-        string MethodName { get; }
-
-        ILastFmResultBase<T> OnSuccess(Action<T> onSuccess);
-
-        new ILastFmResultBase<T> WithErrorHandler(IErrorHandler errorHandler);
     }
 }

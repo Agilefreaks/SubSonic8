@@ -34,11 +34,11 @@
 
         public string RequestUrl { get; protected set; }
 
-        public Func<Task<HttpStreamResult>> Response { get; set; }
+        public Func<Task<HttpStreamResult>> GetResourceFunc { get; set; }
 
         public T Result { get; protected set; }
 
-        public string ViewName { get; protected set; }
+        public string ResourcePath { get; protected set; }
 
         #endregion
 
@@ -69,7 +69,7 @@
             return taskCompletionSource.Task;
         }
 
-        public IServiceResultBase<T> OnSuccess(Action<T> onSuccess)
+        public IRemoteXmlResultBase<T> OnSuccess(Action<T> onSuccess)
         {
             _extendedOnSuccess = onSuccess;
             return this;
@@ -81,7 +81,7 @@
             return this;
         }
 
-        public IServiceResultBase<T> WithErrorHandler(IErrorHandler errorHandler)
+        public IRemoteXmlResultBase<T> WithErrorHandler(IErrorHandler errorHandler)
         {
             _errorHandler = errorHandler;
             return this;

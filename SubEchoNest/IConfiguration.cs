@@ -1,10 +1,8 @@
 ﻿namespace SubEchoNest
 {
-    public interface IConfiguration
+    public interface IConfiguration : Common.Results.IConfiguration
     {
         string ApiKey { get; set; }
-
-        string BaseUrl { get; set; }
 
         string RequestFormatWithApiKey { get; }
     }

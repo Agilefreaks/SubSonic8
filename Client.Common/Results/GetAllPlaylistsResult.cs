@@ -18,7 +18,7 @@
 
         #region Public Properties
 
-        public override string ViewName
+        public override string ResourcePath
         {
             get
             {
@@ -30,7 +30,7 @@
 
         #region Methods
 
-        protected override void HandleResponse(XDocument xDocument)
+        public override void HandleResponse(XDocument xDocument)
         {
             var xmlSerializer = new XmlSerializer(typeof(PlaylistCollection), new[] { typeof(Playlist) });
             var xElement = xDocument.Element(Namespace + "subsonic-response").Element(Namespace + "playlists");

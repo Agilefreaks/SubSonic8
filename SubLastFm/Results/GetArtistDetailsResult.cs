@@ -14,7 +14,7 @@
 
         public string ArtistName { get; private set; }
 
-        public override string MethodName
+        public override string ResourcePath
         {
             get
             {
@@ -30,7 +30,7 @@
             }
         }
 
-        protected override void HandleResponse(XDocument xDocument)
+        public override void HandleResponse(XDocument xDocument)
         {
             var element = xDocument.Element("lfm").Element("artist");
             var extraTypes = new[] { typeof(Band), typeof(BandMember), typeof(Image), typeof(TagList), typeof(Tag) };
