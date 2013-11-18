@@ -1,6 +1,7 @@
 ﻿namespace SubEchoNest.Results
 {
     using Common.Results;
+    using IConfiguration = SubEchoNest.IConfiguration;
 
     public abstract class EchoNestResultBase<T> : RemoteXmlResultBase<T>, IEchoNestResultBase<T>
     {

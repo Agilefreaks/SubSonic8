@@ -129,8 +129,10 @@
     <Compile Include="Framework\ViewModel\DetailViewModelBaseTests.cs" />
     <Compile Include="Framework\ViewModel\ItemViewModelBaseTests.cs" />
     <Compile Include="Mocks\MockDialogService.cs" />
+    <Compile Include="Mocks\MockEchoNestService.cs" />
     <Compile Include="Mocks\MockFullScreenVideoPlaybackViewModel.cs" />
     <Compile Include="Mocks\MockErrorDialogViewModel.cs" />
+    <Compile Include="Mocks\MockGetBiographiesResult.cs" />
     <Compile Include="Mocks\MockGetArtistDetailsResult.cs" />
     <Compile Include="Mocks\MockGetRandomSongsResult.cs" />
     <Compile Include="Mocks\MockLastFmService.cs" />
@@ -160,7 +162,6 @@
     <Compile Include="Mocks\MockTileNotificationService.cs" />
     <Compile Include="Mocks\MockToastNotificationService.cs" />
     <Compile Include="Mocks\MockSearchResult.cs" />
-    <Compile Include="Mocks\MockServiceResultBase.cs" />
     <Compile Include="Mocks\MockShellViewModel.cs" />
     <Compile Include="Index\IndexViewModelTests.cs" />
     <Compile Include="Main\MainViewModelTests.cs" />
@@ -244,6 +245,10 @@
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{11d7fb8c-1a2c-4d5b-b129-937d76468a78}</Project>
       <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SubEchoNest\SubEchoNest.csproj">
+      <Project>{431f874c-ede9-4255-906b-1b3d4d460ad3}</Project>
+      <Name>SubEchoNest</Name>
     </ProjectReference>
     <ProjectReference Include="..\SubLastFm\SubLastFm.csproj">
       <Project>{4485a175-2491-40dd-a683-9ccf21267c45}</Project>

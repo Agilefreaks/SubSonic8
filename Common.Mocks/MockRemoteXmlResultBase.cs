@@ -1,18 +1,14 @@
-﻿namespace Client.Tests.Mocks
+﻿namespace Common.Mocks
 {
     using System;
     using System.Threading.Tasks;
-    using Client.Common.Results;
-    using Client.Common.Services.DataStructures.SubsonicService;
-    using global::Common.Interfaces;
-    using global::Common.Results;
+    using Common.Interfaces;
+    using Common.Results;
     using Action = System.Action;
 
-    public abstract class MockServiceResultBase<T> : IServiceResultBase<T>
+    public abstract class MockRemoteXmlResultBase<T> : IRemoteXmlResultBase<T>
     {
         #region Fields
-
-        private IErrorHandler _errorHandler;
 
         private Action<T> _extendedOnSuccess;
 
@@ -22,9 +18,9 @@
 
         #region Public Properties
 
-        public ISubsonicServiceConfiguration Configuration { get; protected set; }
-
         public Exception Error { get; set; }
+
+        public IErrorHandler ErrorHandler { get; private set; }
 
         public int ExecuteCallCount { get; protected set; }
 
@@ -51,19 +47,24 @@
             Result = GetResultFunc != null ? GetResultFunc() : default(T);
             Error = GetErrorFunc != null ? GetErrorFunc() : null;
             taskCompletionSource.SetResult(Result);
-            if (_errorHandler != null && Error != null)
+            if (Error != null)
             {
-                _errorHandler.HandleError(Error);
+                if (ErrorHandler != null)
+                {
+                    ErrorHandler.HandleError(Error);
+                }
             }
-
-            if (_extendedOnSuccess != null)
+            else
             {
-                _extendedOnSuccess(Result);
-            }
+                if (_extendedOnSuccess != null)
+                {
+                    _extendedOnSuccess(Result);
+                }
 
-            if (_onSuccess != null)
-            {
-                _onSuccess();
+                if (_onSuccess != null)
+                {
+                    _onSuccess();
+                }
             }
 
             return taskCompletionSource.Task;
@@ -83,7 +84,7 @@
 
         public IRemoteXmlResultBase<T> WithErrorHandler(IErrorHandler errorHandler)
         {
-            _errorHandler = errorHandler;
+            ErrorHandler = errorHandler;
             return this;
         }
 
@@ -93,7 +94,7 @@
 
         IExtendedResult IExtendedResult.WithErrorHandler(IErrorHandler errorHandler)
         {
-            _errorHandler = errorHandler;
+            ErrorHandler = errorHandler;
             return this;
         }
 
