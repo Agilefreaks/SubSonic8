@@ -2,8 +2,8 @@ namespace Client.Tests.Framework.ViewModel
 {
     using Caliburn.Micro;
     using Client.Common.Services;
-    using Client.Tests.Mocks;
     using FluentAssertions;
+    using global::Common.Mocks;
     using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
     using Subsonic8.Framework.ViewModel;
 

@@ -8,6 +8,7 @@
     using Client.Tests.Mocks;
     using global::Common.Mocks;
     using FluentAssertions;
+    using global::Common.Mocks.Results;
     using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
     using Subsonic8.BottomBar;
     using Subsonic8.MenuItem;

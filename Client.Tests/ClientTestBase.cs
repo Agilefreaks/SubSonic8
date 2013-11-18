@@ -5,7 +5,6 @@
     using Client.Tests.Mocks;
     using global::Common.Mocks;
     using Subsonic8.Shell;
-    using MockSubsonicService = Client.Tests.Mocks.MockSubsonicService;
 
     public abstract class ClientTestBase
     {

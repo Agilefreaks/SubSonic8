@@ -8,7 +8,6 @@
     using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
     using Subsonic8.Search;
     using Subsonic8.Shell;
-    using MockSubsonicService = Client.Tests.Mocks.MockSubsonicService;
 
     [TestClass]
     public class ShellViewModelTests
@@ -44,13 +43,13 @@
         #region Public Methods and Operators
 
         [TestMethod]
-        public void CtorShouldSubscribeToEventAggregator()
+        public void ConstructorShouldSubscribeToEventAggregator()
         {
             _eventAggregator.Subscriber.Should().Be(Subject);
         }
 
         [TestMethod]
-        public void Handle_PerformSearh_Calls_NavigateToSearchResult()
+        public void Handle_PerformSearch_Calls_NavigateToSearchResult()
         {
             Subject.SendSearchQueryMessage("test");
 

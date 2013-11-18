@@ -1,11 +1,19 @@
 ﻿namespace Common.Mocks
 {
     using System;
+    using Client.Common.Models.Subsonic;
     using Client.Common.Services;
     using Client.Common.Services.DataStructures.SubsonicService;
+    using Common.Mocks.Results;
 
     public class MockSubsonicService : SubsonicService
     {
+        #region Fields
+
+        private bool _hasValidSubsonicUrl;
+
+        #endregion
+
         #region Public Properties
 
         public int GetCoverArtForIdCallCount { get; set; }
@@ -13,6 +21,24 @@
         public int GetUriForFileWithIdCallCount { get; set; }
 
         public int GetUriForVideoWithIdCallCount { get; set; }
+
+        public override bool HasValidSubsonicUrl
+        {
+            get
+            {
+                return _hasValidSubsonicUrl;
+            }
+        }
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        public MockSubsonicService()
+        {
+            GetSong = id => new MockGetSongResult(id);
+            Search = s => new MockSearchResult { GetResultFunc = () => new SearchResultCollection() };
+        }
 
         #endregion
 
@@ -22,7 +48,7 @@
         {
             GetCoverArtForIdCallCount++;
 
-            return coverArt;
+            return "http://test.mock";
         }
 
         public override Uri GetUriForFileWithId(int id)
@@ -36,7 +62,12 @@
         {
             GetUriForVideoWithIdCallCount++;
 
-            return new Uri(string.Format("http://test.mock/{0}", id));
+            return new Uri("http://test.mock");
+        }
+
+        public void SetHasValidSubsonicUrl(bool value)
+        {
+            _hasValidSubsonicUrl = value;
         }
 
         #endregion

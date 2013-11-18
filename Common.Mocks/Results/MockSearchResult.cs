@@ -1,4 +1,4 @@
-﻿namespace Client.Tests.Mocks
+﻿namespace Common.Mocks.Results
 {
     using Client.Common.Models.Subsonic;
     using Client.Common.Results;

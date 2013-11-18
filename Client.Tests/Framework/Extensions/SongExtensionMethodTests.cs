@@ -1,9 +1,9 @@
-﻿namespace Client.Tests.Framework.Extenions
+﻿namespace Client.Tests.Framework.Extensions
 {
     using Client.Common.Models;
     using Client.Common.Models.Subsonic;
-    using Client.Tests.Mocks;
     using FluentAssertions;
+    using global::Common.Mocks;
     using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
     using Subsonic8.Framework.Extensions;
 

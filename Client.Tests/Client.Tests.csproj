@@ -121,7 +121,7 @@
     <Compile Include="Converters\IntToTimeStringConverterTests.cs" />
     <Compile Include="DefaultBottomBar\DefaultBottomBarViewModelTests.cs" />
     <Compile Include="ErrorDialog\ErrorDialogViewModelTests.cs" />
-    <Compile Include="Framework\Extenions\SongExtensionMethodTests.cs" />
+    <Compile Include="Framework\Extensions\SongExtensionMethodTests.cs" />
     <Compile Include="Framework\NotificationHelperTests.cs" />
     <Compile Include="Framework\Services\DialogNotificationOptionsTests.cs" />
     <Compile Include="Framework\Services\NotificationOptionsTests.cs" />
@@ -157,11 +157,9 @@
     <Compile Include="Mocks\MockGetAllPlaylistsResult.cs" />
     <Compile Include="Mocks\MockGetArtistResult.cs" />
     <Compile Include="Mocks\MockGetMusicDirectoryResult.cs" />
-    <Compile Include="Mocks\MockGetSongResult.cs" />
     <Compile Include="Mocks\MockPlaybackViewModel.cs" />
     <Compile Include="Mocks\MockTileNotificationService.cs" />
     <Compile Include="Mocks\MockToastNotificationService.cs" />
-    <Compile Include="Mocks\MockSearchResult.cs" />
     <Compile Include="Mocks\MockShellViewModel.cs" />
     <Compile Include="Index\IndexViewModelTests.cs" />
     <Compile Include="Main\MainViewModelTests.cs" />
@@ -169,7 +167,6 @@
     <Compile Include="Mocks\MockNavigationService.cs" />
     <Compile Include="Mocks\MockStorageService.cs" />
     <Compile Include="Mocks\MockSubsonicModel.cs" />
-    <Compile Include="Mocks\MockSubsonicService.cs" />
     <Compile Include="Mocks\MockWinRTWrappersService.cs" />
     <Compile Include="MusicDirectory\MusicDirectoryViewModelTests.cs" />
     <Compile Include="Mocks\MockPlayerControls.cs" />

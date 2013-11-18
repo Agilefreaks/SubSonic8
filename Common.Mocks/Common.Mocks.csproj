@@ -119,6 +119,8 @@
     <Compile Include="MockSubsonicService.cs" />
     <Compile Include="MockVideoPlayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Results\MockGetSongResult.cs" />
+    <Compile Include="Results\MockSearchResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

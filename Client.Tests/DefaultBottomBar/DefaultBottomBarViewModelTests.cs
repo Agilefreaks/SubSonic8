@@ -12,11 +12,11 @@
     using Client.Tests.BottomBar;
     using Client.Tests.Mocks;
     using FluentAssertions;
+    using global::Common.Mocks;
     using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
     using Subsonic8.BottomBar;
     using Subsonic8.MenuItem;
     using Subsonic8.Playback;
-    using MockSubsonicService = Client.Tests.Mocks.MockSubsonicService;
 
     [TestClass]
     public class DefaultBottomBarViewModelTests : BottomBarViewModelTests<DefaultBottomBarViewModel>
@@ -89,7 +89,7 @@
         }
 
         [TestMethod]
-        public async Task AddToPlaylist_QueHasItemOfTypeIndexItem_CallsSubsonicServiceGetMusicDirectorysForEachChildArtist()
+        public async Task AddToPlaylist_QueHasItemOfTypeIndexItem_CallsSubsonicServiceGetMusicDirectoriesForEachChildArtist()
         {
             MockLoadModel();
             Subject.SelectedItems.Add(
@@ -122,7 +122,7 @@
 
         [TestMethod]
         public async Task
-            AddToPlaylist_QueHasItemOfTypeMusicDirectory_CallsSubsonicServiceGetMusicDirectorysAndAddsAllSongsToThePlaylist()
+            AddToPlaylist_QueHasItemOfTypeMusicDirectory_CallsSubsonicServiceGetMusicDirectoriesAndAddsAllSongsToThePlaylist()
         {
             MockLoadModel();
             Subject.SelectedItems.Add(new MenuItemViewModel { Item = new MusicDirectory { Id = 5 } });
@@ -179,7 +179,7 @@
         }
 
         [TestMethod]
-        public void CanAddToPlaylist_SelectedItemsAreNotAllOfTypePlaylisttemViewModel_ReturnsFalse()
+        public void CanAddToPlaylist_SelectedItemsAreNotAllOfTypePlaylistItemViewModel_ReturnsFalse()
         {
             Subject.SelectedItems.Add(42);
             Subject.SelectedItems.Add(new PlaylistItem());
@@ -199,7 +199,7 @@
         }
 
         [TestMethod]
-        public void CtorShouldInitializeSelectedItemsCollection()
+        public void ConstructorShouldInitializeSelectedItemsCollection()
         {
             Subject.SelectedItems.Should().NotBeNull();
         }
@@ -318,15 +318,15 @@
         {
             Subject.LoadPlaylistItem = model =>
                 {
-                    var tcr = new TaskCompletionSource<PlaylistItem>();
-                    tcr.SetResult(
+                    var taskCompletionSource = new TaskCompletionSource<PlaylistItem>();
+                    taskCompletionSource.SetResult(
                         new PlaylistItem
                             {
                                 PlayingState = PlaylistItemState.NotPlaying,
                                 Uri = new Uri("http://test-uri"),
                                 Artist = "test-artist"
                             });
-                    return tcr.Task;
+                    return taskCompletionSource.Task;
                 };
         }
 
