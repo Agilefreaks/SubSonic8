@@ -4,26 +4,32 @@
     using System.Threading.Tasks;
     using Client.Tests.Mocks;
     using FluentAssertions;
-    using global::Common.Services;
+    using global::Common.Mocks;
     using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+    using SubEchoNest.Models;
     using SubLastFm.Models;
     using Subsonic8.ArtistInfo;
-    using Subsonic8.Framework.Services;
+    using Subsonic8.Framework.Extensions;
+    using Biography = SubEchoNest.Models.Biography;
 
+    //Some of these tests fail currently due to a bug in the ReswFileCodeGenerator extension which hopefully will be fixed soon
+    
     [TestClass]
     public class ArtistInfoViewModelTests
     {
         private ArtistInfoViewModel _subject;
         private MockLastFmService _mockLastFmService;
+        private MockEchoNestService _mockEchoNestService;
 
         [TestInitialize]
         public void Setup()
         {
-            _mockLastFmService = new MockLastFmService(new LastFmConfigurationProvider());
+            _mockLastFmService = new MockLastFmService(new MockLastFmConfigurationProvider());
+            _mockEchoNestService = new MockEchoNestService();
             _subject = new ArtistInfoViewModel
             {
                 LastFmService = _mockLastFmService,
-                HtmlTransformService = new HtmlTransformService()
+                EchoNestService = _mockEchoNestService,
             };
         }
 
@@ -36,44 +42,12 @@
             _mockLastFmService.SetupGetArtistDetails(artistName =>
             {
                 artistName.Should().Be("testArtist");
-                return new MockGetArtistDetailsResult(artistName)
-                {
-                    GetResultFunc = () => new ArtistDetails()
-                };
+                return new MockGetArtistDetailsResult(artistName);
             });
 
             await _subject.Populate();
 
             _mockLastFmService.GetArtistDetailsCallCount.Should().Be(1);
-        }
-
-        [TestMethod]
-        public async Task Populate_Always_SetsTheObtainedArtistDetailsOnTheViewModel()
-        {
-            var artistDetails = new ArtistDetails();
-            _mockLastFmService.SetupGetArtistDetails(artistName => new MockGetArtistDetailsResult(artistName)
-            {
-                GetResultFunc = () => artistDetails
-            });
-
-            await _subject.Populate();
-
-            _subject.ArtistDetails.Should().Be(artistDetails);
-        }
-
-        [TestMethod]
-        public async Task Populate_Always_SetsThePlaintextBiographyOfTheArtistOnTheViewModel()
-        {
-            var biography = new Biography { Content = "<a href='http://google.com'>test 1</a>" };
-            var artistDetails = new ArtistDetails { Biography = biography };
-            _mockLastFmService.SetupGetArtistDetails(artistName => new MockGetArtistDetailsResult(artistName)
-            {
-                GetResultFunc = () => artistDetails
-            });
-
-            await _subject.Populate();
-
-            _subject.Biography.Should().Be("test 1");
         }
 
         [TestMethod]
@@ -104,7 +78,55 @@
 
             await _subject.Populate();
 
-            _subject.ArtistImage.Should().Be(ArtistInfoViewModel.CoverArtPlaceholder);
+            _subject.ArtistImage.Should().Be(GetArtistDetailsResultExtensionMethods.CoverArtPlaceholder);
+        }
+
+        [TestMethod]
+        public async Task Populate_Always_TriesToGetTheArtistBiographyUsingTheParameterPropertyValue()
+        {
+            _subject.Parameter = "testArtist";
+            _mockEchoNestService.SetupGetArtistBiographies(artistName =>
+            {
+                artistName.Should().Be("testArtist");
+                return new MockGetBiographiesResult(artistName)
+                {
+                    GetResultFunc = () => new Biographies()
+                };
+            });
+
+            await _subject.Populate();
+
+            _mockEchoNestService.GetArtistBiographiesCallCount.Should().Be(1);
+        }
+
+        [TestMethod]
+        public async Task Populate_BiographiesHasItems_SetsTheBestBiographyOnTheViewModel()
+        {
+            var biography1 = new Biography { Text = "test1", Site = "wikipedia" };
+            var biography2 = new Biography { Text = "test2", Site = "last.fm" };
+            var biographies = new Biographies { Items = new List<Biography> { biography1, biography2 } };
+            _mockEchoNestService.SetupGetArtistBiographies(artistName => new MockGetBiographiesResult(artistName)
+            {
+                GetResultFunc = () => biographies
+            });
+
+            await _subject.Populate();
+
+            _subject.Biography.Should().Be("test2");
+        }
+
+        [TestMethod]
+        public async Task Populate_ArtistDetailsDoesNotHaveBiography_SetsThePlaceHolderTextAsTheArtistBiography()
+        {
+            var biographies = new Biographies();
+            _mockEchoNestService.SetupGetArtistBiographies(artistName => new MockGetBiographiesResult(artistName)
+            {
+                GetResultFunc = () => biographies
+            });
+
+            await _subject.Populate();
+
+            _subject.ArtistImage.Should().Be(GetArtistDetailsResultExtensionMethods.CoverArtPlaceholder);
         }
 
         #endregion

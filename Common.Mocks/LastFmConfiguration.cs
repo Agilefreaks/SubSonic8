@@ -1,12 +1,12 @@
-﻿namespace SubEchoNestTests.Mocks
+﻿namespace Common.Mocks
 {
     using SubEchoNest;
 
-    public class MockLastFmConfigurationProvider : IConfigurationProvider
+    public class MockEchoNestConfigurationProvider : IConfigurationProvider
     {
         public IConfiguration Configuration { get; private set; }
 
-        public MockLastFmConfigurationProvider()
+        public MockEchoNestConfigurationProvider()
         {
             Configuration = new Configuration
             {

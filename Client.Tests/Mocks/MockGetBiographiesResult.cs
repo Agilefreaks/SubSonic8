@@ -8,7 +8,13 @@
     {
         public string ArtistName { get; private set; }
 
-        public MockGetBiographiesResult(string artistName)
+        public MockGetBiographiesResult()
+        {
+            GetResultFunc = () => new Biographies();
+        }
+
+        public MockGetBiographiesResult(string artistName) 
+            : this()
         {
             ArtistName = artistName;
         }

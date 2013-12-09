@@ -7,7 +7,13 @@
     {
         public string ArtistName { get; set; }
 
+        public MockGetArtistDetailsResult()
+        {
+            GetResultFunc = () => new ArtistDetails();
+        }
+
         public MockGetArtistDetailsResult(string artistName)
+            :this()
         {
             ArtistName = artistName;
         }

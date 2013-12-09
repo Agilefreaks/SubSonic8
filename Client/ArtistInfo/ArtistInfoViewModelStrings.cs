@@ -17,20 +17,20 @@
 // 	This code contains a helper class exposing property representations
 // 	of the string resources defined in the specified .ResW file
 // 
-// 	Generated: 12/09/2013 12:31:03
+// 	Generated: 11/18/2013 16:35:14
 // </auto-generatedInfo>
 // --------------------------------------------------------------------------------------------------
-namespace Subsonic8.Playback
+namespace Subsonic8.ArtistInfo
 {
     using Windows.ApplicationModel.Resources;
     
     
-    public partial class PlaybackViewModelStrings
+    public partial class ArtistInfoViewModelStrings
     {
         
         private static ResourceLoader resourceLoader;
         
-        static PlaybackViewModelStrings()
+        static ArtistInfoViewModelStrings()
         {
             string executingAssemblyName;
             executingAssemblyName = Windows.UI.Xaml.Application.Current.GetType().AssemblyQualifiedName;
@@ -38,40 +38,39 @@ namespace Subsonic8.Playback
             executingAssemblySplit = executingAssemblyName.Split(',');
             executingAssemblyName = executingAssemblySplit[1];
             string currentAssemblyName;
-            currentAssemblyName = typeof(PlaybackViewModelStrings).AssemblyQualifiedName;
+            currentAssemblyName = typeof(ArtistInfoViewModelStrings).AssemblyQualifiedName;
             string[] currentAssemblySplit;
             currentAssemblySplit = currentAssemblyName.Split(',');
             currentAssemblyName = currentAssemblySplit[1];
             if (executingAssemblyName.Equals(currentAssemblyName))
             {
-                resourceLoader = new ResourceLoader("PlaybackViewModelStrings");
+                resourceLoader = new ResourceLoader("ArtistInfoViewModelStrings");
             }
             else
             {
-                resourceLoader = new ResourceLoader(currentAssemblyName + "/PlaybackViewModelStrings");
+                resourceLoader = new ResourceLoader(currentAssemblyName + "/ArtistInfoViewModelStrings");
             }
         }
         
         /// <summary>
-        /// Localized resource similar to "Nothing Playing"
+        /// Localized resource similar to "Could not connect to data provider. Please try again later."
         /// </summary>
-        public static string ArtistPlaceholder
+        public static string CouldNotFetchData
         {
             get
             {
-                return resourceLoader.GetString("ArtistPlaceholder");
+                return resourceLoader.GetString("CouldNotFetchData");
             }
         }
         
         /// <summary>
-        /// Localized resource similar to "Why don't you add some items to the playlist.
-        ///It's so lonely out here."
+        /// Localized resource similar to "No biography found."
         /// </summary>
-        public static string NoItemsPlaceholder
+        public static string NoBiographyFound
         {
             get
             {
-                return resourceLoader.GetString("NoItemsPlaceholder");
+                return resourceLoader.GetString("NoBiographyFound");
             }
         }
     }

@@ -111,6 +111,8 @@
     <SDKReference Include="TestPlatform, Version=11.0" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LastFmConfiguration.cs" />
+    <Compile Include="EchoNestConfiguration.cs" />
     <Compile Include="MockEventAggregator.cs" />
     <Compile Include="MockPlayer.cs" />
     <Compile Include="MockEchoNestResultBase.cs" />
@@ -141,6 +143,10 @@
     <ProjectReference Include="..\SubEchoNest\SubEchoNest.csproj">
       <Project>{431f874c-ede9-4255-906b-1b3d4d460ad3}</Project>
       <Name>SubEchoNest</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SubLastFm\SubLastFm.csproj">
+      <Project>{4485a175-2491-40dd-a683-9ccf21267c45}</Project>
+      <Name>SubLastFm</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

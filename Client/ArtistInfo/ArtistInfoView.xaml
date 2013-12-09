@@ -7,22 +7,46 @@
     xmlns:framework="using:Subsonic8.Framework"
     xmlns:effects="using:Callisto.Effects"
     xmlns:converters="using:Subsonic8.Converters"
+    xmlns:commonConverters="using:Common.Converters"
     mc:Ignorable="d">
-    
+
     <Page.Resources>
         <converters:InvertedBooleanToVisibilityConverter x:Name="InvertedBoolToVisibilityConverter"/>
+        <commonConverters:NullToVisibilityConverter x:Name="NullToVisibilityConverter"/>
     </Page.Resources>
-    
-    <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}" effects:Tilt.IsTiltEnabled="True">
-        <RichTextBlock Visibility="{Binding Path=IsBusy, Converter={StaticResource InvertedBoolToVisibilityConverter}}">
-            <Paragraph>
-                <InlineUIContainer>
-                    <Image Source="{Binding Path=ArtistImage}"/>
-                </InlineUIContainer>
-                <Run Text="{Binding Path=Biography}" />
-            </Paragraph>
-        </RichTextBlock>
-        
+
+    <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}" effects:Tilt.IsTiltEnabled="True" Margin="0, 0, 0 ,0">
+        <Grid Visibility="{Binding Path=IsBusy, Converter={StaticResource InvertedBoolToVisibilityConverter}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <RichTextBlock Grid.Row="0" Grid.Column="0" TextAlignment="Center">
+                <Paragraph>
+                    <InlineUIContainer>
+                        <Image Source="{Binding Path=ArtistImage}" Height="250" Stretch="Uniform" Margin="5"/>
+                    </InlineUIContainer>
+                </Paragraph>
+            </RichTextBlock>
+            <StackPanel Grid.Row="1" Orientation="Vertical">
+                <ScrollViewer Height="200">
+                    <RichTextBlock FontSize="14" TextAlignment="Justify" Height="Auto">
+                        <Paragraph>
+                            <Run Text="{Binding Path=Biography.Text}"  />
+                        </Paragraph>
+                    </RichTextBlock>
+                </ScrollViewer>
+                <ContentControl HorizontalContentAlignment="Center">
+                    <HyperlinkButton NavigateUri="{Binding Path=Biography.Url}" Visibility="{Binding Path=Biography.Url, Converter={StaticResource NullToVisibilityConverter}}">
+                        Click here to view source
+                    </HyperlinkButton>
+                </ContentControl>
+            </StackPanel>
+        </Grid>
+
         <ProgressRing Width="50" IsActive="{Binding Path=IsBusy}" Height="50"/>
     </Grid>
 </framework:AppPage>

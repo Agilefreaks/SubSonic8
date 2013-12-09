@@ -13,7 +13,7 @@
         [TestInitialize]
         public void Setup()
         {
-            _subject = new EchoNestService(new MockLastFmConfigurationProvider());
+            _subject = new EchoNestService(new MockEchoNestConfigurationProvider());
         }
 
         [TestMethod]

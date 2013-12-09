@@ -17,20 +17,20 @@
 // 	This code contains a helper class exposing property representations
 // 	of the string resources defined in the specified .ResW file
 // 
-// 	Generated: 12/09/2013 12:31:03
+// 	Generated: 12/09/2013 12:34:18
 // </auto-generatedInfo>
 // --------------------------------------------------------------------------------------------------
-namespace Subsonic8.Playback
+namespace Subsonic8
 {
     using Windows.ApplicationModel.Resources;
     
     
-    public partial class PlaybackViewModelStrings
+    public partial class EchoNestCredentials
     {
         
         private static ResourceLoader resourceLoader;
         
-        static PlaybackViewModelStrings()
+        static EchoNestCredentials()
         {
             string executingAssemblyName;
             executingAssemblyName = Windows.UI.Xaml.Application.Current.GetType().AssemblyQualifiedName;
@@ -38,40 +38,28 @@ namespace Subsonic8.Playback
             executingAssemblySplit = executingAssemblyName.Split(',');
             executingAssemblyName = executingAssemblySplit[1];
             string currentAssemblyName;
-            currentAssemblyName = typeof(PlaybackViewModelStrings).AssemblyQualifiedName;
+            currentAssemblyName = typeof(EchoNestCredentials).AssemblyQualifiedName;
             string[] currentAssemblySplit;
             currentAssemblySplit = currentAssemblyName.Split(',');
             currentAssemblyName = currentAssemblySplit[1];
             if (executingAssemblyName.Equals(currentAssemblyName))
             {
-                resourceLoader = new ResourceLoader("PlaybackViewModelStrings");
+                resourceLoader = new ResourceLoader("EchoNestCredentials");
             }
             else
             {
-                resourceLoader = new ResourceLoader(currentAssemblyName + "/PlaybackViewModelStrings");
+                resourceLoader = new ResourceLoader(currentAssemblyName + "/EchoNestCredentials");
             }
         }
         
         /// <summary>
-        /// Localized resource similar to "Nothing Playing"
+        /// Localized resource similar to "fillIn"
         /// </summary>
-        public static string ArtistPlaceholder
+        public static string ApiKey
         {
             get
             {
-                return resourceLoader.GetString("ArtistPlaceholder");
-            }
-        }
-        
-        /// <summary>
-        /// Localized resource similar to "Why don't you add some items to the playlist.
-        ///It's so lonely out here."
-        /// </summary>
-        public static string NoItemsPlaceholder
-        {
-            get
-            {
-                return resourceLoader.GetString("NoItemsPlaceholder");
+                return resourceLoader.GetString("ApiKey");
             }
         }
     }

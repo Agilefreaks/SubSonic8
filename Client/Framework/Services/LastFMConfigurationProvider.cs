@@ -12,7 +12,7 @@ namespace Subsonic8.Framework.Services
             {
                 return _configuration ?? (_configuration = new Configuration
                 {
-                    ApiKey = "a7a6e957a0cd7c5e3132a791c8da1f92",
+                    ApiKey = LastFmCredentials.ApiKey,
                     BaseUrl = "http://ws.audioscrobbler.com/2.0/",
                 });
             }

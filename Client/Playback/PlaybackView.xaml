@@ -44,12 +44,7 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <Grid Grid.ColumnSpan="2">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <Grid Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center">
                             <TextBlock FontSize="20" Visibility="{Binding Path=Visibility, ElementName=ShowArtistInfo, Converter={StaticResource InvertedVisibilityConverter}}"
                                        Text="{Binding Source={StaticResource StringResources}, Path=PlaybackViewModelStrings.ArtistPlaceholder}"/>
                             <Button x:Name="ShowArtistInfo" Style="{StaticResource TextButtonStyle}" Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
@@ -59,16 +54,15 @@
                                 </TextBlock>
                             </Button>
                         </Grid>
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="1">
-                            <Button Style="{StaticResource FilterAppBarButtonStyle}" x:Name="ShowFilter" />
-                            <Button Style="{StaticResource ClearPlaylistAppBarButtonStyle}" x:Name="ClearPlaylist" />
-                            <Button Style="{StaticResource LoadPlaylistAppBarButtonStyle}" x:Name="LoadPlaylist" />
-                            <Button Style="{StaticResource SaveAppBarButtonStyle}" x:Name="SavePlaylist" />
-                            <Button Style="{StaticResource LoadRemotePlaylistAppBarButtonStyle}"
+                    <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Style="{StaticResource FilterAppBarButtonStyle}" x:Name="ShowFilter" />
+                        <Button Style="{StaticResource ClearPlaylistAppBarButtonStyle}" x:Name="ClearPlaylist" />
+                        <Button Style="{StaticResource LoadPlaylistAppBarButtonStyle}" x:Name="LoadPlaylist" />
+                        <Button Style="{StaticResource SaveAppBarButtonStyle}" x:Name="SavePlaylist" />
+                        <Button Style="{StaticResource LoadRemotePlaylistAppBarButtonStyle}"
                             x:Name="LoadRemotePlaylist" />
-                            <Button Style="{StaticResource SaveRemoteAppBarButtonStyle}" x:Name="SaveRemotePlaylist" />
-                        </StackPanel>
-                    </Grid>
+                        <Button Style="{StaticResource SaveRemoteAppBarButtonStyle}" x:Name="SaveRemotePlaylist" />
+                    </StackPanel>
                     <Grid Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"
                           x:Name="ExpandedMediaPresenter" Style="{StaticResource PlaylistContentGridStyle}">
                         <playback:Audio cal:Bind.Model="{Binding}"

@@ -117,6 +117,12 @@
       <DependentUpon>ArtistInfoView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ArtistInfo\ArtistInfoViewModel.cs" />
+    <Compile Include="ArtistInfo\ArtistInfoViewModelStrings.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ArtistInfoViewModelStrings.resw</DependentUpon>
+    </Compile>
+    <Compile Include="ArtistInfo\BiographyInfo.cs" />
     <Compile Include="ArtistInfo\IArtistInfoViewModel.cs" />
     <Compile Include="Artist\ArtistView.xaml.cs">
       <DependentUpon>ArtistView.xaml</DependentUpon>
@@ -169,6 +175,16 @@
     <Compile Include="Converters\IntToTimeStringConverter.cs" />
     <Compile Include="Converters\PlaybackStateToVisibilityConverter.cs" />
     <Compile Include="Converters\PlayingStateToVisibilityConverter.cs" />
+    <Compile Include="LastFmCredentials.cs">
+      <DependentUpon>LastFmCredentials.resw</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="EchoNestCredentials.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EchoNestCredentials.resw</DependentUpon>
+    </Compile>
     <Compile Include="ErrorDialog\ErrorDialogView.xaml.cs">
       <DependentUpon>ErrorDialogView.xaml</DependentUpon>
     </Compile>
@@ -176,6 +192,8 @@
     <Compile Include="ErrorDialog\IErrorDialogViewModel.cs" />
     <Compile Include="Framework\Behaviors\IActiveItemProvider.cs" />
     <Compile Include="Framework\Behaviors\ScrollIntoViewBehavior.cs" />
+    <Compile Include="Framework\Extensions\GetArtistDetailsResultExtensionMethods.cs" />
+    <Compile Include="Framework\Extensions\GetBiographiesResultExtensionMethods.cs" />
     <Compile Include="Framework\Extensions\ModelLoaderExtensionMethods.cs" />
     <Compile Include="Framework\Extensions\SongExtensionMethods.cs" />
     <Compile Include="Framework\INotificationsHelper.cs" />
@@ -358,8 +376,20 @@
       <LastGenOutput>PlaybackViewModelStrings.cs</LastGenOutput>
     </PRIResource>
     <PRIResource Include="BugFreakCredentials.resw" />
+    <PRIResource Include="ArtistInfo\ArtistInfoViewModelStrings.resw">
+      <Generator>ReswFileCodeGenerator</Generator>
+      <LastGenOutput>ArtistInfoViewModelStrings.cs</LastGenOutput>
+    </PRIResource>
+    <PRIResource Include="EchoNestCredentials.resw">
+      <Generator>ReswFileCodeGenerator</Generator>
+      <LastGenOutput>EchoNestCredentials.cs</LastGenOutput>
+    </PRIResource>
     <None Include="Client_TemporaryKey.pfx" />
     <PRIResource Include="ErrorDialog\ErrorDialogViewModelStrings.resw" />
+    <PRIResource Include="LastFmCredentials.resw">
+      <Generator>ReswFileCodeGenerator</Generator>
+      <LastGenOutput>LastFmCredentials.cs</LastGenOutput>
+    </PRIResource>
     <None Include="packages.config" />
     <PRIResource Include="Shell\ShellStrings.resw" />
   </ItemGroup>

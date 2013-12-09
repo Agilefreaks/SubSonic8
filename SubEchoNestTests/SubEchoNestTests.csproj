@@ -112,7 +112,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EchoNestServiceTests.cs" />
-    <Compile Include="Mocks\EchoNestConfiguration.cs" />
     <Compile Include="Models\BiographiesTests.cs" />
     <Compile Include="Results\GetBiographiesResultTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -153,7 +152,9 @@
       <HintPath>..\packages\FluentAssertions.2.1.0.0\lib\winrt45\FluentAssertions.dll</HintPath>
     </Reference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Mocks\" />
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '11.0' ">
     <VisualStudioVersion>11.0</VisualStudioVersion>
   </PropertyGroup>
