@@ -55,9 +55,9 @@
         }
 
         [TestMethod]
-        public void ViewNameShouldBecreatePlaylist()
+        public void ViewNameShouldBeCreatePlaylist()
         {
-            _subject.ViewName.Should().Be("createPlaylist.view");
+            _subject.ResourcePath.Should().Be("createPlaylist.view");
         }
 
         #endregion

@@ -16,7 +16,7 @@
 
         #region Methods
 
-        protected override void HandleResponse(XDocument xDocument)
+        public override void HandleResponse(XDocument xDocument)
         {
             var xElement = xDocument.Element(Namespace + "subsonic-response");
             Result = !xElement.HasElements;

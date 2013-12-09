@@ -4,6 +4,7 @@
     using System.Threading.Tasks;
     using Client.Tests.Mocks;
     using FluentAssertions;
+    using global::Common.Mocks;
     using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
     using Subsonic8.Framework;
     using Subsonic8.Main;

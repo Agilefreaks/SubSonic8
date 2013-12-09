@@ -42,7 +42,7 @@
 
         public IEnumerable<int> SongIndexesToRemove { get; private set; }
 
-        public override string ViewName
+        public override string ResourcePath
         {
             get
             {

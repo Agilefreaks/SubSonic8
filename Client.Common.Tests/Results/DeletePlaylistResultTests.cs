@@ -51,7 +51,7 @@
         [TestMethod]
         public void ViewNameShouldBegetMusicDirectory()
         {
-            _subject.ViewName.Should().Be("deletePlaylist.view");
+            _subject.ResourcePath.Should().Be("deletePlaylist.view");
         }
 
         #endregion

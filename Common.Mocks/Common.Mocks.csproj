@@ -111,12 +111,18 @@
     <SDKReference Include="TestPlatform, Version=11.0" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LastFmConfiguration.cs" />
+    <Compile Include="EchoNestConfiguration.cs" />
     <Compile Include="MockEventAggregator.cs" />
     <Compile Include="MockPlayer.cs" />
+    <Compile Include="MockEchoNestResultBase.cs" />
     <Compile Include="MockServiceResultBase.cs" />
+    <Compile Include="MockRemoteXmlResultBase.cs" />
     <Compile Include="MockSubsonicService.cs" />
     <Compile Include="MockVideoPlayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Results\MockGetSongResult.cs" />
+    <Compile Include="Results\MockSearchResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -129,6 +135,18 @@
     <ProjectReference Include="..\Client.Common\Client.Common.csproj">
       <Project>{a8f49761-4d7a-458f-b1b1-4a66c421b3aa}</Project>
       <Name>Client.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{11d7fb8c-1a2c-4d5b-b129-937d76468a78}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SubEchoNest\SubEchoNest.csproj">
+      <Project>{431f874c-ede9-4255-906b-1b3d4d460ad3}</Project>
+      <Name>SubEchoNest</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SubLastFm\SubLastFm.csproj">
+      <Project>{4485a175-2491-40dd-a683-9ccf21267c45}</Project>
+      <Name>SubLastFm</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

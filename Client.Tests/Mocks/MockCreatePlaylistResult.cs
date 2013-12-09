@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using Client.Common.Results;
+    using global::Common.Mocks;
 
     public class MockCreatePlaylistResult : MockServiceResultBase<bool>, ICreatePlaylistResult
     {

@@ -29,7 +29,7 @@
             }
         }
 
-        public override string ViewName
+        public override string ResourcePath
         {
             get
             {
@@ -41,7 +41,7 @@
 
         #region Methods
 
-        protected override void HandleResponse(XDocument xDocument)
+        public override void HandleResponse(XDocument xDocument)
         {
             var xmlSerializer = new XmlSerializer(typeof(ExpandedArtist), new[] { typeof(Album) });
 

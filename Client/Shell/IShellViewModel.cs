@@ -8,6 +8,7 @@
     using Subsonic8.BottomBar;
     using Subsonic8.Framework.Interfaces;
     using Subsonic8.Framework.Services;
+    using global::Common.Interfaces;
 
     public interface IShellViewModel : IViewAware,
                                        IScreen,

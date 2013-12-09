@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:cal="using:Caliburn.Micro"
     xmlns:ic="using:Subsonic8.Controls"
+    xmlns:effects="using:Callisto.Effects"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -16,7 +17,8 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Image Source="{Binding CoverArt}" Style="{StaticResource PlaybackBigCoverArtStyle}" />
+        <Image Source="{Binding CoverArt}" Style="{StaticResource PlaybackBigCoverArtStyle}" effects:Tilt.IsTiltEnabled="True" 
+               cal:Message.Attach="[Event Tapped] = [Action ShowArtistInfo]"/>
         <StackPanel Grid.Row="1" Style="{StaticResource PlaybackControlsPanelStyle}"
                     Visibility="{Binding Path=PlaybackControlsVisible, Converter={StaticResource boolToVisibilityConverter}}">
             <Button Style="{StaticResource PreviousAppBarButtonStyle}"

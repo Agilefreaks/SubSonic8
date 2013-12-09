@@ -3,7 +3,10 @@
     using Caliburn.Micro;
     using Client.Common;
     using Client.Common.Services;
+    using global::Common;
     using MugenInjection;
+    using SubEchoNest;
+    using SubLastFm;
     using Subsonic8.Framework;
     using Subsonic8.Shell;
     using Windows.ApplicationModel;
@@ -35,12 +38,15 @@
         protected override void Configure()
         {
             Kernel.Load<CommonModule>();
+            Kernel.Load<SubsonicCommonModule>();
+            Kernel.Load<SubLastFmModule>();
+            Kernel.Load<SubEchoNestModule>();
             Kernel.Load<ClientModule>();
         }
 
         protected override void OnLaunched(LaunchActivatedEventArgs args)
         {
-            StartApplication(args.PreviousExecutionState);
+            StartApplication();
         }
 
         protected override void OnSearchActivated(SearchActivatedEventArgs args)
@@ -48,7 +54,7 @@
             var frame = Window.Current.Content as Frame;
             if (frame == null)
             {
-                StartApplication(args.PreviousExecutionState);
+                StartApplication();
             }
 
             _shellViewModel.SendSearchQueryMessage(args.QueryText);
@@ -61,7 +67,7 @@
             deferral.Complete();
         }
 
-        private void BindShellViewModelToView(ShellView shellView, ApplicationExecutionState previousExecutionState)
+        private void BindShellViewModelToView(ShellView shellView)
         {
             _shellViewModel = Kernel.Get<IShellViewModel>();
 
@@ -80,7 +86,7 @@
             Kernel.Bind<ICustomFrameAdapter>().ToConstant(_navigationService);
         }
 
-        private void StartApplication(ApplicationExecutionState previousExecutionState)
+        private void StartApplication()
         {
             DisplayRootView<ShellView>();
 
@@ -88,7 +94,7 @@
 
             RegisterNavigationService(shellView.ShellFrame);
 
-            BindShellViewModelToView(shellView, previousExecutionState);
+            BindShellViewModelToView(shellView);
         }
 
         #endregion

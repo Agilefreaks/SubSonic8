@@ -10,6 +10,7 @@
     using Client.Common.Models;
     using Client.Common.Services;
     using Client.Common.Services.DataStructures.PlayerManagementService;
+    using Subsonic8.ArtistInfo;
     using global::Common.ExtensionsMethods;
     using global::Common.ListCollectionView;
     using MugenInjection.Attributes;
@@ -236,7 +237,7 @@
 
                 _embeddedVideoPlaybackViewModel = value;
                 NotifyOfPropertyChange(() => EmbeddedVideoPlaybackViewModel);
-                HookEmbededVideoPlaybackViewModel();
+                HookEmbeddedVideoPlaybackViewModel();
             }
         }
 
@@ -270,9 +271,12 @@
                 if (Equals(value, _snappedVideoPlaybackViewModel)) return;
                 _snappedVideoPlaybackViewModel = value;
                 NotifyOfPropertyChange();
-                HookSnapeedVideoPlaybackViewModel();
+                HookSnappedVideoPlaybackViewModel();
             }
         }
+
+        [Inject]
+        public IArtistInfoViewModel ArtistInfoViewModel { get; set; }
 
         [Inject]
         public IPlayerManagementService PlayerManagementService
@@ -468,6 +472,25 @@
             _currentVisualState = state;
         }
 
+        public async Task ShowArtistInfo()
+        {
+            if (ActiveItem == null) return;
+
+            if (State != PlaybackViewModelStateEnum.Details)
+            {
+                _previousState = State;
+                State = PlaybackViewModelStateEnum.Details;
+            }
+
+            ArtistInfoViewModel.Parameter = ActiveItem.Artist;
+            await ArtistInfoViewModel.Populate();
+        }
+
+        public void HideArtistInfo()
+        {
+            State = _previousState;
+        }
+
         #endregion
 
         #region Methods
@@ -478,7 +501,7 @@
             SetAppBottomBar();
         }
 
-        private void HookEmbededVideoPlaybackViewModel()
+        private void HookEmbeddedVideoPlaybackViewModel()
         {
             EmbeddedVideoPlaybackViewModel.FullScreenChanged +=
                 (sender, eventArgs) => SwitchVideoPlayback(eventArgs, FullScreenVideoPlaybackViewModel);
@@ -490,7 +513,7 @@
                 (sender, eventArgs) => SwitchVideoPlayback(eventArgs, EmbeddedVideoPlaybackViewModel);
         }
 
-        private void HookSnapeedVideoPlaybackViewModel()
+        private void HookSnappedVideoPlaybackViewModel()
         {
             SnappedVideoPlaybackViewModel.FullScreenChanged +=
                 (sender, eventArgs) => SwitchVideoPlayback(eventArgs, FullScreenVideoPlaybackViewModel);

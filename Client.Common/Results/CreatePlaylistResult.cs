@@ -33,7 +33,7 @@
 
         public IEnumerable<int> SongIds { get; private set; }
 
-        public override string ViewName
+        public override string ResourcePath
         {
             get
             {

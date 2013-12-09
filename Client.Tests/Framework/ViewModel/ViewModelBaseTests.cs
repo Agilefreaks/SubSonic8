@@ -6,7 +6,6 @@
     using FluentAssertions;
     using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
     using Subsonic8.Framework.ViewModel;
-    using MockSubsonicService = Client.Tests.Mocks.MockSubsonicService;
 
     [TestClass]
     public abstract class ViewModelBaseTests<TViewModel> : ClientTestBase
@@ -51,7 +50,7 @@
         }
 
         [TestMethod]
-        public void OnActivateShouldSetDiplayName()
+        public void OnActivateShouldSetDisplayName()
         {
             Subject.UpdateDisplayName = () => Subject.DisplayName = "42";
 

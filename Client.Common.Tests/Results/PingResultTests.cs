@@ -23,9 +23,9 @@
         }
 
         [TestMethod]
-        public void ViewName_Always_SouldReturnCorrectViewName()
+        public void ViewName_Always_ShouldReturnCorrectViewName()
         {
-            _subject.ViewName.Should().Be("ping.view");
+            _subject.ResourcePath.Should().Be("ping.view");
         }
 
         #endregion

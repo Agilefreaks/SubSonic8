@@ -101,12 +101,12 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="CommonModule.cs" />
+    <Compile Include="Results\SubsonicApiCallErrorResponseHandler.cs" />
+    <Compile Include="SubsonicCommonModule.cs" />
     <Compile Include="EventAggregatorMessages\PausePlaybackMessage.cs" />
     <Compile Include="EventAggregatorMessages\PlaybackMessageBase.cs" />
     <Compile Include="EventAggregatorMessages\PlayFailedMessage.cs" />
     <Compile Include="EventAggregatorMessages\PlayMessage.cs" />
-    <Compile Include="Exceptions\ApiException.cs" />
     <Compile Include="Models\IMediaModel.cs" />
     <Compile Include="Models\ISongModel.cs" />
     <Compile Include="Models\Subsonic\SubsonicResponse.cs" />
@@ -120,13 +120,11 @@
     <Compile Include="Results\CreatePlaylistResult.cs" />
     <Compile Include="Results\DeletePlaylistResult.cs" />
     <Compile Include="Results\EmptyResponseResultBase.cs" />
-    <Compile Include="Results\ExtendedResultBase.cs" />
     <Compile Include="Results\GetAllPlaylistsResult.cs" />
     <Compile Include="Results\GetPlaylistResult.cs" />
     <Compile Include="Results\GetRandomSongsResult.cs" />
     <Compile Include="Results\IDeletePlaylistResult.cs" />
     <Compile Include="Results\IEmptyResponseResult.cs" />
-    <Compile Include="Results\IExtendedResult.cs" />
     <Compile Include="Results\IGetAllPlaylistsResult.cs" />
     <Compile Include="Results\IGetPlaylistResult.cs" />
     <Compile Include="Results\ICreatePlaylistResult.cs" />
@@ -178,24 +176,18 @@
     <Compile Include="Results\GetMusicDirectoryResult.cs" />
     <Compile Include="Results\GetRootResult.cs" />
     <Compile Include="Results\GetSongResult.cs" />
-    <Compile Include="Results\HttpStreamResult.cs" />
-    <Compile Include="Results\IErrorHandler.cs" />
     <Compile Include="Results\IGetAlbumResult.cs" />
     <Compile Include="Results\IGetArtistResult.cs" />
     <Compile Include="Results\IGetIndexResult.cs" />
     <Compile Include="Results\IGetMusicDirectoryResult.cs" />
     <Compile Include="Results\IGetRootResult.cs" />
     <Compile Include="Results\IGetSongResult.cs" />
-    <Compile Include="Results\IResultBase.cs" />
     <Compile Include="Results\ISearchResult.cs" />
     <Compile Include="Results\IServiceResultBase.cs" />
-    <Compile Include="Results\ITaskResult.cs" />
     <Compile Include="Results\MessageDialogResult.cs" />
-    <Compile Include="Results\ResultBase.cs" />
     <Compile Include="Results\ResultExtensionsMethods.cs" />
     <Compile Include="Results\SearchResult.cs" />
     <Compile Include="Results\ServiceResultBase.cs" />
-    <Compile Include="Results\VisualStateResult.cs" />
     <Compile Include="EventAggregatorMessages\AddItemsMessage.cs" />
     <Compile Include="Services\CustomFrameAdapter.cs" />
     <Compile Include="Services\ICustomFrameAdapter.cs" />

@@ -17,6 +17,7 @@
     using Subsonic8.Framework.ViewModel;
     using Subsonic8.MenuItem;
     using Subsonic8.Playback;
+    using global::Common.Interfaces;
     using Action = System.Action;
 
     public class DefaultBottomBarViewModel : BottomBarViewModelBase, IDefaultBottomBarViewModel

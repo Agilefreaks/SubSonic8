@@ -149,18 +149,13 @@
         public async Task HandleCriticalError(Exception exception)
         {
             CanGoBack = false;
-            await HandleError(exception);
+            await HandleException(exception);
         }
 
         public async Task HandleError(Exception error)
         {
             CanGoBack = true;
-            _error = error;
-            ExceptionString = error.ToString();
-            ErrorDescription = error.Message;
-            Show();
-
-            await Task.Run(() => { });
+            await HandleException(error);
         }
 
         public void ShareErrorDetails()
@@ -234,6 +229,16 @@
         {
             base.OnActivate();
             DisplayName = _resourceService.GetStringResource("ErrorDialogViewModelStrings/TitleMessage");
+        }
+
+        private async Task HandleException(Exception error)
+        {
+            _error = error;
+            ExceptionString = error.ToString();
+            ErrorDescription = error.Message;
+            Show();
+
+            await Task.Run(() => { });
         }
 
         #endregion

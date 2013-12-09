@@ -113,6 +113,17 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ArtistInfo\ArtistInfoView.xaml.cs">
+      <DependentUpon>ArtistInfoView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ArtistInfo\ArtistInfoViewModel.cs" />
+    <Compile Include="ArtistInfo\ArtistInfoViewModelStrings.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ArtistInfoViewModelStrings.resw</DependentUpon>
+    </Compile>
+    <Compile Include="ArtistInfo\BiographyInfo.cs" />
+    <Compile Include="ArtistInfo\IArtistInfoViewModel.cs" />
     <Compile Include="Artist\ArtistView.xaml.cs">
       <DependentUpon>ArtistView.xaml</DependentUpon>
     </Compile>
@@ -164,6 +175,16 @@
     <Compile Include="Converters\IntToTimeStringConverter.cs" />
     <Compile Include="Converters\PlaybackStateToVisibilityConverter.cs" />
     <Compile Include="Converters\PlayingStateToVisibilityConverter.cs" />
+    <Compile Include="LastFmCredentials.cs">
+      <DependentUpon>LastFmCredentials.resw</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="EchoNestCredentials.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EchoNestCredentials.resw</DependentUpon>
+    </Compile>
     <Compile Include="ErrorDialog\ErrorDialogView.xaml.cs">
       <DependentUpon>ErrorDialogView.xaml</DependentUpon>
     </Compile>
@@ -171,6 +192,8 @@
     <Compile Include="ErrorDialog\IErrorDialogViewModel.cs" />
     <Compile Include="Framework\Behaviors\IActiveItemProvider.cs" />
     <Compile Include="Framework\Behaviors\ScrollIntoViewBehavior.cs" />
+    <Compile Include="Framework\Extensions\GetArtistDetailsResultExtensionMethods.cs" />
+    <Compile Include="Framework\Extensions\GetBiographiesResultExtensionMethods.cs" />
     <Compile Include="Framework\Extensions\ModelLoaderExtensionMethods.cs" />
     <Compile Include="Framework\Extensions\SongExtensionMethods.cs" />
     <Compile Include="Framework\INotificationsHelper.cs" />
@@ -182,11 +205,13 @@
     <Compile Include="Framework\Extensions\NotificationExtensions.cs" />
     <Compile Include="Framework\Interfaces\ISettingsHelper.cs" />
     <Compile Include="Framework\Extensions\SettingsPaneExtensionMethods.cs" />
+    <Compile Include="Framework\Services\EchoNestConfigurationProvider.cs" />
     <Compile Include="Framework\Services\IDialogService.cs" />
     <Compile Include="Framework\Services\IIoCService.cs" />
     <Compile Include="Framework\Services\IoCService.cs" />
     <Compile Include="Framework\Services\IResourceService.cs" />
     <Compile Include="Framework\Services\ITileNotificationService.cs" />
+    <Compile Include="Framework\Services\LastFMConfigurationProvider.cs" />
     <Compile Include="Framework\Services\ResourceService.cs" />
     <Compile Include="Framework\Services\TileNotificationService.cs" />
     <Compile Include="Framework\SettingsHelper.cs" />
@@ -213,6 +238,14 @@
     <Compile Include="Framework\ViewModel\IPlaybackControlsViewModel.cs" />
     <Compile Include="Framework\ViewModel\ItemViewModelBase.cs" />
     <Compile Include="Framework\ViewModel\PlaybackControlsViewModelBase.cs" />
+    <Compile Include="Playback\PlaybackViewModelStrings.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PlaybackViewModelStrings.resw</DependentUpon>
+    </Compile>
+    <Compile Include="Playback\Playback\Details.xaml.cs">
+      <DependentUpon>Details.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Playback\Playback\SnappedAudio.xaml.cs">
       <DependentUpon>SnappedAudio.xaml</DependentUpon>
     </Compile>
@@ -312,6 +345,7 @@
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Shell\ShellViewModel.cs" />
+    <Compile Include="StringsResources.cs" />
     <Compile Include="VideoPlayback\SnappedVideoPlaybackView.xaml.cs">
       <DependentUpon>SnappedVideoPlaybackView.xaml</DependentUpon>
     </Compile>
@@ -337,9 +371,25 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
+    <PRIResource Include="Playback\PlaybackViewModelStrings.resw">
+      <Generator>ReswFileCodeGenerator</Generator>
+      <LastGenOutput>PlaybackViewModelStrings.cs</LastGenOutput>
+    </PRIResource>
     <PRIResource Include="BugFreakCredentials.resw" />
+    <PRIResource Include="ArtistInfo\ArtistInfoViewModelStrings.resw">
+      <Generator>ReswFileCodeGenerator</Generator>
+      <LastGenOutput>ArtistInfoViewModelStrings.cs</LastGenOutput>
+    </PRIResource>
+    <PRIResource Include="EchoNestCredentials.resw">
+      <Generator>ReswFileCodeGenerator</Generator>
+      <LastGenOutput>EchoNestCredentials.cs</LastGenOutput>
+    </PRIResource>
     <None Include="Client_TemporaryKey.pfx" />
     <PRIResource Include="ErrorDialog\ErrorDialogViewModelStrings.resw" />
+    <PRIResource Include="LastFmCredentials.resw">
+      <Generator>ReswFileCodeGenerator</Generator>
+      <LastGenOutput>LastFmCredentials.cs</LastGenOutput>
+    </PRIResource>
     <None Include="packages.config" />
     <PRIResource Include="Shell\ShellStrings.resw" />
   </ItemGroup>
@@ -361,6 +411,10 @@
     <Page Include="Album\AlbumView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ArtistInfo\ArtistInfoView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Artist\ArtistView.xaml">
       <SubType>Designer</SubType>
@@ -452,6 +506,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Playback\Playback\Details.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Playback\Playback\SnappedAudio.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -542,6 +600,14 @@
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{11d7fb8c-1a2c-4d5b-b129-937d76468a78}</Project>
       <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SubEchoNest\SubEchoNest.csproj">
+      <Project>{431f874c-ede9-4255-906b-1b3d4d460ad3}</Project>
+      <Name>SubEchoNest</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SubLastFm\SubLastFm.csproj">
+      <Project>{4485a175-2491-40dd-a683-9ccf21267c45}</Project>
+      <Name>SubLastFm</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

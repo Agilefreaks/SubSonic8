@@ -1,0 +1,52 @@
+﻿<framework:AppPage
+    x:Class="Subsonic8.ArtistInfo.ArtistInfoView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:framework="using:Subsonic8.Framework"
+    xmlns:effects="using:Callisto.Effects"
+    xmlns:converters="using:Subsonic8.Converters"
+    xmlns:commonConverters="using:Common.Converters"
+    xmlns:interactivity="using:Windows.UI.Interactivity"
+    xmlns:behaviors="using:Common.Behaviors"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <converters:InvertedBooleanToVisibilityConverter x:Name="InvertedBoolToVisibilityConverter"/>
+        <commonConverters:NullToVisibilityConverter x:Name="NullToVisibilityConverter"/>
+    </Page.Resources>
+
+    <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}" effects:Tilt.IsTiltEnabled="True">
+        <Grid Visibility="{Binding Path=IsBusy, Converter={StaticResource InvertedBoolToVisibilityConverter}}" HorizontalAlignment="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+            
+            <Border Grid.Row="0">
+                <Image  Source="{Binding Path=ArtistImage}" Height="250" Stretch="Uniform"/>
+                <interactivity:Interaction.Behaviors>
+                    <behaviors:ShowBorderOnHoverBehavior />
+                </interactivity:Interaction.Behaviors>
+            </Border>
+            <ScrollViewer Grid.Row="1" Margin="0, 10, 0, 0" VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <RichTextBlock FontSize="14" TextAlignment="Justify" Height="Auto" TextIndent="10" >
+                        <Paragraph>
+                            <Run Text="{Binding Path=Biography.Text}"  />
+                        </Paragraph>
+                    </RichTextBlock>
+                </StackPanel>
+            </ScrollViewer>
+            <ContentControl Grid.Row="2" HorizontalContentAlignment="Center">
+                <HyperlinkButton NavigateUri="{Binding Path=Biography.Url}" Visibility="{Binding Path=Biography.Url, Converter={StaticResource NullToVisibilityConverter}}">
+                    Click here to view source
+                </HyperlinkButton>
+            </ContentControl>
+        </Grid>
+
+        <ProgressRing Width="50" IsActive="{Binding Path=IsBusy}" Height="50"/>
+    </Grid>
+</framework:AppPage>

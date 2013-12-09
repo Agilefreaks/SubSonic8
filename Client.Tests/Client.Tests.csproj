@@ -115,12 +115,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Album\AlbumViewModelTests.cs" />
+    <Compile Include="ArtistInfo\ArtistInfoViewModelTests.cs" />
     <Compile Include="BottomBar\BottomBarViewModelTests.cs" />
     <Compile Include="ClientTestBase.cs" />
     <Compile Include="Converters\IntToTimeStringConverterTests.cs" />
     <Compile Include="DefaultBottomBar\DefaultBottomBarViewModelTests.cs" />
     <Compile Include="ErrorDialog\ErrorDialogViewModelTests.cs" />
-    <Compile Include="Framework\Extenions\SongExtensionMethodTests.cs" />
+    <Compile Include="Framework\Extensions\SongExtensionMethodTests.cs" />
     <Compile Include="Framework\NotificationHelperTests.cs" />
     <Compile Include="Framework\Services\DialogNotificationOptionsTests.cs" />
     <Compile Include="Framework\Services\NotificationOptionsTests.cs" />
@@ -128,19 +129,25 @@
     <Compile Include="Framework\ViewModel\DetailViewModelBaseTests.cs" />
     <Compile Include="Framework\ViewModel\ItemViewModelBaseTests.cs" />
     <Compile Include="Mocks\MockDialogService.cs" />
+    <Compile Include="Mocks\MockEchoNestService.cs" />
     <Compile Include="Mocks\MockFullScreenVideoPlaybackViewModel.cs" />
     <Compile Include="Mocks\MockErrorDialogViewModel.cs" />
+    <Compile Include="Mocks\MockGetBiographiesResult.cs" />
+    <Compile Include="Mocks\MockGetArtistDetailsResult.cs" />
     <Compile Include="Mocks\MockGetRandomSongsResult.cs" />
+    <Compile Include="Mocks\MockLastFmService.cs" />
     <Compile Include="Mocks\MockPlayerManagementService.cs" />
     <Compile Include="Mocks\MockResourceService.cs" />
     <Compile Include="Mocks\MockCreatePlaylistResult.cs" />
     <Compile Include="Mocks\MockGetPlaylistResult.cs" />
     <Compile Include="Mocks\MockPingResult.cs" />
     <Compile Include="Mocks\MockRenamePlaylistResult.cs" />
+    <Compile Include="Mocks\MockLastFmResultBase.cs" />
     <Compile Include="Mocks\MockSettingsHelper.cs" />
     <Compile Include="Mocks\MockSharingService.cs" />
     <Compile Include="Mocks\MockUpdatePlaylistResult.cs" />
     <Compile Include="Mocks\MockSnappedVideoPlaybackViewModel.cs" />
+    <Compile Include="Mocks\MockArtistInfoViewModel.cs" />
     <Compile Include="PlaylistBottomBar\PlaylistBottomBarViewModelTests.cs" />
     <Compile Include="Playlists\ManagePlaylistsViewModelTests.cs" />
     <Compile Include="MenuItem\MenuItemViewModelBaseTests.cs" />
@@ -151,12 +158,9 @@
     <Compile Include="Mocks\MockGetAllPlaylistsResult.cs" />
     <Compile Include="Mocks\MockGetArtistResult.cs" />
     <Compile Include="Mocks\MockGetMusicDirectoryResult.cs" />
-    <Compile Include="Mocks\MockGetSongResult.cs" />
     <Compile Include="Mocks\MockPlaybackViewModel.cs" />
     <Compile Include="Mocks\MockTileNotificationService.cs" />
     <Compile Include="Mocks\MockToastNotificationService.cs" />
-    <Compile Include="Mocks\MockSearchResult.cs" />
-    <Compile Include="Mocks\MockServiceResultBase.cs" />
     <Compile Include="Mocks\MockShellViewModel.cs" />
     <Compile Include="Index\IndexViewModelTests.cs" />
     <Compile Include="Main\MainViewModelTests.cs" />
@@ -164,7 +168,6 @@
     <Compile Include="Mocks\MockNavigationService.cs" />
     <Compile Include="Mocks\MockStorageService.cs" />
     <Compile Include="Mocks\MockSubsonicModel.cs" />
-    <Compile Include="Mocks\MockSubsonicService.cs" />
     <Compile Include="Mocks\MockWinRTWrappersService.cs" />
     <Compile Include="MusicDirectory\MusicDirectoryViewModelTests.cs" />
     <Compile Include="Mocks\MockPlayerControls.cs" />
@@ -240,6 +243,14 @@
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{11d7fb8c-1a2c-4d5b-b129-937d76468a78}</Project>
       <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SubEchoNest\SubEchoNest.csproj">
+      <Project>{431f874c-ede9-4255-906b-1b3d4d460ad3}</Project>
+      <Name>SubEchoNest</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SubLastFm\SubLastFm.csproj">
+      <Project>{4485a175-2491-40dd-a683-9ccf21267c45}</Project>
+      <Name>SubLastFm</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

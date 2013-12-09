@@ -31,7 +31,7 @@
         [TestMethod]
         public void ViewName_Always_ReturnsCorrectName()
         {
-            _subject.ViewName.Should().Be("getIndexes.view");
+            _subject.ResourcePath.Should().Be("getIndexes.view");
         }
 
         #endregion

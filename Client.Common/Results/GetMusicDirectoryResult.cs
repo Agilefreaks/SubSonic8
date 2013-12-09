@@ -41,7 +41,7 @@ namespace Client.Common.Results
             }
         }
 
-        public override string ViewName
+        public override string ResourcePath
         {
             get
             {
@@ -53,7 +53,7 @@ namespace Client.Common.Results
 
         #region Methods
 
-        protected override void HandleResponse(XDocument xDocument)
+        public override void HandleResponse(XDocument xDocument)
         {
             var xmlSerializer = new XmlSerializer(typeof(MusicDirectory), new[] { typeof(MusicDirectoryChild) });
             var xElement = xDocument.Element(Namespace + "subsonic-response").Element(Namespace + "directory");
