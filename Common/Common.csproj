@@ -102,6 +102,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Behaviors\MultipleSelectBehavior.cs" />
+    <Compile Include="Behaviors\ShowBorderOnHoverBehavior.cs" />
     <Compile Include="Behaviors\UnSnapBehavior.cs" />
     <Compile Include="CommonModule.cs" />
     <Compile Include="Controls\TextBoxEx.cs" />

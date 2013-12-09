@@ -8,6 +8,8 @@
     xmlns:effects="using:Callisto.Effects"
     xmlns:converters="using:Subsonic8.Converters"
     xmlns:commonConverters="using:Common.Converters"
+    xmlns:interactivity="using:Windows.UI.Interactivity"
+    xmlns:behaviors="using:Common.Behaviors"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -15,36 +17,34 @@
         <commonConverters:NullToVisibilityConverter x:Name="NullToVisibilityConverter"/>
     </Page.Resources>
 
-    <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}" effects:Tilt.IsTiltEnabled="True" Margin="0, 0, 0 ,0">
-        <Grid Visibility="{Binding Path=IsBusy, Converter={StaticResource InvertedBoolToVisibilityConverter}}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+    <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}" effects:Tilt.IsTiltEnabled="True">
+        <Grid Visibility="{Binding Path=IsBusy, Converter={StaticResource InvertedBoolToVisibilityConverter}}" HorizontalAlignment="Center">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="50"/>
             </Grid.RowDefinitions>
-            <RichTextBlock Grid.Row="0" Grid.Column="0" TextAlignment="Center">
-                <Paragraph>
-                    <InlineUIContainer>
-                        <Image Source="{Binding Path=ArtistImage}" Height="250" Stretch="Uniform" Margin="5"/>
-                    </InlineUIContainer>
-                </Paragraph>
-            </RichTextBlock>
-            <StackPanel Grid.Row="1" Orientation="Vertical">
-                <ScrollViewer Height="200">
-                    <RichTextBlock FontSize="14" TextAlignment="Justify" Height="Auto">
+            
+            <Border Grid.Row="0">
+                <Image  Source="{Binding Path=ArtistImage}" Height="250" Stretch="Uniform"/>
+                <interactivity:Interaction.Behaviors>
+                    <behaviors:ShowBorderOnHoverBehavior />
+                </interactivity:Interaction.Behaviors>
+            </Border>
+            <ScrollViewer Grid.Row="1" Margin="0, 10, 0, 0" VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <RichTextBlock FontSize="14" TextAlignment="Justify" Height="Auto" TextIndent="10" >
                         <Paragraph>
                             <Run Text="{Binding Path=Biography.Text}"  />
                         </Paragraph>
                     </RichTextBlock>
-                </ScrollViewer>
-                <ContentControl HorizontalContentAlignment="Center">
-                    <HyperlinkButton NavigateUri="{Binding Path=Biography.Url}" Visibility="{Binding Path=Biography.Url, Converter={StaticResource NullToVisibilityConverter}}">
-                        Click here to view source
-                    </HyperlinkButton>
-                </ContentControl>
-            </StackPanel>
+                </StackPanel>
+            </ScrollViewer>
+            <ContentControl Grid.Row="2" HorizontalContentAlignment="Center">
+                <HyperlinkButton NavigateUri="{Binding Path=Biography.Url}" Visibility="{Binding Path=Biography.Url, Converter={StaticResource NullToVisibilityConverter}}">
+                    Click here to view source
+                </HyperlinkButton>
+            </ContentControl>
         </Grid>
 
         <ProgressRing Width="50" IsActive="{Binding Path=IsBusy}" Height="50"/>
