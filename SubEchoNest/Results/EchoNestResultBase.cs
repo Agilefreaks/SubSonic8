@@ -9,7 +9,8 @@
         {
             get
             {
-                return string.Format("{0}/{1}", Configuration.BaseUrl, ResourcePath);
+                return string.Format(Configuration.RequestFormatWithApiKey, Configuration.BaseUrl, Configuration.ApiKey,
+                    ResourcePath);
             }
         }
 

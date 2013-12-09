@@ -47,7 +47,11 @@
         [TestInitialize]
         public void Setup()
         {
-            _subject = new GetBiographiesResult(new Configuration(), "testArtist");
+            _subject = new GetBiographiesResult(new Configuration
+            {
+                ApiKey = "1234",
+                BaseUrl = "http://test.com",
+            }, "testArtist");
         }
 
         [TestMethod]
@@ -61,6 +65,13 @@
             artistDetails.Items[0].Text.Should().Be("testContent");
             artistDetails.Items[0].Site.Should().Be("wikipedia");
             artistDetails.Items[0].Url.Should().Be("http://en.wikipedia.org/wiki/Iris_(American_band)");
+        }
+
+        [TestMethod]
+        public void RequestUrl_Always_ReturnsProperlyFormedUrl()
+        {
+            _subject.RequestUrl.Should()
+                .Be("http://test.com/artist/biographies?api_key=1234&format=xml&name=testArtist&license=cc-by-sa");
         }
     }
 }
