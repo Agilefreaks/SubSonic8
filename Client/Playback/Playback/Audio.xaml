@@ -17,7 +17,8 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Image Source="{Binding CoverArt}" Style="{StaticResource PlaybackBigCoverArtStyle}" effects:Tilt.IsTiltEnabled="True" />
+        <Image Source="{Binding CoverArt}" Style="{StaticResource PlaybackBigCoverArtStyle}" effects:Tilt.IsTiltEnabled="True" 
+               cal:Message.Attach="[Event Tapped] = [Action ShowArtistInfo]"/>
         <StackPanel Grid.Row="1" Style="{StaticResource PlaybackControlsPanelStyle}"
                     Visibility="{Binding Path=PlaybackControlsVisible, Converter={StaticResource boolToVisibilityConverter}}">
             <Button Style="{StaticResource PreviousAppBarButtonStyle}"

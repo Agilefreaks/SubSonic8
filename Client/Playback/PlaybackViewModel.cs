@@ -472,7 +472,7 @@
             _currentVisualState = state;
         }
 
-        public async void ShowArtistInfo()
+        public async Task ShowArtistInfo()
         {
             if (ActiveItem == null) return;
 

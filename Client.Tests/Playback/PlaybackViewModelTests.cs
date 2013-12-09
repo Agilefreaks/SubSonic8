@@ -14,7 +14,6 @@ namespace Client.Tests.Playback
     using FluentAssertions;
     using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
     using Microsoft.VisualStudio.TestPlatform.UnitTestFramework.AppContainer;
-    using Subsonic8.ArtistInfo;
     using Subsonic8.Playback;
     using Subsonic8.Playlists;
 
@@ -36,6 +35,7 @@ namespace Client.Tests.Playback
         private MockSnappedVideoPlaybackViewModel _mockSnappedVideoPlaybackViewModel;
 
         private MockFullScreenVideoPlaybackViewModel _mockFullScreenVideoPlaybackViewModel;
+        private MockArtistInfoViewModel _mockArtistInfoViewModel;
 
         #endregion
 
@@ -405,25 +405,44 @@ namespace Client.Tests.Playback
         }
 
         [TestMethod]
-        public void ArtistInfo_PlaylistHasCurrentItem_ShouldNavigateToTheArtistInfoViewModelWithTheArtistName()
+        public async Task ShowArtistInfo_PlaylistHasCurrentItem_ShouldChangeTheStateToDetails()
         {
             _mockPlaylistManagementService.CurrentItem = new PlaylistItem { Artist = "test name" };
 
-            Subject.ShowArtistInfo();
+            await Subject.ShowArtistInfo();
 
-            MockNavigationService.NavigateToViewModelCalls.Count.Should().Be(1);
-            MockNavigationService.NavigateToViewModelCalls[0].Key.Should().Be<ArtistInfoViewModel>();
-            MockNavigationService.NavigateToViewModelCalls[0].Value.Should().Be("test name");
+            Subject.State.Should().Be(PlaybackViewModelStateEnum.Details);
         }
 
         [TestMethod]
-        public void ArtistInfo_PlaylistDoesNotHaveCurrentItem_ShouldNotNavigateToArtistInfoViewModel()
+        public async Task ShowArtistInfo_PlaylistHasCurrentItem_ShouldSetTheCurrentArtistNameOnTheArtistInfoViewModel()
+        {
+            _mockPlaylistManagementService.CurrentItem = new PlaylistItem { Artist = "test name" };
+
+            await Subject.ShowArtistInfo();
+
+            Subject.ArtistInfoViewModel.Parameter.Should().Be("test name");
+        }
+
+        [TestMethod]
+        public async Task ShowArtistInfo_PlaylistHasCurrentItem_ShouldPopulateTheArtistInfoViewModel()
+        {
+            _mockPlaylistManagementService.CurrentItem = new PlaylistItem { Artist = "test name" };
+
+            await Subject.ShowArtistInfo();
+
+            _mockArtistInfoViewModel.PopulateCallCount.Should().Be(1);
+        }
+
+        [TestMethod]
+        public async Task ShowArtistInfo_PlaylistDoesNotHaveCurrentItem_ShouldNotChangeTheStateOfTheViewModel()
         {
             _mockPlaylistManagementService.CurrentItem = null;
+            Subject.State = PlaybackViewModelStateEnum.Audio;
 
-            Subject.ShowArtistInfo();
+            await Subject.ShowArtistInfo();
 
-            MockNavigationService.NavigateToViewModelCalls.Count.Should().Be(0);
+            Subject.State.Should().Be(PlaybackViewModelStateEnum.Audio);
         }
 
         #endregion
@@ -439,6 +458,7 @@ namespace Client.Tests.Playback
             _mockEmbeddedVideoPlaybackViewModel = new MockEmbeddedVideoPlaybackViewModel();
             _mockSnappedVideoPlaybackViewModel = new MockSnappedVideoPlaybackViewModel();
             _mockFullScreenVideoPlaybackViewModel = new MockFullScreenVideoPlaybackViewModel();
+            _mockArtistInfoViewModel = new MockArtistInfoViewModel();
             Subject.WinRTWrappersService = _mockWinRTWrappersService;
             Subject.PlaylistManagementService = _mockPlaylistManagementService;
             Subject.PlayerManagementService = _mockPlayerManagementService;
@@ -446,6 +466,7 @@ namespace Client.Tests.Playback
             Subject.ToastNotificationService = _mockToastNotificationService;
             Subject.SnappedVideoPlaybackViewModel = _mockSnappedVideoPlaybackViewModel;
             Subject.FullScreenVideoPlaybackViewModel = _mockFullScreenVideoPlaybackViewModel;
+            Subject.ArtistInfoViewModel = _mockArtistInfoViewModel;
         }
 
         #endregion

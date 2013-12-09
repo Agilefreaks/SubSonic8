@@ -71,7 +71,7 @@
                     </Grid>
                     <Grid Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"
                           x:Name="ExpandedMediaPresenter" Style="{StaticResource PlaylistContentGridStyle}">
-                        <playback:Audio cal:Bind.Model="{Binding}" cal:Message.Attach="[Event Tapped] = [Action ShowArtistInfo]"
+                        <playback:Audio cal:Bind.Model="{Binding}"
                                     Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='Audio'}" />
                         <playback:Video cal:Bind.Model="{Binding}"
                                     Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='Video'}" />
