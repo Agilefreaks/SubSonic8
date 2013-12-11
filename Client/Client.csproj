@@ -175,6 +175,11 @@
     <Compile Include="Converters\IntToTimeStringConverter.cs" />
     <Compile Include="Converters\PlaybackStateToVisibilityConverter.cs" />
     <Compile Include="Converters\PlayingStateToVisibilityConverter.cs" />
+    <Compile Include="ErrorDialog\ErrorDialogViewModelStrings.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ErrorDialogViewModelStrings.resw</DependentUpon>
+    </Compile>
     <Compile Include="LastFmCredentials.cs">
       <DependentUpon>LastFmCredentials.resw</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -385,7 +390,10 @@
       <LastGenOutput>EchoNestCredentials.cs</LastGenOutput>
     </PRIResource>
     <None Include="Client_TemporaryKey.pfx" />
-    <PRIResource Include="ErrorDialog\ErrorDialogViewModelStrings.resw" />
+    <PRIResource Include="ErrorDialog\ErrorDialogViewModelStrings.resw">
+      <Generator>ReswFileCodeGenerator</Generator>
+      <LastGenOutput>ErrorDialogViewModelStrings.cs</LastGenOutput>
+    </PRIResource>
     <PRIResource Include="LastFmCredentials.resw">
       <Generator>ReswFileCodeGenerator</Generator>
       <LastGenOutput>LastFmCredentials.cs</LastGenOutput>

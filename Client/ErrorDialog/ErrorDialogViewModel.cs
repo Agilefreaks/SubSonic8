@@ -1,6 +1,8 @@
 ﻿namespace Subsonic8.ErrorDialog
 {
     using System;
+    using System.Net;
+    using System.ServiceModel;
     using System.Text;
     using System.Threading.Tasks;
     using Caliburn.Micro;
@@ -28,6 +30,8 @@
         private bool _isHidden;
 
         private bool _canGoBack;
+        private string _message;
+        private string _notice;
 
         #endregion
 
@@ -47,7 +51,7 @@
             WinRTWrapperService = winRTWrappersService;
             WinRTWrapperService.RegisterShareRequestHandler(OnShareRequested);
             NavigationService = navigationService;
-            DisplayName = "It seems that something went wrong ;(";
+            DisplayName = "Something went wrong ;(";
         }
 
         #endregion
@@ -73,7 +77,13 @@
         {
             get
             {
-                return _resourceService.GetStringResource("ErrorDialogViewModelStrings/Notice");
+                return _notice;
+            }
+            set
+            {
+                if (value == _notice) return;
+                _notice = value;
+                NotifyOfPropertyChange();
             }
         }
 
@@ -81,7 +91,14 @@
         {
             get
             {
-                return _resourceService.GetStringResource("ErrorDialogViewModelStrings/DefaultMessage");
+                return _message;
+            }
+
+            private set
+            {
+                if (value == _message) return;
+                _message = value;
+                NotifyOfPropertyChange();
             }
         }
 
@@ -235,10 +252,70 @@
         {
             _error = error;
             ExceptionString = error.ToString();
-            ErrorDescription = error.Message;
+            SetFriendlyMessages(error);
             Show();
 
             await Task.Run(() => { });
+        }
+
+        private void SetFriendlyMessages(Exception error)
+        {
+            string result = null;
+            if (IsDomainIssue(error))
+            {
+                result = ErrorDialogViewModelStrings.DnsIssue;
+            }
+            else if (IsHttpsException(error))
+            {
+                result = ErrorDialogViewModelStrings.HttpsIssue;
+            }
+            else if (IsNotFoundException(error))
+            {
+                result = ErrorDialogViewModelStrings.NotFoundIssue;
+            }
+
+
+            Notice = result == null ? ErrorDialogViewModelStrings.Notice : string.Empty;
+            ErrorDescription = result ?? error.Message;
+            Message = result == null
+                ? ErrorDialogViewModelStrings.DefaultMessage
+                : ErrorDialogViewModelStrings.KnownErrorMessage;
+        }
+
+        private static bool IsDomainIssue(Exception error)
+        {
+            var result = false;
+            if (error is CommunicationException)
+            {
+                var innerException = error.GetBaseException();
+                result = innerException is WebException &&
+                          innerException.Message.Contains("The remote name could not be resolved");
+            }
+
+            return result;
+        }
+
+        private static bool IsHttpsException(Exception error)
+        {
+            var result = false;
+            if (error is CommunicationException)
+            {
+                var innerException = error.GetBaseException();
+                result = innerException.Message.Contains("The remote certificate is invalid according to the validation procedure");
+            }
+
+            return result;
+        }
+
+        private static bool IsNotFoundException(Exception error)
+        {
+            var result = false;
+            if (error is CommunicationException)
+            {
+                result = error.Message.Contains("Status Code: NotFound");
+            }
+
+            return result;            
         }
 
         #endregion
