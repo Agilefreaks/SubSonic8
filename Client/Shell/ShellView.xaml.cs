@@ -1,5 +1,6 @@
 ﻿namespace Subsonic8.Shell
 {
+    using Framework.Interfaces;
     using Windows.UI.Xaml.Controls;
     using Windows.UI.Xaml.Navigation;
 
@@ -16,13 +17,7 @@
 
         #region Public Properties
 
-        public Frame ShellFrame
-        {
-            get
-            {
-                return shellFrame;
-            }
-        }
+        public Frame ShellFrame => shellFrame;
 
         #endregion
 
