@@ -13,6 +13,7 @@
     using Windows.UI.Xaml.Controls;
     using Windows.UI.Xaml.Controls.Primitives;
     using Action = System.Action;
+    using Flyout = Callisto.Controls.Flyout;
 
     public class PlaylistBottomBarViewModel : BottomBarViewModelBase, IPlaylistBottomBarViewModel
     {
