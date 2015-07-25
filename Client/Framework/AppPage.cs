@@ -105,7 +105,7 @@
         {
             if (_layoutAwareControls != null)
             {
-                var visualState = DetermineVisualState(ApplicationView.Value);
+                var visualState = DetermineVisualState();
                 foreach (var layoutAwareControl in _layoutAwareControls)
                 {
                     VisualStateManager.GoToState(layoutAwareControl, visualState, false);
@@ -149,7 +149,7 @@
             _layoutAwareControls.Add(control);
 
             // Set the initial visual state of the control
-            VisualStateManager.GoToState(control, DetermineVisualState(ApplicationView.Value), false);
+            VisualStateManager.GoToState(control, DetermineVisualState(), false);
         }
 
         /// <summary>
@@ -193,9 +193,16 @@
         /// <returns>Visual state name used to drive the
         /// <see cref="VisualStateManager"/></returns>
         /// <seealso cref="InvalidateVisualState"/>
-        protected virtual string DetermineVisualState(ApplicationViewState viewState)
+        protected virtual string DetermineVisualState()
         {
-            return viewState.ToString();
+            var visualState = "FullScreenLandscape";
+            var windowWidth = Window.Current.Bounds.Width;
+            if (windowWidth <= 500)
+            {
+                visualState = "Snapped";
+            }
+
+            return visualState;
         }
 
         /// <summary>
