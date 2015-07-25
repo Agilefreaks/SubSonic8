@@ -193,7 +193,7 @@
         }
 
         [TestMethod]
-        public void HasValidSubsonicUrlWhenConfigurationBaseUrlIsEmptyReturnsFalse()
+        public void HasValidSubsonicUrl_ConfigurationBaseUrlIsEmpty_ReturnsFalse()
         {
             _subject.Configuration = new SubsonicServiceConfiguration { BaseUrl = string.Empty };
 

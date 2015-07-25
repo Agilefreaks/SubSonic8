@@ -106,7 +106,8 @@
                 return PlaylistManagementService.CurrentItem;
             }
         }
-       public string CoverArt
+
+        public string CoverArt
         {
             get
             {
@@ -115,6 +116,10 @@
 
             set
             {
+                if (_coverArt == value)
+                {
+                    return;
+                }
                 _coverArt = value == Client.Common.Services.SubsonicService.CoverArtPlaceholder
                                 ? CoverArtPlaceholderLarge
                                 : value;
@@ -531,23 +536,29 @@
 
         private async void CreateBluredCoverArt(string coverArt)
         {
-            var writeableBitmap = new WriteableBitmap(1, 1);
-            var streamTask = coverArt == CoverArtPlaceholderLarge ? GetStreamFromFile(coverArt) : GetStreamFromUri(coverArt);
-            using (var stream = await streamTask)
-            {
-                writeableBitmap = await writeableBitmap.FromStream(stream);
-            }
-            var bluredImage = writeableBitmap.Convolute(Gaussian11X11Kernel);
-            BluredCoverArt = bluredImage;
+            var dispatcher = Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher;
+            await dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, async () =>
+                    {
+                        var writeableBitmap = new WriteableBitmap(1, 1);
+                        var streamTask = coverArt == CoverArtPlaceholderLarge
+                                             ? GetStreamFromFile(coverArt)
+                                             : GetStreamFromUri(coverArt);
+                        using (var stream = await streamTask)
+                        {
+                            writeableBitmap = await writeableBitmap.FromStream(stream);
+                            var bluredImage = writeableBitmap.Convolute(Gaussian11X11Kernel);
+                            BluredCoverArt = bluredImage;
+                        }
+                    });
         }
 
-        private async Task<IRandomAccessStream> GetStreamFromUri(string coverArt)
+        private static async Task<IRandomAccessStream> GetStreamFromUri(string coverArt)
         {
             var streamReference = RandomAccessStreamReference.CreateFromUri(new Uri(coverArt, UriKind.Absolute));
             return await streamReference.OpenReadAsync();
         }
 
-        private async Task<IRandomAccessStream> GetStreamFromFile(string file)
+        private static async Task<IRandomAccessStream> GetStreamFromFile(string file)
         {
             var uri = "ms-appx://" + file;
             var imgFile =
@@ -555,6 +566,7 @@
                 Windows.Storage.StorageFile.GetFileFromApplicationUriAsync(new Uri(uri));
             return await imgFile.OpenReadAsync();
         }
+
         protected override void OnActivate()
         {
             base.OnActivate();

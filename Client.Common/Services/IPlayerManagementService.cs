@@ -3,9 +3,9 @@
     using System;
     using System.Collections.Generic;
     using Caliburn.Micro;
-    using Client.Common.EventAggregatorMessages;
-    using Client.Common.Models;
-    using Client.Common.Services.DataStructures.PlayerManagementService;
+    using EventAggregatorMessages;
+    using Models;
+    using DataStructures.PlayerManagementService;
 
     public interface IPlayerManagementService : IHandle<StartPlaybackMessage>, 
                                                 IHandle<StopPlaybackMessage>, 

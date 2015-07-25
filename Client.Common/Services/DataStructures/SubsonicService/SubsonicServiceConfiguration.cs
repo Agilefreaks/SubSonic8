@@ -63,7 +63,7 @@
                     return;
                 }
 
-                _baseUrl = EnsureUrlHasCorrectFormat(value);
+                _baseUrl = string.IsNullOrWhiteSpace(value) ? value : EnsureUrlHasCorrectFormat(value);
                 NotifyOfPropertyChange();
             }
         }

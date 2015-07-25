@@ -1,30 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
-  <Identity Name="11722CristiBadila-AgileFr.Subsonic8" Publisher="CN=9A125042-BA51-4746-8221-E7237026040D" Version="1.0.0.27" />
+<Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest">
+  <Identity Name="11722CristiBadila-AgileFr.Subsonic8" Publisher="CN=9A125042-BA51-4746-8221-E7237026040D" Version="1.1.0.28" />
   <Properties>
     <DisplayName>Subsonic8</DisplayName>
     <PublisherDisplayName>Cristi Badila - AgileFreaks</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
   <Prerequisites>
-    <OSMinVersion>6.2.1</OSMinVersion>
-    <OSMaxVersionTested>6.2.1</OSMaxVersionTested>
+    <OSMinVersion>6.3.0</OSMinVersion>
+    <OSMaxVersionTested>6.3.0</OSMaxVersionTested>
   </Prerequisites>
   <Resources>
     <Resource Language="x-generate" />
   </Resources>
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="Client.App">
-      <VisualElements DisplayName="Subsonic8" Logo="Assets\Logo.png" SmallLogo="Assets\SmallLogo.png" Description="Subsonic8" ForegroundText="light" BackgroundColor="#464646" ToastCapable="true">
-        <DefaultTile ShowName="allLogos" WideLogo="Assets\WideLogo.png" ShortName="Subsonic8" />
-        <SplashScreen Image="Assets\subsonic.png" />
-        <InitialRotationPreference>
-          <Rotation Preference="portrait" />
-          <Rotation Preference="landscape" />
-          <Rotation Preference="portraitFlipped" />
-          <Rotation Preference="landscapeFlipped" />
-        </InitialRotationPreference>
-      </VisualElements>
       <Extensions>
         <Extension Category="windows.backgroundTasks" EntryPoint="Subsonic8.Shell">
           <BackgroundTasks>
@@ -33,6 +23,21 @@
         </Extension>
         <Extension Category="windows.search" EntryPoint="Subsonic8.Shell" />
       </Extensions>
+      <m2:VisualElements DisplayName="Subsonic8" Description="Subsonic8" BackgroundColor="#464646" ToastCapable="true" ForegroundText="light" Square150x150Logo="Assets\Logo.png" Square30x30Logo="Assets\SmallLogo.png">
+        <m2:DefaultTile ShortName="Subsonic8" Wide310x150Logo="Assets\WideLogo.png">
+          <m2:ShowNameOnTiles>
+            <m2:ShowOn Tile="square150x150Logo" />
+            <m2:ShowOn Tile="wide310x150Logo" />
+          </m2:ShowNameOnTiles>
+        </m2:DefaultTile>
+        <m2:InitialRotationPreference>
+          <m2:Rotation Preference="portrait" />
+          <m2:Rotation Preference="landscape" />
+          <m2:Rotation Preference="portraitFlipped" />
+          <m2:Rotation Preference="landscapeFlipped" />
+        </m2:InitialRotationPreference>
+        <m2:SplashScreen Image="Assets\subsonic.png" />
+      </m2:VisualElements>
     </Application>
   </Applications>
   <Capabilities>

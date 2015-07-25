@@ -5,15 +5,14 @@
     using System.IO;
     using System.Threading.Tasks;
     using System.Xml.Serialization;
-    using Client.Common.Helpers;
-    using MetroLog;
     using Windows.ApplicationModel.DataTransfer;
     using Windows.ApplicationModel.Search;
     using Windows.Foundation;
-    using Windows.Media;
     using Windows.Storage;
     using Windows.Storage.Pickers;
     using Windows.UI.ApplicationSettings;
+    using Helpers;
+    using MetroLog;
 
     public class WinRTWrappersService : IWinRTWrappersService
     {
@@ -67,12 +66,7 @@
 
         public void RegisterMediaControlHandler(IMediaControlHandler mediaControlHandler)
         {
-            MediaControl.PlayPressed += mediaControlHandler.PlayPressed;
-            MediaControl.PausePressed += mediaControlHandler.PausePressed;
-            MediaControl.PlayPauseTogglePressed += mediaControlHandler.PlayPausePressed;
-            MediaControl.StopPressed += mediaControlHandler.StopPressed;
-            MediaControl.NextTrackPressed += mediaControlHandler.PlayNextTrackPressed;
-            MediaControl.PreviousTrackPressed += mediaControlHandler.PlayPreviousTrackPressed;
+            mediaControlHandler.Register();
         }
 
         public void RegisterSearchQueryHandler(TypedEventHandler<SearchPane, SearchPaneQuerySubmittedEventArgs> handler)

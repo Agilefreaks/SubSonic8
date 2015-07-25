@@ -10,19 +10,20 @@
     using Client.Common.Results;
     using Client.Common.Services;
     using MugenInjection.Attributes;
+    using BottomBar;
+    using ErrorDialog;
+    using Framework;
+    using Framework.Extensions;
+    using Framework.Interfaces;
+    using Framework.Services;
+    using Main;
+    using Playback;
+    using Search;
+    using Settings;
 
     using Subsonic8.AudioPlayback;
-    using Subsonic8.BottomBar;
-    using Subsonic8.ErrorDialog;
-    using Subsonic8.Framework;
-    using Subsonic8.Framework.Extensions;
-    using Subsonic8.Framework.Interfaces;
-    using Subsonic8.Framework.Services;
-    using Subsonic8.Main;
-    using Subsonic8.Playback;
-    using Subsonic8.Search;
-    using Subsonic8.Settings;
-    using Subsonic8.VideoPlayback;
+
+    using VideoPlayback;
     using Windows.UI.Core;
     using Windows.UI.Xaml;
 
@@ -150,10 +151,14 @@
 
         #region Methods
 
-        protected override void OnViewAttached(object view, object context)
+        protected async override void OnViewAttached(object view, object context)
         {
             base.OnViewAttached(view, context);
+            await CoreWindow.GetForCurrentThread().Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () => await InitializeViewDependentServices(view));
+        }
 
+        private async Task InitializeViewDependentServices(object view)
+        {
             WinRTWrappersService.RegisterSearchQueryHandler((sender, args) => SendSearchQueryMessage(args.QueryText));
             WinRTWrappersService.RegisterSettingsRequestedHandler(
                 (sender, args) => args.AddSetting<SettingsViewModel>());
@@ -161,21 +166,15 @@
                 (sender, args) => args.AddSetting<PrivacyPolicyViewModel>());
             WinRTWrappersService.RegisterMediaControlHandler(new MediaControlHandler(_eventAggregator));
 
-            var dispatcher = CoreWindow.GetForCurrentThread().Dispatcher;
-            dispatcher.RunAsync(
-                CoreDispatcherPriority.Normal,
-                async () =>
-                {
-                    HookBugFreak();
+            HookBugFreak();
 
-                    RegisterPlayers();
+            RegisterPlayers();
 
-                    InstantiateRequiredSingletons();
+            InstantiateRequiredSingletons();
 
-                    await LoadSettings();
+            await LoadSettings();
 
-                    await RestoreLastViewOrGoToMain((ShellView)view);
-                });
+            await RestoreLastViewOrGoToMain((ShellView) view);
         }
 
         private void RegisterPlayers()

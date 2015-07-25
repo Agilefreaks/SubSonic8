@@ -1,16 +1,18 @@
 ﻿namespace Client.Common.Helpers
 {
+    using System;
     using Windows.Media;
-
+    using Windows.Storage.Streams;
     using Caliburn.Micro;
+    using Client.Common.Models;
+    using EventAggregatorMessages;
 
-    using Client.Common.EventAggregatorMessages;
-
-    public class MediaControlHandler : IMediaControlHandler
+    public class MediaControlHandler : IMediaControlHandler 
     {
         #region Fields
 
         private readonly IEventAggregator _eventAggregator;
+        private SystemMediaTransportControls _mediaTransportControls;
 
         #endregion
 
@@ -26,51 +28,81 @@
 
         #region Public Methods and Operators
 
+        public void Register()
+        {
+            _eventAggregator.Subscribe(this);
+            _mediaTransportControls = SystemMediaTransportControls.GetForCurrentView();
+            _mediaTransportControls.DisplayUpdater.AppMediaId = "Subsonic8";
+            _mediaTransportControls.IsPlayEnabled = true;
+            _mediaTransportControls.IsPauseEnabled = true;
+            _mediaTransportControls.IsStopEnabled = true;
+            _mediaTransportControls.IsNextEnabled = true;
+            _mediaTransportControls.IsPreviousEnabled = true;
+            _mediaTransportControls.PlaybackStatus = MediaPlaybackStatus.Stopped;
+            _mediaTransportControls.ButtonPressed += MediaTransportControlsOnButtonPressed;
+        }
+
+        private void MediaTransportControlsOnButtonPressed(SystemMediaTransportControls sender, SystemMediaTransportControlsButtonPressedEventArgs args)
+        {
+            switch (args.Button)
+            {
+                case SystemMediaTransportControlsButton.Play:
+                case SystemMediaTransportControlsButton.Pause:
+                    _eventAggregator.Publish(new PlayPauseMessage());
+                    break;
+                case SystemMediaTransportControlsButton.Stop:
+                    _eventAggregator.Publish(new StopMessage());
+                    break;
+                case SystemMediaTransportControlsButton.Next:
+                    _eventAggregator.Publish(new PlayNextMessage());
+                    break;
+                case SystemMediaTransportControlsButton.Previous:
+                    _eventAggregator.Publish(new PlayPreviousMessage());
+                    break;
+            }
+        }
+
         public void Handle(StartPlaybackMessage message)
         {
-            var artist = message.Item.Artist;
-            var title = message.Item.Title;
-            MediaControl.ArtistName = GetValueOrPlaceOrder(artist);
-            MediaControl.TrackName = GetValueOrPlaceOrder(title);
+            _mediaTransportControls.PlaybackStatus = MediaPlaybackStatus.Playing;
+            SetItemMetaData(message.Item);
         }
 
-        public void PausePressed(object sender, object e)
+        public void Handle(StopPlaybackMessage message)
         {
-            _eventAggregator.Publish(new PauseMessage());
+            _mediaTransportControls.PlaybackStatus = MediaPlaybackStatus.Stopped;
         }
 
-        public void PlayNextTrackPressed(object sender, object e)
+        public void Handle(PausePlaybackMessage message)
         {
-            _eventAggregator.Publish(new PlayNextMessage());
+            _mediaTransportControls.PlaybackStatus = MediaPlaybackStatus.Paused;
         }
 
-        public void PlayPausePressed(object sender, object e)
+        public void Handle(ResumePlaybackMessage message)
         {
-            _eventAggregator.Publish(new PlayPauseMessage());
-        }
-
-        public void PlayPressed(object sender, object e)
-        {
-            _eventAggregator.Publish(new PlayMessage());
-        }
-
-        public void PlayPreviousTrackPressed(object sender, object e)
-        {
-            _eventAggregator.Publish(new PlayPreviousMessage());
-        }
-
-        public void StopPressed(object sender, object e)
-        {
-            _eventAggregator.Publish(new StopMessage());
+            _mediaTransportControls.PlaybackStatus = MediaPlaybackStatus.Playing;
+            SetItemMetaData(message.Item);
         }
 
         #endregion
 
         #region Methods
 
-        private static string GetValueOrPlaceOrder(string value)
+        private void SetItemMetaData(PlaylistItem item)
         {
-            return string.IsNullOrWhiteSpace(value) ? "Unknown" : value;
+            if (item.Type == PlaylistItemTypeEnum.Audio)
+            {
+                _mediaTransportControls.DisplayUpdater.Type = MediaPlaybackType.Music;
+                _mediaTransportControls.DisplayUpdater.MusicProperties.Artist = item.Artist;
+                _mediaTransportControls.DisplayUpdater.MusicProperties.Title = item.Title;
+                _mediaTransportControls.DisplayUpdater.Thumbnail = RandomAccessStreamReference.CreateFromUri(new Uri(item.CoverArtUrl));
+            }
+            else
+            {
+                _mediaTransportControls.DisplayUpdater.Type = MediaPlaybackType.Video;
+                _mediaTransportControls.DisplayUpdater.VideoProperties.Title = item.Title;
+            }
+            _mediaTransportControls.DisplayUpdater.Update();
         }
 
         #endregion

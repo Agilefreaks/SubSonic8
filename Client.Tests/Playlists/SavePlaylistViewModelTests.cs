@@ -112,7 +112,7 @@
                 {
                     callCount++;
                     id.Should().Be(2);
-                    return new MockGetPlaylistResult();
+                    return new MockGetPlaylistResult { GetResultFunc = () => new Playlist() };
                 };
 
             await Subject.Save();
@@ -122,7 +122,7 @@
 
         [TestMethod]
         public async Task
-            Save_MenuItemsDoesNotContainPlaylistWithSameNameAsPlaylistNamse_CallsCreatePlaylistWithThePlaylistNameAndCurrentPlaylistItemIds()
+            Save_MenuItemsDoesNotContainPlaylistWithSameNameAsPlaylistName_CallsCreatePlaylistWithThePlaylistNameAndCurrentPlaylistItemIds()
         {
             _mockPlyalistManagementService.Items.Add(new PlaylistItem { UriAsString = "http://view.view?id=1" });
             _mockPlyalistManagementService.Items.Add(new PlaylistItem { UriAsString = "http://view.view?id=2" });
