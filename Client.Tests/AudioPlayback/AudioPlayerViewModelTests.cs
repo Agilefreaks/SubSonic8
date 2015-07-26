@@ -25,7 +25,7 @@
 
         private MockEventAggregator _mockEventAggregator;
 
-        private MockPlayerControls _mockPlayerControls;
+        private MockExtendedPlayerControls _mockPlayerControls;
 
         private AudioPlayerViewModel _subject;
 
@@ -37,7 +37,7 @@
         public void Setup()
         {
             IoC.GetInstance = (type, s) => null;
-            _mockPlayerControls = new MockPlayerControls();
+            _mockPlayerControls = new MockExtendedPlayerControls();
             _mockEventAggregator = new MockEventAggregator();
             _subject = new AudioPlayerViewModel
                            {

@@ -9,24 +9,21 @@
 
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            var result = string.Empty;
-            if (value is int)
-            {
-                var intValue = (int)value;
-                var timeSpan = new TimeSpan(0, 0, intValue);
+            string result;
+            var intValue = System.Convert.ToInt32(value);
+            var timeSpan = TimeSpan.FromSeconds(intValue);
 
-                if (timeSpan.Hours == 0)
-                {
-                    result = timeSpan.ToString("mm\\:ss");
-                }
-                else if (timeSpan.Hours < 10)
-                {
-                    result = timeSpan.ToString("h\\:mm\\:ss");
-                }
-                else
-                {
-                    result = timeSpan.ToString("hh\\:mm\\:ss");
-                }
+            if (timeSpan.Hours == 0)
+            {
+                result = timeSpan.ToString("mm\\:ss");
+            }
+            else if (timeSpan.Hours < 10)
+            {
+                result = timeSpan.ToString("h\\:mm\\:ss");
+            }
+            else
+            {
+                result = timeSpan.ToString("hh\\:mm\\:ss");
             }
 
             return result;

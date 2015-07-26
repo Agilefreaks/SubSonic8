@@ -134,6 +134,7 @@
     </Compile>
     <Compile Include="AudioPlayback\AudioPlayerViewModel.cs" />
     <Compile Include="AudioPlayback\IAudioPlayerViewModel.cs" />
+    <Compile Include="AudioPlayback\IPlaybackReporter.cs" />
     <Compile Include="BottomBar\BottomBarViewModelBase.cs" />
     <Compile Include="BottomBar\ChangeBottomBarMessage.cs" />
     <Compile Include="BottomBar\CommonButtons.xaml.cs">
@@ -185,16 +186,13 @@
     <Compile Include="Converters\IntToTimeStringConverter.cs" />
     <Compile Include="Converters\PlaybackStateToVisibilityConverter.cs" />
     <Compile Include="Converters\PlayingStateToVisibilityConverter.cs" />
-    <Compile Include="EchoNestCredentials.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>EchoNestCredentials.resw</DependentUpon>
-    </Compile>
+    <Compile Include="EchoNestCredentials.cs" />
     <Compile Include="ErrorDialog\ErrorDialogViewModelStrings.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ErrorDialogViewModelStrings.resw</DependentUpon>
     </Compile>
+    <Compile Include="Framework\Interfaces\IExtendedPlayerControls.cs" />
     <Compile Include="ErrorDialog\ErrorDialogView.xaml.cs">
       <DependentUpon>ErrorDialogView.xaml</DependentUpon>
     </Compile>
@@ -253,6 +251,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>LastFmCredentials.resw</DependentUpon>
     </Compile>
+    <Compile Include="Playback\IProgressIndicatorViewModel.cs" />
     <Compile Include="Playback\PlaybackViewModelStrings.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -270,6 +269,10 @@
     <Compile Include="Playback\Playback\SnappedVideo.xaml.cs">
       <DependentUpon>SnappedVideo.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Playback\ProgressIndicatorView.xaml.cs">
+      <DependentUpon>ProgressIndicatorView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Playback\ProgressIndicatorViewModel.cs" />
     <Compile Include="PlaylistItem\PlaylistItemView.xaml.cs">
       <DependentUpon>PlaylistItemView.xaml</DependentUpon>
     </Compile>
@@ -562,6 +565,10 @@
     <Page Include="Playback\Playback\Video.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Playback\ProgressIndicatorView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="PlaylistItem\PlaylistItemView.xaml">
       <SubType>Designer</SubType>

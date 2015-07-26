@@ -19,9 +19,21 @@
 
         private IEventAggregator _eventAggregator;
 
-        private IPlayerControls _playerControls;
+        private IExtendedPlayerControls _playerControls;
 
         private Uri _source;
+
+        private PlaylistItem _currentItem;
+
+        #endregion
+
+        #region Public Events
+
+        public event EventHandler<EventArgs> PlaybackPaused;
+
+        public event EventHandler<EventArgs> PlaybackStarted;
+
+        public event EventHandler<EventArgs> PlaybackStoped;
 
         #endregion
 
@@ -42,7 +54,7 @@
             }
         }
 
-        public IPlayerControls PlayerControls
+        public IExtendedPlayerControls PlayerControls
         {
             get
             {
@@ -74,35 +86,70 @@
 
         #region Public Methods and Operators
 
+        public TimeSpan GetCurrentPosition()
+        {
+            return _playerControls.GetCurrentPosition();
+        }
+
+        public TimeSpan GetDuration()
+        {
+            return TimeSpan.FromSeconds(_currentItem.Duration);
+        }
+
         public void Pause()
         {
             _playerControls.Pause();
+            if (PlaybackPaused != null)
+            {
+                PlaybackPaused(this, new EventArgs());
+            }
         }
 
         public void Play(PlaylistItem item, object options = null)
         {
+            _currentItem = item;
             Source = item.Uri;
             _playerControls.Play();
+            if (PlaybackStarted != null)
+            {
+                PlaybackStarted(this, new EventArgs());
+            }
         }
 
         public void Resume()
         {
             _playerControls.Play();
+            if (PlaybackStarted != null)
+            {
+                PlaybackStarted(this, new EventArgs());
+            }
         }
 
         public void SongEnded()
         {
-            _eventAggregator.Publish(new PlayNextMessage());
+            if (PlaybackStoped != null)
+            {
+                PlaybackStoped(this, new EventArgs());
+            }
+            EventAggregator.Publish(new PlayNextMessage());
         }
 
         public void SongFailed(ExceptionRoutedEventArgs eventArgs)
         {
-            _eventAggregator.Publish(new PlayFailedMessage(eventArgs.ErrorMessage, eventArgs.OriginalSource));
+            if (PlaybackStoped != null)
+            {
+                PlaybackStoped(this, new EventArgs());
+            }
+            EventAggregator.Publish(new PlayFailedMessage(eventArgs.ErrorMessage, eventArgs.OriginalSource));
         }
 
         public void Stop()
         {
             _playerControls.Stop();
+            if (PlaybackStoped != null)
+            {
+                PlaybackStoped(this, new EventArgs());
+            }
         }
 
         #endregion
@@ -112,7 +159,7 @@
         protected override void OnViewAttached(object view, object context)
         {
             base.OnViewAttached(view, context);
-            PlayerControls = (IPlayerControls)view;
+            PlayerControls = (IExtendedPlayerControls)view;
         }
 
         #endregion

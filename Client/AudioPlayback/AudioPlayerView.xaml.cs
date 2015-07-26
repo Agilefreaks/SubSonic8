@@ -7,7 +7,7 @@
 
     using Subsonic8.Framework.Interfaces;
 
-    public sealed partial class AudioPlayerView : IPlayerControls
+    public sealed partial class AudioPlayerView : IExtendedPlayerControls
     {
         #region Constructors and Destructors
 
@@ -33,6 +33,16 @@
         public async void Stop()
         {
             await RunOnDispatcher(() => MediaElement.Stop());
+        }
+
+        public TimeSpan GetCurrentPosition()
+        {
+            return MediaElement.Position;
+        }
+
+        public TimeSpan GetCurrentDuration()
+        {
+            return MediaElement.NaturalDuration.TimeSpan;
         }
 
         #endregion

@@ -4,7 +4,7 @@
 
     using Client.Common.Services.DataStructures.PlayerManagementService;
 
-    public interface IAudioPlayerViewModel : IPlayer, IScreen
+    public interface IAudioPlayerViewModel : IPlayer, IScreen, IPlaybackReporter
     {
     }
 }

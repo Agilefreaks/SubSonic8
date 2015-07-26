@@ -132,6 +132,7 @@
     <Compile Include="Framework\ViewModel\ItemViewModelBaseTests.cs" />
     <Compile Include="Mocks\MockDialogService.cs" />
     <Compile Include="Mocks\MockEchoNestService.cs" />
+    <Compile Include="Mocks\MockExtendedPlayerControls.cs" />
     <Compile Include="Mocks\MockFullScreenVideoPlaybackViewModel.cs" />
     <Compile Include="Mocks\MockErrorDialogViewModel.cs" />
     <Compile Include="Mocks\MockGetBiographiesResult.cs" />
