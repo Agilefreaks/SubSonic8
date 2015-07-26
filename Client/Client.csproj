@@ -129,6 +129,11 @@
     </Compile>
     <Compile Include="Artist\ArtistViewModel.cs" />
     <Compile Include="Artist\IArtistViewModel.cs" />
+    <Compile Include="AudioPlayback\AudioPlayerView.xaml.cs">
+      <DependentUpon>AudioPlayerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AudioPlayback\AudioPlayerViewModel.cs" />
+    <Compile Include="AudioPlayback\IAudioPlayerViewModel.cs" />
     <Compile Include="BottomBar\BottomBarViewModelBase.cs" />
     <Compile Include="BottomBar\ChangeBottomBarMessage.cs" />
     <Compile Include="BottomBar\CommonButtons.xaml.cs">
@@ -440,6 +445,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Artist\ArtistView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AudioPlayback\AudioPlayerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

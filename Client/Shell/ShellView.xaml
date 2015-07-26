@@ -18,9 +18,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <MediaElement x:Name="mediaElement" AudioCategory="BackgroundCapableMedia" AutoPlay="True"
-                      Source="{Binding Path=Source}"
-                      cal:Message.Attach="[Event MediaEnded] = [Action SongEnded]; [Event MediaFailed] = [Action SongFailed($eventArgs)]" />
+        <ContentControl x:Name="AudioPlayerViewModel"/>
 
         <Frame DataContext="{x:Null}" x:Name="shellFrame" HorizontalContentAlignment="Stretch"
                VerticalContentAlignment="Stretch" Margin="0">

@@ -4,13 +4,14 @@
     using System.Threading.Tasks;
     using BugFreak;
     using Caliburn.Micro;
-    using Client.Common.EventAggregatorMessages;
+
     using Client.Common.Helpers;
-    using Client.Common.Models;
     using Client.Common.Models.Subsonic;
     using Client.Common.Results;
     using Client.Common.Services;
     using MugenInjection.Attributes;
+
+    using Subsonic8.AudioPlayback;
     using Subsonic8.BottomBar;
     using Subsonic8.ErrorDialog;
     using Subsonic8.Framework;
@@ -33,9 +34,6 @@
 
         private IBottomBarViewModel _bottomBar;
 
-        private IPlayerControls _playerControls;
-
-        private Uri _source;
 
         #endregion
 
@@ -71,33 +69,6 @@
 
         public Action<SearchResultCollection> NavigateToSearchResult { get; set; }
 
-        public IPlayerControls PlayerControls
-        {
-            get
-            {
-                return _playerControls;
-            }
-
-            set
-            {
-                _playerControls = value;
-                NotifyOfPropertyChange();
-            }
-        }
-
-        public Uri Source
-        {
-            get
-            {
-                return _source;
-            }
-
-            set
-            {
-                _source = value;
-                NotifyOfPropertyChange();
-            }
-        }
 
         [Inject]
         public IEventAggregator EventAggregator
@@ -148,6 +119,9 @@
         public IPlayerManagementService PlayerManagementService { get; set; }
 
         [Inject]
+        public IAudioPlayerViewModel AudioPlayerViewModel { get; set; }
+
+        [Inject]
         public IEmbeddedVideoPlaybackViewModel EmbeddedVideoPlaybackViewModel { get; set; }
 
         [Inject]
@@ -167,40 +141,9 @@
             await new MessageDialogResult(error.ToString(), "Oops...").Execute();
         }
 
-        public void Pause()
-        {
-            _playerControls.Pause();
-        }
-
-        public void Play(PlaylistItem item, object options = null)
-        {
-            Source = item.Uri;
-            _playerControls.Play();
-        }
-
-        public void Resume()
-        {
-            _playerControls.Play();
-        }
-
         public void SendSearchQueryMessage(string query)
         {
             NavigationService.NavigateToViewModel<SearchViewModel>(query);
-        }
-
-        public void SongEnded()
-        {
-            _eventAggregator.Publish(new PlayNextMessage());
-        }
-
-        public void SongFailed(ExceptionRoutedEventArgs eventArgs)
-        {
-            _eventAggregator.Publish(new PlayFailedMessage(eventArgs.ErrorMessage, eventArgs.OriginalSource));
-        }
-
-        public void Stop()
-        {
-            _playerControls.Stop();
         }
 
         #endregion
@@ -217,8 +160,6 @@
             WinRTWrappersService.RegisterSettingsRequestedHandler(
                 (sender, args) => args.AddSetting<PrivacyPolicyViewModel>());
             WinRTWrappersService.RegisterMediaControlHandler(new MediaControlHandler(_eventAggregator));
-
-            PlayerControls = (IPlayerControls)view;
 
             var dispatcher = CoreWindow.GetForCurrentThread().Dispatcher;
             dispatcher.RunAsync(
@@ -239,7 +180,7 @@
 
         private void RegisterPlayers()
         {
-            PlayerManagementService.RegisterAudioPlayer(this);
+            PlayerManagementService.RegisterAudioPlayer(AudioPlayerViewModel);
             PlayerManagementService.RegisterVideoPlayer(EmbeddedVideoPlaybackViewModel);
             PlayerManagementService.RegisterVideoPlayer(FullScreenVideoPlaybackViewModel);
         }
