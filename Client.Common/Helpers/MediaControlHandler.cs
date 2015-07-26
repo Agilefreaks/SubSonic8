@@ -58,9 +58,16 @@
 
         public void Handle(StartPlaybackMessage message)
         {
-            MediaControl.ArtistName = message.Item.Artist;
-            MediaControl.TrackName = message.Item.Title;
+            var artist = message.Item.Artist;
+            var title = message.Item.Title;
+            MediaControl.ArtistName = GetValueOrPlaceOrder(artist);
+            MediaControl.TrackName = GetValueOrPlaceOrder(title);
 
+        }
+
+        private string GetValueOrPlaceOrder(string value)
+        {
+            return string.IsNullOrWhiteSpace(value) ? "Unknown" : value;
         }
     }
 }

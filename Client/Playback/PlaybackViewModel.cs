@@ -6,7 +6,7 @@
     using System.ComponentModel;
     using System.Linq;
     using System.Threading.Tasks;
-    using Windows.Storage.Streams;
+
     using Client.Common.EventAggregatorMessages;
     using Client.Common.Models;
     using Client.Common.Services;
@@ -15,6 +15,7 @@
     using global::Common.ExtensionsMethods;
     using global::Common.ListCollectionView;
     using MugenInjection.Attributes;
+
     using Subsonic8.BottomBar;
     using Subsonic8.Framework.Services;
     using Subsonic8.Framework.ViewModel;
@@ -343,6 +344,9 @@
         }
 
         [Inject]
+        public IProgressIndicatorViewModel ProgressIndicatorViewModel { get; set; }
+
+        [Inject]
         public ITileNotificationService TileNotificationService { get; set; }
 
         [Inject]
@@ -576,12 +580,17 @@
 
         private void HookPlayerManagementService()
         {
-            PlayerManagementService.CurrentPlayerChanged += (sender, eventArgs) => SetStateByCurrentPlayer();
+            PlayerManagementService.CurrentPlayerChanged += OnCurrentPlayerChanged;
         }
 
         private void HookPlaylistManagementService()
         {
             PlaylistManagementService.PropertyChanged += PlaylistManagementServiceOnPropertyChanged;
+        }
+
+        private void OnCurrentPlayerChanged(object sender, EventArgs eventArgs)
+        {
+            SetStateByCurrentPlayer();
         }
 
         private void OnIsFilteringChanged()
@@ -638,13 +647,22 @@
             if (IsFiltering) return;
 
             var currentPlayer = PlayerManagementService.CurrentPlayer;
-            State = currentPlayer == EmbeddedVideoPlaybackViewModel
-                        ? PlaybackViewModelStateEnum.Video
-                        : currentPlayer == FullScreenVideoPlaybackViewModel
-                              ? PlaybackViewModelStateEnum.FullScreen
-                              : currentPlayer == SnappedVideoPlaybackViewModel
-                                    ? State
-                                    : PlaybackViewModelStateEnum.Audio;
+            if (currentPlayer == EmbeddedVideoPlaybackViewModel)
+            {
+                State = PlaybackViewModelStateEnum.Video;
+            }
+            else if (currentPlayer == FullScreenVideoPlaybackViewModel)
+            {
+                State = PlaybackViewModelStateEnum.FullScreen;
+            }
+            else if (currentPlayer == SnappedVideoPlaybackViewModel)
+            {
+                State = State;
+            }
+            else
+            {
+                State = PlaybackViewModelStateEnum.Audio;
+            }
         }
 
         private void SwitchVideoPlayback(PlaybackStateEventArgs eventArgs, IVideoPlayer videoPlayer)

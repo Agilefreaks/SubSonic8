@@ -11,6 +11,8 @@ namespace Client.Tests.Mocks
 
         public int StopCallCount { get; set; }
 
+        public int PlayCallCount { get; set; }
+
         #endregion
 
         #region Public Methods and Operators
@@ -39,6 +41,7 @@ namespace Client.Tests.Mocks
 
         public void Play()
         {
+            PlayCallCount++;
         }
 
         #endregion

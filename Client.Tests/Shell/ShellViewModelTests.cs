@@ -14,13 +14,11 @@
     {
         #region Fields
 
-        private readonly MockEventAggregator _eventAggregator = new MockEventAggregator();
+        private MockEventAggregator _mockEventAggregator;
 
         private MockDialogNotificationService _mockDialogNotificationService;
 
         private MockNavigationService _mockNavigationService;
-
-        private MockPlayerControls _mockPlayerControls;
 
         private MockStorageService _mockStorageService;
 
@@ -45,7 +43,7 @@
         [TestMethod]
         public void ConstructorShouldSubscribeToEventAggregator()
         {
-            _eventAggregator.Subscriber.Should().Be(Subject);
+            _mockEventAggregator.Subscriber.Should().Be(Subject);
         }
 
         [TestMethod]
@@ -58,37 +56,28 @@
             _mockNavigationService.NavigateToViewModelCalls.First().Value.Should().BeOfType<string>();
         }
 
-        [TestMethod]
-        public void Stop_CallsPlayerControlsStop()
-        {
-            Subject.Stop();
-
-            _mockPlayerControls.StopCallCount.Should().Be(1);
-        }
-
         [TestInitialize]
         public void TestInitialize()
         {
             IoC.GetInstance = (type, s) => null;
+            _mockEventAggregator = new MockEventAggregator();
             _mockSubsonicService = new MockSubsonicService();
             _mockNavigationService = new MockNavigationService();
             _mockToastNotificationService = new MockToastNotificationService();
             _mockDialogNotificationService = new MockDialogNotificationService();
             _mockStorageService = new MockStorageService();
             _mockWinRTWrappersService = new MockWinRTWrappersService();
-            _mockPlayerControls = new MockPlayerControls();
             _mockErrorDialogViewModel = new MockErrorDialogViewModel();
             Subject = new ShellViewModel
                           {
-                              EventAggregator = _eventAggregator,
+                              EventAggregator = _mockEventAggregator,
                               SubsonicService = _mockSubsonicService,
                               NavigationService = _mockNavigationService,
                               NotificationService = _mockToastNotificationService,
                               DialogNotificationService = _mockDialogNotificationService,
                               StorageService = _mockStorageService,
                               WinRTWrappersService = _mockWinRTWrappersService,
-                              ErrorDialogViewModel = _mockErrorDialogViewModel,
-                              PlayerControls = _mockPlayerControls
+                              ErrorDialogViewModel = _mockErrorDialogViewModel
                           };
         }
 

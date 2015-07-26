@@ -1,7 +1,6 @@
 ﻿namespace Subsonic8.Framework.ViewModel
 {
     using Caliburn.Micro;
-    using Client.Common.Results;
     using Client.Common.Services;
     using MugenInjection.Attributes;
     using Subsonic8.ErrorDialog;

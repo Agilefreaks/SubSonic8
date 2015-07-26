@@ -100,6 +100,13 @@
         <Setter Property="Stretch" Value="Uniform"/>
         <Setter Property="MinHeight" Value="400"/>
     </Style>
+    
+    <Style x:Name="ProgressBarStyle" TargetType="Slider">
+        <Setter Property="Height" Value="25"/>
+        <Setter Property="Width" Value="400"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="IsEnabled" Value="False"/>
+    </Style>
 
     <Style x:Name="PlaybackControlsPanelStyle" TargetType="StackPanel">
         <Setter Property="Orientation" Value="Horizontal" />
