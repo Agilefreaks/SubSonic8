@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
-  <Identity Name="08170427-d3e4-4b33-9c5c-87d18a6576a7" Publisher="CN=Cristian" Version="1.0.0.0" />
+  <Identity Name="08170427-d3e4-4b33-9c5c-87d18a6576a7" Publisher="CN=AgileFreaks" Version="1.0.0.0" />
   <Properties>
     <DisplayName>Common.Mocks</DisplayName>
     <PublisherDisplayName>Cristian</PublisherDisplayName>
@@ -17,6 +17,7 @@
   <Applications>
     <Application Id="vstest.executionengine.App" Executable="vstest.executionengine.appcontainer.exe" EntryPoint="vstest.executionengine.App">
       <VisualElements DisplayName="NoUIEntryPoints" Logo="Images\UnitTestLogoM.png" SmallLogo="Images\UnitTestSmallLogoM.png" Description="vstest.executionengine.App" ForegroundText="light" BackgroundColor="#0084FF">
+        <DefaultTile ShowName="noLogos" />
         <SplashScreen Image="Images\UnitTestSplashScreenM.png" />
       </VisualElements>
     </Application>

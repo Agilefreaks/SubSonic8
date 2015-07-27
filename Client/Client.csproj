@@ -12,10 +12,10 @@
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{BC8A1FFA-BEE3-4634-8014-F334798102B3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <PackageCertificateKeyFile>Client_StoreKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateKeyFile>Client_TemporaryKey.pfx</PackageCertificateKeyFile>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
-    <PackageCertificateThumbprint>483978BAFC5F28497FF6AAC1DB73DB98E2B63286</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>CD3E025F41C387185B94D88B3C2368F6084CB899</PackageCertificateThumbprint>
     <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -409,7 +409,6 @@
     <Content Include="Assets\Logo.png" />
     <Content Include="Assets\subsonic.png" />
     <Content Include="Assets\WideLogo.png" />
-    <None Include="Package.StoreAssociation.xml" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
