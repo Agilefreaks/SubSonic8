@@ -1,9 +1,10 @@
 ﻿namespace SubEchoNestTests
 {
+    using Common.Mocks;
+
     using FluentAssertions;
     using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
     using SubEchoNest;
-    using SubEchoNestTests.Mocks;
 
     [TestClass]
     public class EchoNestServiceTests

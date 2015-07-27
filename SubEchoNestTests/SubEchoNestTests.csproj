@@ -139,6 +139,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Common.Mocks\Common.Mocks.csproj">
+      <Project>{a3b01298-4607-4ed2-a361-c5541845174c}</Project>
+      <Name>Common.Mocks</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{11d7fb8c-1a2c-4d5b-b129-937d76468a78}</Project>
       <Name>Common</Name>
@@ -153,9 +157,7 @@
       <HintPath>..\packages\FluentAssertions.2.1.0.0\lib\winrt45\FluentAssertions.dll</HintPath>
     </Reference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Mocks\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '11.0' ">
     <VisualStudioVersion>11.0</VisualStudioVersion>
   </PropertyGroup>
