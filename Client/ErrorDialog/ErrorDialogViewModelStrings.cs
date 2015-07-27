@@ -22,6 +22,8 @@
 // --------------------------------------------------------------------------------------------------
 namespace Subsonic8.ErrorDialog
 {
+    using System;
+
     using Windows.ApplicationModel.Resources;
     
     
@@ -42,11 +44,11 @@ namespace Subsonic8.ErrorDialog
             string[] currentAssemblySplit;
             currentAssemblySplit = currentAssemblyName.Split(',');
             currentAssemblyName = currentAssemblySplit[1];
-            if (executingAssemblyName.Equals(currentAssemblyName))
+            try
             {
                 resourceLoader = new ResourceLoader("ErrorDialogViewModelStrings");
             }
-            else
+            catch(Exception)
             {
                 resourceLoader = new ResourceLoader(currentAssemblyName + "/ErrorDialogViewModelStrings");
             }

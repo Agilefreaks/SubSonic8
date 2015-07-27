@@ -17,7 +17,7 @@
 // 	This code contains a helper class exposing property representations
 // 	of the string resources defined in the specified .ResW file
 // 
-// 	Generated: 07/27/2015 20:50:36
+// 	Generated: 07/27/2015 20:49:51
 // </auto-generatedInfo>
 // --------------------------------------------------------------------------------------------------
 namespace Subsonic8
@@ -27,12 +27,12 @@ namespace Subsonic8
     using Windows.ApplicationModel.Resources;
     
     
-    public partial class LastFmCredentials
+    public partial class BugFreakCredentials
     {
         
         private static ResourceLoader resourceLoader;
         
-        static LastFmCredentials()
+        static BugFreakCredentials()
         {
             string executingAssemblyName;
             executingAssemblyName = Windows.UI.Xaml.Application.Current.GetType().AssemblyQualifiedName;
@@ -40,17 +40,17 @@ namespace Subsonic8
             executingAssemblySplit = executingAssemblyName.Split(',');
             executingAssemblyName = executingAssemblySplit[1];
             string currentAssemblyName;
-            currentAssemblyName = typeof(LastFmCredentials).AssemblyQualifiedName;
+            currentAssemblyName = typeof(BugFreakCredentials).AssemblyQualifiedName;
             string[] currentAssemblySplit;
             currentAssemblySplit = currentAssemblyName.Split(',');
             currentAssemblyName = currentAssemblySplit[1];
             try
             {
-                resourceLoader = new ResourceLoader("LastFmCredentials");
+                resourceLoader = new ResourceLoader("BugFreakCredentials");
             }
-            catch (Exception)
+            catch(Exception)
             {
-                resourceLoader = new ResourceLoader(currentAssemblyName + "/LastFmCredentials");
+                resourceLoader = new ResourceLoader(currentAssemblyName + "/BugFreakCredentials");
             }
         }
         
@@ -62,6 +62,17 @@ namespace Subsonic8
             get
             {
                 return resourceLoader.GetString("ApiKey");
+            }
+        }
+        
+        /// <summary>
+        /// Localized resource similar to "fillIn"
+        /// </summary>
+        public static string Token
+        {
+            get
+            {
+                return resourceLoader.GetString("Token");
             }
         }
     }

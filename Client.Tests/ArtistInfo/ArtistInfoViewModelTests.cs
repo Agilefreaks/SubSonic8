@@ -11,8 +11,6 @@
     using Subsonic8.ArtistInfo;
     using Subsonic8.Framework.Extensions;
     using Biography = SubEchoNest.Models.Biography;
-
-    //Some of these tests fail currently due to a bug in the ReswFileCodeGenerator extension which hopefully will be fixed soon
     
     [TestClass]
     public class ArtistInfoViewModelTests
@@ -112,7 +110,7 @@
 
             await _subject.Populate();
 
-            _subject.Biography.Should().Be("test2");
+            _subject.Biography.Text.Should().Be(biography2.Text);
         }
 
         [TestMethod]

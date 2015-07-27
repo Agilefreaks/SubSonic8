@@ -17,22 +17,22 @@
 // 	This code contains a helper class exposing property representations
 // 	of the string resources defined in the specified .ResW file
 // 
-// 	Generated: 07/27/2015 20:50:36
+// 	Generated: 07/27/2015 20:54:42
 // </auto-generatedInfo>
 // --------------------------------------------------------------------------------------------------
-namespace Subsonic8
+namespace Subsonic8.Shell
 {
     using System;
 
     using Windows.ApplicationModel.Resources;
     
     
-    public partial class LastFmCredentials
+    public partial class ShellStrings
     {
         
         private static ResourceLoader resourceLoader;
         
-        static LastFmCredentials()
+        static ShellStrings()
         {
             string executingAssemblyName;
             executingAssemblyName = Windows.UI.Xaml.Application.Current.GetType().AssemblyQualifiedName;
@@ -40,28 +40,28 @@ namespace Subsonic8
             executingAssemblySplit = executingAssemblyName.Split(',');
             executingAssemblyName = executingAssemblySplit[1];
             string currentAssemblyName;
-            currentAssemblyName = typeof(LastFmCredentials).AssemblyQualifiedName;
+            currentAssemblyName = typeof(ShellStrings).AssemblyQualifiedName;
             string[] currentAssemblySplit;
             currentAssemblySplit = currentAssemblyName.Split(',');
             currentAssemblyName = currentAssemblySplit[1];
             try
             {
-                resourceLoader = new ResourceLoader("LastFmCredentials");
+                resourceLoader = new ResourceLoader("ShellStrings");
             }
-            catch (Exception)
+            catch(Exception)
             {
-                resourceLoader = new ResourceLoader(currentAssemblyName + "/LastFmCredentials");
+                resourceLoader = new ResourceLoader(currentAssemblyName + "/ShellStrings");
             }
         }
         
         /// <summary>
-        /// Localized resource similar to "fillIn"
+        /// Localized resource similar to "You did not set up your connection. Please fill in you server address, username and password to start browsing."
         /// </summary>
-        public static string ApiKey
+        public static string NotConfigured
         {
             get
             {
-                return resourceLoader.GetString("ApiKey");
+                return resourceLoader.GetString("NotConfigured");
             }
         }
     }

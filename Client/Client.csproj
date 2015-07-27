@@ -154,6 +154,11 @@
     <Compile Include="BottomBar\RenamePlaylistDialog.xaml.cs">
       <DependentUpon>RenamePlaylistDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BugFreakCredentials.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BugFreakCredentials.resw</DependentUpon>
+    </Compile>
     <Compile Include="ClientModule.cs" />
     <Compile Include="Common\ExpandToFullscreen.xaml.cs">
       <DependentUpon>ExpandToFullscreen.xaml</DependentUpon>
@@ -175,20 +180,15 @@
     <Compile Include="Converters\IntToTimeStringConverter.cs" />
     <Compile Include="Converters\PlaybackStateToVisibilityConverter.cs" />
     <Compile Include="Converters\PlayingStateToVisibilityConverter.cs" />
-    <Compile Include="ErrorDialog\ErrorDialogViewModelStrings.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ErrorDialogViewModelStrings.resw</DependentUpon>
-    </Compile>
-    <Compile Include="LastFmCredentials.cs">
-      <DependentUpon>LastFmCredentials.resw</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="EchoNestCredentials.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>EchoNestCredentials.resw</DependentUpon>
+    </Compile>
+    <Compile Include="ErrorDialog\ErrorDialogViewModelStrings.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ErrorDialogViewModelStrings.resw</DependentUpon>
     </Compile>
     <Compile Include="ErrorDialog\ErrorDialogView.xaml.cs">
       <DependentUpon>ErrorDialogView.xaml</DependentUpon>
@@ -243,6 +243,11 @@
     <Compile Include="Framework\ViewModel\IPlaybackControlsViewModel.cs" />
     <Compile Include="Framework\ViewModel\ItemViewModelBase.cs" />
     <Compile Include="Framework\ViewModel\PlaybackControlsViewModelBase.cs" />
+    <Compile Include="LastFmCredentials.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LastFmCredentials.resw</DependentUpon>
+    </Compile>
     <Compile Include="Playback\PlaybackViewModelStrings.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -346,6 +351,11 @@
     </Compile>
     <Compile Include="Framework\Interfaces\IPlayerControls.cs" />
     <Compile Include="Search\SearchViewModel.cs" />
+    <Compile Include="Shell\ShellStrings.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ShellStrings.resw</DependentUpon>
+    </Compile>
     <Compile Include="Shell\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
@@ -380,7 +390,10 @@
       <Generator>ReswFileCodeGenerator</Generator>
       <LastGenOutput>PlaybackViewModelStrings.cs</LastGenOutput>
     </PRIResource>
-    <PRIResource Include="BugFreakCredentials.resw" />
+    <PRIResource Include="BugFreakCredentials.resw">
+      <Generator>ReswFileCodeGenerator</Generator>
+      <LastGenOutput>BugFreakCredentials.cs</LastGenOutput>
+    </PRIResource>
     <PRIResource Include="ArtistInfo\ArtistInfoViewModelStrings.resw">
       <Generator>ReswFileCodeGenerator</Generator>
       <LastGenOutput>ArtistInfoViewModelStrings.cs</LastGenOutput>
@@ -399,7 +412,10 @@
       <LastGenOutput>LastFmCredentials.cs</LastGenOutput>
     </PRIResource>
     <None Include="packages.config" />
-    <PRIResource Include="Shell\ShellStrings.resw" />
+    <PRIResource Include="Shell\ShellStrings.resw">
+      <Generator>ReswFileCodeGenerator</Generator>
+      <LastGenOutput>ShellStrings.cs</LastGenOutput>
+    </PRIResource>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\CoverArtPlaceholder.jpg" />
@@ -654,7 +670,9 @@
       <HintPath>..\packages\WinRTXamlToolkit.1.5.2.0\lib\netcore45\WinRTXamlToolkit.dll</HintPath>
     </Reference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
   <ItemGroup>
     <SDKReference Include="Microsoft.PlayerFramework.Xaml, Version=1.8.1.0">
       <Name>Microsoft Player Framework %28Microsoft.PlayerFramework.Xaml, Version=1.8.1.0%29</Name>
