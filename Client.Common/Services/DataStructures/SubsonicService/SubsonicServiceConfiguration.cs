@@ -3,11 +3,18 @@
     using System;
     using System.Collections.Generic;
     using System.Text;
+    using System.Text.RegularExpressions;
     using System.Xml.Serialization;
     using Caliburn.Micro;
 
     public class SubsonicServiceConfiguration : PropertyChangedBase, ISubsonicServiceConfiguration
     {
+        #region Constants
+
+        private const string ProtocolPattern = @"h?[t]{1,2}p?:/{1,2}";
+
+        #endregion
+
         #region Static Fields
 
         private static readonly char[] HexChars = "0123456789ABCDEF".ToCharArray();
@@ -50,7 +57,7 @@
                     return;
                 }
 
-                _baseUrl = AddEndingSlashIfNotExisting(value);
+                _baseUrl = EnsureUrlHasCorrectFormat(value);
                 NotifyOfPropertyChange();
             }
         }
@@ -117,15 +124,20 @@
 
         #region Methods
 
-        private static string AddEndingSlashIfNotExisting(string value)
+        private static string EnsureUrlHasCorrectFormat(string value)
         {
             var result = value;
-            if (!string.IsNullOrEmpty(value) && result.LastIndexOf("/", StringComparison.Ordinal) != result.Length - 1)
+            if (!HasTrailingSlash(value))
             {
                 result = string.Format("{0}/", result);
             }
 
             return result;
+        }
+
+        private static bool HasTrailingSlash(string subsonicUrl)
+        {
+            return subsonicUrl.EndsWith("/");
         }
 
         private static string BytesToHex(ICollection<byte> data)
@@ -139,6 +151,14 @@
 
             return builder.ToString();
         }
+
+        //private static string GetProtocol(string value)
+        //{
+        //    var regex = new Regex(ProtocolPattern);
+        //    var matches = regex.Matches(value);
+
+        //    return matches.Count > 0 ? matches[0].Value : string.Empty;
+        //}
 
         #endregion
     }
