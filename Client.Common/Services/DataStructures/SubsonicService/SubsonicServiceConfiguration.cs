@@ -131,13 +131,21 @@
             {
                 result = string.Format("{0}/", result);
             }
-
+            if (!HasCorrectProtocol(value))
+            {
+                result = string.Format("http://{0}", result);
+            }
             return result;
         }
 
         private static bool HasTrailingSlash(string subsonicUrl)
         {
             return subsonicUrl.EndsWith("/");
+        }
+
+        private static bool HasCorrectProtocol(string subsonicUrl)
+        {
+            return subsonicUrl.StartsWith("http://");
         }
 
         private static string BytesToHex(ICollection<byte> data)

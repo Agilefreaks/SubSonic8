@@ -31,13 +31,13 @@
             _subject.BaseUrl.Should().Be("http://localhost:4040/");
         }
 
-        //[TestMethod]
-        //public void SetBaseUrl_TheValuesDoesNotHaveAProtocol_WillAddHttpAsTheProtocol()
-        //{
-        //    _subject.BaseUrl = "localhost:4040/";
+        [TestMethod]
+        public void SetBaseUrl_TheValuesDoesNotHaveAProtocol_WillAddHttpAsTheProtocol()
+        {
+            _subject.BaseUrl = "localhost:4040/";
 
-        //    _subject.BaseUrl.Should().Be("http://localhost:4040/");
-        //}
+            _subject.BaseUrl.Should().Be("http://localhost:4040/");
+        }
 
         //[TestMethod]
         //public void SetBaseUrl_TheValuesHasAMalformedHttpProtocol_WillCorrectTheProtocol()
