@@ -1,5 +1,6 @@
 ﻿namespace Client.Common.Helpers
 {
+    using Windows.Media;
     using Caliburn.Micro;
     using Client.Common.EventAggregatorMessages;
 
@@ -16,6 +17,7 @@
         public MediaControlHandler(IEventAggregator eventAggregator)
         {
             _eventAggregator = eventAggregator;
+            _eventAggregator.Subscribe(this);
         }
 
         #endregion
@@ -53,5 +55,12 @@
         }
 
         #endregion
+
+        public void Handle(StartPlaybackMessage message)
+        {
+            MediaControl.ArtistName = message.Item.Artist;
+            MediaControl.TrackName = message.Item.Title;
+
+        }
     }
 }

@@ -1,6 +1,9 @@
 ﻿namespace Client.Common.Helpers
 {
-    public interface IMediaControlHandler
+    using Caliburn.Micro;
+    using Client.Common.EventAggregatorMessages;
+
+    public interface IMediaControlHandler : IHandle<StartPlaybackMessage>
     {
         #region Public Methods and Operators
 
