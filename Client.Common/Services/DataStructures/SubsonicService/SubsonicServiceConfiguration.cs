@@ -11,7 +11,7 @@
     {
         #region Constants
 
-        private const string ProtocolPattern = @"h?[t]{1,2}p?:/{1,2}";
+        private const string ProtocolPattern = @"h?[t]{1,2}p?s?:/{1,2}";
 
         #endregion
 
@@ -131,11 +131,22 @@
             {
                 result = string.Format("{0}/", result);
             }
-            if (!HasCorrectProtocol(value))
+
+            var protocol = GetProtocol(value);
+            if (!IsKnownProtocol(protocol))
             {
-                result = string.Format("http://{0}", result);
+                var correctProtocol = protocol.Contains("s").Equals(true) ? "https://" : "http://";
+                result = protocol.Equals(string.Empty)
+                    ? string.Format("{0}{1}", correctProtocol, result)
+                    : result.Replace(protocol, correctProtocol);
             }
+
             return result;
+        }
+
+        private static bool IsKnownProtocol(string protocol)
+        {
+            return (protocol.Equals("http://") || protocol.Equals("https://"));
         }
 
         private static bool HasTrailingSlash(string subsonicUrl)
@@ -160,13 +171,13 @@
             return builder.ToString();
         }
 
-        //private static string GetProtocol(string value)
-        //{
-        //    var regex = new Regex(ProtocolPattern);
-        //    var matches = regex.Matches(value);
+        private static string GetProtocol(string value)
+        {
+            var regex = new Regex(ProtocolPattern);
+            var matches = regex.Matches(value);
 
-        //    return matches.Count > 0 ? matches[0].Value : string.Empty;
-        //}
+            return matches.Count > 0 ? matches[0].Value : string.Empty;
+        }
 
         #endregion
     }
