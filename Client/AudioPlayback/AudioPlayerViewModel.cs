@@ -162,6 +162,8 @@
             PlayerControls = (IExtendedPlayerControls)view;
         }
 
+      
+
         #endregion
     }
 }
