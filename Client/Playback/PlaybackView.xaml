@@ -26,7 +26,8 @@
         <Grid x:Name="ExpandedView">
             <videoPlayback:FullScreenVideoPlaybackView cal:Bind.Model="{Binding Path=FullScreenVideoPlaybackViewModel}" 
                                                    Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='FullScreen'}"/>
-            <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}"
+            <Image Source="{Binding BluredCoverArt}" Stretch="UniformToFill"/>
+            <Grid Background="#AF1D1D1D"
               Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='VideoAudioFilterDetails'}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="140" />
