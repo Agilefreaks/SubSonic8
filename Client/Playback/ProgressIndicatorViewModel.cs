@@ -10,7 +10,7 @@
     {
         private IAudioPlayerViewModel _audioPlayerViewModel;
         private double _itemDurationInSeconds;
-        private double _playbackProgressPlaybackProgressInSeconds;
+        private double _playbackProgressInSeconds;
         private double _progressStepFrequency;
         private DispatcherTimer _progressTimer;
 
@@ -42,13 +42,13 @@
             }
         }
 
-        public double PlaybackProgressPlaybackProgressInSeconds
+        public double PlaybackProgressInSeconds
         {
-            get { return _playbackProgressPlaybackProgressInSeconds; }
+            get { return _playbackProgressInSeconds; }
             set
             {
-                if (value.Equals(_playbackProgressPlaybackProgressInSeconds)) return;
-                _playbackProgressPlaybackProgressInSeconds = value;
+                if (value.Equals(_playbackProgressInSeconds)) return;
+                _playbackProgressInSeconds = value;
                 NotifyOfPropertyChange();
             }
         }
@@ -77,7 +77,7 @@
 
         private void OnProgressTimerTick(object sender, object e)
         {
-            throw new NotImplementedException();
+            PlaybackProgressInSeconds = AudioPlayerViewModel.GetCurrentPosition().TotalSeconds;
         }
 
         protected void HookAudioPlayer()
@@ -90,19 +90,21 @@
         private void AudioPlayerViewModelOnPlaybackStarted(object sender, EventArgs eventArgs)
         {
             ItemDurationInSeconds = AudioPlayerViewModel.GetDuration().TotalSeconds;
-            PlaybackProgressPlaybackProgressInSeconds = AudioPlayerViewModel.GetCurrentPosition().TotalSeconds;
+            PlaybackProgressInSeconds = AudioPlayerViewModel.GetCurrentPosition().TotalSeconds;
             StartProgressTimer();
 
         }
 
         private void AudioPlayerViewModelOnPlaybackStoped(object sender, EventArgs eventArgs)
         {
-            throw new NotImplementedException();
+            ItemDurationInSeconds = 0;
+            PlaybackProgressInSeconds = 0;
+            _progressTimer.Stop();
         }
 
         private void AudioPlayerViewModelOnPlaybackPaused(object sender, EventArgs eventArgs)
         {
-            throw new NotImplementedException();
+            _progressTimer.Stop();
             
 
         }
