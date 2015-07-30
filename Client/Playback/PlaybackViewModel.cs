@@ -6,6 +6,7 @@
     using System.ComponentModel;
     using System.Linq;
     using System.Threading.Tasks;
+    using Windows.Storage.Streams;
     using Client.Common.EventAggregatorMessages;
     using Client.Common.Models;
     using Client.Common.Services;
@@ -20,6 +21,8 @@
     using Subsonic8.Playlists;
     using Subsonic8.VideoPlayback;
     using Windows.UI.Xaml.Controls;
+    using Windows.UI.Xaml.Media;
+    using Windows.UI.Xaml.Media.Imaging;
 
     public class PlaybackViewModel : PlaybackControlsViewModelBase, IPlaybackViewModel
     {
@@ -35,6 +38,20 @@
 
         #region Fields
 
+        private static readonly int[,] Gaussian11X11Kernel =
+            {
+                { 4, 5, 6, 7, 7, 7, 7, 7, 6, 5, 4 },
+                { 5, 6, 7, 8, 9, 9, 9, 8, 7, 6, 5 },
+                { 6, 7, 8, 9, 10, 10, 10, 9, 8, 7, 6 },
+                { 7, 8, 9, 10, 11, 11, 11, 10, 9, 8, 7 },
+                { 7, 9, 10, 11, 12, 12, 12, 11, 10, 9, 7 },
+                { 7, 9, 10, 11, 12, 12, 12, 11, 10, 9, 7 },
+                { 7, 9, 10, 11, 12, 12, 12, 11, 10, 9, 7 },
+                { 7, 8, 9, 10, 11, 11, 11, 10, 9, 8, 7 },
+                { 6, 7, 8, 9, 10, 10, 10, 9, 8, 7, 6 },
+                { 5, 6, 7, 8, 9, 9, 9, 8, 7, 6, 5 },
+                { 4, 5, 6, 7, 7, 7, 7, 7, 6, 5, 4 }
+            };
         private IPlaybackBottomBarViewModel _bottomBar;
 
         private string _coverArt;
@@ -64,6 +81,7 @@
         private string _currentVisualState;
 
         private bool _isPlaylistVisible;
+        private WriteableBitmap _bluredCoverArt;
 
         #endregion
 
@@ -86,8 +104,7 @@
                 return PlaylistManagementService.CurrentItem;
             }
         }
-
-        public string CoverArt
+       public string CoverArt
         {
             get
             {
@@ -99,6 +116,18 @@
                 _coverArt = value == Client.Common.Services.SubsonicService.CoverArtPlaceholder
                                 ? CoverArtPlaceholderLarge
                                 : value;
+                NotifyOfPropertyChange();
+                CreateBluredCoverArt(_coverArt);
+            }
+        }
+
+        public WriteableBitmap BluredCoverArt
+        {
+            get { return _bluredCoverArt; }
+            set
+            {
+                if (Equals(value, _bluredCoverArt)) return;
+                _bluredCoverArt = value;
                 NotifyOfPropertyChange();
             }
         }
@@ -495,6 +524,32 @@
 
         #region Methods
 
+        private async void CreateBluredCoverArt(string coverArt)
+        {
+            var writeableBitmap = new WriteableBitmap(1, 1);
+            var streamTask = coverArt == CoverArtPlaceholderLarge ? GetStreamFromFile(coverArt) : GetStreamFromUri(coverArt);
+            using (var stream = await streamTask)
+            {
+                writeableBitmap = await writeableBitmap.FromStream(stream);
+            }
+            var bluredImage = writeableBitmap.Convolute(Gaussian11X11Kernel);
+            BluredCoverArt = bluredImage;
+        }
+
+        private async Task<IRandomAccessStream> GetStreamFromUri(string coverArt)
+        {
+            var streamReference = RandomAccessStreamReference.CreateFromUri(new Uri(coverArt, UriKind.Absolute));
+            return await streamReference.OpenReadAsync();
+        }
+
+        private async Task<IRandomAccessStream> GetStreamFromFile(string file)
+        {
+            var uri = "ms-appx://" + file;
+            var imgFile =
+                await
+                Windows.Storage.StorageFile.GetFileFromApplicationUriAsync(new Uri(uri));
+            return await imgFile.OpenReadAsync();
+        }
         protected override void OnActivate()
         {
             base.OnActivate();
