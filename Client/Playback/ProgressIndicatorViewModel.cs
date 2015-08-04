@@ -70,7 +70,7 @@
 
         private void OnProgressTimerTick(object sender, object e)
         {
-            PlaybackProgressInSeconds = AudioPlayerViewModel.GetCurrentPosition().TotalSeconds;
+            UpdateCurrentItemProgress();
         }
 
         protected void HookAudioPlayer()
@@ -82,17 +82,16 @@
 
         private void AudioPlayerViewModelOnPlaybackStarted(object sender, EventArgs eventArgs)
         {
-            StopProgressTimer();
             ItemDurationInSeconds = AudioPlayerViewModel.GetDuration().TotalSeconds;
-            PlaybackProgressInSeconds = AudioPlayerViewModel.GetCurrentPosition().TotalSeconds;
+            UpdateCurrentItemProgress();
             StartProgressTimer();
         }
 
         private void AudioPlayerViewModelOnPlaybackStoped(object sender, EventArgs eventArgs)
         {
+            StopProgressTimer();
             ItemDurationInSeconds = 0;
             PlaybackProgressInSeconds = 0;
-            StopProgressTimer();
         }
 
         private void AudioPlayerViewModelOnPlaybackPaused(object sender, EventArgs eventArgs)
@@ -113,6 +112,11 @@
             {
                 _progressTimer.Stop();
             }
+        }
+
+        private void UpdateCurrentItemProgress()
+        {
+            PlaybackProgressInSeconds = AudioPlayerViewModel.GetCurrentPosition().TotalSeconds;
         }
 
         #endregion

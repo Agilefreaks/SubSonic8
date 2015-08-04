@@ -11,7 +11,6 @@
     <UserControl.Resources>
         <converters:IntToTimeStringConverter x:Name="IntToTimeStringConverter" />
     </UserControl.Resources>
-    <Slider Maximum="{Binding ItemDurationInSeconds}" StepFrequency="{Binding ProgressStepFrequency}" Value="{Binding PlaybackProgressInSeconds}" 
-            Style="{StaticResource ProgressBarStyle}" ThumbToolTipValueConverter="{StaticResource IntToTimeStringConverter }">
-    </Slider>
+    <ProgressBar Maximum="{Binding ItemDurationInSeconds, Mode=TwoWay}" Value="{Binding PlaybackProgressInSeconds, Mode=TwoWay}"
+                 ToolTipService.ToolTip="{Binding Path=PlaybackProgressInSeconds, Converter={StaticResource IntToTimeStringConverter}}"/>
 </UserControl>
