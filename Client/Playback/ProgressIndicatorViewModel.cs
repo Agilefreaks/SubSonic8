@@ -68,13 +68,6 @@
 
         #region Methods
 
-        private void StartProgressTimer()
-        {
-            _progressTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(50) };
-            _progressTimer.Tick += OnProgressTimerTick;
-            _progressTimer.Start();
-        }
-
         private void OnProgressTimerTick(object sender, object e)
         {
             PlaybackProgressInSeconds = AudioPlayerViewModel.GetCurrentPosition().TotalSeconds;
@@ -89,24 +82,37 @@
 
         private void AudioPlayerViewModelOnPlaybackStarted(object sender, EventArgs eventArgs)
         {
+            StopProgressTimer();
             ItemDurationInSeconds = AudioPlayerViewModel.GetDuration().TotalSeconds;
             PlaybackProgressInSeconds = AudioPlayerViewModel.GetCurrentPosition().TotalSeconds;
             StartProgressTimer();
-
         }
 
         private void AudioPlayerViewModelOnPlaybackStoped(object sender, EventArgs eventArgs)
         {
             ItemDurationInSeconds = 0;
             PlaybackProgressInSeconds = 0;
-            _progressTimer.Stop();
+            StopProgressTimer();
         }
 
         private void AudioPlayerViewModelOnPlaybackPaused(object sender, EventArgs eventArgs)
         {
             _progressTimer.Stop();
-            
+        }
 
+        private void StartProgressTimer()
+        {
+            _progressTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(50) };
+            _progressTimer.Tick += OnProgressTimerTick;
+            _progressTimer.Start();
+        }
+
+        private void StopProgressTimer()
+        {
+            if (_progressTimer != null)
+            {
+                _progressTimer.Stop();
+            }
         }
 
         #endregion

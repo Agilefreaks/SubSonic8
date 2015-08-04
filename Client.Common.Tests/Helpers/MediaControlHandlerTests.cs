@@ -19,8 +19,15 @@
 
         #region Public Methods and Operators
 
+        [TestInitialize]
+        public void Setup()
+        {
+            _eventAggregator = new MockEventAggregator();
+            _subject = new MediaControlHandler(_eventAggregator);
+        }
+
         [TestMethod]
-        public void PausePressed_Always_ShouldPublishANewPlayPuaseMessage()
+        public void PausePressed_Always_ShouldPublishANewPlayPauseMessage()
         {
             _subject.PausePressed(null, null);
 
@@ -38,7 +45,7 @@
         }
 
         [TestMethod]
-        public void PlayPausePressed_Always_ShouldPublishANewPlayPuaseMessage()
+        public void PlayPausePressed_Always_ShouldPublishANewPlayPauseMessage()
         {
             _subject.PlayPausePressed(null, null);
 
@@ -47,7 +54,7 @@
         }
 
         [TestMethod]
-        public void PlayPressed_Always_ShouldPublishANewPlayPuaseMessage()
+        public void PlayPressed_Always_ShouldPublishANewPlayPauseMessage()
         {
             _subject.PlayPressed(null, null);
 
@@ -62,13 +69,6 @@
 
             _eventAggregator.PublishCallCount.Should().Be(1);
             _eventAggregator.Messages[0].Should().BeOfType<PlayPreviousMessage>();
-        }
-
-        [TestInitialize]
-        public void Setup()
-        {
-            _eventAggregator = new MockEventAggregator();
-            _subject = new MediaControlHandler(_eventAggregator);
         }
 
         [TestMethod]

@@ -13,11 +13,17 @@
 
         private const string ProtocolPattern = @"h?[t]{1,2}p?s?:/{1,2}";
 
+        private const string HttpProtocol = "http://";
+
+        private const string HttpsProtocol = "https://";
+
         #endregion
 
         #region Static Fields
 
         private static readonly char[] HexChars = "0123456789ABCDEF".ToCharArray();
+
+        private static readonly List<string> KnownProtocols = new List<string> { HttpProtocol, HttpsProtocol };
 
         #endregion
 
@@ -135,7 +141,7 @@
             var protocol = GetProtocol(value);
             if (!IsKnownProtocol(protocol))
             {
-                var correctProtocol = protocol.Contains("s").Equals(true) ? "https://" : "http://";
+                var correctProtocol = protocol.Contains("s") ? HttpsProtocol : HttpProtocol;
                 result = protocol.Equals(string.Empty)
                     ? string.Format("{0}{1}", correctProtocol, result)
                     : result.Replace(protocol, correctProtocol);
@@ -146,17 +152,12 @@
 
         private static bool IsKnownProtocol(string protocol)
         {
-            return (protocol.Equals("http://") || protocol.Equals("https://"));
+            return KnownProtocols.Contains(protocol);
         }
 
         private static bool HasTrailingSlash(string subsonicUrl)
         {
             return subsonicUrl.EndsWith("/");
-        }
-
-        private static bool HasCorrectProtocol(string subsonicUrl)
-        {
-            return subsonicUrl.StartsWith("http://");
         }
 
         private static string BytesToHex(ICollection<byte> data)

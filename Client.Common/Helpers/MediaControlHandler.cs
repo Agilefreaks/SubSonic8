@@ -1,7 +1,9 @@
 ﻿namespace Client.Common.Helpers
 {
     using Windows.Media;
+
     using Caliburn.Micro;
+
     using Client.Common.EventAggregatorMessages;
 
     public class MediaControlHandler : IMediaControlHandler
@@ -23,6 +25,14 @@
         #endregion
 
         #region Public Methods and Operators
+
+        public void Handle(StartPlaybackMessage message)
+        {
+            var artist = message.Item.Artist;
+            var title = message.Item.Title;
+            MediaControl.ArtistName = GetValueOrPlaceOrder(artist);
+            MediaControl.TrackName = GetValueOrPlaceOrder(title);
+        }
 
         public void PausePressed(object sender, object e)
         {
@@ -56,18 +66,13 @@
 
         #endregion
 
-        public void Handle(StartPlaybackMessage message)
-        {
-            var artist = message.Item.Artist;
-            var title = message.Item.Title;
-            MediaControl.ArtistName = GetValueOrPlaceOrder(artist);
-            MediaControl.TrackName = GetValueOrPlaceOrder(title);
+        #region Methods
 
-        }
-
-        private string GetValueOrPlaceOrder(string value)
+        private static string GetValueOrPlaceOrder(string value)
         {
             return string.IsNullOrWhiteSpace(value) ? "Unknown" : value;
         }
+
+        #endregion
     }
 }

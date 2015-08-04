@@ -7,6 +7,8 @@
     using System.Linq;
     using System.Threading.Tasks;
 
+    using Windows.Storage.Streams;
+
     using Client.Common.EventAggregatorMessages;
     using Client.Common.Models;
     using Client.Common.Services;
@@ -22,7 +24,6 @@
     using Subsonic8.Playlists;
     using Subsonic8.VideoPlayback;
     using Windows.UI.Xaml.Controls;
-    using Windows.UI.Xaml.Media;
     using Windows.UI.Xaml.Media.Imaging;
 
     public class PlaybackViewModel : PlaybackControlsViewModelBase, IPlaybackViewModel
