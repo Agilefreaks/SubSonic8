@@ -1,11 +1,16 @@
 ﻿namespace Client.Tests.VideoPlayback
 {
+    using System;
+
     using Client.Common.Models;
     using Client.Common.Services.DataStructures.PlayerManagementService;
     using Client.Tests.Framework.ViewModel;
     using Client.Tests.Mocks;
+
     using FluentAssertions;
+
     using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+
     using Subsonic8.VideoPlayback;
 
     [TestClass]
@@ -13,11 +18,42 @@
     {
         #region Fields
 
+        private readonly Uri _defaultUri = new Uri("http://test.com");
+
         private MockToastNotificationService _mockToastNotificationService;
 
         #endregion
 
-        #region Methods
+        #region Public Methods and Operators
+
+        [TestMethod]
+        public void Play_VideoPlaybackIsInitialized_WillNotExecuteAGetRandomSongsResult()
+        {
+            MockSubsonicService.IsVideoPlaybackInitialized = true;
+            var callCount = 0;
+            MockSubsonicService.GetRandomSongs = songCount =>
+                {
+                    callCount++;
+                    return new MockGetRandomSongsResult(songCount);
+                };
+
+            ((IPlayer)Subject).Play(new PlaylistItem { Uri = _defaultUri });
+
+            callCount.Should().Be(0);
+        }
+
+        [TestMethod]
+        public void
+            Play_VideoPlaybackIsNotInitialized_AndGetRandomSongsResultWasSuccessfull_WillSetIsVideoPlaybackInitializedToTrue
+            ()
+        {
+            MockSubsonicService.IsVideoPlaybackInitialized = false;
+            MockSubsonicService.GetRandomSongs = songCount => new MockGetRandomSongsResult(songCount);
+
+            ((IPlayer)Subject).Play(new PlaylistItem { Uri = _defaultUri });
+
+            MockSubsonicService.IsVideoPlaybackInitialized.Should().BeTrue();
+        }
 
         [TestMethod]
         public void Play_VideoPlaybackIsNotInitialized_WillExecuteAGetRandomSongsResult()
@@ -33,39 +69,16 @@
                     return mockGetRandomSongsResult;
                 };
 
-            ((IPlayer)Subject).Play(new PlaylistItem());
+            ((IPlayer)Subject).Play(new PlaylistItem { Uri = _defaultUri });
 
             callCount.Should().Be(1);
             mockGetRandomSongsResult.ExecuteCallCount.Should().Be(1);
             mockGetRandomSongsResult.NumberOfSongs.Should().Be(1);
         }
 
-        [TestMethod]
-        public void Play_VideoPlaybackIsNotInitialized_AndGetRandomSongsResultWasSuccessfull_WillSetIsVideoPlaybackInitializedToTrue()
-        {
-            MockSubsonicService.IsVideoPlaybackInitialized = false;
-            MockSubsonicService.GetRandomSongs = songCount => new MockGetRandomSongsResult(songCount);
+        #endregion
 
-            ((IPlayer)Subject).Play(new PlaylistItem());
-
-            MockSubsonicService.IsVideoPlaybackInitialized.Should().BeTrue();
-        }
-
-        [TestMethod]
-        public void Play_VideoPlaybackIsInitialized_WillNotExecuteAGetRandomSongsResult()
-        {
-            MockSubsonicService.IsVideoPlaybackInitialized = true;
-            var callCount = 0;
-            MockSubsonicService.GetRandomSongs = songCount =>
-                {
-                    callCount++;
-                    return new MockGetRandomSongsResult(songCount);
-                };
-
-            ((IPlayer)Subject).Play(new PlaylistItem());
-
-            callCount.Should().Be(0);
-        }
+        #region Methods
 
         protected override void TestInitializeExtensions()
         {

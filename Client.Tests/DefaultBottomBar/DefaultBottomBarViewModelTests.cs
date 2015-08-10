@@ -58,7 +58,6 @@
         {
             MockLoadModel();
             Subject.SelectedItems.Add(new MenuItemViewModel { Item = new ExpandedArtist { Id = 5 } });
-            Debug.WriteLine(Subject.EventAggregator);
             var albums = new List<Album> { new Album(), new Album() };
             var artist = new ExpandedArtist { Albums = albums };
             var mockGetAlbumResult = new MockGetArtistResult { GetResultFunc = () => artist };

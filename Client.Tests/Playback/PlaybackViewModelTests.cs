@@ -4,6 +4,7 @@ namespace Client.Tests.Playback
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+
     using Client.Common.EventAggregatorMessages;
     using Client.Common.Models;
     using Client.Common.Services.DataStructures.PlayerManagementService;

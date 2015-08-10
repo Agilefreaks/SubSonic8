@@ -3,7 +3,7 @@
     using Caliburn.Micro;
     using Client.Common.EventAggregatorMessages;
 
-    public interface IMediaControlHandler : IHandle<StartPlaybackMessage>
+    public interface IMediaControlHandler : IHandle<StartPlaybackMessage>, IHandle<StopPlaybackMessage>, IHandle<PausePlaybackMessage>, IHandle<ResumePlaybackMessage>
     {
         #region Public Methods and Operators
 

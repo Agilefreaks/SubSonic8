@@ -112,7 +112,7 @@
   </PropertyGroup>
   <ItemGroup>
     <!--A reference to the entire .Net Framework and Windows SDK are automatically included-->
-    <SDKReference Include="Microsoft.PlayerFramework.Xaml, Version=1.8.1.0">
+    <SDKReference Include="Microsoft.PlayerFramework.Xaml, Version=2.0.0.0">
       <Name>Microsoft Player Framework</Name>
     </SDKReference>
     <SDKReference Include="MSTestFramework, Version=11.0" />
@@ -259,9 +259,6 @@
       <Project>{4485a175-2491-40dd-a683-9ccf21267c45}</Project>
       <Name>SubLastFm</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
     <VisualStudioVersion>12.0</VisualStudioVersion>

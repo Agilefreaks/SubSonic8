@@ -70,6 +70,14 @@
         }
 
         [TestMethod]
+        public void SetBaseUrl_TheValueIsAnEmptyString_SetsTheGivenValue()
+        {
+            _subject.BaseUrl = string.Empty;
+
+            _subject.BaseUrl.Should().Be(string.Empty);
+        }
+
+        [TestMethod]
         public void EncodedCredentials_Always_ReturnsTheCredentialsEncodedInBase64()
         {
             _subject.Username = "Aladdin";

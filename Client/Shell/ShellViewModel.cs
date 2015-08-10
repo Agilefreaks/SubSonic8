@@ -20,6 +20,9 @@
     using Playback;
     using Search;
     using Settings;
+
+    using Subsonic8.AudioPlayback;
+
     using VideoPlayback;
     using Windows.UI.Core;
     using Windows.UI.Xaml;

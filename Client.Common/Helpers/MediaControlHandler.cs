@@ -7,7 +7,7 @@
     using Client.Common.Models;
     using EventAggregatorMessages;
 
-    public class MediaControlHandler : IMediaControlHandler, IHandle<StartPlaybackMessage>, IHandle<StopPlaybackMessage>, IHandle<PausePlaybackMessage>, IHandle<ResumePlaybackMessage>
+    public class MediaControlHandler : IMediaControlHandler 
     {
         #region Fields
 
@@ -38,7 +38,7 @@
             _mediaTransportControls.IsStopEnabled = true;
             _mediaTransportControls.IsNextEnabled = true;
             _mediaTransportControls.IsPreviousEnabled = true;
-            _mediaTransportControls.PlaybackStatus = MediaPlaybackStatus.Closed;
+            _mediaTransportControls.PlaybackStatus = MediaPlaybackStatus.Stopped;
             _mediaTransportControls.ButtonPressed += MediaTransportControlsOnButtonPressed;
         }
 
@@ -61,13 +61,6 @@
                     break;
             }
         }
-        
-        public void PlayNextTrackPressed(object sender, object e)
-        {
-            _eventAggregator.Publish(new PlayNextMessage());
-        }
-
-        #endregion
 
         public void Handle(StartPlaybackMessage message)
         {
@@ -95,11 +88,6 @@
 
         #region Methods
 
-        private static string GetValueOrPlaceOrder(string value)
-        {
-            return string.IsNullOrWhiteSpace(value) ? "Unknown" : value;
-        }
-
         private void SetItemMetaData(PlaylistItem item)
         {
             if (item.Type == PlaylistItemTypeEnum.Audio)
@@ -107,8 +95,7 @@
                 _mediaTransportControls.DisplayUpdater.Type = MediaPlaybackType.Music;
                 _mediaTransportControls.DisplayUpdater.MusicProperties.Artist = item.Artist;
                 _mediaTransportControls.DisplayUpdater.MusicProperties.Title = item.Title;
-                _mediaTransportControls.DisplayUpdater.Thumbnail =
-                    RandomAccessStreamReference.CreateFromUri(new Uri(item.CoverArtUrl));
+                _mediaTransportControls.DisplayUpdater.Thumbnail = RandomAccessStreamReference.CreateFromUri(new Uri(item.CoverArtUrl));
             }
             else
             {
@@ -117,5 +104,7 @@
             }
             _mediaTransportControls.DisplayUpdater.Update();
         }
+
+        #endregion
     }
 }
