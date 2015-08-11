@@ -2,7 +2,7 @@
 {
     public enum ImageType
     {
-        Thumbnail = 80, 
+        Thumbnail = 150, 
 
         Original = 500
     }

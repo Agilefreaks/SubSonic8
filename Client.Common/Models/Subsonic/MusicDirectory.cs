@@ -26,7 +26,7 @@
 
         public override Tuple<string, string> GetDescription()
         {
-            return new Tuple<string, string>(Name, base.GetDescription().Item2);
+            return new Tuple<string, string>(Name, "");
         }
 
         #endregion

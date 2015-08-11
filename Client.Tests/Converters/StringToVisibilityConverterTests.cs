@@ -26,5 +26,12 @@
 
             result.Should().Be(Visibility.Collapsed);
         }
+        [TestMethod]
+        public void Convert_ValueIsNotAnEmptyString_ReturnsVisibilityVisible()
+        {
+            var result = _subject.Convert("abc", null, null, null);
+
+            result.Should().Be(Visibility.Visible);
+        }
     }
 }

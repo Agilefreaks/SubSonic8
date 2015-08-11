@@ -1,7 +1,6 @@
 ﻿namespace Subsonic8.Converters
 {
     using System;
-
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Data;
 
@@ -9,7 +8,9 @@
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            throw new NotImplementedException();
+            return System.Convert.ToString(value) == string.Empty 
+                ? Visibility.Collapsed 
+                : Visibility.Visible;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
