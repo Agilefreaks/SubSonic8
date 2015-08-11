@@ -23,7 +23,7 @@
             const string Name = "test_n";
             _subject.Name = Name;
 
-            _subject.GetDescription().Should().Be(new Tuple<string, string>(Name, Name));
+            _subject.GetDescription().Should().Be(new Tuple<string, string>(Name, ""));
         }
 
         [TestMethod]
