@@ -46,6 +46,15 @@
             }
         }
 
+        public override void Attach(FrameworkElement frameworkElement)
+        {
+            base.Attach(frameworkElement);
+            if (ActiveItemProvider != null)
+            {
+                AssociatedObject.ScrollIntoView(ActiveItemProvider.ActiveItem);
+            }
+        }
+
         #endregion
 
         #region Methods
