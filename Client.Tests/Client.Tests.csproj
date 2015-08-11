@@ -125,6 +125,7 @@
     <Compile Include="BottomBar\BottomBarViewModelTests.cs" />
     <Compile Include="ClientTestBase.cs" />
     <Compile Include="Converters\IntToTimeStringConverterTests.cs" />
+    <Compile Include="Converters\StringToVisibilityConverterTests.cs" />
     <Compile Include="DefaultBottomBar\DefaultBottomBarViewModelTests.cs" />
     <Compile Include="ErrorDialog\ErrorDialogViewModelTests.cs" />
     <Compile Include="Framework\Extensions\SongExtensionMethodTests.cs" />
