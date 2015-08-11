@@ -48,7 +48,6 @@
             toast.Image.Alt = "Cover Art";
             toast.TextHeading.Text = options.Title;
             toast.TextBodyWrap.Text = options.Subtitle;
-            toast.Audio.Content = UseSound ? ToastAudioContent.Default : ToastAudioContent.Silent;
 
             return toast;
         }
