@@ -4,12 +4,18 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <UserControl.Resources>
-        <x:Double x:Key="MenuItemCoverArtSize">50</x:Double>
-
+        <x:Double x:Key="MenuItemCoverArtSize">50</x:Double>        
+        
         <Style x:Key="MenuItemCoverArtImageSyle" TargetType="Image">
             <Setter Property="Width" Value="{StaticResource MenuItemCoverArtSize}" />
             <Setter Property="Height" Value="{StaticResource MenuItemCoverArtSize}" />
             <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+        
+        <Style x:Key="MenuItemDescriptionStackPanelStyle" TargetType="StackPanel">
+            <Setter Property="Margin" Value="20,0"/>
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
     </UserControl.Resources>
 
@@ -21,8 +27,9 @@
 
         <Image Source="{Binding CoverArt}" Style="{StaticResource MenuItemCoverArtImageSyle}"/>
 
-        <StackPanel Grid.Column="1" Margin="20,0" VerticalAlignment="Stretch">
+        <StackPanel Grid.Column="1" Style="{StaticResource MenuItemDescriptionStackPanelStyle}">
             <TextBlock Text="{Binding Title}" Style="{StaticResource BodyTextStyle}" TextWrapping="NoWrap" />
+
             <TextBlock Text="{Binding Subtitle}" Style="{StaticResource BodyTextStyle}" TextWrapping="NoWrap"
                        Foreground="{StaticResource ApplicationSecondaryForegroundThemeBrush}" />
         </StackPanel>
