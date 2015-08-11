@@ -76,12 +76,12 @@
                     </Grid>
                     <TextBlock Grid.Row="1" Grid.Column="1" TextAlignment="Center" FontSize="25" Padding="0,40,0,0" 
                                Text="{Binding Source={StaticResource StringResources}, Path=PlaybackViewModelStrings.NoItemsPlaceholder }"/>
-                    <ListView Grid.Row="1" Grid.Column="1"                              
+                    <ListView Grid.Row="1" Grid.Column="1"
                               ItemsSource="{Binding PlaylistItems}"
                               SelectionMode="Multiple"
                               commonBehaviors:MultipleSelectBehavior.SelectedItems="{Binding SelectedItems, Mode=TwoWay}"
                               CanDragItems="False" CanReorderItems="False" AllowDrop="False"
-                              IsItemClickEnabled="True"                              
+                              IsItemClickEnabled="True"
                               cal:Message.Attach="[Event ItemClick] = [Action StartPlayback($eventArgs)]"
                               Visibility="{Binding Path=IsPlaylistVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
                               Style="{StaticResource PlaylistItemsListStyle}">

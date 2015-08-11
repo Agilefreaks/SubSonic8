@@ -12,25 +12,19 @@
         public static readonly DependencyProperty ActiveItemProviderProperty =
             DependencyProperty.Register(
                 "ActiveItemProvider", 
-                typeof(object), 
+                typeof(IActiveItemProvider), 
                 typeof(ScrollIntoViewBehavior), 
                 new PropertyMetadata(null, ActiveItemProviderChangedCallback));
 
         #endregion
 
-        #region Fields
-
-        private IActiveItemProvider _provider;
-
-        #endregion
-
         #region Public Properties
 
-        public object ActiveItemProvider
+        public IActiveItemProvider ActiveItemProvider
         {
             get
             {
-                return GetValue(ActiveItemProviderProperty);
+                return GetValue(ActiveItemProviderProperty) as IActiveItemProvider;
             }
 
             set
@@ -46,10 +40,9 @@
         public override void Detach()
         {
             base.Detach();
-            var provider = ActiveItemProvider as IActiveItemProvider;
-            if (provider != null)
+            if (ActiveItemProvider != null)
             {
-                provider.PropertyChanged -= ActiveItemProviderOnPropertyChanged;
+                ActiveItemProvider.PropertyChanged -= ActiveItemProviderOnPropertyChanged;
             }
         }
 
@@ -66,22 +59,16 @@
                 return;
             }
 
-            if (dependencyPropertyChangedEventArgs.OldValue != null)
+            var oldActiveItemProvider = dependencyPropertyChangedEventArgs.OldValue as IActiveItemProvider;
+            if (oldActiveItemProvider != null)
             {
-                var oldActiveItemProvider = dependencyPropertyChangedEventArgs.OldValue as IActiveItemProvider;
-                if (oldActiveItemProvider != null)
-                {
-                    scrollIntoViewBehavior.StopFollowing(oldActiveItemProvider);
-                }
+                scrollIntoViewBehavior.StopFollowing(oldActiveItemProvider);
             }
 
-            if (dependencyPropertyChangedEventArgs.NewValue != null)
+            var activeItemProvider = dependencyPropertyChangedEventArgs.NewValue as IActiveItemProvider;
+            if (activeItemProvider != null)
             {
-                var activeItemProvider = dependencyPropertyChangedEventArgs.NewValue as IActiveItemProvider;
-                if (activeItemProvider != null)
-                {
-                    scrollIntoViewBehavior.StartFollowing(activeItemProvider);
-                }
+                scrollIntoViewBehavior.StartFollowing(activeItemProvider);
             }
         }
 
@@ -93,17 +80,16 @@
                 return;
             }
 
-            AssociatedObject.ScrollIntoView(_provider.ActiveItem);
+            AssociatedObject.ScrollIntoView(ActiveItemProvider.ActiveItem);
         }
 
         private bool CanStartWatchingActiveItem()
         {
-            return _provider != null && AssociatedObject.Items != null;
+            return ActiveItemProvider != null && AssociatedObject.Items != null;
         }
 
         private void StartFollowing(INotifyPropertyChanged activeItemProvider)
         {
-            _provider = ActiveItemProvider as IActiveItemProvider;
             if (!CanStartWatchingActiveItem())
             {
                 return;
