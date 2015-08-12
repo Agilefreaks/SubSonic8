@@ -28,9 +28,10 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
-                <StackPanel>
-                    <TextBlock Text="{Binding Artist}"></TextBlock>
-                    <TextBlock Text="{Binding Title}"></TextBlock>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="{Binding Artist}" Margin="0,0,5,0" FontSize="18" FontWeight="Bold"></TextBlock>
+                    <TextBlock Text="-"></TextBlock>
+                    <TextBlock Text="{Binding Title}" Margin="5,0,0,0" FontSize="18"></TextBlock>
                 </StackPanel>
 
                 <TextBlock Grid.Column="1" Text="{Binding Duration, Converter={StaticResource TimeConverter}}" Style="{StaticResource PlaylistItemDurationStyle}" />

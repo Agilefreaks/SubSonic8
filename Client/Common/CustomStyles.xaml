@@ -57,7 +57,7 @@
     </Style>
 
     <Style x:Key="PlaylistItemsListStyle" TargetType="ListView">
-        <Setter Property="Background" Value = "#2c2525"/>
+        <Setter Property="Background" Value = "Transparent"/>
         <Setter Property="Margin" Value="0,0,0,10"/>
         <Setter Property="Padding" Value="5,5,0,0"/>
     </Style>
@@ -80,7 +80,7 @@
     </Style>
 
     <Style x:Name="PlaylistItemGridStyle" TargetType="Grid">
-        <Setter Property="Background" Value="{StaticResource ApplicationPageBackgroundThemeBrush}"/>
+        <Setter Property="Background" Value="Transparent"/>
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
         <Setter Property="Width" Value="Auto"/>
         <Setter Property="Height" Value="Auto"/>
@@ -167,7 +167,7 @@
     </Style>
 
     <Style x:Name="NotPlayingBorderStyle" TargetType="Border">
-        <Setter Property="BorderThickness" Value="3"/>
+        <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="BorderBrush" Value="{StaticResource ApplicationPageBackgroundThemeBrush}"/>
     </Style>
 
