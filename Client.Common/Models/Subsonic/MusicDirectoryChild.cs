@@ -60,7 +60,7 @@
         public override Tuple<string, string> GetDescription()
         {
             return Type == SubsonicModelTypeEnum.MusicDirectory
-                ? new Tuple<string, string>(Title, "")
+                ? new Tuple<string, string>(Title, string.Empty)
                 : new Tuple<string, string>(Title, Artist);
         }
 

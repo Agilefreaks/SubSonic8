@@ -24,7 +24,7 @@
             var description = _subject.GetDescription();
 
             description.Item1.Should().Be("test");
-            description.Item2.Should().Be("");
+            description.Item2.Should().Be(string.Empty);
         }
 
         [TestInitialize]

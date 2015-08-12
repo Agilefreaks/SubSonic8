@@ -22,7 +22,7 @@
 
         public override Tuple<string, string> GetDescription()
         {
-            return new Tuple<string, string>(Name, "");
+            return new Tuple<string, string>(Name, string.Empty);
         }
 
         #endregion

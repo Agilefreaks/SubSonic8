@@ -35,7 +35,7 @@
         <Setter Property="Width" Value="270" />
     </Style>
 
-    <SolidColorBrush x:Name="SaveButtonBackgroundBrush" Color="#FF632F00"></SolidColorBrush>
+    <SolidColorBrush x:Key="SaveButtonBackgroundBrush" Color="#FF632F00"></SolidColorBrush>
 
     <Style x:Key="ExpandTextBlockStyle" TargetType="TextBlock">
         <Setter Property="FontSize" Value="20" />
@@ -62,128 +62,141 @@
         <Setter Property="Padding" Value="5,5,0,0"/>
     </Style>
 
-    <Style x:Key="PlaylistItemDurationStyle" TargetType="TextBlock">
-        <Setter Property="Padding" Value="0,10,5,0"/>
+    <Style x:Key="PlaylistItemTextStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="18"/>
     </Style>
 
-    <Style x:Name="PlaylistContentGridStyle" TargetType="Grid">
+    <Style x:Key="PlaylistItemDurationStyle" TargetType="TextBlock" BasedOn="{StaticResource PlaylistItemTextStyle}">
+        <Setter Property="Padding" Value="0,10,5,0"/>
+    </Style>
+    
+    <Style x:Key="PlaylistItemArtistStyle" TargetType="TextBlock" BasedOn="{StaticResource PlaylistItemTextStyle}">
+        <Setter Property="Margin" Value="5,0"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+    </Style>
+    
+    <Style x:Key="PlaylistItemTitleStyle" TargetType="TextBlock" BasedOn="{StaticResource PlaylistItemTextStyle}">
+        <Setter Property="Margin" Value="5,0,0,0"/>
+    </Style>
+
+    <Style x:Key="PlaylistContentGridStyle" TargetType="Grid">
         <Setter Property="Margin" Value="116,0"/>
     </Style>
 
-    <Style x:Name="ExpandedPlaybackGridStyle" TargetType="Grid">
+    <Style x:Key="ExpandedPlaybackGridStyle" TargetType="Grid">
         <Setter Property="Margin" Value="46,0"/>
     </Style>
 
-    <Style x:Name="PlaylistItemDetailsGridStyle" TargetType="Grid">
+    <Style x:Key="PlaylistItemDetailsGridStyle" TargetType="Grid">
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
         <Setter Property="Margin" Value="5,0,0,0"/>
     </Style>
 
-    <Style x:Name="PlaylistItemGridStyle" TargetType="Grid">
+    <Style x:Key="PlaylistItemGridStyle" TargetType="Grid">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
         <Setter Property="Width" Value="Auto"/>
         <Setter Property="Height" Value="Auto"/>
     </Style>
 
-    <Style x:Name="PlaylistItemCoverArtStyle" TargetType="Image">
+    <Style x:Key="PlaylistItemCoverArtStyle" TargetType="Image">
         <Setter Property="Width" Value="40"/>
         <Setter Property="Height" Value="40"/>
     </Style>
 
-    <Style x:Name="PlayingItemBorderStyle" TargetType="Border">
+    <Style x:Key="PlayingItemBorderStyle" TargetType="Border">
         <Setter Property="BorderThickness" Value="4"/>
         <Setter Property="BorderBrush" Value="Blue"/>
     </Style>
 
-    <Style x:Name="PlaybackBigCoverArtStyle" TargetType="Image">
+    <Style x:Key="PlaybackBigCoverArtStyle" TargetType="Image">
         <Setter Property="Stretch" Value="Uniform"/>
         <Setter Property="MinHeight" Value="400"/>
     </Style>
     
-    <Style x:Name="ProgressBarStyle" TargetType="Slider">
+    <Style x:Key="ProgressBarStyle" TargetType="Slider">
         <Setter Property="Height" Value="25"/>
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
         <Setter Property="IsEnabled" Value="False"/>
     </Style>
 
-    <Style x:Name="PlaybackControlsPanelStyle" TargetType="StackPanel">
+    <Style x:Key="PlaybackControlsPanelStyle" TargetType="StackPanel">
         <Setter Property="Orientation" Value="Horizontal" />
         <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="Margin" Value="0,16,0,0"/>
     </Style>
 
-    <Style x:Name="FilterPanelStyle" TargetType="StackPanel">
+    <Style x:Key="FilterPanelStyle" TargetType="StackPanel">
         <Setter Property="Orientation" Value="Vertical" />
         <Setter Property="HorizontalAlignment" Value="Center"/>
     </Style>
 
-    <Style x:Name="FilterInstructionsStyle" TargetType="TextBlock">
+    <Style x:Key="FilterInstructionsStyle" TargetType="TextBlock">
         <Setter Property="FontSize" Value="20"/>
         <Setter Property="Margin" Value="10"/>
         <Setter Property="HorizontalAlignment" Value="Center"/>
     </Style>
 
-    <Style x:Name="FilterInputPanelStyle" TargetType="StackPanel">
+    <Style x:Key="FilterInputPanelStyle" TargetType="StackPanel">
         <Setter Property="Orientation" Value="Horizontal" />
         <Setter Property="Margin" Value="10, 0, 10, 10" />
         <Setter Property="HorizontalAlignment" Value="Center"/>
     </Style>
 
-    <Style x:Name="FilterTextBoxStyle" TargetType="TextBox">
+    <Style x:Key="FilterTextBoxStyle" TargetType="TextBox">
         <Setter Property="FontSize" Value="20"/>
         <Setter Property="Height" Value="40"/>
         <Setter Property="Width" Value="270"/>
         <Setter Property="TabIndex" Value="0"/>
     </Style>
 
-    <Style x:Name="DoneFilteringButtonStyle" TargetType="Button">
+    <Style x:Key="DoneFilteringButtonStyle" TargetType="Button">
         <Setter Property="FontSize" Value="20"/>
         <Setter Property="Height" Value="46"/>
         <Setter Property="Width" Value="90"/>
     </Style>
 
-    <Style x:Name="SnappedAudioViewGridStyle" TargetType="Grid">
+    <Style x:Key="SnappedAudioViewGridStyle" TargetType="Grid">
         <Setter Property="Margin" Value="20,0"/>
     </Style>
 
-    <Style x:Name="SnappedArtistDetailsPanelStyle" TargetType="StackPanel">
+    <Style x:Key="SnappedArtistDetailsPanelStyle" TargetType="StackPanel">
         <Setter Property="Orientation" Value="Vertical" />
         <Setter Property="Margin" Value="0,20,0,0"/>
     </Style>
 
-    <Style x:Name="SnappedPlaybackControlsGridStyle" TargetType="Grid">
+    <Style x:Key="SnappedPlaybackControlsGridStyle" TargetType="Grid">
         <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="Margin" Value="0,80,0,0"/>
     </Style>
 
-    <Style x:Name="SnappedVideoViewGridStyle" TargetType="Grid">
+    <Style x:Key="SnappedVideoViewGridStyle" TargetType="Grid">
         <Setter Property="Margin" Value="10,0"/>
     </Style>
 
-    <Style x:Name="SnappedVideoDetailsPanelStyle" TargetType="StackPanel">
+    <Style x:Key="SnappedVideoDetailsPanelStyle" TargetType="StackPanel">
         <Setter Property="Orientation" Value="Vertical" />
         <Setter Property="Margin" Value="0,20,0,160"/>
     </Style>
 
-    <Style x:Name="NotPlayingBorderStyle" TargetType="Border">
+    <Style x:Key="NotPlayingBorderStyle" TargetType="Border">
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="BorderBrush" Value="{StaticResource ApplicationPageBackgroundThemeBrush}"/>
     </Style>
 
-    <Style x:Name="ErrorDescription" TargetType="TextBlock">
+    <Style x:Key="ErrorDescription" TargetType="TextBlock">
         <Setter Property="Margin" Value="0,0,0,8"/>
         <Setter Property="FontSize" Value="18"/>
         <Setter Property="FontWeight" Value="SemiLight"/>
         <Setter Property="TextWrapping" Value="Wrap"/>
     </Style>
 
-    <Style x:Name="ErrorRootPanel" TargetType="StackPanel">
+    <Style x:Key="ErrorRootPanel" TargetType="StackPanel">
         <Setter Property="Background" Value="{StaticResource ApplicationPageBackgroundThemeBrush}"/>
         <Setter Property="Margin" Value="30,50,30,50"/>
     </Style>
 
-    <Style x:Name="ErrorPanel" TargetType="StackPanel">
+    <Style x:Key="ErrorPanel" TargetType="StackPanel">
         <Setter Property="Margin" Value="20"/>
         <Setter Property="Background" Value="{StaticResource ApplicationPageBackgroundThemeBrush}"/>
     </Style>
