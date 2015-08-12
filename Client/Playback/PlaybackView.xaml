@@ -20,6 +20,7 @@
         <commonConverters:InvertedVisibilityConverter x:Name="InvertedVisibilityConverter"/>
         <commonConverters:NullToVisibilityConverter x:Name="NullToVisibilityConverter"/>
         <subsonic8:StringResources x:Name="StringResources" />
+        <converters:InvertedBooleanToVisibilityConverter x:Name="InvertedBooleanToVisibilityConverter"/>
     </Page.Resources>
 
     <Grid>
@@ -75,6 +76,7 @@
                                         Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='Details'}" />
                     </Grid>
                     <TextBlock Grid.Row="1" Grid.Column="1" TextAlignment="Center" FontSize="25" Padding="0,40,0,0" 
+                               Visibility="{Binding Path=IsPlaylistVisible, Converter={StaticResource InvertedBooleanToVisibilityConverter}}"
                                Text="{Binding Source={StaticResource StringResources}, Path=PlaybackViewModelStrings.NoItemsPlaceholder }"/>
                     <ListView Grid.Row="1" Grid.Column="1"
                               ItemsSource="{Binding PlaylistItems}"
