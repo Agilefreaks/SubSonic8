@@ -31,17 +31,15 @@
 
         public Task Show(PlaybackNotificationOptions options)
         {
-            var toast = BuildToast(options);
-            var toastNotification = new ToastNotification(toast.GetXml());
-
-            return Task.Factory.StartNew(() => _toastNotifier.Show(toastNotification));
+            _toastNotifier.Show(BuildToast(options));
+            return Task.Factory.StartNew(() => { });
         }
 
         #endregion
 
         #region Methods
 
-        private IToastImageAndText02 BuildToast(PlaybackNotificationOptions options)
+        private static ToastNotification BuildToast(PlaybackNotificationOptions options)
         {
             var toast = ToastContentFactory.CreateToastImageAndText02();
             toast.Image.Src = options.ImageUrl;
@@ -49,7 +47,7 @@
             toast.TextHeading.Text = options.Title;
             toast.TextBodyWrap.Text = options.Subtitle;
 
-            return toast;
+            return new ToastNotification(toast.GetXml());
         }
 
         #endregion
