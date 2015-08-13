@@ -62,6 +62,19 @@
         <Setter Property="Padding" Value="5,5,0,0"/>
     </Style>
 
+    <Style x:Key="RepeatAllOnAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
+        <Setter Property="AutomationProperties.AutomationId" Value="RepeatAllAppBarButton"/>
+        <Setter Property="AutomationProperties.Name" Value="Repeat On"/>
+        <Setter Property="Content" Value="&#xE1CD;"/>
+    </Style>
+
+    <Style x:Key="RepeatAllOffAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
+        <Setter Property="AutomationProperties.AutomationId" Value="RepeatAllAppBarButton"/>
+        <Setter Property="AutomationProperties.Name" Value="Repeat Off"/>
+        <Setter Property="Content" Value="&#xE1CD;"/>
+        <Setter Property="Foreground" Value="Gray"/>
+    </Style>
+
     <Style x:Key="PlaylistItemTextStyle" TargetType="TextBlock">
         <Setter Property="FontSize" Value="18"/>
     </Style>

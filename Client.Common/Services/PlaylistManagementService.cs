@@ -30,6 +30,8 @@
 
         private bool _wasEmpty;
 
+        private bool _repeatOn;
+
         #endregion
 
         #region Constructors and Destructors
@@ -157,6 +159,23 @@
                 }
 
                 _shuffleOn = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
+        public bool RepeatOn
+        {
+            get
+            {
+                return _repeatOn;
+            }
+            set
+            {
+                if (value.Equals(_repeatOn))
+                {
+                    return;
+                }
+                _repeatOn = value;
                 NotifyOfPropertyChange();
             }
         }

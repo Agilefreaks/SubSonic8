@@ -11,6 +11,7 @@
     xmlns:i="using:Windows.UI.Interactivity" xmlns:videoPlayback="using:Subsonic8.VideoPlayback"
     xmlns:playlistItem="using:Subsonic8.PlaylistItem.PlaylistItem" xmlns:commonBehaviors="using:Common.Behaviors"
     xmlns:commonConverters="using:Common.Converters" xmlns:subsonic8="using:Subsonic8"
+    xmlns:controls="using:Subsonic8.Controls"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -66,14 +67,22 @@
                     </StackPanel>
                     <Grid Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"
                           x:Name="ExpandedMediaPresenter" Style="{StaticResource PlaylistContentGridStyle}">
-                        <playback:Audio cal:Bind.Model="{Binding}"
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Stretch">
+                            <playback:Audio cal:Bind.Model="{Binding}"
                                         Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='Audio'}" />
-                        <playback:Video cal:Bind.Model="{Binding}"
+                            <playback:Video cal:Bind.Model="{Binding}"
                                         Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='Video'}" />
-                        <playback:Filter cal:Bind.Model="{Binding}"
+                            <playback:Filter cal:Bind.Model="{Binding}"
                                          Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='Filter'}" />
-                        <playback:Details cal:Bind.Model="{Binding}" cal:Message.Attach="[Event Tapped] = [Action HideArtistInfo]"
+                            <playback:Details cal:Bind.Model="{Binding}" cal:Message.Attach="[Event Tapped] = [Action HideArtistInfo]"
                                         Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='Details'}" />
+                        </Grid>
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        </StackPanel>
                     </Grid>
                     <TextBlock Grid.Row="1" Grid.Column="1" TextAlignment="Center" FontSize="25" Padding="0,40,0,0" 
                                Visibility="{Binding Path=IsPlaylistVisible, Converter={StaticResource InvertedBooleanToVisibilityConverter}}"
