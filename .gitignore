@@ -52,3 +52,4 @@ PublishAssets/*
 
 #StyleCop
 *StyleCop.cache
+*/AppPackages/*
