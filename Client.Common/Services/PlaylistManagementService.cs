@@ -195,9 +195,27 @@
 
         public int GetNextTrackNumber()
         {
-            return ShuffleOn
-                       ? _randomNumberGenerator.Next(Items.Count - 1)
-                       : CurrentTrackNumber == (Items.Count - 1) ? 0 : CurrentTrackNumber + 1;
+            int result;
+            if (ShuffleOn)
+            {
+                result = _randomNumberGenerator.Next(Items.Count - 1);
+            }
+            else if (CurrentTrackNumber == (Items.Count - 1))
+            {
+                result = 0;
+            }
+            else
+            {
+                result = CurrentTrackNumber + 1;
+            }
+
+
+            if (RepeatOn)
+            {
+                result = CurrentTrackNumber;
+            }
+
+            return result;
         }
 
         public int GetPreviousTrackNumber()
@@ -447,5 +465,10 @@
         }
 
         #endregion
+
+        public void Handle(ToggleRepeatMessage message)
+        {
+            RepeatOn = !RepeatOn;
+        }
     }
 }
