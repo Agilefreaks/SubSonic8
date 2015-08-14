@@ -446,6 +446,16 @@ namespace Client.Tests.Playback
             Subject.State.Should().Be(PlaybackViewModelStateEnum.Audio);
         }
 
+        [TestMethod]
+        public void ToggleRepeatMessage_Always_SendsToggleRepeatMessageUsingEventAggregator()
+        {
+            Subject.ToggleRepeat();
+
+            MockEventAggregator.Messages.Any(message => message.GetType() == typeof (ToggleRepeatMessage))
+                .Should()
+                .BeTrue();
+        }
+
         #endregion
 
         #region Methods

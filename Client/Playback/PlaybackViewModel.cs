@@ -530,6 +530,11 @@
             State = _previousState;
         }
 
+        public void ToggleRepeat()
+        {
+            EventAggregator.Publish(new ToggleRepeatMessage());
+        }
+
         #endregion
 
         #region Methods

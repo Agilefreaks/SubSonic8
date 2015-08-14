@@ -82,6 +82,10 @@
                                         Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='Details'}" />
                         </Grid>
                         <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                            <controls:AppBarToggleButton Style="{StaticResource RepeatAllOffAppBarButtonStyle}"
+                               CheckedStyle="{StaticResource RepeatAllOnAppBarButtonStyle}"
+                               cal:Message.Attach="[Event Click] = [Action ToggleRepeat()]" AutoToggle="False"
+                               IsChecked="{Binding PlaylistManagementService.RepeatOn}" />
                         </StackPanel>
                     </Grid>
                     <TextBlock Grid.Row="1" Grid.Column="1" TextAlignment="Center" FontSize="25" Padding="0,40,0,0" 

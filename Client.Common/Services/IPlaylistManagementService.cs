@@ -16,6 +16,7 @@
                                                   IHandle<StopMessage>,
                                                   IHandle<PauseMessage>,
                                                   IHandle<PlayMessage>,
+                                                  IHandle<ToggleRepeatMessage>,
                                                   INotifyPropertyChanged
     {
         #region Public Properties

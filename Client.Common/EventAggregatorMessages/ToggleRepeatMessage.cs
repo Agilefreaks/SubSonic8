@@ -1,7 +1,6 @@
 ﻿namespace Client.Common.EventAggregatorMessages
 {
-    public class ToggleShuffleMessage
+    public class ToggleRepeatMessage
     {
-
     }
 }
