@@ -58,6 +58,18 @@
         }
 
         [TestMethod]
+        public void LoadPlaylist_PlaylistHasAtLeastOneItem_SendsAStartPlaybackMessage()
+        {
+            var playlist = new Playlist();
+            playlist.Entries.Add(new PlaylistEntry());
+
+            Subject.LoadPlaylist(playlist);
+
+            MockEventAggregator.PublishCallCount.Should().Be(2);
+            MockEventAggregator.Messages[1].Should().BeOfType<StartPlaybackMessage>();
+        }
+
+        [TestMethod]
         public void LoadPlaylist_Always_ShouldClearThePlaylist()
         {
             Subject.LoadPlaylist(new Playlist());

@@ -49,6 +49,10 @@
             var playlistItemCollection = new PlaylistItemCollection();
             playlistItemCollection.AddRange(playlist.Entries.Select(e => e.AsPlaylistItem(SubsonicService)));
             PlaylistManagementService.LoadPlaylist(playlistItemCollection);
+            if (playlistItemCollection.Count > 0)
+            {
+                EventAggregator.Publish(new StartPlaybackMessage(playlistItemCollection.First()));
+            }
         }
 
         #endregion
