@@ -10,7 +10,7 @@
 
         private SubsonicServiceConfiguration _subsonicServiceConfiguration;
 
-        private bool _toastsUseSound;
+        private bool _useToastNotifications;
 
         #endregion
 
@@ -45,21 +45,21 @@
             }
         }
 
-        public bool ToastsUseSound
+        public bool UseToastNotifications
         {
             get
             {
-                return _toastsUseSound;
+                return _useToastNotifications;
             }
 
             set
             {
-                if (value.Equals(_toastsUseSound))
+                if (value.Equals(_useToastNotifications))
                 {
                     return;
                 }
 
-                _toastsUseSound = value;
+                _useToastNotifications = value;
                 NotifyOfPropertyChange();
             }
         }

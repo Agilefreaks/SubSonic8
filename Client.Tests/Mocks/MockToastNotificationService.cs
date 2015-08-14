@@ -9,7 +9,7 @@
 
         public int ShowCallCount { get; set; }
 
-        public bool UseSound { get; set; }
+        public bool EnableNotifications { get; set; }
 
         #endregion
 

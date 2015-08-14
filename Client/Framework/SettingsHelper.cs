@@ -47,7 +47,7 @@
 
             SubsonicService.Configuration = subsonic8Configuration.SubsonicServiceConfiguration;
 
-            ToastNotificationService.UseSound = subsonic8Configuration.ToastsUseSound;
+            ToastNotificationService.EnableNotifications = subsonic8Configuration.UseToastNotifications;
         }
 
         public void UpdateCredentialsInVault(PasswordCredential passwordCredential)

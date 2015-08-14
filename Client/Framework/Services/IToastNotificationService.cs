@@ -4,7 +4,7 @@
     {
         #region Public Properties
 
-        bool UseSound { get; set; }
+        bool EnableNotifications { get; set; }
 
         #endregion
     }

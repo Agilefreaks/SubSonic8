@@ -86,7 +86,7 @@ namespace Subsonic8.Settings
         public async Task Populate()
         {
             var configuration = await _storageService.Load<Subsonic8Configuration>()
-                                ?? new Subsonic8Configuration { ToastsUseSound = false };
+                                ?? new Subsonic8Configuration { UseToastNotifications = false };
             PopulateCredentials(configuration);
             Configuration = configuration;
         }
@@ -103,7 +103,7 @@ namespace Subsonic8.Settings
             UpdateCredentials();
 
             _subsonicService.Configuration = Configuration.SubsonicServiceConfiguration;
-            _notificationService.UseSound = Configuration.ToastsUseSound;
+            _notificationService.EnableNotifications = Configuration.UseToastNotifications;
         }
 
         public void UsernameChanged(TextBox textBox)

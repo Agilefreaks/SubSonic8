@@ -132,6 +132,7 @@
     <Compile Include="Framework\NotificationHelperTests.cs" />
     <Compile Include="Framework\Services\DialogNotificationOptionsTests.cs" />
     <Compile Include="Framework\Services\NotificationOptionsTests.cs" />
+    <Compile Include="Framework\Services\ToastNotificationServiceTests.cs" />
     <Compile Include="Framework\ViewModel\CollectionViewModelBaseTests.cs" />
     <Compile Include="Framework\ViewModel\DetailViewModelBaseTests.cs" />
     <Compile Include="Framework\ViewModel\ItemViewModelBaseTests.cs" />

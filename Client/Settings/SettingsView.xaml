@@ -22,7 +22,7 @@
                      Style="{StaticResource PasswordTextBoxStyle}"
                      cal:Message.Attach="[Event PasswordChanged]=[Action PasswordChanged($source)]" />
 
-        <ToggleSwitch Header="Sound For Notifications" IsOn="{Binding Path=Configuration.ToastsUseSound, Mode=TwoWay}"
+        <ToggleSwitch Header="Enable notifications on song change" IsOn="{Binding Path=Configuration.UseToastNotifications, Mode=TwoWay}"
                       Margin="0,10" OffContent="Off" OnContent="On" Style="{StaticResource LightToggleSwitch}">
             <ToggleSwitch.HeaderTemplate>
                 <DataTemplate>

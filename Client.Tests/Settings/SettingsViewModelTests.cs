@@ -112,13 +112,13 @@
         }
 
         [TestMethod]
-        public async Task Populate_StorageServiceReturnsNull_TheNewConfigurationHasToastsUseSoundFalse()
+        public async Task Populate_StorageServiceReturnsNull_TheNewConfigurationHasUseToastNotificationsFalse()
         {
             _mockStorageService.LoadFunc = t => null;
 
             await _subject.Populate();
 
-            _subject.Configuration.ToastsUseSound.Should().BeFalse();
+            _subject.Configuration.UseToastNotifications.Should().BeFalse();
         }
 
         [TestMethod]
@@ -153,7 +153,7 @@
         [TestMethod]
         public async Task SaveSettings_Always_SetsNotificationServiceToTheCurrentOption()
         {
-            var configuration = new Subsonic8Configuration { ToastsUseSound = true };
+            var configuration = new Subsonic8Configuration { UseToastNotifications = true };
             _mockStorageService.LoadFunc = t => configuration;
             await _subject.Populate();
             _subject.Configuration.SubsonicServiceConfiguration.Username = "test";
@@ -161,7 +161,7 @@
 
             await _subject.SaveSettings();
 
-            _mockToastNotificationService.UseSound.Should().BeTrue();
+            _mockToastNotificationService.EnableNotifications.Should().BeTrue();
         }
 
         [TestMethod]

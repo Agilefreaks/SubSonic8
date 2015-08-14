@@ -23,7 +23,7 @@
 
         #region Public Properties
 
-        public bool UseSound { get; set; }
+        public bool EnableNotifications { get; set; }
 
         #endregion
 
@@ -31,7 +31,10 @@
 
         public Task Show(PlaybackNotificationOptions options)
         {
-            _toastNotifier.Show(BuildToast(options));
+            if (EnableNotifications)
+            {
+                _toastNotifier.Show(BuildToast(options));
+            }
             return Task.Factory.StartNew(() => { });
         }
 
