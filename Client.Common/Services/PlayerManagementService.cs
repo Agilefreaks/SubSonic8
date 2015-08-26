@@ -8,7 +8,7 @@
     using Client.Common.Models;
     using Client.Common.Services.DataStructures.PlayerManagementService;
 
-    public class PlayerManagementService : IPlayerManagementService 
+    public class PlayerManagementService : IPlayerManagementService
     {
         #region Static Fields
 

@@ -294,6 +294,11 @@
             Play(message.Options);
         }
 
+        public void Handle(ToggleRepeatMessage message)
+        {
+            RepeatOn = !RepeatOn;
+        }
+
         public void LoadPlaylist(PlaylistItemCollection playlistItemCollection)
         {
             if (playlistItemCollection == null)
@@ -465,10 +470,5 @@
         }
 
         #endregion
-
-        public void Handle(ToggleRepeatMessage message)
-        {
-            RepeatOn = !RepeatOn;
-        }
     }
 }
