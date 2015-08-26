@@ -11,7 +11,7 @@
         [TestInitialize]
         public void Setup()
         {
-            _subject =new ToastNotificationService();
-        }        
+            _subject = new ToastNotificationService();
+        }
     }
 }
