@@ -91,6 +91,10 @@ namespace Client.Tests.Mocks
         {
         }
 
+        public void Handle(ToggleRepeatMessage message)
+        {
+        }
+
         public void LoadPlaylist(PlaylistItemCollection playlistItemCollection)
         {
             LoadPlaylistCallCount++;
