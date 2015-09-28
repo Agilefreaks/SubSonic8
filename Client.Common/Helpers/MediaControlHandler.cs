@@ -54,10 +54,10 @@
                     _eventAggregator.Publish(new StopMessage());
                     break;
                 case SystemMediaTransportControlsButton.Next:
-                    _eventAggregator.Publish(new PlayNextMessage());
+                    _eventAggregator.Publish(new JumpToNextMessage());
                     break;
                 case SystemMediaTransportControlsButton.Previous:
-                    _eventAggregator.Publish(new PlayPreviousMessage());
+                    _eventAggregator.Publish(new JumpToPreviousMessage());
                     break;
             }
         }

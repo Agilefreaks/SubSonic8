@@ -104,6 +104,7 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="EventAggregatorMessages\PlayNextMessage.cs" />
     <Compile Include="EventAggregatorMessages\ToggleRepeatMessage.cs" />
     <Compile Include="Results\SubsonicApiCallErrorResponseHandler.cs" />
     <Compile Include="SubsonicCommonModule.cs" />
@@ -205,8 +206,8 @@
     <Compile Include="Helpers\MediaControlHandler.cs" />
     <Compile Include="Services\PlaylistManagementService.cs" />
     <Compile Include="EventAggregatorMessages\PlaylistStateChangedMessage.cs" />
-    <Compile Include="EventAggregatorMessages\PlayPreviousMessage.cs" />
-    <Compile Include="EventAggregatorMessages\PlayNextMessage.cs" />
+    <Compile Include="EventAggregatorMessages\JumpToPreviousMessage.cs" />
+    <Compile Include="EventAggregatorMessages\JumpToNextMessage.cs" />
     <Compile Include="EventAggregatorMessages\StopPlaybackMessage.cs" />
     <Compile Include="Services\StorageService.cs" />
     <Compile Include="Services\SubsonicService.cs" />
