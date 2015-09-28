@@ -30,6 +30,8 @@
             _subject = new PlaylistManagementService(_mockEventAggregator);
         }
 
+        #region Constructor
+
         [TestMethod]
         public void Ctor_Always_SetsGetNextTrackNumberFuncToGetNextTrackNumber()
         {
@@ -71,8 +73,12 @@
             playlistManagementService.StopPlaybackAction.Should().Be((Action)playlistManagementService.StopPlayback);
         }
 
+        #endregion
+
+        #region GetNextTrackNumber
+
         [TestMethod]
-        public void GetNextTrackNumber_ShuffleOffAndCurrentItemLastItem_Return0()
+        public void GetNextTrackNumber_ShuffleOffAndRepeatOffAndCurrentItemIsLastItem_Returns0()
         {
             _subject.Items.AddRange(GeneratePlaylistItems());
             _subject.Handle(new PlayNextMessage());
@@ -82,7 +88,7 @@
         }
 
         [TestMethod]
-        public void GetNextTrackNumber_ShuffleOffAndCurrentItemNull_ShouldReturn0()
+        public void GetNextTrackNumber_ShuffleOffAndRepeatOffAndCurrentItemNull_Returns0()
         {
             _subject.Items.AddRange(GeneratePlaylistItems());
             _subject.CurrentItem.Should().BeNull();
@@ -91,7 +97,7 @@
         }
 
         [TestMethod]
-        public void GetNextTrackNumber_ShuffleOff_ShouldReturnCurrentTrackNumberIncrementedBy1()
+        public void GetNextTrackNumber_ShuffleOffAndRepeatOff_ReturnsCurrentTrackNumberIncrementedBy1()
         {
             _subject.Items.AddRange(GeneratePlaylistItems());
             _subject.Handle(new PlayNextMessage());
@@ -100,13 +106,47 @@
         }
 
         [TestMethod]
-        public void GetNextTrackNumber_ShuffleOn_ReturnARandomNumberSmallerThanTheTotalNumberOfItems()
+        public void GetNextTrackNumber_ShuffleOnAndRepeatOff_ReturnsARandomNumberSmallerThanTheTotalNumberOfItems()
         {
             _subject.Items.AddRange(GeneratePlaylistItems(100));
             _subject.Handle(new ToggleShuffleMessage());
 
             _subject.GetNextTrackNumber().Should().NotBe(0);
         }
+
+        [TestMethod]
+        public void GetNextTrackNumber_ShuffleOnRepeatOffAndPlaylistIsEmpty_ReturnsMinus1()
+        {
+            _subject.Handle(new ToggleShuffleMessage());
+
+            _subject.GetNextTrackNumber().Should().Be(-1);
+        }
+
+        [TestMethod]
+        public void GetNextTrackNumber_ShuffleOffRepeatOn_ReturnsTheCurrentTrackNumber()
+        {
+            _subject.Handle(new ToggleRepeatMessage());
+            var currentTrackNumber = _subject.CurrentTrackNumber;
+
+            _subject.RepeatOn.Should().BeTrue();
+            _subject.GetNextTrackNumber().Should().Be(currentTrackNumber);
+        }
+
+        [TestMethod]
+        public void GetNextTrackNumber_ShuffleOnRepeatOn_ReturnsTheCurrentTrackNumber()
+        {
+            _subject.Handle(new ToggleShuffleMessage());
+            _subject.Handle(new ToggleRepeatMessage());
+            var currentTrackNumber = _subject.CurrentTrackNumber;
+
+            _subject.RepeatOn.Should().BeTrue();
+            _subject.ShuffleOn.Should().BeTrue();
+            _subject.GetNextTrackNumber().Should().Be(currentTrackNumber);
+        }
+
+        #endregion
+
+        #region GetPreviousTrackNumber
 
         [TestMethod]
         public void GetPreviousTrackNumber_ShuffleOff_SetsTheSourceToThePreviousItemInThePlaylist()
@@ -145,6 +185,10 @@
             previousTrackNumber.Should().Be(currentIndex);
         }
 
+        #endregion
+
+        #region HandlePlayItemAtIndex
+
         [TestMethod]
         public void HandlePlayItemAtIndexMessage_EqualToItemCount_DoesNotCallsStartPlaybackAction()
         {
@@ -162,10 +206,10 @@
             _subject.Items.AddRange(GeneratePlaylistItems());
             var callCount = 0;
             _subject.StartPlaybackAction = i =>
-                {
-                    i.Should().Be(1);
-                    callCount++;
-                };
+            {
+                i.Should().Be(1);
+                callCount++;
+            };
 
             _subject.Handle(new PlayItemAtIndexMessage(1));
 
@@ -182,6 +226,10 @@
 
             callCount.Should().Be(0);
         }
+
+        #endregion
+
+        #region HandlePlay
 
         [TestMethod]
         public void HandlePlayMessage_TheCurrentItemIsNotSet_SendsAStartPlaybackMessage()
@@ -205,16 +253,20 @@
             _mockEventAggregator.Messages.Any(m => m.GetType() == typeof(ResumePlaybackMessage)).Should().BeTrue();
         }
 
+        #endregion
+
+        #region HandlePlayNext
+
         [TestMethod]
         public void HandlePlayNext_Always_CallsGetNextTrackNumber()
         {
             var callCount = 0;
             _subject.Items.AddRange(GeneratePlaylistItems(5));
             _subject.GetNextTrackNumberFunc = () =>
-                {
-                    callCount++;
-                    return 2;
-                };
+            {
+                callCount++;
+                return 2;
+            };
 
             _subject.Handle(new PlayNextMessage());
 
@@ -228,10 +280,10 @@
             _subject.GetNextTrackNumberFunc = () => 2;
             var callCount = 0;
             _subject.StartPlaybackAction = index =>
-                {
-                    index.Should().Be(2);
-                    callCount++;
-                };
+            {
+                index.Should().Be(2);
+                callCount++;
+            };
 
             _subject.Handle(new PlayNextMessage());
 
@@ -260,16 +312,20 @@
             _subject.PlaylistHistory.Count.Should().Be(0);
         }
 
+        #endregion
+
+        #region HandlePlayPrevious
+
         [TestMethod]
         public void HandlePlayPrevious_Always_CallsGetPreviousTrackNumberFunc()
         {
             var callCount = 0;
             _subject.Items.AddRange(GeneratePlaylistItems(5));
             _subject.GetPreviousTrackNumberFunc = () =>
-                {
-                    callCount++;
-                    return 2;
-                };
+            {
+                callCount++;
+                return 2;
+            };
 
             _subject.Handle(new PlayPreviousMessage());
 
@@ -284,10 +340,10 @@
             _subject.GetPreviousTrackNumberFunc = () => 3;
             var callCount = 0;
             _subject.StartPlaybackAction = index =>
-                {
-                    index.Should().Be(3);
-                    callCount++;
-                };
+            {
+                index.Should().Be(3);
+                callCount++;
+            };
 
             _subject.Handle(new PlayPreviousMessage());
 
@@ -306,6 +362,10 @@
 
             callCount.Should().Be(0);
         }
+
+        #endregion
+
+        #region HandleToggleShuffle
 
         [TestMethod]
         public void HandleToggleShuffle_ShuffleOnFalse_SetsShuffleOnTrue()
@@ -326,6 +386,10 @@
             _subject.ShuffleOn.Should().BeFalse();
         }
 
+        #endregion
+
+        #region HandleRemoveFromPlaylist
+
         [TestMethod]
         public void HandleWithRemoveFromPlaylistMessageShouldRemoveItemsInQueueFromCurrentPlaylist()
         {
@@ -337,6 +401,10 @@
             _subject.Items.Should().HaveCount(0);
         }
 
+        #endregion
+
+        #region HandleStopPlayback
+
         [TestMethod]
         public void Handle_StopPlaybackMessage_AlwaysCallsStopPlybackAction()
         {
@@ -347,6 +415,10 @@
 
             callCount.Should().Be(1);
         }
+
+        #endregion
+
+        #region HandleAddItems
 
         [TestMethod]
         public void Handle_WithAddItemsMessage_AddsAllItemsFromQueueItems()
@@ -384,11 +456,19 @@
             playbackIndex.Should().Be(3);
         }
 
+        #endregion
+
+        #region IsPlaying
+
         [TestMethod]
         public void IsPlaying_ByDefault_IsFalse()
         {
             _subject.IsPlaying.Should().BeFalse();
         }
+
+        #endregion
+
+        #region Events
 
         [TestMethod]
         public void PLaylistItemsWhenChangedFromNotEmptyToNotEmptyCallsEventAggregatorPublishWithShowControlsMessage()
@@ -400,6 +480,19 @@
             _mockEventAggregator.PublishCallCount.Should().Be(2);
             _mockEventAggregator.Messages.ElementAt(1).GetType().Should().Be(typeof(PlaylistStateChangedMessage));
         }
+
+        [TestMethod]
+        public void PlaylistItemsWhenChangedFromEmptyToNotEmptyCallsEventAggregatorPublishWithShowControlsMessage()
+        {
+            _subject.Items.Add(new PlaylistItem());
+
+            _mockEventAggregator.PublishCallCount.Should().Be(1);
+            _mockEventAggregator.Messages.First().GetType().Should().Be(typeof(PlaylistStateChangedMessage));
+        }
+
+        #endregion
+
+        #region Pause
 
         [TestMethod]
         public void Pause_Always_SetsIsPlayingToFalse()
@@ -444,6 +537,10 @@
             _subject.IsPlaying.Should().BeFalse();
             _subject.IsPaused.Should().BeTrue();
         }
+
+        #endregion
+
+        #region PlayPause
 
         [TestMethod]
         public void PlayPause_IsNotPlayingAndCurrentItemSetAndIsNotPaused_SendsAStartPlaybackMessage()
@@ -490,6 +587,10 @@
             _mockEventAggregator.Messages.Any(m => m.GetType() == typeof(PausePlaybackMessage)).Should().BeTrue();
         }
 
+        #endregion
+
+        #region Play
+
         [TestMethod]
         public void Play_Always_SetsIsPlayingTrueAndIsPausedFalse()
         {
@@ -535,14 +636,9 @@
             _mockEventAggregator.Messages.Any(m => m.GetType() == typeof(StartPlaybackMessage)).Should().BeTrue();
         }
 
-        [TestMethod]
-        public void PlaylistItemsWhenChangedFromEmptyToNotEmptyCallsEventAggregatorPublishWithShowControlsMessage()
-        {
-            _subject.Items.Add(new PlaylistItem());
+        #endregion
 
-            _mockEventAggregator.PublishCallCount.Should().Be(1);
-            _mockEventAggregator.Messages.First().GetType().Should().Be(typeof(PlaylistStateChangedMessage));
-        }
+        #region Resume
 
         [TestMethod]
         public void Resume_Always_SendsResumePlaybackMessage()
@@ -559,6 +655,10 @@
 
             _subject.IsPlaying.Should().BeTrue();
         }
+
+        #endregion
+
+        #region StartPlayback
 
         [TestMethod]
         public void StartPlayback_Always_CallsStopPlaybackAction()
@@ -611,6 +711,11 @@
 
             _mockEventAggregator.Messages.Any(m => m.GetType() == typeof(StartPlaybackMessage)).Should().BeTrue();
         }
+
+
+        #endregion
+
+        #region StopPlayback
 
         [TestMethod]
         public void StopPlayback_Always_SetsCurrentItemPlayingStateNotPlyaing()
@@ -678,6 +783,10 @@
             _subject.IsPlaying.Should().BeFalse();
         }
 
+        #endregion
+
+        #region Clear
+
         [TestMethod]
         public void ClearingThePlaylist_Always_StopsPlayback()
         {
@@ -700,6 +809,8 @@
 
             _subject.CurrentItem.Should().BeNull();
         }
+
+        #endregion
 
         #endregion
 

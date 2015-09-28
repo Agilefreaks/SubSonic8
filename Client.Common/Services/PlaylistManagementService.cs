@@ -169,7 +169,7 @@
             {
                 return _repeatOn;
             }
-            set
+            private set
             {
                 if (value.Equals(_repeatOn))
                 {
@@ -196,7 +196,15 @@
         public int GetNextTrackNumber()
         {
             int result;
-            if (ShuffleOn)
+            if (Items.Count == 0)
+            {
+                result = -1;
+            }
+            else if (RepeatOn)
+            {
+                result = CurrentTrackNumber < 0 ? 0 : CurrentTrackNumber;
+            }
+            else if (ShuffleOn)
             {
                 result = _randomNumberGenerator.Next(Items.Count - 1);
             }
@@ -207,12 +215,6 @@
             else
             {
                 result = CurrentTrackNumber + 1;
-            }
-
-
-            if (RepeatOn)
-            {
-                result = CurrentTrackNumber;
             }
 
             return result;
