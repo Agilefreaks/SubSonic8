@@ -197,7 +197,7 @@
 
         public virtual void PlayNext()
         {
-            EventAggregator.Publish(new PlayNextMessage());
+            EventAggregator.Publish(new JumpToNextMessage());
         }
 
         public virtual void PlayPause()
@@ -207,7 +207,7 @@
 
         public virtual void PlayPrevious()
         {
-            EventAggregator.Publish(new PlayPreviousMessage());
+            EventAggregator.Publish(new JumpToPreviousMessage());
         }
 
         public virtual void Stop()

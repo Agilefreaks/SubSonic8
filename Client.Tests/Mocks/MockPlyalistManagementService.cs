@@ -51,11 +51,11 @@ namespace Client.Tests.Mocks
             ClearCallCount++;
         }
 
-        public void Handle(PlayNextMessage message)
+        public void Handle(JumpToNextMessage message)
         {
         }
 
-        public void Handle(PlayPreviousMessage message)
+        public void Handle(JumpToPreviousMessage message)
         {
         }
 
@@ -92,6 +92,10 @@ namespace Client.Tests.Mocks
         }
 
         public void Handle(ToggleRepeatMessage message)
+        {
+        }
+
+        public void Handle(PlayNextMessage message)
         {
         }
 

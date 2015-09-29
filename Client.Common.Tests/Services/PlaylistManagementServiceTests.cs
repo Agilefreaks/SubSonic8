@@ -78,17 +78,17 @@
         #region GetNextTrackNumber
 
         [TestMethod]
-        public void GetNextTrackNumber_ShuffleOffAndRepeatOffAndCurrentItemIsLastItem_Returns0()
+        public void GetNextTrackNumber_ShuffleOffAndCurrentItemIsLastItem_Returns0()
         {
             _subject.Items.AddRange(GeneratePlaylistItems());
-            _subject.Handle(new PlayNextMessage());
-            _subject.Handle(new PlayNextMessage());
+            _subject.Handle(new JumpToNextMessage());
+            _subject.Handle(new JumpToNextMessage());
 
             _subject.GetNextTrackNumber().Should().Be(0);
         }
 
         [TestMethod]
-        public void GetNextTrackNumber_ShuffleOffAndRepeatOffAndCurrentItemNull_Returns0()
+        public void GetNextTrackNumber_ShuffleOffAndCurrentItemNull_Returns0()
         {
             _subject.Items.AddRange(GeneratePlaylistItems());
             _subject.CurrentItem.Should().BeNull();
@@ -97,25 +97,16 @@
         }
 
         [TestMethod]
-        public void GetNextTrackNumber_ShuffleOffAndRepeatOff_ReturnsCurrentTrackNumberIncrementedBy1()
+        public void GetNextTrackNumber_ShuffleOffAndCurrentItemIsNotTheLastItem_ReturnsCurrentTrackNumberIncrementedBy1()
         {
             _subject.Items.AddRange(GeneratePlaylistItems());
-            _subject.Handle(new PlayNextMessage());
+            _subject.Handle(new JumpToNextMessage());
 
             _subject.GetNextTrackNumber().Should().Be(1);
         }
 
         [TestMethod]
-        public void GetNextTrackNumber_ShuffleOnAndRepeatOff_ReturnsARandomNumberSmallerThanTheTotalNumberOfItems()
-        {
-            _subject.Items.AddRange(GeneratePlaylistItems(100));
-            _subject.Handle(new ToggleShuffleMessage());
-
-            _subject.GetNextTrackNumber().Should().NotBe(0);
-        }
-
-        [TestMethod]
-        public void GetNextTrackNumber_ShuffleOnRepeatOffAndPlaylistIsEmpty_ReturnsMinus1()
+        public void GetNextTrackNumber_ShuffleOnAndPlaylistIsEmpty_ReturnsMinus1()
         {
             _subject.Handle(new ToggleShuffleMessage());
 
@@ -123,25 +114,12 @@
         }
 
         [TestMethod]
-        public void GetNextTrackNumber_ShuffleOffRepeatOn_ReturnsTheCurrentTrackNumber()
+        public void GetNextTrackNumber_ShuffleOnAndPlaylistIsNotEmpty_ReturnsARandomNumberSmallerThanTheTotalNumberOfItems()
         {
-            _subject.Handle(new ToggleRepeatMessage());
-            var currentTrackNumber = _subject.CurrentTrackNumber;
-
-            _subject.RepeatOn.Should().BeTrue();
-            _subject.GetNextTrackNumber().Should().Be(currentTrackNumber);
-        }
-
-        [TestMethod]
-        public void GetNextTrackNumber_ShuffleOnRepeatOn_ReturnsTheCurrentTrackNumber()
-        {
+            _subject.Items.AddRange(GeneratePlaylistItems(100));
             _subject.Handle(new ToggleShuffleMessage());
-            _subject.Handle(new ToggleRepeatMessage());
-            var currentTrackNumber = _subject.CurrentTrackNumber;
 
-            _subject.RepeatOn.Should().BeTrue();
-            _subject.ShuffleOn.Should().BeTrue();
-            _subject.GetNextTrackNumber().Should().Be(currentTrackNumber);
+            _subject.GetNextTrackNumber().Should().BeLessThan(100);
         }
 
         #endregion
@@ -152,8 +130,8 @@
         public void GetPreviousTrackNumber_ShuffleOff_SetsTheSourceToThePreviousItemInThePlaylist()
         {
             _subject.Items.AddRange(GeneratePlaylistItems(15));
-            _subject.Handle(new PlayNextMessage());
-            _subject.Handle(new PlayNextMessage());
+            _subject.Handle(new JumpToNextMessage());
+            _subject.Handle(new JumpToNextMessage());
 
             var previousTrackNumber = _subject.GetPreviousTrackNumber();
 
@@ -176,9 +154,9 @@
         {
             _subject.Items.AddRange(GeneratePlaylistItems(15));
             _subject.Handle(new ToggleShuffleMessage());
-            _subject.Handle(new PlayNextMessage());
+            _subject.Handle(new JumpToNextMessage());
             var currentIndex = _subject.Items.IndexOf(_subject.CurrentItem);
-            _subject.Handle(new PlayNextMessage());
+            _subject.Handle(new JumpToNextMessage());
 
             var previousTrackNumber = _subject.GetPreviousTrackNumber();
 
@@ -258,7 +236,7 @@
         #region HandlePlayNext
 
         [TestMethod]
-        public void HandlePlayNext_Always_CallsGetNextTrackNumber()
+        public void HandlePlayNext_RepeatOff_CallsGetNextTrackNumber()
         {
             var callCount = 0;
             _subject.Items.AddRange(GeneratePlaylistItems(5));
@@ -274,7 +252,7 @@
         }
 
         [TestMethod]
-        public void HandlePlayNext_Always_CallsStartPlaybackActionWithTheCurrentItem()
+        public void HandlePlayNext_RepeatOff_CallsStartPlaybackActionWithTheObtainedIndex()
         {
             _subject.Items.AddRange(GeneratePlaylistItems(15));
             _subject.GetNextTrackNumberFunc = () => 2;
@@ -291,33 +269,93 @@
         }
 
         [TestMethod]
-        public void HandlePlayNext_CurrentTrackIsInitialized_PushesTheCurrentTrackIndexToTheTrackHistory()
+        public void HandlePlayNext_RepeatOn_ReturnsTheCurrentTrackNumber()
+        {
+            _subject.Handle(new ToggleRepeatMessage());
+            var currentTrackNumber = _subject.CurrentTrackNumber;
+
+            _subject.Handle(new PlayNextMessage());
+
+            _subject.GetNextTrackNumber().Should().Be(currentTrackNumber);
+        }
+
+        [TestMethod]
+        public void HandlePlayNext_ShuffleOnRepeatOn_ReturnsTheCurrentTrackNumber()
+        {
+            _subject.Handle(new ToggleShuffleMessage());
+            _subject.Handle(new ToggleRepeatMessage());
+            var currentTrackNumber = _subject.CurrentTrackNumber;
+            
+            _subject.Handle(new PlayNextMessage());
+
+            _subject.GetNextTrackNumber().Should().Be(currentTrackNumber);
+        }
+
+        #endregion
+
+        #region HandleJumpToNext
+
+        [TestMethod]
+        public void HandleJumpToNext_Always_CallsGetNextTrackNumber()
+        {
+            var callCount = 0;
+            _subject.Items.AddRange(GeneratePlaylistItems(5));
+            _subject.GetNextTrackNumberFunc = () =>
+            {
+                callCount++;
+                return 2;
+            };
+
+            _subject.Handle(new JumpToNextMessage());
+
+            callCount.Should().Be(1);
+        }
+
+        [TestMethod]
+        public void HandleJumpToNext_Always_CallsStartPlaybackActionWithTheCurrentItem()
+        {
+            _subject.Items.AddRange(GeneratePlaylistItems(15));
+            _subject.GetNextTrackNumberFunc = () => 2;
+            var callCount = 0;
+            _subject.StartPlaybackAction = index =>
+            {
+                index.Should().Be(2);
+                callCount++;
+            };
+
+            _subject.Handle(new JumpToNextMessage());
+
+            callCount.Should().Be(1);
+        }
+
+        [TestMethod]
+        public void HandleJumpToNext_CurrentTrackIsInitialized_PushesTheCurrentTrackIndexToTheTrackHistory()
         {
             _subject.Items.AddRange(GeneratePlaylistItems(15));
 
-            _subject.Handle(new PlayNextMessage());
-            _subject.Handle(new PlayNextMessage());
+            _subject.Handle(new JumpToNextMessage());
+            _subject.Handle(new JumpToNextMessage());
 
             _subject.PlaylistHistory.Count.Should().Be(1);
             _subject.PlaylistHistory.Pop().Should().Be(0);
         }
 
         [TestMethod]
-        public void HandlePlayNext_CurrentTrackIsNotInitialized_DoesNotAlterTrackHistory()
+        public void HandleJumpToNext_CurrentTrackIsNotInitialized_DoesNotAlterTrackHistory()
         {
             _subject.Items.AddRange(GeneratePlaylistItems(15));
 
-            _subject.Handle(new PlayNextMessage());
+            _subject.Handle(new JumpToNextMessage());
 
             _subject.PlaylistHistory.Count.Should().Be(0);
         }
 
         #endregion
 
-        #region HandlePlayPrevious
+        #region HandleJumpToPrevious
 
         [TestMethod]
-        public void HandlePlayPrevious_Always_CallsGetPreviousTrackNumberFunc()
+        public void HandleJumpToPrevious_Always_CallsGetPreviousTrackNumberFunc()
         {
             var callCount = 0;
             _subject.Items.AddRange(GeneratePlaylistItems(5));
@@ -327,14 +365,14 @@
                 return 2;
             };
 
-            _subject.Handle(new PlayPreviousMessage());
+            _subject.Handle(new JumpToPreviousMessage());
 
             callCount.Should().Be(1);
             _subject.Items.IndexOf(_subject.CurrentItem).Should().Be(2);
         }
 
         [TestMethod]
-        public void HandlePlayPrevious_ReturnedIndexIsGreatertThanMinusOne_CallsStartPlaybackActionWithTheObtainedIndex()
+        public void HandleJumpToPrevious_ReturnedIndexIsGreatertThanMinusOne_CallsStartPlaybackActionWithTheObtainedIndex()
         {
             _subject.Items.AddRange(GeneratePlaylistItems(15));
             _subject.GetPreviousTrackNumberFunc = () => 3;
@@ -345,20 +383,20 @@
                 callCount++;
             };
 
-            _subject.Handle(new PlayPreviousMessage());
+            _subject.Handle(new JumpToPreviousMessage());
 
             callCount.Should().Be(1);
         }
 
         [TestMethod]
-        public void HandlePlayPrevious_ReturnedIndexIsMinusOne_DoesNotCallsStartPlaybackAction()
+        public void HandleJumpToPrevious_ReturnedIndexIsMinusOne_DoesNotCallsStartPlaybackAction()
         {
             _subject.Items.AddRange(GeneratePlaylistItems(15));
             _subject.GetPreviousTrackNumberFunc = () => -1;
             var callCount = 0;
             _subject.StartPlaybackAction = index => callCount++;
 
-            _subject.Handle(new PlayPreviousMessage());
+            _subject.Handle(new JumpToPreviousMessage());
 
             callCount.Should().Be(0);
         }
@@ -693,7 +731,7 @@
         }
 
         [TestMethod]
-        public void StartPlayback_ItemAtGivenIndexIsAudio_SendsStartAudioPlaybackMessageWithGivenItem()
+        public void StartPlayback_Always_SendsStartPlaybackMessageWithGivenItem()
         {
             _subject.Items.AddRange(GeneratePlaylistItems());
 
@@ -703,15 +741,39 @@
         }
 
         [TestMethod]
-        public void StartPlayback_ItemAtGivenIndexIsVideo_SendsStartPlaybackMessageWithGivenItem()
+        public void StartPlayback_CurrentTrackIsNotInitialized_DoesNotAlterTrackHistory()
         {
-            _subject.Items.Add(new PlaylistItem { Type = PlaylistItemTypeEnum.Video });
+            _subject.Items.AddRange(GeneratePlaylistItems(15));
 
-            _subject.StartPlayback(0);
+            _subject.Handle(new PlayNextMessage());
 
-            _mockEventAggregator.Messages.Any(m => m.GetType() == typeof(StartPlaybackMessage)).Should().BeTrue();
+            _subject.PlaylistHistory.Count.Should().Be(0);
         }
 
+        [TestMethod]
+        public void StartPlayback_CurrentTrackIsInitialized_PushesTheCurrentTrackIndexToTheTrackHistory()
+        {
+            _subject.Items.AddRange(GeneratePlaylistItems(15));
+
+            _subject.StartPlayback(0);
+            _subject.StartPlayback(1);
+
+            _subject.PlaylistHistory.Count.Should().Be(1);
+            _subject.PlaylistHistory.Pop().Should().Be(0);
+        }
+
+        [TestMethod]
+        public void StartPlayback_CurrentTrackNumberIsTheSameAsTheGivenTrackNumber_DoesNotAlterTrackHistory()
+        {
+            _subject.Items.AddRange(GeneratePlaylistItems(15));
+
+            _subject.StartPlayback(2);
+            _subject.StartPlayback(2);
+            _subject.StartPlayback(3);
+
+            _subject.PlaylistHistory.Count.Should().Be(1);
+            _subject.PlaylistHistory.ElementAt(0).Should().Be(2);
+        }
 
         #endregion
 
@@ -721,7 +783,7 @@
         public void StopPlayback_Always_SetsCurrentItemPlayingStateNotPlyaing()
         {
             _subject.Items.Add(new PlaylistItem());
-            _subject.Handle(new PlayNextMessage());
+            _subject.Handle(new JumpToNextMessage());
 
             _subject.StopPlayback();
 
@@ -742,7 +804,7 @@
         public void StopPlayback_CurrentItemIsOfTypeAudio_SendsStopAudioPlaybackMessage()
         {
             _subject.Items.Add(new PlaylistItem());
-            _subject.Handle(new PlayNextMessage());
+            _subject.Handle(new JumpToNextMessage());
 
             _subject.StopPlayback();
 
@@ -753,7 +815,7 @@
         public void StopPlayback_CurrentItemIsOfTypeVideo_SendsStopPlaybackMessage()
         {
             _subject.Items.Add(new PlaylistItem { Type = PlaylistItemTypeEnum.Video });
-            _subject.Handle(new PlayNextMessage());
+            _subject.Handle(new JumpToNextMessage());
 
             _subject.StopPlayback();
 
