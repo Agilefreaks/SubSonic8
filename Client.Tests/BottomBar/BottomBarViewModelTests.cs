@@ -129,12 +129,12 @@
         }
 
         [TestMethod]
-        public void PlayNext_Always_CallsEventAggregatorPublishPlayNextMessage()
+        public void PlayNext_Always_CallsEventAggregatorPublishJumpToNextMessage()
         {
             Subject.PlayNext();
 
             MockEventAggregator.PublishCallCount.Should().Be(1);
-            MockEventAggregator.Messages[0].Should().BeOfType<PlayNextMessage>();
+            MockEventAggregator.Messages[0].Should().BeOfType<JumpToNextMessage>();
         }
 
         [TestMethod]
@@ -152,7 +152,7 @@
             Subject.PlayPrevious();
 
             MockEventAggregator.PublishCallCount.Should().Be(1);
-            MockEventAggregator.Messages[0].Should().BeOfType<PlayPreviousMessage>();
+            MockEventAggregator.Messages[0].Should().BeOfType<JumpToPreviousMessage>();
         }
 
         [TestMethod]

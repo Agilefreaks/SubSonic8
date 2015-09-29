@@ -1,13 +1,15 @@
 ﻿namespace Client.Common.Services
 {
     using System.ComponentModel;
+
     using Caliburn.Micro;
+
     using Client.Common.EventAggregatorMessages;
     using Client.Common.Models;
-    using Client.Common.Services.DataStructures.PlaylistManagementService;
 
-    public interface IPlaylistManagementService : IHandle<PlayNextMessage>,
-                                                  IHandle<PlayPreviousMessage>,
+    public interface IPlaylistManagementService : IHandle<JumpToNextMessage>,
+                                                  IHandle<JumpToPreviousMessage>,
+                                                  IHandle<PlayNextMessage>,
                                                   IHandle<AddItemsMessage>,
                                                   IHandle<ToggleShuffleMessage>,
                                                   IHandle<RemoveItemsMessage>,

@@ -14,6 +14,12 @@
 
     public class PlaylistManagementService : PropertyChangedBase, IPlaylistManagementService
     {
+        #region Constants
+
+        public const int NoTrackTrackNumber = -1;
+
+        #endregion
+
         #region Fields
 
         private readonly IEventAggregator _eventAggregator;
@@ -66,7 +72,7 @@
             {
                 return Items != null && CurrentItem != null && Items.Contains(CurrentItem)
                            ? Items.IndexOf(CurrentItem)
-                           : -1;
+                           : NoTrackTrackNumber;
             }
         }
 
@@ -169,7 +175,7 @@
             {
                 return _repeatOn;
             }
-            set
+            private set
             {
                 if (value.Equals(_repeatOn))
                 {
@@ -196,7 +202,11 @@
         public int GetNextTrackNumber()
         {
             int result;
-            if (ShuffleOn)
+            if (Items.Count == 0)
+            {
+                result = NoTrackTrackNumber;
+            }
+            else if (ShuffleOn)
             {
                 result = _randomNumberGenerator.Next(Items.Count - 1);
             }
@@ -209,34 +219,23 @@
                 result = CurrentTrackNumber + 1;
             }
 
-
-            if (RepeatOn)
-            {
-                result = CurrentTrackNumber;
-            }
-
             return result;
         }
 
         public int GetPreviousTrackNumber()
         {
-            return ShuffleOn ? PlaylistHistory.Count == 0 ? -1 : PlaylistHistory.Pop() : (CurrentTrackNumber - 1);
+            return ShuffleOn ? PlaylistHistory.Count == 0 ? NoTrackTrackNumber : PlaylistHistory.Pop() : (CurrentTrackNumber - 1);
         }
 
-        public void Handle(PlayNextMessage message)
+        public void Handle(JumpToNextMessage message)
         {
-            var previousTrackNumber = CurrentTrackNumber;
             StartPlaybackAction(GetNextTrackNumberFunc());
-            if (previousTrackNumber != -1)
-            {
-                PlaylistHistory.Push(previousTrackNumber);
-            }
         }
 
-        public void Handle(PlayPreviousMessage message)
+        public void Handle(JumpToPreviousMessage message)
         {
             var previousTrackNumber = GetPreviousTrackNumberFunc();
-            if (previousTrackNumber > -1)
+            if (previousTrackNumber > NoTrackTrackNumber)
             {
                 StartPlaybackAction(previousTrackNumber);
             }
@@ -299,6 +298,25 @@
             RepeatOn = !RepeatOn;
         }
 
+        public void Handle(PlayNextMessage message)
+        {
+            int result;
+            if (Items.Count == 0)
+            {
+                result = NoTrackTrackNumber;
+            }
+            else if (RepeatOn)
+            {
+                result = CurrentTrackNumber == NoTrackTrackNumber ? 0 : CurrentTrackNumber;
+            }
+            else
+            {
+                result = GetNextTrackNumberFunc();
+            }
+
+            StartPlaybackAction(result);
+        }
+
         public void LoadPlaylist(PlaylistItemCollection playlistItemCollection)
         {
             if (playlistItemCollection == null)
@@ -352,7 +370,7 @@
 
             Items.Clear();
             Items.AddRange(state.Items);
-            CurrentItem = state.CurrentTrackNumber > -1 ? Items.ElementAt(state.CurrentTrackNumber) : null;
+            CurrentItem = state.CurrentTrackNumber > NoTrackTrackNumber ? Items.ElementAt(state.CurrentTrackNumber) : null;
             ShuffleOn = state.IsShuffleOn;
             if (state.IsPlaying)
             {
@@ -381,12 +399,12 @@
                 }
                 else
                 {
-                    StartPlayback(options);
+                    StartCurrentItemPlayback(options);
                 }
             }
             else
             {
-                StartPlayback(GetNextTrackNumber());
+                StartPlaybackAction(GetNextTrackNumberFunc());
             }
         }
 
@@ -410,9 +428,20 @@
 
         public void StartPlayback(int trackNumber)
         {
+            if (trackNumber == NoTrackTrackNumber)
+            {
+                return;
+            }
+            
+            var previousTrackNumber = CurrentTrackNumber;
+            if (previousTrackNumber != NoTrackTrackNumber && previousTrackNumber != trackNumber)
+            {
+                PlaylistHistory.Push(previousTrackNumber);
+            }
+
             StopPlaybackAction();
-            CurrentItem = Items[trackNumber];
-            StartPlayback();
+            CurrentItem = Items.ElementAt(trackNumber);
+            StartCurrentItemPlayback();
         }
 
         public void StopPlayback()
@@ -462,7 +491,7 @@
             }
         }
 
-        private void StartPlayback(object options = null)
+        private void StartCurrentItemPlayback(object options = null)
         {
             _eventAggregator.Publish(new StartPlaybackMessage(CurrentItem) { Options = options });
             CurrentItem.PlayingState = PlaylistItemState.Playing;

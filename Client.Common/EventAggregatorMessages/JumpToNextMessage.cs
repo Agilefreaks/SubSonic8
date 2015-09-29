@@ -1,6 +1,6 @@
 ﻿namespace Client.Common.EventAggregatorMessages
 {
-    public class PlayNextMessage
-    { 
+    public class JumpToNextMessage
+    {
     }
 }
