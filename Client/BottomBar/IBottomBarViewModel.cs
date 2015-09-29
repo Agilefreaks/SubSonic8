@@ -4,7 +4,6 @@ namespace Subsonic8.BottomBar
     using Caliburn.Micro;
     using Client.Common.EventAggregatorMessages;
     using Subsonic8.ErrorDialog;
-    using Subsonic8.MenuItem;
 
     public interface IBottomBarViewModel : IHandle<PlaylistStateChangedMessage>
     {
@@ -33,8 +32,6 @@ namespace Subsonic8.BottomBar
         void PlayPrevious();
 
         void Stop();
-
-        void ToggleShuffle();
 
         #endregion
     }

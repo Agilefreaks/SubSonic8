@@ -5,11 +5,10 @@
     using System.Collections.Specialized;
     using System.Linq;
     using System.Threading.Tasks;
-    using Caliburn.Micro;
+
     using Client.Common.EventAggregatorMessages;
     using Client.Common.Models;
     using Client.Common.Models.Subsonic;
-    using Client.Common.Results;
     using Client.Common.Services;
     using MugenInjection.Attributes;
     using Subsonic8.Framework.Extensions;

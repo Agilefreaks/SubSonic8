@@ -456,6 +456,15 @@ namespace Client.Tests.Playback
                 .BeTrue();
         }
 
+        [TestMethod]
+        public void ToggleShuffle_Always_PublishesANewToggleShuffleMessage()
+        {
+            Subject.ToggleShuffle();
+
+            MockEventAggregator.PublishCallCount.Should().Be(1);
+            MockEventAggregator.Messages[0].Should().BeOfType<ToggleShuffleMessage>();
+        }
+
         #endregion
 
         #region Methods

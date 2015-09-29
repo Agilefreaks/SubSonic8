@@ -535,6 +535,11 @@
             EventAggregator.Publish(new ToggleRepeatMessage());
         }
 
+        public void ToggleShuffle()
+        {
+            EventAggregator.Publish(new ToggleShuffleMessage());
+        }
+
         #endregion
 
         #region Methods

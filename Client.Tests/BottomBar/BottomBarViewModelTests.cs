@@ -120,15 +120,6 @@
         }
 
         [TestMethod]
-        public void ToggleShuffle_Always_PublishesANewToggleShuffleMessage()
-        {
-            Subject.ToggleShuffle();
-
-            MockEventAggregator.PublishCallCount.Should().Be(1);
-            MockEventAggregator.Messages[0].Should().BeOfType<ToggleShuffleMessage>();
-        }
-
-        [TestMethod]
         public void PlayNext_Always_CallsEventAggregatorPublishPlayNextMessage()
         {
             Subject.PlayNext();

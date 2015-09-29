@@ -115,14 +115,6 @@
             }
         }
 
-        public bool ShuffleOn
-        {
-            get
-            {
-                return PlaylistManagementService.ShuffleOn;
-            }
-        }
-
         [Inject]
         public ICustomFrameAdapter NavigationService { get; set; }
 
@@ -215,11 +207,6 @@
             EventAggregator.Publish(new StopMessage());
         }
 
-        public virtual void ToggleShuffle()
-        {
-            EventAggregator.Publish(new ToggleShuffleMessage());
-        }
-
         #endregion
 
         #region Methods
@@ -252,12 +239,6 @@
         private void PlaylistManagementServiceOnPropertyChanged(
             object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
-            if (propertyChangedEventArgs.PropertyName
-                == PlaylistManagementService.GetPropertyName(() => PlaylistManagementService.ShuffleOn))
-            {
-                NotifyOfPropertyChange(() => ShuffleOn);
-            }
-
             if (propertyChangedEventArgs.PropertyName
                 == PlaylistManagementService.GetPropertyName(() => PlaylistManagementService.IsPlaying))
             {
