@@ -82,10 +82,14 @@
                                         Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='Details'}" />
                         </Grid>
                         <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                            <controls:AppBarToggleButton Style="{StaticResource RepeatAllOffAppBarButtonStyle}"
-                               CheckedStyle="{StaticResource RepeatAllOnAppBarButtonStyle}"
+                            <controls:AppBarToggleButton Style="{StaticResource RepeatAllOffButtonStyle}"
+                               CheckedStyle="{StaticResource RepeatAllOnButtonStyle}"
                                cal:Message.Attach="[Event Click] = [Action ToggleRepeat()]" AutoToggle="False"
                                IsChecked="{Binding PlaylistManagementService.RepeatOn}" />
+                            <controls:AppBarToggleButton Style="{StaticResource ShuffleOffButtonStyle}"
+                               CheckedStyle="{StaticResource ShuffleOnButtonStyle}"
+                               cal:Message.Attach="[Event Click] = [Action ToggleShuffle()]" AutoToggle="False"
+                               IsChecked="{Binding PlaylistManagementService.ShuffleOn}" />
                         </StackPanel>
                     </Grid>
                     <TextBlock Grid.Row="1" Grid.Column="1" TextAlignment="Center" FontSize="25" Padding="0,40,0,0" 
