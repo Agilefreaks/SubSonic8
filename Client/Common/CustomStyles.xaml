@@ -61,16 +61,29 @@
         <Setter Property="Padding" Value="5,5,0,0"/>
     </Style>
 
-    <Style x:Key="RepeatAllOnAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
+    <Style x:Key="RepeatAllOnButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
         <Setter Property="AutomationProperties.AutomationId" Value="RepeatAllAppBarButton"/>
         <Setter Property="AutomationProperties.Name" Value="Repeat On"/>
         <Setter Property="Content" Value="&#xE1CD;"/>
     </Style>
 
-    <Style x:Key="RepeatAllOffAppBarButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
+    <Style x:Key="RepeatAllOffButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
         <Setter Property="AutomationProperties.AutomationId" Value="RepeatAllAppBarButton"/>
         <Setter Property="AutomationProperties.Name" Value="Repeat Off"/>
         <Setter Property="Content" Value="&#xE1CD;"/>
+        <Setter Property="Foreground" Value="Gray"/>
+    </Style>
+
+    <Style x:Key="ShuffleOnButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
+        <Setter Property="AutomationProperties.AutomationId" Value="ShuffleOnAppBarButton" />
+        <Setter Property="AutomationProperties.Name" Value="Shuffle On" />
+        <Setter Property="Content" Value="&#x2248;" />
+    </Style>
+
+    <Style x:Key="ShuffleOffButtonStyle" TargetType="ButtonBase" BasedOn="{StaticResource AppBarButtonStyle}">
+        <Setter Property="AutomationProperties.AutomationId" Value="ShuffleOffAppBarButton" />
+        <Setter Property="AutomationProperties.Name" Value="Shuffle Off" />
+        <Setter Property="Content" Value="&#x2249;" />
         <Setter Property="Foreground" Value="Gray"/>
     </Style>
 
