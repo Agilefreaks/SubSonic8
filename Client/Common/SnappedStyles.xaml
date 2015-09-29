@@ -7,7 +7,6 @@
         <Setter Property="FontWeight" Value="Normal"/>
     </Style>
     <Style TargetType="TextBlock" BasedOn="{StaticResource SnappedTitleStyle}" x:Key="SnappedArtistStyle">
-        <Setter Property="FontSize" Value="20"/>
         <Setter Property="FontWeight" Value="Bold"/>
     </Style>
     <Style TargetType="TextBlock" x:Key="SnappedAppNameStyle">
