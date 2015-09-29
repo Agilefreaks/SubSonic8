@@ -9,9 +9,10 @@
     xmlns:playback="using:Subsonic8.Playback.Playback" xmlns:converters="using:Subsonic8.Converters"
     xmlns:behaviors="using:Subsonic8.Framework.Behaviors" xmlns:framework="using:Subsonic8.Framework"
     xmlns:i="using:Windows.UI.Interactivity" xmlns:videoPlayback="using:Subsonic8.VideoPlayback"
-    xmlns:playlistItem="using:Subsonic8.PlaylistItem.PlaylistItem" xmlns:commonBehaviors="using:Common.Behaviors"
+    xmlns:commonBehaviors="using:Common.Behaviors"
     xmlns:commonConverters="using:Common.Converters" xmlns:subsonic8="using:Subsonic8"
     xmlns:controls="using:Subsonic8.Controls"
+    xmlns:playlistItem="using:Subsonic8.PlaylistItem"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -110,15 +111,7 @@
                         </ListView.ItemContainerStyle>
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <ContentControl HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch"
-                                            DataContext="{Binding}">
-                                    <Grid HorizontalAlignment="Stretch">
-                                        <playlistItem:Playing
-                                        Visibility="{Binding Path=PlayingState, Converter={StaticResource PlayingStateToVisibilityConverter}, ConverterParameter='Playing'}" />
-                                        <playlistItem:NotPlaying
-                                        Visibility="{Binding Path=PlayingState, Converter={StaticResource PlayingStateToVisibilityConverter}, ConverterParameter='NotPlaying'}" />
-                                    </Grid>
-                                </ContentControl>
+                                <playlistItem:PlaylistItemView DataContext="{Binding}"/>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>

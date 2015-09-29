@@ -13,29 +13,27 @@
         <converters:IntToTimeStringConverter x:Key="TimeConverter" />
     </UserControl.Resources>
 
-    <Border Style="{StaticResource NotPlayingBorderStyle}">
-        <Grid Style="{StaticResource PlaylistItemGridStyle}">
+    <Grid Style="{StaticResource PlaylistItemGridStyle}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Image Source="{Binding CoverArtUrl}" Style="{StaticResource PlaylistItemCoverArtStyle}" />
+
+        <Grid Grid.Column="1" Style="{StaticResource PlaylistItemDetailsGridStyle}">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <Image Source="{Binding CoverArtUrl}" Style="{StaticResource PlaylistItemCoverArtStyle}" />
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <TextBlock Text="{Binding Artist}" Style="{StaticResource PlaylistItemArtistStyle}"/>
+                <TextBlock Text="-" Style="{StaticResource PlaylistItemTextStyle}"/>
+                <TextBlock Text="{Binding Title}" Style="{StaticResource PlaylistItemTitleStyle}"/>
+            </StackPanel>
 
-            <Grid Grid.Column="1" Style="{StaticResource PlaylistItemDetailsGridStyle}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                    <TextBlock Text="{Binding Artist}" Style="{StaticResource PlaylistItemArtistStyle}"/>
-                    <TextBlock Text="-" Style="{StaticResource PlaylistItemTextStyle}"/>
-                    <TextBlock Text="{Binding Title}" Style="{StaticResource PlaylistItemTitleStyle}"/>
-                </StackPanel>
-
-                <TextBlock Grid.Column="1" Text="{Binding Duration, Converter={StaticResource TimeConverter}}" Style="{StaticResource PlaylistItemDurationStyle}" />
-            </Grid>
+            <TextBlock Grid.Column="1" Text="{Binding Duration, Converter={StaticResource TimeConverter}}" Style="{StaticResource PlaylistItemDurationStyle}" />
         </Grid>
-    </Border>
+    </Grid>
 </UserControl>

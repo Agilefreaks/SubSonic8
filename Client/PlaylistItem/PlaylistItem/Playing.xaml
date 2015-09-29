@@ -9,7 +9,7 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-    <Border Style="{StaticResource PlayingItemBorderStyle}">
-        <playlistItem:NotPlaying />
-    </Border>
+    <Grid Style="{StaticResource PlayingItemContainerStyle}">
+        <playlistItem:NotPlaying/>
+    </Grid>
 </UserControl>
