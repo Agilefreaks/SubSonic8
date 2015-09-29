@@ -8,8 +8,6 @@
 
         FullScreen, 
 
-        Filter,
-
-        Details,
+        Filter
     }
 }

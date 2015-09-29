@@ -511,25 +511,6 @@
             _currentVisualState = state;
         }
 
-        public async Task ShowArtistInfo()
-        {
-            if (ActiveItem == null) return;
-
-            if (State != PlaybackViewModelStateEnum.Details)
-            {
-                _previousState = State;
-                State = PlaybackViewModelStateEnum.Details;
-            }
-
-            ArtistInfoViewModel.Parameter = ActiveItem.Artist;
-            await ArtistInfoViewModel.Populate();
-        }
-
-        public void HideArtistInfo()
-        {
-            State = _previousState;
-        }
-
         public void ToggleRepeat()
         {
             EventAggregator.Publish(new ToggleRepeatMessage());

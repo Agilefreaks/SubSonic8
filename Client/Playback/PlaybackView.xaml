@@ -17,7 +17,6 @@
 
     <Page.Resources>
         <converters:PlaybackStateToVisibilityConverter x:Name="PlaybackStateToVisibilityConverter" />
-        <converters:PlayingStateToVisibilityConverter x:Name="PlayingStateToVisibilityConverter" />
         <cal:BooleanToVisibilityConverter x:Name="BooleanToVisibilityConverter"/>
         <commonConverters:InvertedVisibilityConverter x:Name="InvertedVisibilityConverter"/>
         <commonConverters:NullToVisibilityConverter x:Name="NullToVisibilityConverter"/>
@@ -79,8 +78,6 @@
                                         Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='Video'}" />
                             <playback:Filter cal:Bind.Model="{Binding}"
                                          Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='Filter'}" />
-                            <playback:Details cal:Bind.Model="{Binding}" cal:Message.Attach="[Event Tapped] = [Action HideArtistInfo]"
-                                        Visibility="{Binding Path=State, Converter={StaticResource PlaybackStateToVisibilityConverter}, ConverterParameter='Details'}" />
                         </Grid>
                         <StackPanel Grid.Column="1" VerticalAlignment="Center">
                             <controls:AppBarToggleButton Style="{StaticResource RepeatAllOffButtonStyle}"

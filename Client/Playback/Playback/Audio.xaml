@@ -19,8 +19,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Image Source="{Binding CoverArt}" Style="{StaticResource PlaybackBigCoverArtStyle}" effects:Tilt.IsTiltEnabled="True" 
-               cal:Message.Attach="[Event Tapped] = [Action ShowArtistInfo]"/>
+        <Image Source="{Binding CoverArt}" Style="{StaticResource PlaybackBigCoverArtStyle}" effects:Tilt.IsTiltEnabled="True" />
         <playback:ProgressIndicatorView Grid.Row="1" cal:Bind.Model="{Binding ProgressIndicatorViewModel}" />
         <StackPanel Grid.Row="2" Style="{StaticResource PlaybackControlsPanelStyle}"
                     Visibility="{Binding Path=PlaybackControlsVisible, Converter={StaticResource BooleanToVisibilityConverter}}">

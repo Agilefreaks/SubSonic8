@@ -406,47 +406,6 @@ namespace Client.Tests.Playback
         }
 
         [TestMethod]
-        public async Task ShowArtistInfo_PlaylistHasCurrentItem_ShouldChangeTheStateToDetails()
-        {
-            _mockPlaylistManagementService.CurrentItem = new PlaylistItem { Artist = "test name" };
-
-            await Subject.ShowArtistInfo();
-
-            Subject.State.Should().Be(PlaybackViewModelStateEnum.Details);
-        }
-
-        [TestMethod]
-        public async Task ShowArtistInfo_PlaylistHasCurrentItem_ShouldSetTheCurrentArtistNameOnTheArtistInfoViewModel()
-        {
-            _mockPlaylistManagementService.CurrentItem = new PlaylistItem { Artist = "test name" };
-
-            await Subject.ShowArtistInfo();
-
-            Subject.ArtistInfoViewModel.Parameter.Should().Be("test name");
-        }
-
-        [TestMethod]
-        public async Task ShowArtistInfo_PlaylistHasCurrentItem_ShouldPopulateTheArtistInfoViewModel()
-        {
-            _mockPlaylistManagementService.CurrentItem = new PlaylistItem { Artist = "test name" };
-
-            await Subject.ShowArtistInfo();
-
-            _mockArtistInfoViewModel.PopulateCallCount.Should().Be(1);
-        }
-
-        [TestMethod]
-        public async Task ShowArtistInfo_PlaylistDoesNotHaveCurrentItem_ShouldNotChangeTheStateOfTheViewModel()
-        {
-            _mockPlaylistManagementService.CurrentItem = null;
-            Subject.State = PlaybackViewModelStateEnum.Audio;
-
-            await Subject.ShowArtistInfo();
-
-            Subject.State.Should().Be(PlaybackViewModelStateEnum.Audio);
-        }
-
-        [TestMethod]
         public void ToggleRepeatMessage_Always_SendsToggleRepeatMessageUsingEventAggregator()
         {
             Subject.ToggleRepeat();

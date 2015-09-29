@@ -263,9 +263,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>PlaybackViewModelStrings.resw</DependentUpon>
     </Compile>
-    <Compile Include="Playback\Playback\Details.xaml.cs">
-      <DependentUpon>Details.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Playback\Playback\SnappedAudio.xaml.cs">
       <DependentUpon>SnappedAudio.xaml</DependentUpon>
     </Compile>
@@ -547,10 +544,6 @@
     <Page Include="Playback\Playback\Audio.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Playback\Playback\Details.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Playback\Playback\SnappedAudio.xaml">
       <Generator>MSBuild:Compile</Generator>
